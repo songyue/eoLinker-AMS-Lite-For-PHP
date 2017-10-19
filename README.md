@@ -1,6 +1,5 @@
 # eoLinker接口管理开源版本
-eoLinker接口管理开源版本
-
+![intro.jpg](http://data.eolinker.com//blog/eioasd13os_banner.jpg)
 
 ```注意：3.x版本与2.x版本并不兼容，因此无法直接由2.x升级到3.x，也无法通过覆盖代码的方式进行升级，切勿随意尝试以防数据丢失```
 
