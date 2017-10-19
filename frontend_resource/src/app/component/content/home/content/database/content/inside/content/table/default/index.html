@@ -1,0 +1,59 @@
+<div class="database-list">
+    <header>
+        <ul class="title-ul" ng-if="$ctrl.powerObject.readWrite">
+            <li class="btn-group-li pull-left" >
+                <ul>
+                    <a class="eo-button-success common-btn" data-ng-click="$ctrl.data.fun.edit()">
+                        <span class="iconfont icon-tianjia"></span><span class="btn-name">添加字段</span>
+                    </a>
+                </ul>
+            </li>
+        </ul>
+    </header>
+    <article class="first-level-article" ng-class="{'only-read-article':!$ctrl.powerObject.readWrite}">
+        <table>
+            <thead>
+                <tr>
+                    <th class="first-th">
+                        <label class="iconfont icon-keyicon1"></label>
+                    </th>
+                    <th class="sixth-th">必填</th>
+                    <th class="second-th">字段名</th>
+                    <th class="third-th">类型</th>
+                    <th class="forth-th">长度</th>
+                    <th>默认值</th>
+                    <th class="fifth-th">描述</th>
+                    <th class="seventh-th">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in $ctrl.data.interaction.response.query">
+                    <td>
+                        <label class="iconfont" ng-class="{'icon-keyicon1':!!item.isPrimaryKey}"></label>
+                    </td>
+                    <td class="field-null-td">
+                        <label class="iconfont" data-ng-class="{'icon-check':!!item.isNotNull}"></label>
+                    </td>
+                    <td>{{item.fieldName}}</td>
+                    <td>{{item.fieldType}}</td>
+                    <td>{{item.fieldLength}}</td>
+                    <td>{{item.defaultValue}}</td>
+                    <td class="field-desc-td">
+                        <button ng-class="{'eo-button-default':!!item.fieldDesc,'limit-btn':!item.fieldDesc}" data-ng-click="$ctrl.data.fun.value(item)" ng-disabled="!item.fieldDesc">{{!!item.fieldDesc?'查看':'无'}}</button>
+                    </td>
+                    <td>
+                        <div ng-if="$ctrl.powerObject.readWrite">
+                            <!--readWrite权限-->
+                            <a class="database-function-edit" data-ng-click="$ctrl.data.fun.edit({item:item})"><span class="iconfont icon-bianji"></span>修改</a>
+                            <a class="database-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index})"><span class="iconfont icon-shanchu"></span>删除</a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+    <footer>
+        <div load-directive="$ctrl.data.fun.init(arg)">
+        </div>
+    </footer>
+</div>

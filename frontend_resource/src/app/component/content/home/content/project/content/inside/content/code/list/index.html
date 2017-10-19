@@ -1,0 +1,64 @@
+<div class="home-project-inside-list home-project-inside-code-list home-project-inside-div">
+    <header>
+        <ul class="title-ul" >
+            <li class="btn-group-li pull-left" ng-if="$ctrl.powerObject.readWrite">
+                <a class="eo-button-success common-btn" data-ng-click="$ctrl.data.fun.edit()">
+                    <span class="iconfont icon-tianjia"></span><span class="btn-name">添加状态码</span>
+                </a>
+                <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.batch.default()" ng-if="!$ctrl.data.info.batch.disable">
+                    <span class="iconfont icon-check1"></span><span class="btn-name">批量操作</span>
+                </a>
+                <a class="common-btn default-btn" data-ng-click="$ctrl.data.info.batch.disable=false" ng-if="$ctrl.data.info.batch.disable">
+                    <span class="iconfont icon-close"></span><span class="btn-name">取消批量</span>
+                </a>
+                <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.batch.delete()" ng-if="$ctrl.data.info.batch.disable">
+                    <span class="iconfont icon-shanchu"></span><span class="btn-name">批量删除</span>
+                </a>
+            </li>
+            <li class="divide-li pull-left" ng-if="$ctrl.powerObject.readWrite"><span></span></li>
+            <li class="search-li pull-left">
+                <form name="searchForm">
+                    <ul class="search-function-ul">
+                        <li class="search-input-li">
+                            <input class="eo-input" type="text" placeholder="搜索状态码" data-ng-model="$ctrl.data.interaction.request.tips" required>
+                        </li>
+                        <li class="search-btn-li">
+                            <button class="iconfont icon-sousuo" data-ng-click="$ctrl.data.fun.search()"></button>
+                        </li>
+                    </ul>
+                </form>
+            </li>
+        </ul>
+    </header>
+    <article class="first-level-article" ng-class="{'only-read-article':!$ctrl.powerObject.readWrite}">
+        <table>
+            <thead>
+                <tr>
+                    <th class="first-th">状态码</th>
+                    <th class="third-th">
+                        描述
+                    </th>
+                    <th class="second-th">分组</th>
+                    <th class="forth-th" ng-if="$ctrl.powerObject.readWrite">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in $ctrl.data.interaction.response.query" data-ng-click="$ctrl.data.fun.enter({item:item,$index:$index})" ng-class="{'elem-active':item.isClick&&$ctrl.data.info.batch.disable}">
+                    <td>
+                        {{item.code}}
+                    </td>
+                    <td title="{{item.codeDescription}}">{{item.codeDescription}}</td>
+                    <td>{{item.groupName}}</td>
+                    <td ng-if="$ctrl.powerObject.readWrite">
+                        <a class="home-project-inside-function-edit" data-ng-click="$ctrl.data.fun.edit({item:item})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-bianji"></span>修改</a>
+                        <a class="home-project-inside-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-shanchu"></span>删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+    <footer>
+        <div load-directive="$ctrl.data.fun.init(arg)">
+        </div>
+    </footer>
+</div>

@@ -1,0 +1,57 @@
+<div class="common-table-div">
+    <header>
+        <ul class="title-ul">
+            <li class="btn-group-li">
+                <a class="eo-button-success common-btn" data-ng-click="$ctrl.data.fun.edit()">
+                        <span class="iconfont icon-tianjia"></span>新增项目
+                    </a>
+                <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.import()">
+                        <span class="iconfont icon-shangchuan"></span>导入项目
+                    </a>
+            </li>
+        </ul>
+    </header>
+    <article class="first-level-article">
+        <table>
+            <thead>
+                <tr>
+                    <th class="first-th">项目名称</th>
+                    <th class="second-th">版本号</th>
+                    <th class="second-th">类型</th>
+                    <th class="third-th">最后修改时间</th>
+                    <th class="forth-th">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat='item in $ctrl.data.interaction.response.query' data-ng-click="$ctrl.data.fun.enter({item:item})">
+                    <th>
+                        {{item.projectName}}
+                    </th>
+                    <td><span >V&nbsp;{{item.projectVersion}}</span></td>
+                    <td ng-switch="item.projectType">
+                        <span  ng-switch-when=0>Web</span>
+                        <span ng-switch-when=1>App</span>
+                        <span  ng-switch-when=2>PC</span>
+                        <span  ng-switch-when=3>硬件/物联网</span>
+                        <span  ng-switch-when=4>其他</span>
+                    </td>
+                    <td>{{item.projectUpdateTime}}</td>
+                    <td>
+                        <div ng-if="item.userType<=1">
+                            <a class="home-function-delete" data-ng-click="$ctrl.data.fun.edit({item:item,$index:$index,$event:$event})"><span class="iconfont icon-bianji"></span>修改</a>
+                            <a class="home-function-delete" data-ng-click="$ctrl.data.fun.dump({item:item,$event:$event})"><span class="iconfont icon-xiazai"></span>导出</a>
+                            <a class="home-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,$event:$event})" ng-if="item.userType==0"><span class="iconfont icon-shanchu"></span>删除</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="eo-none-tr" ng-if="$ctrl.data.interaction.response.query.length==0">
+                    <td colspan="5">尚未新建任何项目</td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+    <footer>
+        <div load-directive="$ctrl.data.fun.init(arg)">
+        </div>
+    </footer>
+</div>
