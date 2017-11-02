@@ -759,7 +759,7 @@
                             'childGroupID': vm.data.info.reset.childGroupID,
                             'apiID': response.apiID
                         });
-                        $rootScope.InfoModal($filter('translate')('012100145'), 'success');
+                        $rootScope.InfoModal($filter('translate')('012100143'), 'success');
                         break;
                     }
                     case CODE.PROJECT_API.EXIST:

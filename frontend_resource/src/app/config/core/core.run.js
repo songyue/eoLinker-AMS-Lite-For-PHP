@@ -61,7 +61,7 @@
          * @param    {[obj]}   _default [原生传参 Native parameter]
          * @param    {[obj]}   arg [自定义传参 customized parameter]
          */
-        $rootScope.$on('$TransferStation', function(_default, arg) { 
+        $rootScope.$on('$translateferStation', function(_default, arg) { 
             $rootScope.$broadcast(arg.state, arg.data);
         });
 

@@ -1,4 +1,4 @@
-# eoLinker接口管理开源版本
+##[CHN]eoLinker接口管理系统开源版
 ![intro.jpg](http://data.eolinker.com//blog/eioasd13os_banner.jpg)
 
 ```注意：3.x版本与2.x版本并不兼容，因此无法直接由2.x升级到3.x，也无法通过覆盖代码的方式进行升级，切勿随意尝试以防数据丢失```
@@ -104,11 +104,134 @@ app
 
 ```线上以及开源的数据是可以互相导入导出的。```
 
-## 证书
-该开源网站由[eoLinker](https://www.eolinker.com/)提供技术支持，开源协议遵循[GNU General Public License v3.0](https://www.gnu.org/licenses/lgpl.html)
 
 ```
 eoLinker开源版接口管理系统仅供用户下载试用、学习和交流，禁止一切公开使用于商业用途或者以eolinker开源版本为基础而开发的二次版本在互联网上流通。
 一经发现违反上条规则，我们将立刻启用法律程序进行维权。
 希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
 ```
+
+
+The eoLinker interface manages open source versions
+
+
+`` `Note: 3.x version and 2.x version is not compatible, it can not be directly from the 2.x upgrade to 3.x and cover the way to upgrade the code. do not try upgrading to prevent data loss` `` `
+
+`` ``
+If you need to migrate data, you can use the eoLinker interface to manage the [export project] function
+Export the project as an eoLinker private format (.export) and import it in version 3.x.
+Also, to prevent data loss, properly back up the database before performing any critical operations.
+`` ``
+## Deployment requirements
+
+* PHP 5.3+
+* mysql 5.5+
+* Apache / Nginx
+
+## install
+ [Detailed graphic guide] (https://www.eolinker.com/#/os/guide?point=require#require)
+
+
+## Front end development code description
+** If you don’t need secondary development, you can completely ignore the following **
+
+#### Quick start
+`` `bash
+git clone https://github.com/eolinker/CHN-eoLinker-API-Management-System-OS-3.X/tree/master/frontend_resource
+`` ``
+Installation dependency
+`` `bash
+cd frontend_resource
+# Install front-end dependencies
+npm install
+# Install run dependencies
+bower install
+`` ``
+
+#### Debugging
+Development model
+`` `bash
+gulp serve
+`` ``
+Compile mode (output the project file as an online file)
+`` `bash
+gulp build
+`` ``
+Debug on line mode
+`` `bash
+gulp serve: dist
+`` ``
+
+
+#### Front-end file directory
+##### Gulp
+`` ``
+gulp
+├ ─base.js | Configure basic project dependencies
+├─build.js | Generates online script
+├─config.js | global configuration file
+└server.js | proxy server / server startup script
+
+# See the file for details
+`` ``
+
+##### Frame directory
+
+Main function directory
+`` ``
+eo-os
+├─gulp | script management
+├─app.conf.json | Angular All variable configuration files, compiled via [dev-config / prod-config]
+├─config.rb | compass configuration file
+├─config.js | global configuration file
+├─vendor.base.json | front-end dependency file (package will be compressed with the source file)
+├─vendor.json | Front-end dependent library files (loaded via Lazyload module)
+├─package.json | Compile module dependency file and project configuration - Add module Please note that add npm install --save new install module
+└bower.json | front-end dependent library json file bower install --save new install module
+`` ``
+
+
+##### Source File
+
+app directory main file
+`` ``
+app
+├ ─assets | store static files
+├─config | global configuration file, including routing configuration module routes, global definition module core, and on-demand loading module lazyload
+├ ─ directive | command module, the page all the instruction files written here, the module location for the eo-shop (project name).
+├─service | service module, the page all the service files written here, the module location for the eo-shop (project name) .service
+├─filter | filter module, page All filter files are written here, the module location is eo-shop (project name) .filter
+├─constant | store constant files
+├─resource | Api configuration module, global Api configuration location
+├─app.module.js | global module dependent statement module, if no global dependencies change, do not arbitrarily change the contents of the file.
+├─app.conf.js | compiled by the app.conf.json global variable file, configure the current development mode DEV / PRODUCTION
+├─vendor.js | front-end dependent js library files, with index.html into the document
+├─vendor.scss | front-end dependent on the scss library file, by introducing in index.scss
+└index.scss | global style file.
+
+
+`` ``
+#### Background file directory
+`` ``
+├─server | background source code file directory
+├─dump | Export the file directory
+├─RTP | background framework core directory, including common methods, configuration files, database files, etc.
+├ ─Server | background interface three-tier structure directory
+├─Controller | Control layer - Data filtering
+├ ─Module | business layer - logical processing
+├Dao | data access layer - database operation
+`` ``
+## common problem
+## about us
+1. ** eoLinker official exchange QQ group **: [284421832] (http://shang.qq.com/wpa/qunwpa?idkey=208b23b73761039b9994d71378ccbf7c84c872d5577d557e45168b37fd290c12)
+2. ** eolinker official website **: [eoLinker interface management platform] (https://www.eolinker.com/)
+
+`` `` Open source version contains only the basic version of the online version, if you need to use more features, please use the free [online version] (https://www.eolinker.com/) `` `
+
+`` `Online and open source data can be imported from each other. `` ``
+
+`` ``
+eo-os only for users to download the trial, learning and communication, prohibit all open for commercial use or eolinker open source version based on the development of the secondary version of the Internet in circulation.
+Once found to violate the above rules, we will immediately enable the legal procedures for rights.
+Hope that we can jointly maintain the domestic Internet open source civilization and normal business order.
+`` ``
