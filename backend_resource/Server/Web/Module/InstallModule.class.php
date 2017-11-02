@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @name eolinker open source，eolinker开源版本
  * @link https://www.eolinker.com
  * @package eolinker
  * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2016
-
  *  * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  * 用户讨论QQ群：284421832
@@ -14,93 +14,100 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class InstallModule {
-	/**
-	 * 检测环境
-	 * @param $dbURL 数据库主机地址
-	 * @param $dbName 数据库名
-	 * @param $dbUser 数据库用户名
-	 * @param $dbPassword 数据库密码
-	 */
-	public function checkoutEnv(&$dbURL, &$dbName, &$dbUser, &$dbPassword) {
-		try {
-			//检测配置目录写入权限
-			if (@file_put_contents(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt', 'ok')) {
-				$result['fileWrite'] = 1;
-				unlink(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt');
+class InstallModule
+{
+    /**
+     * 检测环境
+     * @param $dbURL string 数据库主机地址
+     * @param $dbName string 数据库名
+     * @param $dbUser string 数据库用户名
+     * @param $dbPassword string 数据库密码
+     * @return array
+     */
+    public function checkoutEnv(&$dbURL, &$dbName, &$dbUser, &$dbPassword)
+    {
+        try {
+            //检测配置目录写入权限
+            if (@file_put_contents(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt', 'ok')) {
+                $result['fileWrite'] = 1;
+                unlink(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt');
 
-				//检测导出目录写入权限
-				if (@file_put_contents('./dump' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt', 'ok')) {
-					$result['fileWrite'] = 1;
-					unlink('./dump' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt');
+                //检测导出目录写入权限
+                if (@file_put_contents('./dump' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt', 'ok')) {
+                    $result['fileWrite'] = 1;
+                    unlink('./dump' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt');
 
-					//检测根目录写入权限
-					if (@file_put_contents('../fileWriteTest.txt', 'ok')) {
-						$result['fileWrite'] = 1;
-						unlink('../fileWriteTest.txt');
-					} else
-						$result['fileWrite'] = 0;
-				} else
-					$result['fileWrite'] = 0;
-			} else
-				$result['fileWrite'] = 0;
+                    //检测根目录写入权限
+                    if (@file_put_contents('../fileWriteTest.txt', 'ok')) {
+                        $result['fileWrite'] = 1;
+                        unlink('../fileWriteTest.txt');
+                    } else
+                        $result['fileWrite'] = 0;
+                } else
+                    $result['fileWrite'] = 0;
+            } else
+                $result['fileWrite'] = 0;
 
-			//检测数据库连接
-			$dbURL = explode(':', $dbURL);
-			if (empty($dbURL[1]))
-				$dbURL[1] = '3306';
+            //检测数据库连接
+            $dbURL = explode(':', $dbURL);
+            if (empty($dbURL[1]))
+                $dbURL[1] = '3306';
 
-			if (!class_exists('PDO')) {
-				var_dump('error');
-				$result['db'] = 0;
-			} else {
-				$conInfo = 'mysql:host=' . $dbURL[0] . ';port=' . $dbURL[1] . ';dbname=' . $dbName . ';charset=utf8';
-				try {
-					@$con = new \PDO($conInfo, $dbUser, $dbPassword);
-					$result['db'] = 1;
-				} catch(\PDOException $e) {
-					$result['db'] = 0;
-				}
-			}
+            if (!class_exists('PDO')) {
+                var_dump('error');
+                $result['db'] = 0;
+            } else {
+                $conInfo = 'mysql:host=' . $dbURL[0] . ';port=' . $dbURL[1] . ';dbname=' . $dbName . ';charset=utf8';
+                try {
+                    @$con = new \PDO($conInfo, $dbUser, $dbPassword);
+                    $result['db'] = 1;
+                } catch (\PDOException $e) {
+                    $result['db'] = 0;
+                }
+            }
 
-			//检测CURL
-			if (!function_exists('curl_init')) {
-				$result['curl'] = 0;
-			} else {
-				@$ch = curl_init(realpath('./index.php'));
-				if ($ch) {
-					curl_close($ch);
-					$result['curl'] = 1;
-				} else
-					$result['curl'] = 0;
-			}
-		} catch(\PDOException $e) {
-			return array('error' => $e -> getMessage());
-		}
+            //检测CURL
+            if (!function_exists('curl_init')) {
+                $result['curl'] = 0;
+            } else {
+                @$ch = curl_init(realpath('./index.php'));
+                if ($ch) {
+                    curl_close($ch);
+                    $result['curl'] = 1;
+                } else
+                    $result['curl'] = 0;
+            }
+        } catch (\PDOException $e) {
+            return array('error' => $e->getMessage());
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * 写入配置文件
-	 * @param $dbURL 数据库主机地址
-	 * @param $dbName 数据库名
-	 * @param $dbUser 数据库用户名
-	 * @param $dbPassword 数据库密码
-	 */
-	public function createConfigFile(&$dbURL, &$dbName, &$dbUser, &$dbPassword, &$websiteName) {
-		if (file_exists(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php')) {
-			//不存在配置文件，需要跳转至引导页面进行安装
-			unlink(realpath(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php'));
-		}
+    /**
+     * 写入配置文件
+     * @param $dbURL string 数据库主机地址
+     * @param $dbName string 数据库名
+     * @param $dbUser string 数据库用户名
+     * @param $dbPassword string 数据库密码
+     * @param $websiteName string 网站名称
+     * @param $language string 语言
+     * @return bool
+     */
+    public function createConfigFile(&$dbURL, &$dbName, &$dbUser, &$dbPassword, &$websiteName, &$language)
+    {
+        if (file_exists(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php')) {
+            //不存在配置文件，需要跳转至引导页面进行安装
+            unlink(realpath(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php'));
+        }
 
-		$dbURL = explode(':', $dbURL);
-		if (empty($dbURL[1]))
-			$dbURL[1] = '3306';
+        $dbURL = explode(':', $dbURL);
+        if (empty($dbURL[1]))
+            $dbURL[1] = '3306';
 
-		$websiteName = isset($websiteName) ? $websiteName : 'eolinker开源版';
+        $websiteName = isset($websiteName) ? $websiteName : 'eolinker开源版';
 
-		$config = "<?php
+        $config = "<?php
 //主机地址
 defined('DB_URL') or define('DB_URL', '{$dbURL[0]}');
 
@@ -127,25 +134,30 @@ defined('WEBSITE_NAME') or define('WEBSITE_NAME', '{$websiteName}');
 
 //数据表前缀
 defined('DB_TABLE_PREFIXION') or define('DB_TABLE_PREFIXION', 'eo');
+
+//语言
+defined('LANGUAGE') or define ('LANGUAGE', '{$language}');
 ?>";
-		if ($configFile = file_put_contents(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php', $config))
-			return TRUE;
-		else
-			return FALSE;
-	}
+        if ($configFile = file_put_contents(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php', $config))
+            return TRUE;
+        else
+            return FALSE;
+    }
 
-	/**
-	 * 安装数据库
-	 */
-	public function installDatabase() {
-		//读取数据库文件
-		$sql = file_get_contents(PATH_FW . DIRECTORY_SEPARATOR . 'db/eolinker_os_mysql.sql');
-		$sqlArray = array_filter(explode(';', $sql));
-		$dao = new InstallDao;
-		$result = $dao -> installDatabase($sqlArray);
+    /**
+     * 安装数据库
+     */
+    public function installDatabase()
+    {
+        //读取数据库文件
+        $sql = file_get_contents(PATH_FW . DIRECTORY_SEPARATOR . 'db/eolinker_os_mysql.sql');
+        $sqlArray = array_filter(explode(';', $sql));
+        $dao = new InstallDao;
+        $result = $dao->installDatabase($sqlArray);
 
-		return $result;
-	}
+        return $result;
+    }
 
 }
+
 ?>

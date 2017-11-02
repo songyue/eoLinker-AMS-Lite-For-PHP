@@ -23,7 +23,7 @@ class DatabaseTableFieldModule
 
     /**
      * 获取数据字典用户类型
-     * @param $fieldID
+     * @param $fieldID int 字段ID
      * @return bool|int
      */
     public function getUserType(&$fieldID)
@@ -44,13 +44,14 @@ class DatabaseTableFieldModule
 
     /**
      * 添加字段
-     * @param $tableID 数据表ID
-     * @param $fieldName 字段名
-     * @param $fieldType 字段类型
-     * @param $fieldLength 字段长度
-     * @param $isNotNull 是否非空 [0/1]=>[否/是]，默认为0
-     * @param $isPrimaryKey 是否为主键 [0/1]=>[否/是]，默认为0
-     * @param $fieldDesc 字段描述，默认为NULL
+     * @param $tableID int 数据表ID
+     * @param $fieldName string 字段名
+     * @param $fieldType string 字段类型
+     * @param $fieldLength int 字段长度
+     * @param $isNotNull int 是否非空 [0/1]=>[否/是]，默认为0
+     * @param $isPrimaryKey int 是否为主键 [0/1]=>[否/是]，默认为0
+     * @param $fieldDesc string 字段描述，默认为NULL
+     * @return bool|int
      */
     public function addField(&$tableID, &$fieldName, &$fieldType, &$fieldLength, &$isNotNull, &$isPrimaryKey, &$fieldDesc, &$fieldDefaultValue)
     {
@@ -67,7 +68,8 @@ class DatabaseTableFieldModule
 
     /**
      * 删除字段
-     * @param $fieldID 字段ID
+     * @param $fieldID int 字段ID
+     * @return bool
      */
     public function deleteField(&$fieldID)
     {
@@ -83,7 +85,8 @@ class DatabaseTableFieldModule
 
     /**
      * 获取字段列表
-     * @param $tableID 数据表ID
+     * @param $tableID int 数据表ID
+     * @return bool|array
      */
     public function getField(&$tableID)
     {
@@ -100,13 +103,14 @@ class DatabaseTableFieldModule
 
     /**
      * 修改字段
-     * @param $fieldID 字段ID
-     * @param $fieldName 字段名
-     * @param $fieldType 字段类型
-     * @param $fieldLength 字段长度
-     * @param $isNotNull 是否非空 [0/1]=>[否/是]，默认为0
-     * @param $isPrimaryKey 是否为主键 [0/1]=>[否/是]，默认为0
-     * @param $fieldDesc 字段描述，默认为NULL
+     * @param $fieldID int 字段ID
+     * @param $fieldName string 字段名
+     * @param $fieldType string 字段类型
+     * @param $fieldLength int 字段长度
+     * @param $isNotNull int 是否非空 [0/1]=>[否/是]，默认为0
+     * @param $isPrimaryKey int 是否为主键 [0/1]=>[否/是]，默认为0
+     * @param $fieldDesc string 字段描述，默认为NULL
+     * @return bool
      */
     public function editField(&$fieldID, &$fieldName, &$fieldType, &$fieldLength, &$isNotNull, &$isPrimaryKey, &$fieldDesc, &$fieldDefaultValue)
     {
@@ -115,7 +119,7 @@ class DatabaseTableFieldModule
 
         if ($dbID = $databaseTableFieldDao->checkFieldPermission($fieldID, $_SESSION['userID'])) {
             $databaseDao->updateDatabaseUpdateTime($dbID);
-            return $databaseTableFieldDao->editField($fieldID, $fieldName, $fieldType, $fieldLength, $isNotNull, $isPrimaryKey, $fieldDescription, $fieldDefaultValue);
+            return $databaseTableFieldDao->editField($fieldID, $fieldName, $fieldType, $fieldLength, $isNotNull, $isPrimaryKey, $fieldDesc, $fieldDefaultValue);
         } else
             return FALSE;
     }

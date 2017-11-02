@@ -16,14 +16,17 @@
  */
 class DatabaseController
 {
+    // return an json object
     //返回Json类型
     private $returnJson = array('type' => 'database');
 
     /**
+     * Checkout login status
      * 检查登录状态
      */
     public function __construct()
     {
+        //identity authentication
         // 身份验证
         $server = new GuestModule;
         if (!$server->checkLogin()) {
@@ -33,6 +36,7 @@ class DatabaseController
     }
 
     /**
+     * Add database
      * 添加数据库
      */
     public function addDatabase()
@@ -41,9 +45,11 @@ class DatabaseController
         $dbName = securelyInput('dbName');
         $dbVersion = securelyInput('dbVersion');
         if (!($nameLen >= 1 && $nameLen <= 32)) {
+            // illegal database name length
             // 数据库名长度不合法
             $this->returnJson['statusCode'] = '220001';
         } elseif (!(is_float(floatval($dbVersion)) && intval($dbVersion))) {
+            // illegal database version
             // 数据库版本不合法
             $this->returnJson['statusCode'] = '220002';
         } else {
@@ -60,6 +66,7 @@ class DatabaseController
     }
 
     /**
+     * Delete database
      * 删除数据库
      */
     public function deleteDatabase()
@@ -71,6 +78,7 @@ class DatabaseController
             $this->returnJson['statusCode'] = '120007';
             exitOutput($this->returnJson);
         }
+        // illegal database ID
         //数据库ID格式非法
         if (!preg_match('/^[0-9]{1,11}$/', $dbID)) {
             $this->returnJson['statusCode'] = '220004';
@@ -87,6 +95,7 @@ class DatabaseController
     }
 
     /**
+     * Get all database list
      * 获取数据库列表
      */
     public function getDatabase()
@@ -104,6 +113,7 @@ class DatabaseController
     }
 
     /**
+     * Edit database
      * 修改数据库
      */
     public function editDatabase()
@@ -118,14 +128,16 @@ class DatabaseController
         $nameLen = mb_strlen(quickInput('dbName'), 'utf8');
         $dbName = securelyInput('dbName');
         $dbVersion = securelyInput('dbVersion');
-
+        // illegal database ID
         //数据库ID格式非法
         if (!preg_match('/^[0-9]{1,11}$/', $dbID)) {
             $this->returnJson['statusCode'] = '220004';
         } elseif (!($nameLen >= 1 && $nameLen <= 32)) {
+            // illegal database name length
             // 数据库名长度不合法
             $this->returnJson['statusCode'] = '220001';
         } elseif (!(is_float(floatval($dbVersion)) && intval($dbVersion))) {
+            // illegal database version
             // 数据库版本不合法
             $this->returnJson['statusCode'] = '220002';
         } else {
@@ -141,8 +153,8 @@ class DatabaseController
     }
 
     /**
+     * Export database's data
      * 导出数据库
-     *
      */
     public function exportDatabase()
     {
@@ -153,6 +165,7 @@ class DatabaseController
             $this->returnJson['statusCode'] = '120007';
             exitOutput($this->returnJson);
         }
+        // illegal database ID
         //数据库ID格式非法
         if (!preg_match('/^[0-9]{1,11}$/', $dbID)) {
             $this->returnJson['statusCode'] = '220004';
@@ -163,6 +176,7 @@ class DatabaseController
                 $this->returnJson['statusCode'] = '000000';
                 $this->returnJson['fileName'] = $fileName;
             } else {
+                //export fail
                 //导出失败
                 $this->returnJson['statusCode'] = '220000';
             }
@@ -171,8 +185,8 @@ class DatabaseController
     }
 
     /**
+     * Import database table which export from mysql
      * 导入SQL格式数据表
-     * controller层
      */
     public function importDatabase()
     {
@@ -184,18 +198,22 @@ class DatabaseController
             exitOutput($this->returnJson);
         }
         $dumpSql = quickInput('dumpSql');
+        //illegal database ID
         //数据库ID格式非法
         if (!preg_match('/^[0-9]{1,11}$/', $dbID)) {
             $this->returnJson['statusCode'] = '230001';
         } else {
             $tables = array();
+            //match all statement blocks which create tables using regex
             //正则匹配出所有创建表的语句块
             preg_match_all('/CREATE.*?TABLE[\\s\\S]+?;/', $dumpSql, $sql);
             preg_match_all('/ALTER.*?TABLE[\\s\\S]+?PRIMARY.+?\\)/', $dumpSql, $primaryKeys);
 
             foreach ($sql[0] as $tableSql) {
+                // get table name from the sql
                 //正则提取表名，结果为array，取索引为1
                 preg_match('/`(.*?)`/', $tableSql, $tableName);
+                // get table fields from the sql
                 //截取表的字段信息
                 $tableField = substr(substr($tableSql, strpos($tableSql, '(') + 1), 0, strlen($tableSql) - strpos($tableSql, '(') - 9);
 
@@ -224,10 +242,12 @@ class DatabaseController
                     $this->returnJson['statusCode'] = '000000';
                     //$this -> returnJson['result'] =$result;
                 } else {
+                    //import fail
                     //导入失败
                     $this->returnJson['statusCode'] = '220008';
                 }
             } else {
+                //cannot find any create table statement block in the sql data
                 //导入的sql文件未匹配到创建表的语句块
                 $this->returnJson['statusCode'] = '220009';
 
@@ -236,12 +256,16 @@ class DatabaseController
         exitOutput($this->returnJson);
     }
 
-    //导入数据库
+    /**
+     * Import database by database's data which export from the api named exportDatabase
+     * 导入数据库
+     */
     public function importDatabseByJson()
     {
         $json = quickInput('data');
         $data = json_decode($json, TRUE);
         if (empty($data)) {
+            //empty data
             //数据为空
             $this->returnJson['statusCode'] = '220010';
         } else {

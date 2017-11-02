@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @name eolinker open source，eolinker开源版本
  * @link https://www.eolinker.com
@@ -17,12 +18,14 @@ class EnvDao
 {
     /**
      * 获取环境列表
+     * @param $projectID int 项目ID
+     * @return bool
      */
-    public function getEnvList(&$prjectID)
+    public function getEnvList(&$projectID)
     {
         $db = getDatabase();
 
-        $envList = $db->prepareExecuteAll("SELECT eo_api_env.envID,eo_api_env.envName FROM eo_api_env WHERE eo_api_env.projectID = ? ORDER BY eo_api_env.envID DESC;", array($prjectID));
+        $envList = $db->prepareExecuteAll("SELECT eo_api_env.envID,eo_api_env.envName FROM eo_api_env WHERE eo_api_env.projectID = ? ORDER BY eo_api_env.envID DESC;", array($projectID));
 
         if (is_array($envList)) {
             foreach ($envList as &$env) {
@@ -47,6 +50,7 @@ class EnvDao
      * @param array $headers 请求头部
      * @param array $params 全局变量
      * @param int $apply_protocol 应用的请求类型,[-1]=>[所有请求类型]
+     * @return bool|int
      */
     public function addEnv(&$projectID, &$envName, &$front_uri, &$headers, &$params, $apply_protocol)
     {
@@ -107,6 +111,9 @@ class EnvDao
 
     /**
      * 删除环境
+     * @param $projectID int 项目ID
+     * @param $env_id int 环境ID
+     * @return bool
      */
     public function deleteEnv(&$projectID, &$env_id)
     {
@@ -168,6 +175,13 @@ class EnvDao
 
     /**
      * 修改环境
+     * @param $env_id int 环境ID
+     * @param $envName string 环境名称
+     * @param $front_uri string 前置uri
+     * @param $headers array 请求头部
+     * @param $params array 全局变量
+     * @param $apply_protocol int 请求协议
+     * @return bool
      */
     public function editEnv(&$env_id, &$envName, &$front_uri, &$headers, &$params, $apply_protocol)
     {
@@ -239,6 +253,7 @@ class EnvDao
     /**
      * 获取环境信息
      * @param int $env_id 环境ID
+     * @return bool|array
      */
     public function getEnvInfoFromDB(&$env_id)
     {
@@ -255,6 +270,8 @@ class EnvDao
 
     /**
      * 获取环境名称
+     * @param $envID int 环境ID
+     * @return bool
      */
     public function getEnvName(&$envID)
     {
@@ -269,8 +286,8 @@ class EnvDao
 
     /**
      * 检查项目环境权限
-     * @param $envID
-     * @param $userID
+     * @param $envID int 环境ID
+     * @param $userID int 用户ID
      * @return bool
      */
     public function checkEnvPermission(&$envID, &$userID)

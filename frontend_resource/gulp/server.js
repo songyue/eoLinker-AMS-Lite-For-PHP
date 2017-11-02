@@ -71,7 +71,7 @@ function browserSyncInit(baseDir, open, port) {
             
             middleware: [
                 // proxyMiddleware(['/eolinker_os'], {onProxyRes: onProxyRes, target: 'http://localhost:8089', changeOrigin: true,secure: false})
-                proxyMiddleware(['/eolinker_os'], {onProxyRes: onProxyRes, target: 'http://115.159.112.186', changeOrigin: true,secure: false})
+                proxyMiddleware(['/eolinker_os'], {onProxyRes: onProxyRes, target: 'http://www.ljgade.cn', changeOrigin: true,secure: false})
                 // proxyMiddleware(['/BBS'], {onProxyRes: onProxyRes, target: 'http://demo.api.eolinker.cn', changeOrigin: true})https://www.eolinker.com  http://t.e.s.t.eolinker.com
             ]
         }

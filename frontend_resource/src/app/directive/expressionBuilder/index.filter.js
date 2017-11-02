@@ -1,8 +1,8 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [表达式过滤器指令js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [表达式过滤器指令js] [Expression filter instruction JS]
      * @version  3.0.2
      */
     angular.module('eolinker.directive')
@@ -18,8 +18,8 @@
                 }
             }
             /**
-             * @function [生成uuid功能函数]
-             * @return   {[string]}       [uuid]
+             * @function [生成uuid功能函数] [Generating UUID function]
+             * @return   {[string]} [uuid]
              */
             data.fun.uuid = function() {
                 var template = {
@@ -57,8 +57,8 @@
             }
 
             /**
-             * @function [utf8编码功能函数]
-             * @param    {[obj]}   arg [{text:需过滤的文本}]
+             * @function [utf8编码功能函数] [Utf8 encoding function]
+             * @param    {[obj]}   arg [{text:需过滤的文本 Text to be filtered}]
              * @return   {[string]}       [utf8Encode]
              */
             data.fun.utf8Encode = function(arg) {
@@ -84,16 +84,16 @@
                 return template.result;
             }
             /**
-             * @function [编码功能函数]
-             * @param    {[obj]}   arg [{text:需过滤的文本}]
+             * @function [编码功能函数] [Coded function]
+             * @param    {[obj]}   arg [{text:需过滤的文本 Text to be filtered}]
              * @return   {[string]}       [encode]
              */
             data.fun.encode = function(arg) {
                 var template = {
                     keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
                     result: '',
-                    char: [], //单一字符数组
-                    enchar: [], //编码后字符数组
+                    char: [], //单一字符数组 Single character array
+                    enchar: [], //编码后字符数组 Coded character array
                     count: 0
                 }
                 arg.text = data.fun.utf8Encode({ text: arg.text.toString() });

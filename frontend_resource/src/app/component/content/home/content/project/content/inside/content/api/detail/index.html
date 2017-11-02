@@ -3,33 +3,33 @@
         <ul class="title-ul">
             <li class="btn-group-li pull-left">
                 <a class="common-btn default-btn" ui-sref="home.project.inside.api.list({groupID: $ctrl.data.interaction.request.groupID,childGroupID:$ctrl.data.interaction.request.childGroupID })">
-                    <span class="iconfont icon-xiangzuo"></span>接口列表
+                    <span class="iconfont icon-xiangzuo"></span>{{'01210000'|translate}}
                 </a>
             </li>
             <li class="menu-li pull-left">
-                <a class="pull-left elem-active">详情
+                <a class="pull-left elem-active">{{'01210001'|translate}}
                     </a>
-                <a class="pull-left" data-ng-click="$ctrl.data.fun.test()">测试
+                <a class="pull-left" data-ng-click="$ctrl.data.fun.test()">{{'01210002'|translate}}
                     </a>
             </li>
             <li class="btn-li common-btn default-btn" ng-if="$ctrl.powerObject.readWrite">
-                <span class="iconfont icon-caidan"></span> 更多
+                <span class="iconfont icon-caidan"></span> {{'01210003'|translate}}
                 <div class="list-function-wrap">
                     <ul class="nav-function" ng-if="$ctrl.data.interaction.request.groupID!=-2">
-                        <li ui-sref="home.project.inside.api.edit($ctrl.data.interaction.request)"><span class="iconfont icon-bianji"></span>修改</li>
+                        <li ui-sref="home.project.inside.api.edit($ctrl.data.interaction.request)"><span class="iconfont icon-bianji"></span>{{'01210004'|translate}}</li>
                         <li ui-sref="home.project.inside.api.edit({groupID:$ctrl.data.interaction.request.groupID, childGroupID:$ctrl.data.interaction.request.childGroupID,apiID:$ctrl.data.interaction.request.apiID, type: 2 })">
-                            <span class="iconfont icon-renwuguanli"></span>另存为(复制)
+                            <span class="iconfont icon-renwuguanli"></span>{{'01210005'|translate}}
                         </li>
                         <li data-ng-click="$ctrl.data.fun.delete()">
-                            <span class="iconfont icon-shanchu"></span>删除
+                            <span class="iconfont icon-shanchu"></span>{{'01210006'|translate}}
                         </li>
                     </ul>
                     <ul class="nav-function" ng-if="$ctrl.data.interaction.request.groupID==-2">
                         <li data-ng-click="$ctrl.data.fun.recover()">
-                            <span class="iconfont icon-shuaxin"></span>恢复
+                            <span class="iconfont icon-shuaxin"></span>{{'01210007'|translate}}
                         </li>
                         <li data-ng-click="$ctrl.data.fun.deleteCompletely()">
-                            <span class="iconfont icon-shanchu"></span>彻底删除
+                            <span class="iconfont icon-shanchu"></span>{{'01210008'|translate}}
                         </li>
                     </ul>
                 </div>
@@ -67,15 +67,15 @@
         </div>
         <div class="item-part request-header-part" ng-if="$ctrl.data.service.home.envObject.object.model.headerInfo.length>0">
             <p class="title-p">
-                <b>请求头部</b>
-                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.header=!$ctrl.data.info.spreed.header"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.header,'icon-xiangshang':$ctrl.data.info.spreed.header}"></span>{{$ctrl.data.info.spreed.header?'收缩':'展开'}}</a>
+                <b>{{'01210009'|translate}}</b>
+                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.header=!$ctrl.data.info.spreed.header"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.header,'icon-xiangshang':$ctrl.data.info.spreed.header}"></span>{{$ctrl.data.info.spreed.header?$ctrl.data.info.filter.shrink:$ctrl.data.info.filter.open}}</a>
             </p>
             <table ng-show="$ctrl.data.info.spreed.header">
                 <thead>
                     <tr>
-                        <td class="num-td">序号</td>
-                        <td class="request-header-label">标签</td>
-                        <td>内容</td>
+                        <td class="num-td">{{'012100012'|translate}}</td>
+                        <td class="request-header-label">{{'012100013'|translate}}</td>
+                        <td>{{'012100014'|translate}}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -92,20 +92,20 @@
             </table>
         </div>
         <div class="item-part request-param-part" ng-switch='$ctrl.data.service.home.envObject.object.model.baseInfo.apiRequestParamType' ng-if="($ctrl.data.service.home.envObject.object.model.requestInfo.length>0&&$ctrl.data.service.home.envObject.object.model.baseInfo.apiRequestParamType!=1)||($ctrl.data.service.home.envObject.object.model.baseInfo.apiRequestParamType==1&&$ctrl.data.service.home.envObject.object.model.baseInfo.apiRequestRaw)">
-            <p class="title-p"><b>请求参数</b>
-                <tip-directive input="<p>点击具体参数可以查看参数的详情</p>"></tip-directive>
-                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.request=!$ctrl.data.info.spreed.request"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.request,'icon-xiangshang':$ctrl.data.info.spreed.request}"></span>{{$ctrl.data.info.spreed.request?'收缩':'展开'}}</a>
+            <p class="title-p"><b>{{'012100015'|translate}}</b>            
+                <tip-directive input="<p>{{'012100016'|translate}}</p>"></tip-directive>
+                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.request=!$ctrl.data.info.spreed.request"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.request,'icon-xiangshang':$ctrl.data.info.spreed.request}"></span>{{$ctrl.data.info.spreed.request?$ctrl.data.info.filter.shrink:$ctrl.data.info.filter.open}}</a>
             </p>
             <table ng-show="$ctrl.data.info.spreed.request" ng-switch-default>
                 <thead>
                     <tr>
-                        <td class="num-td">序号</td>
-                        <td class="param-name">参数名</td>
-                        <td class="param-desc">说明</td>
-                        <td class="require-label">必填</td>
-                        <td class="type-label">类型</td>
-                        <td class="last-td">示例</td>
-                        <td class="operation-td">详情</td>
+                        <td class="num-td">{{'012100012'|translate}}</td>
+                        <td class="param-name">{{'012100017'|translate}}</td>
+                        <td class="param-desc">{{'012100018'|translate}}</td>
+                        <td class="require-label">{{'012100019'|translate}}</td>
+                        <td class="type-label">{{'012100020'|translate}}</td>
+                        <td class="last-td">{{'012100021'|translate}}</td>
+                        <td class="operation-td">{{'012100022'|translate}}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -126,11 +126,11 @@
                             <span>{{item.paramKeyHtml}}</span>
                         </th>
                         <td ng-class="{'hover-click-td':(item.paramLimit||item.paramValueList.length>0||item.paramValue)}" data-ng-click="$ctrl.data.fun.show.request({item:item})" title="{{item.paramName}}">{{item.paramName}}</td>
-                        <td ng-class="{'hover-click-td':(item.paramLimit||item.paramValueList.length>0||item.paramValue)}" data-ng-click="$ctrl.data.fun.show.request({item:item})">{{item.paramNotNull==0?'是':''}}</td>
+                        <td ng-class="{'hover-click-td':(item.paramLimit||item.paramValueList.length>0||item.paramValue)}" data-ng-click="$ctrl.data.fun.show.request({item:item})">{{item.paramNotNull==0?$ctrl.data.info.filter.yes:''}}</td>
                         <td ng-class="{'hover-click-td':(item.paramLimit||item.paramValueList.length>0||item.paramValue)}" data-ng-click="$ctrl.data.fun.show.request({item:item})">{{item.paramType==0?"[string]":item.paramType==1?"[file]":item.paramType==2?"[json]":item.paramType==3?"[int]":item.paramType==4?"[float]":item.paramType==5?"[double]":item.paramType==6?"[date]":item.paramType==7?"[datetime]":item.paramType==8?"[boolean]":item.paramType==9?"[byte]":item.paramType==10?"[short]":item.paramType==11?"[long]":item.paramType==12?"[array]":"[object]"}}</td>
                         <td ng-class="{'hover-click-td':(item.paramLimit||item.paramValueList.length>0||item.paramValue)}" data-ng-click="$ctrl.data.fun.show.request({item:item})">{{item.paramValue}}</td>
                         <td>
-                            <button ng-if="(item.paramLimit||item.paramValueList.length>0||item.paramValue)" class="get-more-btn eo-button-default" data-ng-click="$ctrl.data.fun.show.request({item:item})">查看</button>
+                            <button ng-if="(item.paramLimit||item.paramValueList.length>0||item.paramValue)" class="get-more-btn eo-button-default" data-ng-click="$ctrl.data.fun.show.request({item:item})">{{'012100023'|translate}}</button>
                         </td>
                     </tr>
                 </tbody>
@@ -142,19 +142,19 @@
             </article>
         </div>
         <div class="item-part response-param-part" ng-if="$ctrl.data.service.home.envObject.object.model.resultInfo.length>0">
-            <p class="title-p"><b>返回参数</b>
+            <p class="title-p"><b>{{'012100024'|translate}}</b>
                 <tip-directive input="<p>点击具体参数可以查看参数的详情</p>"></tip-directive>
-                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.response=!$ctrl.data.info.spreed.response"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.response,'icon-xiangshang':$ctrl.data.info.spreed.response}"></span>{{$ctrl.data.info.spreed.response?'收缩':'展开'}}</a>
+                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.response=!$ctrl.data.info.spreed.response"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.response,'icon-xiangshang':$ctrl.data.info.spreed.response}"></span>{{$ctrl.data.info.spreed.response?$ctrl.data.info.filter.shrink:$ctrl.data.info.filter.open}}</a>
             </p>
             <table ng-show="$ctrl.data.info.spreed.response">
                 <thead>
                     <tr>
-                        <td class="num-td">序号</td>
-                        <td class="param-name">参数名</td>
-                        <td class="param-desc">说明</td>
-                        <td class="require-label">必含</td>
-                        <td class="last-td">类型</td>
-                        <td class="operation-td">详情</td>
+                        <td class="num-td">{{'012100012'|translate}}</td>
+                        <td class="param-name">{{'012100017'|translate}}</td>
+                        <td class="param-desc">{{'012100018'|translate}}</td>
+                        <td class="require-label">{{'012100025'|translate}}</td>
+                        <td class="last-td">{{'012100020'|translate}}</td>
+                        <td class="operation-td">{{'012100022'|translate}}</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -175,36 +175,36 @@
                             <span>{{item.paramKeyHtml}}</span>
                         </th>
                         <td ng-class="{'hover-click-td':(item.paramValueList.length>0)}" data-ng-click="$ctrl.data.fun.show.request({item:item})" title="{{item.paramName}}">{{item.paramName}}</td>
-                        <td ng-class="{'hover-click-td':(item.paramValueList.length>0)}" data-ng-click="$ctrl.data.fun.show.request({item:item})">{{item.paramNotNull==0?'是':''}}</td>
+                        <td ng-class="{'hover-click-td':(item.paramValueList.length>0)}" data-ng-click="$ctrl.data.fun.show.request({item:item})">{{item.paramNotNull==0?$ctrl.data.info.filter.yes:''}}</td>
                         <td ng-class="{'hover-click-td':(item.paramValueList.length>0)}" data-ng-click="$ctrl.data.fun.show.request({item:item})">{{item.paramType==0?"[string]":item.paramType==1?"[file]":item.paramType==2?"[json]":item.paramType==3?"[int]":item.paramType==4?"[float]":item.paramType==5?"[double]":item.paramType==6?"[date]":item.paramType==7?"[datetime]":item.paramType==8?"[boolean]":item.paramType==9?"[byte]":item.paramType==10?"[short]":item.paramType==11?"[long]":item.paramType==12?"[array]":"[object]"}}</td>
                         <td>
-                            <button ng-if="item.paramValueList.length>0" class="get-more-btn eo-button-default" data-ng-click="$ctrl.data.fun.show.response({item:item})">查看</button>
+                            <button ng-if="item.paramValueList.length>0" class="get-more-btn eo-button-default" data-ng-click="$ctrl.data.fun.show.response({item:item})">{{'012100023'|translate}}</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="item-part response-example-part" ng-if="$ctrl.data.service.home.envObject.object.model.baseInfo" ng-switch="$ctrl.data.info.mock.isFailure">
-            <p class="title-p"><b>返回示例</b>
-                <tip-directive input="<p>返回示例分[成功示例]以及[失败示例]</p><p>可以通过下方的链接地址进行简易的mock测试</p>"></tip-directive>
-                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.example=!$ctrl.data.info.spreed.example"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.example,'icon-xiangshang':$ctrl.data.info.spreed.example}"></span>{{$ctrl.data.info.spreed.example?'收缩':'展开'}}</a>
+            <p class="title-p"><b>{{'012100026'|translate}}</b>
+                <tip-directive input="<p>{{'012100032'|translate}}</p><p>{{'012100034'|translate}}</p>"></tip-directive>
+                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.example=!$ctrl.data.info.spreed.example"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.example,'icon-xiangshang':$ctrl.data.info.spreed.example}"></span>{{$ctrl.data.info.spreed.example?$ctrl.data.info.filter.shrink:$ctrl.data.info.filter.open}}</a>
             </p>
             <header ng-show="$ctrl.data.info.spreed.example">
                 <ul>
-                    <li class="pull-left test-nav-li success-li" ng-class="{'active':!$ctrl.data.info.mock.isFailure}" data-ng-click="$ctrl.data.info.mock.isFailure = false">成功结果</li>
-                    <li class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.info.mock.isFailure}" data-ng-click="$ctrl.data.info.mock.isFailure = true">失败结果</li>
+                    <li class="pull-left test-nav-li success-li" ng-class="{'active':!$ctrl.data.info.mock.isFailure}" data-ng-click="$ctrl.data.info.mock.isFailure = false">{{'012100027'|translate}}</li>
+                    <li class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.info.mock.isFailure}" data-ng-click="$ctrl.data.info.mock.isFailure = true">{{'012100028'|translate}}</li>
                     <li ng-hide="$ctrl.data.info.mock.isFailure">
-                        <button class="eo-button-info change-type-btn send-format" arrange-format="apiResult_js" ng-model="$ctrl.data.service.home.envObject.object.model.baseInfo.apiSuccessMock"><span class="iconfont icon-magic"></span>格式整理</button>
+                        <button class="eo-button-info change-type-btn send-format" arrange-format="apiResult_js" ng-model="$ctrl.data.service.home.envObject.object.model.baseInfo.apiSuccessMock"><span class="iconfont icon-magic"></span>{{'012100029'|translate}}</button>
                     </li>
                     <li ng-show="$ctrl.data.info.mock.isFailure">
-                        <button class="eo-button-info change-type-btn send-format" arrange-format="apiResult_js_1" ng-model="$ctrl.data.service.home.envObject.object.model.baseInfo.apiFailureMock"><span class="iconfont icon-magic"></span>格式整理</button>
+                        <button class="eo-button-info change-type-btn send-format" arrange-format="apiResult_js_1" ng-model="$ctrl.data.service.home.envObject.object.model.baseInfo.apiFailureMock"><span class="iconfont icon-magic"></span>{{'012100029'|translate}}</button>
                     </li>
                 </ul>
             </header>
             <article ng-show="$ctrl.data.info.spreed.example">
                 <div ng-hide='$ctrl.data.info.mock.isFailure'>
                     <pre class="back-result-content " id="apiResult_js">
-                    <span class="null-tip-span">暂未填写返回示例</span>
+                    <span class="null-tip-span">No Response</span>
                     </pre>
                 </div>
             </article>
@@ -217,15 +217,15 @@
                 </div>
                 <div ng-show='$ctrl.data.info.mock.isFailure'>
                     <pre class="back-result-content " id="apiResult_js_1">
-                    <span class="null-tip-span">暂未填写返回示例</span>
+                    <span class="null-tip-span">No Response</span>
                     </pre>
                 </div>
             </article>
         </div>
         <div class="item-part note-part" ng-if="$ctrl.data.service.home.envObject.object.model.baseInfo.apiNoteHtml">
             <p class="title-p">
-                <b>详细说明</b>
-                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.note=!$ctrl.data.info.spreed.note"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.note,'icon-xiangshang':$ctrl.data.info.spreed.note}"></span>{{$ctrl.data.info.spreed.note?'收缩':'展开'}}</a>
+                <b>{{'012100031'|translate}}</b>
+                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.note=!$ctrl.data.info.spreed.note"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.note,'icon-xiangshang':$ctrl.data.info.spreed.note}"></span>{{$ctrl.data.info.spreed.note?$ctrl.data.info.filter.shrink:$ctrl.data.info.filter.open}}</a>
             </p>
             <article class="wangEditor-container" ng-show="$ctrl.data.info.spreed.note">
                 <div class="wangEditor-txt" ng-class="{'markdown-body editormd-preview-container':$ctrl.data.service.home.envObject.object.model.baseInfo.apiNoteType=='1'}" ng-bind-html="$ctrl.data.service.home.envObject.object.model.baseInfo.apiNoteHtml">

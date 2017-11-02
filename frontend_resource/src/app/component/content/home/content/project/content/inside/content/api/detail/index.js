@@ -1,19 +1,19 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function api详情模块相关js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [api详情模块相关js] [api details module related js]
      * @version  3.0.2
-     * @service  $scope 注入作用域服务
-     * @service  $rootScope 注入根作用域服务
-     * @service  ApiManagementResource 注入接口管理接口服务
-     * @service  $state 注入路由服务
-     * @service  $sce 注入$sce服务
-     * @service  $filter 注入过滤器服务
-     * @service  ApiDetailService 注入ApiDetailService服务
-     * @service  HomeProject_Service 注入HomeProject_Service服务
-     * @service  GroupService 注入GroupService服务
-     * @constant CODE 注入状态码常量
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $rootScope [注入根作用域服务] [Injection rootscope service]
+     * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
+     * @service  $state [注入路由服务] [Injection state service]
+     * @service  $sce [注入$sce服务] [Injection sce service]
+     * @service  $filter [注入过滤器服务] [Injection filter service]
+     * @service  ApiDetailService [注入ApiDetailService服务] [Injection ApiDetailService service]
+     * @service  HomeProject_Service [注入HomeProject_Service服务] [Injection HomeProject_Service service]
+     * @service  GroupService [注入GroupService服务] [Injection GroupService service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
      */
     angular.module('eolinker')
         .config(['$stateProvider', 'RouteHelpersProvider', function($stateProvider, helper) {
@@ -54,6 +54,11 @@
                     response:true,
                     example:true,
                     note:true
+                },
+                filter: {
+                    shrink: $filter('translate')('012100010'),
+                    open: $filter('translate')('012100011'),
+                    yes: $filter('translate')('012100033'),
                 }
             },
             interaction: {
@@ -65,19 +70,22 @@
                 }
             },
             fun: {
-                init: null, //初始化功能函数
-                test: null, //进入测试界面
-                showRequestValue: null, //显示请求参数示例
-                delete: null, //移入回收站功能函数
-                recover: null, //恢复功能函数
-                deleteCompletely: null, //彻底删除功能函数
-                storage: null, //星标功能函数
+                init: null, 
+                test: null, 
+                delete: null, 
+                recover: null, 
+                deleteCompletely: null, 
+                storage: null, 
                 show: {
-                    request: null, //显示请求参数个例详情
-                    response: null, //显示返回结果个例详情
+                    request: null, 
+                    response: null, 
                 }
             }
         }
+
+        /**
+         * @function [初始化功能函数] [initialization]
+         */
         vm.data.fun.init = function() {
             var template = {
                 promise: null,
@@ -94,7 +102,7 @@
                     case CODE.COMMON.SUCCESS:
                         {
                             vm.data.service.home.envObject.object.model = response.apiInfo;
-                            $scope.$emit('$WindowTitleSet', { list: ['[详情]' + vm.data.service.home.envObject.object.model.baseInfo.apiName, 'API接口', $state.params.projectName, '接口管理'] });
+                            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('012100035') + vm.data.service.home.envObject.object.model.baseInfo.apiName, $filter('translate')('012100036'), $state.params.projectName, $filter('translate')('012100037')] });
                             switch (response.apiInfo.baseInfo.apiProtocol) {
                                 case 0:
                                     vm.data.service.home.envObject.object.model.baseInfo.protocol = 'HTTP';
@@ -105,13 +113,13 @@
                             }
                             switch (response.apiInfo.baseInfo.apiStatus) {
                                 case 0:
-                                    vm.data.service.home.envObject.object.model.baseInfo.status = '启用';
+                                    vm.data.service.home.envObject.object.model.baseInfo.status = $filter('translate')('012100038');
                                     break;
                                 case 1:
-                                    vm.data.service.home.envObject.object.model.baseInfo.status = '维护';
+                                    vm.data.service.home.envObject.object.model.baseInfo.status = $filter('translate')('012100039');
                                     break;
                                 case 2:
-                                    vm.data.service.home.envObject.object.model.baseInfo.status = '弃用';
+                                    vm.data.service.home.envObject.object.model.baseInfo.status = $filter('translate')('012100040');
                                     break;
                             }
                             vm.data.service.home.envObject.object.model.resultInfo = $filter('paramLevelFilter')(vm.data.service.home.envObject.object.model.resultInfo);
@@ -127,13 +135,17 @@
                             vm.data.service.home.envObject.object.model.baseInfo.failureMockCode = 'http://result.eolinker.com/' + vm.data.service.home.envObject.object.model.baseInfo.mockCode + '&resultType=failure';
                             vm.data.service.home.envObject.object.model.headers = response.apiInfo.headerInfo;
                             vm.data.info.template.envModel = vm.data.service.home.envObject.object.model;
-                            $scope.$emit('$TransferStation', { state: '$EnvInitReady', data: { status: 1, param: angular.toJson(vm.data.service.home.envObject.object.model) } });
+                            $scope.$emit('$translateferStation', { state: '$EnvInitReady', data: { status: 1, param: angular.toJson(vm.data.service.home.envObject.object.model) } });
                             break;
                         }
                 }
             })
             return template.promise;
         }
+
+        /**
+         * @function [进入测试界面] [Go to the test interface]
+         */
         vm.data.fun.test = function() {
             var template = {
                 uri: {
@@ -146,6 +158,10 @@
             $state.go('home.project.inside.api.test', template.uri);
 
         }
+
+        /**
+         * @function [显示请求参数个例详情]
+         */
         vm.data.fun.show.request = function(arg) {
             if (!(arg.item.paramLimit || (arg.item.paramValueList && arg.item.paramValueList.length > 0) || arg.item.paramValue)) return;
             var template = {
@@ -157,6 +173,10 @@
 
             })
         }
+
+        /**
+         * @function [显示返回结果个例详情] [Show return results]
+         */
         vm.data.fun.show.response = function(arg) {
             if (!(arg.item.paramValueList || arg.item.paramValueList.length > 0)) return;
             var template = {
@@ -168,6 +188,10 @@
 
             })
         }
+
+        /**
+         * @function [移入回收站功能函数] [Move into the Recycle Bin function function]
+         */
         vm.data.fun.delete = function() {
             var template = {
                 request: {
@@ -179,7 +203,7 @@
                     childGroupID: vm.data.interaction.request.childGroupID
                 }
             }
-            $rootScope.EnsureModal('删除Api', false, '确认删除', {}, function(callback) {
+            $rootScope.EnsureModal($filter('translate')('012100041'), false, $filter('translate')('012100042'), {}, function(callback) {
                 if (callback) {
                     ApiManagementResource.Api.Delete(template.request).$promise
                         .then(function(response) {
@@ -187,7 +211,7 @@
                                 case CODE.COMMON.SUCCESS:
                                     {
                                         $state.go('home.project.inside.api.list', template.uri);
-                                        $rootScope.InfoModal('Api删除成功，已移入回收站', 'success');
+                                        $rootScope.InfoModal($filter('translate')('012100043'), 'success');
                                         break;
                                     }
                             }
@@ -195,12 +219,16 @@
                 }
             });
         }
+
+        /**
+         * @function [恢复功能函数] [Restore function function]
+         */
         vm.data.fun.recover = function() {
             var template = {
                 modal: {
                     group: {
                         parent: GroupService.get(),
-                        title: '恢复接口所到分组选择'
+                        title: $filter('translate')('012100044')
                     }
                 },
                 request: {
@@ -214,7 +242,7 @@
                 }
             }
             if (!template.modal.group.parent) {
-                $rootScope.InfoModal('暂无分组，请先建立分组再恢复接口！', 'error');
+                $rootScope.InfoModal($filter('translate')('012100045'), 'error');
                 return;
             }
             $rootScope.ApiRecoverModal(template.modal, function(callback) {
@@ -225,7 +253,7 @@
                             switch (response.statusCode) {
                                 case CODE.COMMON.SUCCESS:
                                     {
-                                        $rootScope.InfoModal('Api恢复成功', 'success');
+                                        $rootScope.InfoModal($filter('translate')('012100046'), 'success');
                                         $state.go('home.project.inside.api.list', template.uri);
                                         break;
                                     }
@@ -235,6 +263,10 @@
             });
 
         }
+
+        /**
+         * @function [彻底删除功能函数] [Completely remove the function function]
+         */
         vm.data.fun.deleteCompletely = function() {
             var template = {
                 request: {
@@ -246,7 +278,7 @@
                     childGroupID: vm.data.interaction.request.childGroupID
                 }
             }
-            $rootScope.EnsureModal('永久性删除Api', false, '此操作无法恢复，确认删除？', {}, function(callback) {
+            $rootScope.EnsureModal($filter('translate')('012100047'), false, $filter('translate')('012100048'), {}, function(callback) {
                 if (callback) {
                     ApiManagementResource.Trash.Delete(template.request).$promise
                         .then(function(response) {
@@ -254,12 +286,12 @@
                                 case CODE.COMMON.SUCCESS:
                                     {
                                         $state.go('home.project.inside.api.list', template.uri);
-                                        $rootScope.InfoModal('Api删除成功', 'success');
+                                        $rootScope.InfoModal($filter('translate')('012100049'), 'success');
                                         break;
                                     }
                                 default:
                                     {
-                                        $rootScope.InfoModal('删除失败，请稍候再试或到论坛提交bug', 'error');
+                                        $rootScope.InfoModal($filter('translate')('012100050'), 'error');
                                         break;
                                     }
                             }
@@ -267,6 +299,10 @@
                 }
             });
         }
+
+        /**
+         * @function [星标功能函数] [Switch star]
+         */
         vm.data.fun.storage = function() {
             var template = {
                 request: {

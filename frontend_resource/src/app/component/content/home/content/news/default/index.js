@@ -1,16 +1,16 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 消息内页相关指令js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [消息内页相关指令js] [Message on page related instructions js]
      * @version  3.0.2
-     * @service  $scope 注入作用域服务
-     * @service  $rootScope 注入根作用域服务
-     * @service  CommonResource 注入通用接口服务
-     * @service  $state 注入路由服务
-     * @service  $sce 注入$sce服务
-     * @service  $filter 注入过滤器服务
-     * @constant CODE 注入状态码常量
+     * @service  $scope [注入作用域服务] [inject scope service]
+     * @service  $rootScope [注入根作用域服务] [inject rootScope service]
+     * @service  CommonResource [注入通用接口服务] [inject common API service]
+     * @service  $state [注入路由服务] [inject state service]
+     * @service  $sce [注入$sce服务] [inject $sce service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
      */
     angular.module('eolinker')
         .config(['$stateProvider', 'RouteHelpersProvider', function($stateProvider, helper) {
@@ -38,6 +38,10 @@
                     page: 1,
                     msgCount: 0,
                     jumpPage: ""
+                },
+                filter: {
+                    system: $filter('translate')('0116'),
+                    project: $filter('translate')('0117'),
                 }
             },
             interaction: {
@@ -47,15 +51,18 @@
                 }
             },
             fun: {
-                delete: null, //删除功能函数
-                read: null, //阅读功能函数
-                clean: null, //清空消息功能函数
-                pageChanged: null, //页数更改
-                init: null //初始化功能函数
+                delete: null, 
+                read: null, 
+                clean: null, 
+                pageChanged: null, 
+                init: null 
             }
         }
+        /**
+         * @function [初始化功能函数]
+         */
         vm.data.fun.init = function() {
-            $scope.$emit('$WindowTitleSet', { list: ['用户消息'] });
+            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('0110')] });
             var template = {
                 request: { page: vm.data.info.pagination.page },
                 promise: null
@@ -82,19 +89,27 @@
             })
             return template.promise;
         }
+
+        /**
+         * @function [页数更改]
+         */
         vm.data.fun.pageChanged = function() {
             vm.data.fun.init();
         }
+
+        /**
+         * @function [清空消息功能函数]
+         */
         vm.data.fun.clean = function() {
-            $rootScope.EnsureModal('清空消息', false, '确认清空？', {}, function(callback) {
+            $rootScope.EnsureModal($filter('translate')('0111'), false, $filter('translate')('0119'), {}, function(callback) {
                 if (callback) {
                     CommonResource.Message.Clean().$promise
                         .then(function(response) {
                             switch (response.statusCode) {
                                 case CODE.COMMON.SUCCESS:
                                     {
-                                        $rootScope.InfoModal('消息清空成功', 'success');
-                                        $scope.$emit('$TransferStation', { state: '$EoNavbarNewsRead', data: true });
+                                        $rootScope.InfoModal($filter('translate')('01110'), 'success');
+                                        $scope.$emit('$translateferStation', { state: '$EoNavbarNewsRead', data: true });
                                         vm.data.fun.init();
                                         break;
                                     }
@@ -103,6 +118,10 @@
                 }
             });
         }
+
+        /**
+         * @function [阅读功能函数]
+         */
         vm.data.fun.read = function(arg) {
             var template = {
                 request: { msgID: arg.item.msgID }
@@ -115,20 +134,24 @@
                             case CODE.COMMON.SUCCESS:
                                 {
                                     arg.item.isRead = 1;
-                                    $scope.$emit('$TransferStation', { state: '$EoNavbarNewsRead', data: false });
+                                    $scope.$emit('$translateferStation', { state: '$EoNavbarNewsRead', data: false });
                                     break;
                                 }
                         }
                     })
             }
         }
+
+        /**
+         * @function [删除功能函数]
+         */
         vm.data.fun.delete = function(arg) {
             var template = {
                 request: {
                     msgID: arg.item.msgID
                 }
             }
-            $rootScope.EnsureModal('删除消息', false, '确认删除？', {}, function(callback) {
+            $rootScope.EnsureModal($filter('translate')('01111'), false, $filter('translate')('01112'), {}, function(callback) {
                 if (callback) {
                     CommonResource.Message.Delete(template.request).$promise
                         .then(function(response) {
@@ -136,7 +159,7 @@
                                 case CODE.COMMON.SUCCESS:
                                     {
                                         vm.data.interaction.response.query.splice(arg.$index, 1);
-                                        $rootScope.InfoModal('消息删除成功', 'success');
+                                        $rootScope.InfoModal($filter('translate')('01113'), 'success');
                                         break;
                                     }
                             }

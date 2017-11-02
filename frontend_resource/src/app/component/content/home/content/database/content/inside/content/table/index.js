@@ -1,8 +1,8 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 数据库内页列表（list）模块相关js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [数据库内页列表（list）模块相关js] [Database inner page list (list) module related js]
      * @version  3.0.2
      */
     angular.module('eolinker')

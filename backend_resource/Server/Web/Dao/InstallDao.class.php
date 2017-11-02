@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @name eolinker open source，eolinker开源版本
  * @link https://www.eolinker.com
  * @package eolinker
  * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2016
-
  *  * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  * 用户讨论QQ群：284421832
@@ -16,45 +16,45 @@
  */
 class InstallDao
 {
-	/**
-	 * 检查数据库是否可以连接
-	 */
-	public function checkDBConnect()
-	{
-		$conInfo = DB_TYPE . ':host=' . DB_URL . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8';
-		$option = array(
-			\PDO::MYSQL_ATTR_INIT_COMMAND => "set names 'utf8'",
-			\PDO::ATTR_EMULATE_PREPARES => FALSE
-		);
-		$db_con = new \PDO($conInfo, DB_USER, DB_PASSWORD, $option);
-	}
+    /**
+     * 检查数据库是否可以连接
+     */
+    public function checkDBConnect()
+    {
+        $conInfo = DB_TYPE . ':host=' . DB_URL . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8';
+        $option = array(
+            \PDO::MYSQL_ATTR_INIT_COMMAND => "set names 'utf8'",
+            \PDO::ATTR_EMULATE_PREPARES => FALSE
+        );
+        $db_con = new \PDO($conInfo, DB_USER, DB_PASSWORD, $option);
+        return $db_con;
+    }
 
-	/**
-	 * 安装数据库
-	 * @param $sqlArray 创建数据库的语句
-	 */
-	public function installDatabase(&$sqlArray)
-	{
-		//若数据库已存在，则直接返回FALSE，防止覆盖数据库
-		if (defined(DB_URL))
-		{
-			return FALSE;
-		}
+    /**
+     * 安装数据库
+     * @param $sqlArray array 创建数据库的语句
+     * @return bool
+     */
+    public function installDatabase(&$sqlArray)
+    {
+        //若数据库已存在，则直接返回FALSE，防止覆盖数据库
+        if (defined(DB_URL)) {
+            return FALSE;
+        }
 
-		$db = getDatabase();
-		$db -> beginTransaction();
-		foreach ($sqlArray as $query)
-		{
-			$db -> query($query);
-			if ($db -> getError())
-			{
-				$db -> rollback();
-				return FALSE;
-			}
-		}
-		$db -> commit();
-		return TRUE;
-	}
+        $db = getDatabase();
+        $db->beginTransaction();
+        foreach ($sqlArray as $query) {
+            $db->query($query);
+            if ($db->getError()) {
+                $db->rollback();
+                return FALSE;
+            }
+        }
+        $db->commit();
+        return TRUE;
+    }
 
 }
+
 ?>

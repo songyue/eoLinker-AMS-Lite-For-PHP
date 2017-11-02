@@ -18,6 +18,9 @@ class GroupDao
 {
     /**
      * 添加项目api分组
+     * @param $projectID int 项目ID
+     * @param $groupName string 分组名称
+     * @return bool
      */
     public function addGroup(&$projectID, &$groupName)
     {
@@ -39,6 +42,10 @@ class GroupDao
 
     /**
      * 添加子分组
+     * @param $projectID int 项目ID
+     * @param $groupName string 分组名称
+     * @param $parentGroupID int 父分组ID
+     * @return bool
      */
     public function addChildGroup(&$projectID, &$groupName, &$parentGroupID)
     {
@@ -60,6 +67,8 @@ class GroupDao
 
     /**
      * 删除项目api分组
+     * @param $groupID int 项目ID
+     * @return bool
      */
     public function deleteGroup(&$groupID)
     {
@@ -78,6 +87,8 @@ class GroupDao
 
     /**
      * 获取项目api分组
+     * @param $projectID int 项目ID
+     * @return bool
      */
     public function getGroupList(&$projectID)
     {
@@ -105,6 +116,9 @@ class GroupDao
 
     /**
      * 修改项目api分组
+     * @param $groupID int 分组ID
+     * @param $groupName string 分组名称
+     * @return bool
      */
     public function editGroup(&$groupID, &$groupName)
     {
@@ -125,6 +139,9 @@ class GroupDao
 
     /**
      * 判断分组和用户是否匹配
+     * @param $groupID int 分组ID
+     * @param $userID int 用户ID
+     * @return bool
      */
     public function checkGroupPermission(&$groupID, &$userID)
     {
@@ -142,8 +159,8 @@ class GroupDao
 
     /**
      * 更新分组排序
-     * @param $projectID
-     * @param $orderList
+     * @param $projectID int 项目ID
+     * @param $orderList string 排序列表
      * @return bool
      */
     public function sortGroup(&$projectID, &$orderList)
@@ -161,7 +178,7 @@ class GroupDao
 
     /**
      * 获取分组排序列表
-     * @param $projectID
+     * @param $projectID int 项目ID
      * @return bool
      */
     public function getGroupOrderList(&$projectID)

@@ -1,8 +1,8 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [计算当前时间过滤器]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [计算当前时间过滤器] [Calculate the current time filter]
      * @version  3.0.2
      */
     angular.module('eolinker.filter')
@@ -14,8 +14,8 @@
                 }
             }
             /**
-             * @function [获取当前时间功能函数]
-             * @return   {[string]}   [当前时间]
+             * @function [获取当前时间功能函数] [Get the current time function function]
+             * @return   {[string]}   [当前时间 current time]
              */
             data.fun.getTime = function() {
                 var template={
@@ -29,7 +29,7 @@
                             minute:null,
                             second:null
                         },
-                        string:null//结果存储字符串
+                        string:null//结果存储字符串 The result stores the string
                     }
                 }
                 template.info.time.year = template.info.date.getFullYear(); 
@@ -37,7 +37,7 @@
                 template.info.time.day = template.info.date.getDate(); 
 
                 template.info.time.hour = template.info.date.getHours(); 
-                template.info.time.minute = template.info.date.getMinutes(); //分
+                template.info.time.minute = template.info.date.getMinutes();
                 template.info.time.second = template.info.date.getSeconds();
 
                 template.info.string = template.info.time.year + "-";

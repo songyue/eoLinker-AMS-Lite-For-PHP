@@ -44,6 +44,8 @@
 
 @import "component/content/guide/first_step/index.scss";
 
+@import "component/content/guide/lang/index.scss";
+
 @import "component/content/guide/second_step/index.scss";
 
 @import "component/content/guide/third_step/index.scss";
@@ -76,8 +78,6 @@
 
 @import "component/content/home/content/project/content/api/content/_default/index.scss";
 
-@import "component/content/home/content/project/content/inside/content/api/index.scss";
-
 @import "component/content/home/content/project/content/inside/content/env/index.scss";
 
 @import "component/content/home/content/project/content/inside/content/team/index.scss";
@@ -86,7 +86,11 @@
 
 @import "component/content/home/content/project/content/inside/sidebar/code/index.scss";
 
+@import "component/content/home/content/project/content/inside/content/api/index.scss";
+
 @import "component/content/home/content/database/content/inside/content/table/default/index.scss";
+
+@import "component/content/home/content/project/content/inside/content/code/list/index.scss";
 
 @import "component/content/home/content/project/content/inside/content/api/detail/index.scss";
 
@@ -95,7 +99,5 @@
 @import "component/content/home/content/project/content/inside/content/api/list/index.scss";
 
 @import "component/content/home/content/project/content/inside/content/api/test/index.scss";
-
-@import "component/content/home/content/project/content/inside/content/code/list/index.scss";
 
 // endinjector

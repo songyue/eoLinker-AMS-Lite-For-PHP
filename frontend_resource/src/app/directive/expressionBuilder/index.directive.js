@@ -1,14 +1,14 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [表达式构造器指令js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [表达式构造器指令js] [Expression constructor instruction JS]
      * @version  3.0.2
-     * @service  $compile [注入$compile服务]
-     * @service  $filter [注入过滤器服务]
-     * @constant EXPRESSION_BUILDER_CONSTANT [注入表达式构造器相关常量集]
-     * @param    expressionBuilderDirective [回馈函数]
-     * @param    interaction [交互参数]
+     * @service  $compile [注入$compile服务] [inject $compile service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @constant EXPRESSION_BUILDER_CONSTANT [注入表达式构造器相关常量集] [inject Expression constructor correlation service]
+     * @param    expressionBuilderDirective [传入函数] [Afferent function]
+     * @param    interaction [交互参数] [Interaction parameter]
      */
     angular.module('eolinker.directive')
     .directive('expressionBuilderDirective', ['$compile', '$filter', 'EXPRESSION_BUILDER_CONSTANT', function($compile, $filter, EXPRESSION_BUILDER_CONSTANT) {
@@ -66,7 +66,7 @@
                 }
 
                 /**
-                 * @function [初始化功能函数]
+                 * @function [初始化功能函数] [Initialization]
                  */
                 $scope.data.fun.init = function() {
                     var template={
@@ -96,8 +96,8 @@
                 $scope.data.fun.init();
 
                 /**
-                 * @function [method菜单选择功能函数]
-                 * @param    {[obj]}   arg [{$index:表达式列表序号,itemIndex:操作列表项,key:过滤器表达式}]
+                 * @function [method菜单选择功能函数] [Method menu selection function]
+                 * @param    {[obj]}   arg [{$index:表达式列表序号 Expression list number,itemIndex:操作列表项 Operation list item,key:过滤器表达式 Filter expression}]
                  */
                 $scope.data.fun.methodSelect = function(arg) {
                     var template = {
@@ -120,8 +120,8 @@
                 }
 
                 /**
-                 * @function [method菜单删除功能函数]
-                 * @param    {[obj]}   arg [{$index:表达式列表序号}]
+                 * @function [method菜单删除功能函数] [Method menu deletion function]
+                 * @param    {[obj]}   arg [{$index:表达式列表序号 Expression list number}]
                  */
                 $scope.data.fun.methodDelete = function(arg) {
                     $scope.data.interaction.response.resultList.splice(arg.$index, 1);
@@ -137,15 +137,15 @@
                 }
 
                 /**
-                 * @function [菜单视图显示功能函数]
-                 * @param    {[obj]}   arg [{$index:表达式列表序号}]
+                 * @function [菜单视图显示功能函数] [Menu view display function]
+                 * @param    {[obj]}   arg [{$index:表达式列表序号 Expression list number}]
                  */
                 $scope.data.fun.methodShow = function(arg) {
                     $scope.data.info.method.currentShowItem = arg.$index;
                 }
 
                 /**
-                 * @function [拼接原始值、构造功能函数]
+                 * @function [拼接原始值、构造功能函数] [Splicing raw values and constructing functional functions]
                  */
                 $scope.data.fun.concat = function() {
                     $scope.data.interaction.response.result=$scope.data.interaction.request.constant+document.getElementById('expression-builder-directive-result-js').innerText;
@@ -153,7 +153,7 @@
                 }
 
                 /**
-                 * @function [确定构造功能函数]
+                 * @function [确定构造功能函数] [Determination of structural function]
                  */
                 $scope.data.fun.set = function() {
                     $scope.data.interaction.response.result=document.getElementById('expression-builder-directive-result-js').innerText;
@@ -161,7 +161,7 @@
                 }
 
                 /**
-                 * @function [取消当前构造功能函数]
+                 * @function [取消当前构造功能函数] [Cancel the current construction function]
                  */
                 $scope.data.fun.cancel = function() {
                     $scope.expressionBuilderDirective({callback:$scope.interaction});

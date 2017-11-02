@@ -18,8 +18,9 @@ class StatusCodeGroupDao
 {
     /**
      * 添加状态码分组
-     * @param $projectID 项目ID
-     * @param $groupName 分组名
+     * @param $projectID int 项目ID
+     * @param $groupName string 分组名
+     * @return int|bool
      */
     public function addGroup(&$projectID, &$groupName)
     {
@@ -41,9 +42,10 @@ class StatusCodeGroupDao
 
     /**
      * 添加子分组
-     * @param $projectID 项目ID
-     * @param $groupName 分组名
-     * @param $parentGroupID 父分组ID
+     * @param $projectID int 项目ID
+     * @param $groupName string 分组名
+     * @param $parentGroupID int 父分组ID
+     * @return bool|int
      */
     public function addChildGroup(&$projectID, &$groupName, &$parentGroupID)
     {
@@ -65,8 +67,9 @@ class StatusCodeGroupDao
 
     /**
      * 判断用户和分组是否匹配
-     * @param $groupID 分组ID
-     * @param $userID 用户ID
+     * @param $groupID int 分组ID
+     * @param $userID int 用户ID
+     * @return bool|int
      */
     public function checkStatusCodeGroupPermission(&$groupID, &$userID)
     {
@@ -85,7 +88,8 @@ class StatusCodeGroupDao
 
     /**
      * 删除分组
-     * @param $groupID 分组ID
+     * @param $groupID int 分组ID
+     * @return bool
      */
     public function deleteGroup(&$groupID)
     {
@@ -101,7 +105,8 @@ class StatusCodeGroupDao
 
     /**
      * 获取分组列表
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool|array
      */
     public function getGroupList(&$projectID)
     {
@@ -137,8 +142,9 @@ class StatusCodeGroupDao
 
     /**
      * 修改分组
-     * @param $groupID 分组ID
-     * @param $groupName 分组名
+     * @param $groupID int 分组ID
+     * @param $groupName string 分组名
+     * @return bool
      */
     public function editGroup(&$groupID, &$groupName)
     {
@@ -157,8 +163,8 @@ class StatusCodeGroupDao
 
     /**
      * 更新分组排序
-     * @param $projectID
-     * @param $orderList
+     * @param $projectID int 项目ID
+     * @param $orderList string 排序列表
      * @return bool
      */
     public function sortGroup(&$projectID, &$orderList)

@@ -41,7 +41,7 @@ class DatabasePartnerDao
     /**
      * 移除协作人员
      * @param $dbID int 项目ID
-     * @param $connID 用户与数据库联系ID
+     * @param $connID int 用户与数据库联系ID
      * @return bool
      */
     public function removePartner(&$dbID, &$connID)
@@ -130,6 +130,10 @@ class DatabasePartnerDao
 
     /**
      * 修改协作成员的昵称
+     * @param $dbID int 数据库ID
+     * @param $conn_id int 连接ID
+     * @param $nick_name string 昵称
+     * @return bool
      */
     public function editPartnerNickName(&$dbID, &$conn_id, &$nick_name)
     {
@@ -148,6 +152,10 @@ class DatabasePartnerDao
 
     /**
      * 修改协作成员的类型
+     * @param $dbID int 数据库ID
+     * @param $conn_id int 连接ID
+     * @param $user_type int 用户类型
+     * @return bool
      */
     public function editPartnerType(&$dbID, &$conn_id, &$user_type)
     {

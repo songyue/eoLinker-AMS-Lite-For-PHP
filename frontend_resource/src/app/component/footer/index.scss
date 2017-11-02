@@ -2,71 +2,18 @@
  * footer
  */
 
-.eo-footer {
-    .wrap {
-        padding-top: 60px;
-        padding-bottom: 20px;
-        margin-top: 70px;
-        width: 100%;
-        background: url(assets/images/index_bg.jpg) repeat;
-        border-top: 1px solid #eaeaea;
-        article {
-            display: table;
-            width: $bodyWidth;
-            margin: auto;
-            .first-li {
-                text-align: left;
-                margin-right: 80px;
-                .btn-register {
-                    @include eo-button(#fff, #ff5722, #ff5722);
-                    line-height:33px;
-                    display: inline-block;
-                    padding: 0 10px;
-                    margin-left: 15px;
-                    &:hover {
-                        color: #fff;
-                        background-color: #ff5722;
-                        border: 1px solid #ff5722;
-                    }
-                }
-            }
-            .desc-li {
-                font-size: 13px;
-                margin-right: 80px;
-                ul {
-                    li {
-                        @include eo-line(30px);
-                        b {
-                            font-size: 15px;
-                        }
-                    }
-                    .boundary-useable-li{
-                        border-top: 1px solid #eaeaea;
-                    }
-                    .boundary-li {
-                        border-top: 1px solid #eaeaea;
-                        color: #999;
-                        border-bottom: 1px solid #eaeaea;
-                    }
-                }
-            }
-        }
-        .wrap-p {
-            border: 1px solid #eaeaea;
-            background-color: #fff;
-            @include eo-line(30px);
-            padding: 0 30px;
-            border-radius: 16px;
-            color: #999;
-            margin:auto;
-            margin-top: 60px;
-            font-size:12px;
-            width:400px;
-            text-align:center;
-            a {
-                color: #999;
-                font-size:12px;
-            }
+ .eo-footer {
+    border-top: 1px solid #e5e5e5;
+    @include eo-line(50px);
+    width: 100%;
+    background-color: #f1f1f1;
+    position: fixed;
+    bottom: 0;
+    p {
+        text-align: center;
+        font-size: 14px;
+        a {
+            color: $buttonInfoFocusBgColor;
         }
     }
 }

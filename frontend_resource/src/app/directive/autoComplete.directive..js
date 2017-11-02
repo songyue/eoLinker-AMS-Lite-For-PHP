@@ -1,14 +1,14 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [自动补全指令js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [自动补全指令js] [Automatic completion of instruction JS]
      * @version  3.0.2
-     * @service  $compile [注入$compile服务]
-     * @service  $rootScope [注入根作用域服务]
-     * @param    array [自定义数组填充数组]
-     * @param    model [输入框绑定]
-     * @param    inputChangeFun [输入框值改变绑定功能函数]
+     * @service  $compile [注入$compile服务] [inject $compile service]
+     * @service  $rootScope [注入根作用域服务] [inject rootScope service]
+     * @param    array [自定义数组填充数组] [Custom array fill array]
+     * @param    model [输入框绑定] [Input box binding]
+     * @param    inputChangeFun [输入框值改变绑定功能函数] [The input box value changes the binding function]
      */
     angular.module('eolinker.directive')
 
@@ -31,7 +31,7 @@
                 model: '=', 
                 inputChangeFun: '&', 
             },
-            link: function($scope, elem, attrs, ngModel) { //attrs expressionBuilder(是否显示构造器，需要与构造器代码同时使用) placeholder(插入input placeholder )、addClass插入input class 
+            link: function($scope, elem, attrs, ngModel) { 
                 $scope.data = {
                     info: {
                         attr:{
@@ -88,7 +88,7 @@
                 }
 
                 /**
-                 * @function [表达式构造功能函数]
+                 * @function [表达式构造功能函数] [Expression construction function]
                  */
                 $scope.data.fun.expressionBuilder = function() {
                     $scope.data.info.expressionBuilderObject.request.constant = $scope.model;
@@ -99,7 +99,7 @@
                 }
 
                 /**
-                 * @function [input框信息改变触发功能函数]
+                 * @function [input框信息改变触发功能函数] [Input frame information change trigger function]
                  */
                 $scope.data.fun.modelChange = function() {
                     $scope.data.info.view.isShow = true;
@@ -131,7 +131,7 @@
                 }
 
                 /**
-                 * @function [单击下拉按钮显示下拉菜单函数]
+                 * @function [单击下拉按钮显示下拉菜单函数] [Click the drop down button to display the drop-down menu function]
                  */
                 $scope.data.fun.changeSwitch = function() {
                     $scope.data.info.view.isShow = !$scope.data.info.view.isShow;
@@ -141,8 +141,8 @@
                 }
 
                 /**
-                 * @function [选中下拉框单项内容执行函数]
-                 * @param    {[string]}   info [选中内容]
+                 * @function [选中下拉框单项内容执行函数] [Select the individual content of the drop-down box to execute the function]
+                 * @param    {[string]}   info [选中内容 Selected content] 
                  */
                 $scope.data.fun.changeText = function(info) {
                     $scope.model = info;
@@ -152,10 +152,10 @@
                 }
 
                 /**
-                 * @function [失去焦点执行函数]
+                 * @function [失去焦点执行函数] [Losing focus execution function]
                  */
                 $scope.data.fun.modelBlur = function() {
-                    setTimeout(function() { //进行延时处理，时间单位为千分之一秒
+                    setTimeout(function() { //进行延时处理，时间单位为千分之一秒 Delay processing, the time unit is 1/1000 seconds
                         $scope.data.info.isFocus = false;
                         $scope.$digest();
                     }, 500)
@@ -166,7 +166,7 @@
                 }
 
                 /**
-                 * @function [重置自动匹配指令]
+                 * @function [重置自动匹配指令] [Reset auto match instruction]
                  */
                 data.fun.reset = function() {
                     data.info.keydown.originParent.scrollTop = 0;
@@ -182,8 +182,8 @@
                 }
 
                 /**
-                 * @function [键盘监听功能函数]
-                 * @param    {[type]}   _default [原生传参]
+                 * @function [键盘监听功能函数] [Keyboard monitor function]
+                 * @param    {[type]}   _default [原生传参 native parameter]
                  */
                 data.fun.keydown = function(_default) {
                     switch (_default.keyCode) {
@@ -251,7 +251,7 @@
                 }
 
                 /**
-                 * @function [初始化功能函数]
+                 * @function [初始化功能函数] [Initialization]
                  */
                 data.fun.init = function() {
                     elem.on('keydown', data.fun.keydown);

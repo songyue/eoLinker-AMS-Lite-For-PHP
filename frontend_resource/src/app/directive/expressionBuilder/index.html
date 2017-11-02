@@ -4,7 +4,7 @@
             <li class="first-level-li">
                 <p class="title-p">
                     <span class="iconfont icon-index-magicwand"></span>
-                    <span>表达式构造器</span>
+                    <span>{{'300'|translate}}</span>
                 </p>
             </li>
         </ul>
@@ -13,12 +13,12 @@
                 <li class="first-level-li " ng-if="data.interaction.request.methodList.length<3||(data.info.method.currentShowItem>=0&&data.info.method.currentShowItem<2)" ng-class="{'only-li':data.interaction.request.methodList.length==0}">
                     <p class="title-p">
                         <b class="iconfont icon-zhuyeset0204"></b>
-                        <b>数据</b>
+                        <b>{{'301'|translate}}</b>
                     </p>
                     <ul class="second-level-ul">
                         <a data-ng-click="data.fun.methodSelect({'$index':0,'itemIndex':4,key:'constantFilter: \''+data.interaction.request.constant+'\''})">
                             <li ng-class="{'active-li':data.interaction.response.indexList[0]==4}">
-                                <p>origin&nbsp;<span class="tips-span">[原始值]</span></p>
+                                <p>origin&nbsp;<span class="tips-span">[{{'302'|translate}}]</span></p>
                                 <p>
                                     <label>value</label><input style="cursor:pointer;" class="eo-input" type="text" name="paramValue" data-ng-model="data.interaction.request.constant" readonly>
                                 </p>
@@ -26,21 +26,21 @@
                         </a>
                         <a data-ng-click="data.fun.methodSelect({'$index':0,'itemIndex':3,key:'constantFilter: \''+data.interaction.request.staticItem.constant.value+'\''})">
                             <li ng-class="{'active-li':data.interaction.response.indexList[0]==3}">
-                                <p>constant&nbsp;<span class="tips-span">[常量值]</span></p>
+                                <p>constant&nbsp;<span class="tips-span">[{{'303'|translate}}]</span></p>
                                 <p>
                                     <label>value</label><input class="eo-input" type="text" name="constantValue" data-ng-model="data.interaction.request.staticItem.constant.value" data-ng-change="data.fun.methodSelect({'$index':0,'itemIndex':3,key:'constantFilter: \''+data.interaction.request.staticItem.constant.value+'\''})">
                                 </p>
                             </li>
                         </a>
                         <a data-ng-click="data.fun.methodSelect({'$index':0,'itemIndex':0,key:'timestampFilter'})">
-                            <li ng-class="{'active-li':data.interaction.response.indexList[0]==0}">timestamp&nbsp;<span class="tips-span">[时间戳]</span></li>
+                            <li ng-class="{'active-li':data.interaction.response.indexList[0]==0}">timestamp&nbsp;<span class="tips-span">[{{'304'|translate}}]</span></li>
                         </a>
                         <a data-ng-click="data.fun.methodSelect({'$index':0,'itemIndex':1,key:'uuidFilter'})">
                             <li ng-class="{'active-li':data.interaction.response.indexList[0]==1}">uuid</li>
                         </a>
                         <a data-ng-click="data.fun.methodSelect({'$index':0,'itemIndex':2,key:'randomFilter: \''+data.interaction.request.staticItem.random.min+'\' :\''+data.interaction.request.staticItem.random.max+'\''})">
                             <li ng-class="{'active-li':data.interaction.response.indexList[0]==2}" class="random-li">
-                                <p>random&nbsp;<span class="tips-span">[随机数]</span></p>
+                                <p>random&nbsp;<span class="tips-span">[{{'305'|translate}}]</span></p>
                                 <p>
                                     <label>min-max</label><input class="eo-input" type="text" name="randomMin" data-ng-model="data.interaction.request.staticItem.random.min" data-ng-change="data.fun.methodSelect({'$index':0,'itemIndex':2,key:'randomFilter: \''+data.interaction.request.staticItem.random.min+'\' :\''+data.interaction.request.staticItem.random.max+'\''})">&nbsp;-&nbsp;
                                     <input class="eo-input" type="text" name="randomMax" data-ng-model="data.interaction.request.staticItem.random.max" data-ng-change="data.fun.methodSelect({'$index':0,'itemIndex':2,key:'randomFilter: \''+data.interaction.request.staticItem.random.min+'\' :\''+data.interaction.request.staticItem.random.max+'\''})">
@@ -52,7 +52,7 @@
                 <li class="first-level-li" data-ng-repeat="item in data.interaction.request.methodList track by $index" ng-if="(($index>=data.interaction.request.methodList.length-3||data.interaction.request.methodList.length<3)&&data.info.method.currentShowItem<0)||(($index==data.info.method.currentShowItem-2||$index==data.info.method.currentShowItem-1||$index==data.info.method.currentShowItem||($index==data.info.method.currentShowItem+1&&data.info.method.currentShowItem==0))&&data.info.method.currentShowItem>-1)" ng-class="{'only-two-li':data.interaction.request.methodList.length==1}">
                     <p class="title-p">
                         <b class="iconfont icon-zhuyeset0204"></b>
-                        <b>操作</b>
+                        <b>{{'306'|translate}}</b>
                     </p>
                     <ul class="second-level-ul">
                         <a data-ng-click="data.fun.methodSelect({'$index':$index+1,'itemIndex':0,key:'base64Filter'})">
@@ -68,7 +68,7 @@
                             <li ng-class="{'active-li':data.interaction.response.indexList[$index+1]==3}">lower</li>
                         </a>
                         <a data-ng-click="data.fun.methodSelect({'$index':$index+1,'itemIndex':4,key:'lengthFilter'})">
-                            <li ng-class="{'active-li':data.interaction.response.indexList[$index+1]==4}">length&nbsp;<span class="tips-span">[长度值]</span></li>
+                            <li ng-class="{'active-li':data.interaction.response.indexList[$index+1]==4}">length&nbsp;<span class="tips-span">[{{'307'|translate}}]</span></li>
                         </a>
                         <a data-ng-click="data.fun.methodSelect({'$index':$index+1,'itemIndex':5,key:'hmacFilter: \''+item.hmac.cipher+'\' :\''+item.hmac.secret+'\' :\''+item.hmac.output+'\''})">
                             <li ng-class="{'active-li':data.interaction.response.indexList[$index+1]==5}">
@@ -110,7 +110,7 @@
                         </a>
                         <a data-ng-click="data.fun.methodSelect({'$index':$index+1,'itemIndex':8,key:'substringFilter: \''+item.substring.start+'\' :\''+item.substring.end+'\''})">
                             <li ng-class="{'active-li':data.interaction.response.indexList[$index+1]==8}">
-                                <p>substring&nbsp;<span class="tips-span">[字符串截取]</span></p>
+                                <p>substring&nbsp;<span class="tips-span">[{{'308'|translate}}]</span></p>
                                 <p>
                                     <label>start</label><input class="eo-input" data-ng-model="item.substring.start" type="text" name="substringStart" data-ng-change="data.fun.methodSelect({'$index':$index+1,'itemIndex':8,key:'substringFilter: \''+item.substring.start+'\' :\''+item.substring.end+'\''})">
                                 </p>
@@ -121,7 +121,7 @@
                         </a>
                         <a data-ng-click="data.fun.methodSelect({'$index':$index+1,'itemIndex':9,key:'concatFilter: \''+item.concat.content+'\''})">
                             <li ng-class="{'active-li':data.interaction.response.indexList[$index+1]==9}">
-                                <p>concat&nbsp;<span class="tips-span">[字符串拼接]</span></p>
+                                <p>concat&nbsp;<span class="tips-span">[{{'309'|translate}}]</span></p>
                                 <p>
                                     <label>content</label><input class="eo-input" data-ng-model="item.concat.content" type="text" name="concatContent" data-ng-change="data.fun.methodSelect({'$index':$index+1,'itemIndex':9,key:'concatFilter: \''+item.concat.content+'\''})">
                                 </p>
@@ -133,7 +133,7 @@
             <ul class="first-level-ul expression-ul">
                 <li class="first-level-li">
                     <p class="title-p">
-                        <b>表达式</b>
+                        <b>{{'3010'|translate}}</b>
                         <span class="filter-span">${&nbsp;
                 <a class="eo-button-default item-a" ng-repeat="item in data.interaction.response.resultList track by $index" data-ng-click="data.fun.methodShow({'$index':$index})" data-ng-class="{'eo-button-info':data.info.method.currentShowItem==$index}">
                     <span class="item-detail">{{item.replace('Filter: \'','(\"').replace('\'','\")').replace('Filter','()').replace(') :\'',',\"').replace(':\'',',\"').replace('\'','\")').replace(') ,',',').replace('\'','\")')}}</span>
@@ -147,19 +147,19 @@
         <ul class="first-level-ul preview-ul">
             <li class="first-level-li">
                 <div class="title-p">
-                    <b>值预览</b><pre class="eo-input result-input" id="expression-builder-directive-result-js"></pre>
+                    <b>{{'3011'|translate}}</b><pre class="eo-input result-input" id="expression-builder-directive-result-js"></pre>
                 </div>
             </li>
         </ul>
         <ul class="first-level-ul btn-group-ul">
             <li class="pull-right">
-                <button class="eo-button-default btn" ng-click="data.fun.cancel()">取消</button>
+                <button class="eo-button-default btn" ng-click="data.fun.cancel()">{{'3012'|translate}}</button>
             </li>
             <li class="pull-right">
-                <button class="eo-button-info btn" ng-click="data.fun.concat()">拼接构造</button>
+                <button class="eo-button-info btn" ng-click="data.fun.concat()">{{'3013'|translate}}</button>
             </li>
             <li class="pull-right">
-                <button class="eo-button-info btn" ng-click="data.fun.set()">构造</button>
+                <button class="eo-button-info btn" ng-click="data.fun.set()">{{'3014'|translate}}</button>
             </li>
         </ul>
     </div>

@@ -23,7 +23,7 @@ class DatabaseTableModule
 
     /**
      * 获取数据字典用户类型
-     * @param $tableID
+     * @param $tableID int 表ID
      * @return bool|int
      */
     public function getUserType(&$tableID)
@@ -44,9 +44,10 @@ class DatabaseTableModule
 
     /**
      * 添加数据表
-     * @param $dbId 数据库ID
-     * @param $tableName 数据表名
-     * @param $tableDesc 数据表描述，默认为NULL
+     * @param $dbID int 数据库ID
+     * @param $tableName string 数据表名
+     * @param $tableDesc string 数据表描述，默认为NULL
+     * @return bool|int
      */
     public function addTable(&$dbID, &$tableName, &$tableDesc)
     {
@@ -61,7 +62,8 @@ class DatabaseTableModule
 
     /**
      * 删除数据表
-     * @param $tableID 数据表ID
+     * @param $tableID int 数据表ID
+     * @return bool
      */
     public function deleteTable(&$tableID)
     {
@@ -76,7 +78,8 @@ class DatabaseTableModule
 
     /**
      * 获取数据表列表
-     * @param $dbID 数据库ID
+     * @param $dbID int 数据库ID
+     * @return bool|array
      */
     public function getTable(&$dbID)
     {
@@ -91,9 +94,10 @@ class DatabaseTableModule
 
     /**
      * 修改数据表
-     * @param $tableID 数据表ID
-     * @param $tableName 数据表名
-     * @param $tableDesc 数据表描述，默认为NULL
+     * @param $tableID int 数据表ID
+     * @param $tableName string 数据表名
+     * @param $tableDesc string 数据表描述，默认为NULL
+     * @return bool
      */
     public function editTable(&$tableID, &$tableName, &$tableDesc)
     {

@@ -1,42 +1,38 @@
 <div class="guide-second-step">
     <div class="pro-install">
         <div class="install-head">
-            <p>请在下方填写您的数据库连接信息。如果您不确定，请联系您的服务提供商。</p>
+            <p>{{'0030'|translate}}</p>
         </div>
         <form class="install-info" name="secondForm">
             <ul>
                 <li>
-                    <span class="message">数据库主机</span>
+                    <span class="message">{{'0031'|translate}}</span>
                     <input type="text" name="master" class="eo-input" data-ng-model="$ctrl.info.dbURL" data-ng-class="{'eo-input-error':($ctrl.data.info.submited&&secondForm.master.$invalid)}" required />
-                    <span class="tips">数据库所在服务器地址，本机一般为localhost</span>
                 </li>
                 <li>
-                    <span class="message">数据库名</span>
+                    <span class="message">{{'0033'|translate}}</span>
                     <input type="text" name="name" class="eo-input" data-ng-model="$ctrl.info.dbName" data-ng-class="{'eo-input-error':($ctrl.data.info.submited&&secondForm.name.$invalid)}" required />
-                    <span class="tips">要将eolinker安装至哪个数据库</span>
                 </li>
                 <li>
-                    <span class="message">数据库用户名</span>
-                    <input type="text" name="username" placeholder="用户名" class="eo-input" data-ng-model="$ctrl.info.dbUser" data-ng-class="{'eo-input-error':($ctrl.data.info.submited&&secondForm.username.$invalid)}" required />
-                    <span class="tips">连接您数据库所用的用户名</span>
+                    <span class="message">{{'0035'|translate}}</span>
+                    <input type="text" name="username" placeholder="{{'0035'|translate}}" class="eo-input" data-ng-model="$ctrl.info.dbUser" data-ng-class="{'eo-input-error':($ctrl.data.info.submited&&secondForm.username.$invalid)}" required />
                 </li>
                 <li>
-                    <span class="message">数据库密码</span>
-                    <input type="text" name="password" placeholder="密码" class="eo-input" data-ng-model="$ctrl.info.dbPassword" />
-                    <span class="tips">连接您数据库所用的密码</span>
+                    <span class="message">{{'0037'|translate}}</span>
+                    <input type="text" name="password" placeholder="{{'0037'|translate}}" class="eo-input" data-ng-model="$ctrl.info.dbPassword" />
+                    <span class="tips">{{'0038'|translate}}</span>
                 </li>
                 <li>
-                    <span class="message">网站名称</span>
-                    <input type="text" name="title" placeholder="网站名称" class="eo-input" data-ng-model="$ctrl.info.pageTitle" data-ng-class="{'eo-input-error':($ctrl.data.info.submited&&secondForm.title.$invalid)}" required />
-                    <span class="tips">网站显示的名称</span>
+                    <span class="message">{{'0039'|translate}}</span>
+                    <input type="text" name="title" placeholder="{{'0039'|translate}}" class="eo-input" data-ng-model="$ctrl.info.pageTitle" data-ng-class="{'eo-input-error':($ctrl.data.info.submited&&secondForm.title.$invalid)}" required />
                 </li>
             </ul>
         </form>
         <div class="install-tips">
-            <p>注意，请保证您填写的数据库用户名对应的用户拥有对数据库的建表操作权限，否则eolinker将无法正常安装成功。如需了解更多关于eolinker安装过程中遇到的问题以及相应的解决办法，请<a href="http://blog.eolinker.com/#/" target="_blank">点击这里</a>进入eolinker官方交流社区，提交问题以及寻找答案。</p>
+            <p>{{'00311'|translate}}<a href="http://blog.eolinker.com/#/" target="_blank">{{'00312'|translate}}</a>{{'00313'|translate}}</p>
         </div>
         <div>
-            <button class="eo-button-success guide-button" data-ng-click='$ctrl.data.fun.enterThird()'>下一步
+            <button class="eo-button-success guide-button" data-ng-click='$ctrl.data.fun.enterThird()'>{{'00314'|translate}}
                 <span class="iconfont icon-xiangyou pull-right"></span>
             </button>
         </div>

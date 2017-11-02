@@ -23,8 +23,8 @@ class AuthorizationDao
 
     /**
      * 获取项目中用户类型
-     * @param $userID
-     * @param $projectID
+     * @param $userID int 用户ID
+     * @param $projectID int 项目ID
      * @return bool
      */
     public function getProjectUserType(&$userID, &$projectID)
@@ -43,8 +43,8 @@ class AuthorizationDao
 
     /**
      * 获取数据字典中用户类型
-     * @param $userID
-     * @param $dbID
+     * @param $userID int 用户ID
+     * @param $dbID int 数据库ID
      * @return bool
      */
     public function getDatabaseUserType(&$userID, &$dbID)

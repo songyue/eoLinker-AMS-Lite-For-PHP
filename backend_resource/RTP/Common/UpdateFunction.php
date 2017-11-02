@@ -9,6 +9,7 @@ $db_password = DB_PASSWORD;
 $db_name = DB_NAME;
 $websiteName = defined('WEBSITE_NAME') ? WEBSITE_NAME : 'eolinker开源版';
 $prefixion = defined('DB_TABLE_PREFIXION') ? DB_TABLE_PREFIXION : 'eo';
+$language = defined('LANGUAGE') ? LANGUAGE : 'en';
 
 $config = "<?php
 //主机地址
@@ -37,6 +38,9 @@ defined('WEBSITE_NAME') or define('WEBSITE_NAME', '{$websiteName}');
 
 //数据表前缀
 defined('DB_TABLE_PREFIXION') or define('DB_TABLE_PRIFIXION', '{$prefixion}');
+
+//语言
+defined('LANGUAGE') or define('LANGUAGE', '{$language}')
 ?>";
 
 $configFile = file_put_contents(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php', $config);

@@ -16,14 +16,17 @@
  */
 class DatabaseTableController
 {
+    //return json object
     //返回Json类型
     private $returnJson = array('type' => 'database_table');
 
     /**
+     * checkout login status
      * 检查登录状态
      */
     public function __construct()
     {
+        // identify authentication
         // 身份验证
         $server = new GuestModule;
         if (!$server->checkLogin()) {
@@ -33,6 +36,7 @@ class DatabaseTableController
     }
 
     /**
+     * add database table
      * 添加数据表
      */
     public function addTable()
@@ -50,13 +54,16 @@ class DatabaseTableController
         $tableDesc = securelyInput('tableDescription');
         $fieldDefaultValue = securelyInput('defaultValue');
 
+        //illegal dbID
         //数据库ID格式非法
         if (!preg_match('/^[0-9]{1,11}$/', $dbID)) {
             $this->returnJson['statusCode'] = '230001';
         } elseif (!($nameLen >= 1 && $nameLen <= 255)) {
+            //illegal tableName
             //表名长度非法
             $this->returnJson['statusCode'] = '230002';
         } elseif (!($descLen >= 0 && $descLen <= 255)) {
+            //illegal tableDescription
             //表描述长度非法
             $this->returnJson['statusCode'] = '230003';
         } else {
@@ -73,6 +80,7 @@ class DatabaseTableController
     }
 
     /**
+     * delete database table
      * 删除数据表
      */
     public function deleteTable()
@@ -84,6 +92,7 @@ class DatabaseTableController
             $this->returnJson['statusCode'] = '120007';
             exitOutput($this->returnJson);
         }
+        //illegal tableID
         //数据表ID格式非法
         if (!preg_match('/^[0-9]{1,11}$/', $tableID)) {
             $this->returnJson['statusCode'] = '230005';
@@ -100,11 +109,13 @@ class DatabaseTableController
     }
 
     /**
+     * get database table list
      * 获取数据表列表
      */
     public function getTable()
     {
         $dbID = securelyInput('dbID');
+        //illegal dbID
         //数据库ID格式非法
         if (!preg_match('/^[0-9]{1,11}$/', $dbID)) {
             $this->returnJson['statusCode'] = '230001';
@@ -122,6 +133,7 @@ class DatabaseTableController
     }
 
     /**
+     * edit database table
      * 修改数据表
      */
     public function editTable()
@@ -139,13 +151,16 @@ class DatabaseTableController
         $tableDesc = securelyInput('tableDescription');
         $fieldDefaultValue = securelyInput('defaultValue');
 
+        //illegal tableID
         //数据表ID格式非法
         if (!preg_match('/^[0-9]{1,11}$/', $tableID)) {
             $this->returnJson['statusCode'] = '230005';
         } elseif (!($nameLen >= 1 && $nameLen <= 255)) {
+            //illegal tableName
             //表名长度非法
             $this->returnJson['statusCode'] = '230002';
         } elseif (!($descLen >= 0 && $descLen <= 255)) {
+            //illegal tableDescription
             //表描述长度非法
             $this->returnJson['statusCode'] = '230003';
         } else {

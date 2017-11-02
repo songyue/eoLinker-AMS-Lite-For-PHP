@@ -23,7 +23,7 @@ class AuthorizationModule
 
     /**
      * 获取项目中用户类型
-     * @param $projectID
+     * @param $projectID int 项目ID
      * @return bool
      */
     public function getProjectUserType(&$projectID)
@@ -34,7 +34,7 @@ class AuthorizationModule
 
     /**
      * 获取数据字典中用户类型
-     * @param $dbID
+     * @param $dbID int 数据库ID
      * @return bool
      */
     public function getDatabaseUserType(&$dbID)

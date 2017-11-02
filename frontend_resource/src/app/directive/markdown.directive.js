@@ -1,11 +1,11 @@
 (function() {
     "use strict";
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [markdown指令js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [markdown指令js] [markdown command js] 
      * @version  3.0.2
-     * @service  $timeout [注入$timeout服务]
-     * @param    resultHtml [markdown编译结果存储位置]
+     * @service  $timeout [注入$timeout服务] [inject $timeout service]
+     * @param    resultHtml [markdown编译结果存储位置] [markdown compile result storage location]
      */
     angular.module('eolinker.directive')
 
@@ -17,7 +17,7 @@
 
         return {
             restrict: 'AE',
-            require: '?ngModel', //ng-model绑定markdown初始化数据
+            require: '?ngModel', //ng-model绑定markdown初始化数据 ng-model binds markdown to initialize data
             scope: {
                 resultHtml: '='
             },
@@ -27,7 +27,7 @@
                 var timer = null;
 
                 /**
-                 * @function [初始化markdown]
+                 * @function [初始化markdown] [Initialize markdown]
                  */
                 $scope.$on('$changeNoteType', function(e, attr) { 
                     if (editor == null) {
@@ -36,7 +36,7 @@
                             saveHTMLToTextarea: true,
                             autoFocus: false,
                             placeholder: '',
-                            toolbarIcons: function() { //设置markdown导航栏标签功能
+                            toolbarIcons: function() { //设置markdown导航栏标签功能 Set the markdown navigation bar tag function
                                 // Or return editormd.toolbarModes[name]; // full, simple, mini
                                 // Using "||" set icons align right.
                                 return ["undo", "redo", "|",
@@ -51,7 +51,7 @@
                             imageUpload: true,
                             imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                             imageUploadURL: "",
-                            onload: function() { //markdown初始化加载重置内容
+                            onload: function() { //markdown初始化加载重置内容 markdown initializes the load to reset the content
                                 try {
                                     if (!!ngModel.$viewValue) {
                                         editor.setMarkdown(ngModel.$viewValue);
@@ -60,11 +60,11 @@
 
                                 }
                             },
-                            onchange: function() { //markdown内容改变执行函数
+                            onchange: function() { //markdown内容改变执行函数 markdown contents change execution function
                                 timer = $timeout(function() {
-                                    //editor.getMarkdown();       // 获取 Markdown 源码
-                                    //editor.getHTML();           // 获取 Textarea 保存的 HTML 源码
-                                    //editor.getPreviewedHTML();  // 获取预览窗口里的 HTML，在开启 watch 且没有开启 saveHTMLToTextarea 时使用
+                                    //editor.getMarkdown();       // 获取 Markdown 源码 Get the Markdown source code
+                                    //editor.getHTML();           // 获取 Textarea 保存的 HTML 源码 Get the HTML source code saved by Textarea
+                                    //editor.getPreviewedHTML();  // 获取预览窗口里的 HTML，在开启 watch 且没有开启 saveHTMLToTextarea 时使用 Get the HTML in the preview window and use it when opening watch and not opening saveHTMLToTextarea
                                     $scope.resultHtml = editor.getPreviewedHTML();
                                     ngModel.$setViewValue(editor.getMarkdown());
                                 }, 0, true)
@@ -74,7 +74,7 @@
                 })
                 
                 /**
-                 * @function [重置markdown]
+                 * @function [重置markdown] [Reset markdown]
                  */
                 $scope.$on('$resetMarkdown', function() { 
                     if (editor) {
@@ -83,7 +83,7 @@
                 });
 
                 /**
-                 * @function [页面更改消除计时器]
+                 * @function [页面更改消除计时器] [The page changes the elimination timer]
                  */
                 $scope.$on('$destroy', function() { 
                     if (timer) {

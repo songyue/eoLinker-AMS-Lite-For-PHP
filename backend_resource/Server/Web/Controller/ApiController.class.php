@@ -16,14 +16,17 @@
  */
 class ApiController
 {
+    // return an json object
     // 返回json类型
     private $returnJson = array('type' => 'api');
 
     /**
+     * Checkout login status
      * 验证登录状态
      */
     public function __construct()
     {
+        // identity authentication
         // 身份验证
         $server = new GuestModule;
         if (!$server->checkLogin()) {
@@ -33,6 +36,7 @@ class ApiController
     }
 
     /**
+     * Add api
      * 添加api
      */
     public function addApi()
@@ -74,6 +78,7 @@ class ApiController
     }
 
     /**
+     * Edit api
      * 编辑api
      */
     public function editApi()
@@ -141,6 +146,7 @@ class ApiController
 //	}
 
     /**
+     * Delete apis in batches and move them into recycling station
      * 批量删除api,将其移入回收站
      */
     public function removeApi()
@@ -178,6 +184,7 @@ class ApiController
     }
 
     /**
+     * Recover api
      * 恢复api
      */
     public function recoverApi()
@@ -215,6 +222,7 @@ class ApiController
     }
 
     /**
+     * Remove apis in batches from recycling station
      * 批量彻底删除api
      */
     public function deleteApi()
@@ -252,6 +260,7 @@ class ApiController
     }
 
     /**
+     * Clean up the recycling station
      * 清空回收站
      */
     public function cleanRecyclingStation()
@@ -278,6 +287,7 @@ class ApiController
     }
 
     /**
+     * Get api list from recycling station
      * 获取回收站api列表
      */
     public function getRecyclingStationApiList()
@@ -325,6 +335,7 @@ class ApiController
     }
 
     /**
+     * Get api list by group
      * 获取api列表
      */
     public function getApiList()
@@ -373,6 +384,7 @@ class ApiController
     }
 
     /**
+     * Get api detail
      * 获取api详情
      */
     public function getApi()
@@ -394,6 +406,7 @@ class ApiController
     }
 
     /**
+     * Get all api list by project
      * 获取所有分组的api
      */
     public function getAllApiList()
@@ -440,6 +453,7 @@ class ApiController
     }
 
     /**
+     * search api
      * 搜索api
      */
     public function searchApi()
@@ -466,6 +480,7 @@ class ApiController
     }
 
     /**
+     * add star to an api
      * 添加星标
      */
     public function addStar()
@@ -486,6 +501,7 @@ class ApiController
     }
 
     /**
+     * remove star from an api
      * 添加星标
      */
     public function removeStar()

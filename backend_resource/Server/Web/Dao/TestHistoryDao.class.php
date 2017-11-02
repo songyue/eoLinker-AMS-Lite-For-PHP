@@ -18,10 +18,12 @@ class TestHistoryDao
 {
     /**
      * 添加测试记录
-     * @param $apiID 接口ID
-     * @param $requestInfo 测试请求信息
-     * @param $resultInfo 测试结果信息
-     * @param $testTime 测试时间
+     * @param $projectID int 项目ID
+     * @param $apiID int 接口ID
+     * @param $requestInfo string 测试请求信息
+     * @param $resultInfo string 测试结果信息
+     * @param $testTime string 测试时间
+     * @return bool|int
      */
     public function addTestHistory(&$projectID, &$apiID, &$requestInfo, &$resultInfo, &$testTime)
     {
@@ -43,7 +45,8 @@ class TestHistoryDao
 
     /**
      * 删除测试记录
-     * @param $testID 测试记录ID
+     * @param $testID int 测试记录ID
+     * @return bool
      */
     public function deleteTestHistory(&$testID)
     {
@@ -59,7 +62,8 @@ class TestHistoryDao
 
     /**
      * 获取测试记录信息
-     * @param $testID 测试记录ID
+     * @param $testID int 测试记录ID
+     * @return bool|array
      */
     public function getTestHistory(&$testID)
     {
@@ -75,8 +79,9 @@ class TestHistoryDao
 
     /**
      * 检查测试记录与用户的联系
-     * @param $testID 测试记录ID
-     * @param $userId 用户ID
+     * @param $testID int 测试记录ID
+     * @param $userID int 用户ID
+     * @return bool|int
      */
     public function checkTestHistoryPermission(&$testID, &$userID)
     {
@@ -95,7 +100,7 @@ class TestHistoryDao
 
     /**
      * 删除所有测试记录
-     * @param $apiID
+     * @param $apiID int 接口ID
      * @return bool
      */
     public function deleteAllTestHistory(&$apiID)

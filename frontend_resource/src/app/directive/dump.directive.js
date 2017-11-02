@@ -1,11 +1,11 @@
 (function() {
     'use strict';
      /**
-     * @Author   广州银云信息科技有限公司
-     * @function [导出文件指令js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [导出文件指令js] [Export the file instructions js]
      * @version  3.0.2
-     * @param    interaction [交互参数]
-     * @param    dumpDirective [绑定设置回调函数]
+     * @param    interaction [交互参数] [Interactive parameters]
+     * @param    dumpDirective [绑定设置回调函数] [Bind Set the callback function]
      */
     angular.module('eolinker.directive')
 
@@ -39,16 +39,16 @@
                 }
 
                 /**
-                 * @function [导出功能函数]
+                 * @function [导出功能函数] [Export]
                  */
                 $scope.data.fun.dump = function() {
                     $scope.$broadcast('$LoadingInit', { arg: { switch: $scope.interaction.request.switch } }); //switch导出结果存储方式（0：.export ，1：.html文件夹 2：.pdf）
                 }
 
                 /**
-                 * @function [导出监听请求返回功能函数]
-                 * @param    {[obj]}   _default [原生传参]
-                 * @param    {[obj]}   arg      [{response：后台返回数据}]
+                 * @function [导出监听请求返回功能函数] [Export the monitor request to return]
+                 * @param    {[obj]}   _default [原生传参] [Native parameters]
+                 * @param    {[obj]}   arg      [{response:后台返回数据 Backstage returns data}]
                  */
                 data.fun.$DumpDirective_Click = function(_default, arg) { 
                     $scope.data.info.elem.href = './server/dump/' + arg.response.fileName;
@@ -57,14 +57,14 @@
                 }
 
                 /**
-                 * @function [资源回收]
+                 * @function [资源回收] [Recycle]
                  */
                 data.fun.$Destory = function() {
                     data.info.broadcast();
                 }
 
                 /**
-                 * @function [初始化功能函数]
+                 * @function [初始化功能函数] [初始化]
                  */
                 data.fun.init = (function() {
                     $scope.interaction=$scope.interaction||{request:{}};

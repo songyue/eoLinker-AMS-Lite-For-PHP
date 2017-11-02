@@ -1,14 +1,15 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 数据库协作页（list）模块相关js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [数据库协作页（list）模块相关js] [Database collaboration page (list) module related js]
      * @version  3.0.2
-     * @service  $scope 注入作用域服务
-     * @service  $rootScope 注入根作用域服务
-     * @service  DatabaseResource 注入数据库接口服务
-     * @service  $state 注入路由服务
-     * @constant CODE 注入状态码常量
+     * @service  $scope [注入作用域服务] [inject scope service] 
+     * @service  $rootScope [注入根作用域服务] [inject rootScope service]
+     * @service  DatabaseResource [注入数据库接口服务] [inject Database API service]
+     * @service  $state [注入路由服务] [inject state service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
      */
     angular.module('eolinker')
         .config(['$stateProvider', 'RouteHelpersProvider', function($stateProvider, helper) {
@@ -23,9 +24,9 @@
             controller: databaseTeam
         })
 
-    databaseTeam.$inject = ['$scope', '$rootScope', 'DatabaseResource', '$state', 'CODE'];
+    databaseTeam.$inject = ['$scope', '$rootScope', 'DatabaseResource', '$state', '$filter', 'CODE'];
 
-    function databaseTeam($scope, $rootScope, DatabaseResource, $state, CODE) {
+    function databaseTeam($scope, $rootScope, DatabaseResource, $state, $filter, CODE) {
 
         var vm = this;
         vm.data = {
@@ -35,9 +36,18 @@
                     leave: true,
                     isDisable: false
                 },
-                power: 2, //0：管理员，1：协作管理员，2：普通成员
+                power: 2, //0：管理员 admin，1：协作管理员 collaboration manager，2：普通成员 regular member 
                 timer: {
                     fun: null
+                },
+                filter: {
+                    unknown: $filter('translate')('0101012'),
+                    unknownNickName: $filter('translate')('0101013'),
+                    haveJoined: $filter('translate')('0101014'),
+                    add: $filter('translate')('0101015'),
+                    administrators: $filter('translate')('0101017'),
+                    kick: $filter('translate')('01010111'),
+                    quit: $filter('translate')('01010112'),
                 }
             },
             interaction: {
@@ -52,35 +62,42 @@
                 }
             },
             fun: {
-                init: null, //初始化功能函数
-                check: null, //text change功能函数
-                closeSearch: null, //隐藏搜索框功能函数
-                setNickName: null, //设置备注名
-                add: null, //添加用户
-                setType: null, //设置用户权限
-                delete: null, //移除、退出项目
-                search: null //searchUser搜索用户
+                init: null, 
+                check: null, 
+                closeSearch: null, 
+                setNickName: null, 
+                add: null, 
+                setType: null, 
+                delete: null, 
+                search: null 
 
             }
         }
 
+        /**
+         * @function [隐藏搜索框功能函数] [Hide the search box function function]
+         */
         vm.data.fun.closeSearch = function() {
             if (vm.data.info.search.leave) {
                 vm.data.info.search.submited = false;
                 vm.data.interaction.response.userInfo = null;
             }
         }
+
+        /**
+         * @function [设置备注名] [Set the memo name]
+         */
         vm.data.fun.setNickName = function(arg) {
             arg.item.groupName = arg.item.partnerNickName;
             arg.item.required = true;
-            $rootScope.GroupModal('修改备注名', arg.item, '备注名名称', null, function(callback) {
+            $rootScope.GroupModal($filter('translate')('01010114'), arg.item, $filter('translate')('01010115'), null, function(callback) {
                 if (callback) {
                     DatabaseResource.Partner.SetNickName({ dbID: vm.data.interaction.request.dbID, nickName: callback.groupName, connID: arg.item.connID }).$promise
                         .then(function(response) {
                             switch (response.statusCode) {
                                 case CODE.COMMON.SUCCESS:
                                     {
-                                        $rootScope.InfoModal('修改备注名成功', 'success');
+                                        $rootScope.InfoModal($filter('translate')('01010116'), 'success');
                                         arg.item.partnerNickName = callback.groupName;
                                         break;
                                     }
@@ -89,6 +106,10 @@
                 }
             });
         }
+
+        /**
+         * @function [设置用户权限] [Set user permissions]
+         */
         vm.data.fun.setType = function(arg) {
             arg.item.listIsClick = false;
             var template = {
@@ -103,7 +124,7 @@
                     switch (response.statusCode) {
                         case CODE.COMMON.SUCCESS:
                             {
-                                $rootScope.InfoModal('修改协作成员的类型成功！', 'success');
+                                $rootScope.InfoModal($filter('translate')('01010117'), 'success');
                                 arg.item.listIsClick = false;
                                 switch (arg.userType) {
                                     case 1:
@@ -128,6 +149,10 @@
                     }
                 });
         }
+
+        /**
+         * @function [添加用户] [Add user]
+         */
         vm.data.fun.add = function() {
             if (!vm.data.info.search.isDisable) {
                 vm.data.info.search.isDisable = true;
@@ -153,6 +178,10 @@
             }
 
         }
+
+        /**
+         * @function [移除、退出项目] [Remove, exit item]
+         */
         vm.data.fun.delete = function(arg) {
             var bol = arg.item.isNow == 1 ? true : false;
             var template = {
@@ -161,7 +190,7 @@
                 }
             }
             if (bol) {
-                $rootScope.EnsureModal('退出协作', false, '确认退出', {}, function(callback) {
+                $rootScope.EnsureModal($filter('translate')('01010118'), false, $filter('translate')('01010119'), {}, function(callback) {
                     if (callback) {
                         DatabaseResource.Partner.Quit(template.request).$promise
                             .then(function(response) {
@@ -177,7 +206,7 @@
                 });
 
             } else {
-                $rootScope.EnsureModal('移除协作', false, '确认移除', {}, function(callback) {
+                $rootScope.EnsureModal($filter('translate')('01010120'), false, $filter('translate')('01010121'), {}, function(callback) {
                     if (callback) {
                         DatabaseResource.Partner.Delete({ dbID: vm.data.interaction.request.dbID, connID: arg.item.connID }).$promise
                             .then(function(response) {
@@ -189,7 +218,7 @@
                                             } else {
                                                 vm.data.interaction.response.query.splice(arg.$index, 1);
                                             }
-                                            $rootScope.InfoModal('移除成员成功！', 'success');
+                                            $rootScope.InfoModal($filter('translate')('01010122'), 'success');
                                             break;
                                         }
                                 }
@@ -198,6 +227,10 @@
                 });
             }
         }
+
+        /**
+         * @function [搜索用户] [search user]
+         */
         vm.data.fun.search = function() {
             var template = {
                 request: {
@@ -232,6 +265,10 @@
                     })
             }
         };
+
+        /**
+         * @function [功能函数] [text change]
+         */
         vm.data.fun.check = function() {
             var template = {
                 request: {
@@ -265,11 +302,15 @@
                 clearInterval(vm.data.info.timer.fun);
             }, 1000);
         };
+
+        /**
+         * @function [初始化功能函数] [initialization]
+         */
         vm.data.fun.init = (function() {
             var template = {
                 request: { dbID: vm.data.interaction.request.dbID }
             }
-            $scope.$emit('$WindowTitleSet', { list: ['协作管理', '数字字典'] });
+            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('01010123'), $filter('translate')('01010124')] });
             DatabaseResource.Partner.Query(template.request).$promise.then(function(response) {
                 switch (response.statusCode) {
                     case CODE.COMMON.SUCCESS:

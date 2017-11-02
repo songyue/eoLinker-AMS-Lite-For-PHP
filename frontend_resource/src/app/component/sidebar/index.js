@@ -1,11 +1,12 @@
 (function() {
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [全局sidebar指令相关js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [全局sidebar指令相关js] [Global sidebar instruction related js]
      * @version  3.0.2
-     * @service  $scope [注入作用域服务]
-     * @service  $state [注入路由服务]
-     * @service  NavbarService [注入NavbarService服务]
+     * @service  $scope [注入作用域服务] [inject scope service]
+     * @service  $state [注入路由服务] [inject state service]
+     * @service  NavbarService [注入NavbarService服务] [inject NavbarService service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
      */
     angular.module('eolinker')
         .component('eoSidebar', {
@@ -16,9 +17,9 @@
             }
         })
 
-    sidebarController.$inject = ['$scope', '$state', 'NavbarService'];
+    sidebarController.$inject = ['$scope', '$state', 'NavbarService', '$filter'];
 
-    function sidebarController($scope, $state, NavbarService) {
+    function sidebarController($scope, $state, NavbarService, $filter) {
 
         var vm = this;
         vm.data = {
@@ -28,36 +29,36 @@
             info: {
                 current: null,
                 menu: [{
-                        name: '接口管理',
+                        name: $filter('translate')('2209'),
                         sref: 'home.project',
                         icon: 'icon-api',
                         childSref: 'home.project.api.default',
                         isShow: -1
                     }, {
-                        name: '数据库管理',
+                        name: $filter('translate')('22010'),
                         sref: 'home.database',
                         icon: 'icon-ziliaoku',
                         childSref: 'home.database.list',
                         isShow: -1 
                     }, {
-                        name: '账户管理',
+                        name: $filter('translate')('22011'),
                         sref: 'home.user',
                         icon: 'icon-yonghu',
                         childSref: 'home.user.basic',
                         isShow: -1 
                     }, {
-                        name: '消息管理',
+                        name: $filter('translate')('22012'),
                         sref: 'home.news',
                         icon: 'icon-xiaoxi',
                         childSref: 'home.news.default',
                         isShow: -1,
                         status: 1
                     }, {
-                        name: '线上版本',
+                        name: $filter('translate')('22013'),
                         href: 'https://www.eolinker.com/#/',
                         icon: 'icon-ONLINEkaifa',
                         isShow: -1,
-                        divide: 1 //是否有分割线 0：默认无，1：有
+                        divide: 1 //是否有分割线 Whether there is a dividing line 0：默认无 Default none，1：有 yes
                     }
                 ]
             },
@@ -72,8 +73,8 @@
         }
 
         /**
-         * @function [子级菜单功能函数]
-         * @param    {[obj]}   arg [{item:传值列表项}]
+         * @function [子级菜单功能函数] [Submenu function function]
+         * @param    {[obj]}   arg [{item:传值列表项 Pass the list item}]
          */
         vm.data.fun.childMenu = function(arg) {
             vm.data.service.default.info.navigation.current = arg.item.name;
@@ -86,8 +87,8 @@
             }
         }
         /**
-         * @function [菜单功能函数]
-         * @param    {[obj]}   arg [{item:传值列表项}]
+         * @function [菜单功能函数] [menu]
+         * @param    {[obj]}   arg [{item:传值列表项 Pass the list item}]
          */
         vm.data.fun.menu = function(arg) {
             if(arg.item.disable&&vm.data.service.pro.info.isExpire) return;
@@ -123,8 +124,8 @@
         }
 
         /**
-         * @function [初始化菜单功能函数]
-         * @param    {[obj]}   arg [{item:传值列表项}]
+         * @function [初始化菜单功能函数] [Initialize the menu]
+         * @param    {[obj]}   arg [{item:传值列表项 Pass the list item}]
          */
         vm.data.fun.initMenu = function(arg) {
             if($state.current.name.toUpperCase().indexOf('INSIDE')>-1) return;
@@ -144,8 +145,8 @@
         }
 
         /**
-         * @function [初始化子菜单功能函数]
-         * @param    {[obj]}   arg [{item:传值列表项}]
+         * @function [初始化子菜单功能函数] [Initialize submenu]
+         * @param    {[obj]}   arg [{item:传值列表项 Pass the list item}]
          */
         vm.data.fun.initChildMenu = function(arg) {
             if ($state.current.name.indexOf(arg.item.sref) > -1) {
@@ -154,8 +155,8 @@
         }
 
         /**
-         * @function [广播重置当前状态功能函数]
-         * @param    {[obj]}   _default [原生传参]
+         * @function [广播重置当前状态功能函数] [The broadcast resets the current state]
+         * @param    {[obj]}   _default [原生传参 Native parameter]
          */
         vm.data.fun.$Sidebar_ResetCurrent = function(_default) {
             vm.data.info.current = vm.data.info.menu[0];
@@ -166,7 +167,7 @@
         }
 
         /**
-         * @function [收缩功能函数]
+         * @function [收缩功能函数] [shrink]
          */
         vm.data.fun.shrink = function() {
             vm.shrinkObject.isShrink = !vm.shrinkObject.isShrink;
@@ -174,6 +175,7 @@
 
         /**
          * @function [初始化功能函数，默认sidebar不收缩，监听$Sidebar_ResetCurrent事件]
+         * @function [Initialize, the default sidebar does not shrink, listen for the $ Sidebar_ResetCurrent event]
          */
         vm.$onInit=function(){
             $scope.$on('$Sidebar_ResetCurrent', vm.data.fun.$Sidebar_ResetCurrent)

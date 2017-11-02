@@ -4,25 +4,25 @@
         <ul class="title-ul">
             <li class="btn-group-li pull-left" ng-switch="$ctrl.data.interaction.request.groupID==-2" ng-if="$ctrl.powerObject.readWrite">
                 <a class="eo-button-success common-btn" data-ng-click="$ctrl.data.fun.edit()" ng-switch-when=false>
-                    <span class="iconfont icon-tianjia"></span><span class="btn-name">添加接口</span>
+                    <span class="iconfont icon-tianjia"></span><span class="btn-name">{{'01210020'|translate}}</span>
                 </a>
                 <a class="eo-button-warning common-btn" data-ng-click="$ctrl.data.fun.clean()" ng-switch-when=true>
-                    <span class="iconfont icon-shanchu"></span><span class="btn-name">全部删除</span>
+                    <span class="iconfont icon-shanchu"></span><span class="btn-name">{{'01210021'|translate}}</span>
                 </a>
                 <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.batch.default()" ng-if="!$ctrl.data.info.batch.disable">
-                    批量操作
+                    {{'01210022'|translate}}
                 </a>
                 <a class="common-btn default-btn" data-ng-click="$ctrl.data.info.batch.disable=false" ng-if="$ctrl.data.info.batch.disable">
-                    <span class="iconfont icon-close"></span><span class="btn-name">取消批量</span>
+                    <span class="iconfont icon-close"></span><span class="btn-name">{{'01210023'|translate}}</span>
                 </a>
                 <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.batch.remove()" ng-if="$ctrl.data.info.batch.disable" ng-switch-when=false>
-                    <span class="iconfont icon-shanchu"></span><span class="btn-name">批量移除</span>
+                    <span class="iconfont icon-shanchu"></span><span class="btn-name">{{'01210024'|translate}}</span>
                 </a>
                 <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.batch.recover()" ng-if="$ctrl.data.info.batch.disable" ng-switch-when=true>
-                    <span class="iconfont icon-shuaxin"></span><span class="btn-name">批量恢复</span>
+                    <span class="iconfont icon-shuaxin"></span><span class="btn-name">{{'01210025'|translate}}</span>
                 </a>
                 <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.batch.delete()" ng-if="$ctrl.data.info.batch.disable" ng-switch-when=true>
-                    <span class="iconfont icon-shanchu"></span><span class="btn-name">批量删除</span>
+                    <span class="iconfont icon-shanchu"></span><span class="btn-name">{{'01210026'|translate}}</span>
                 </a>
             </li>
             <li class="divide-li pull-left" ng-if="$ctrl.powerObject.readWrite"><span></span></li>
@@ -30,7 +30,7 @@
                 <form name="searchForm">
                     <ul class="search-function-ul">
                         <li class="search-input-li">
-                            <input type="text" placeholder="搜索接口" data-ng-model="$ctrl.data.interaction.request.tips" required>
+                            <input type="text" placeholder="{{'012100223'|translate}}" data-ng-model="$ctrl.data.interaction.request.tips" required>
                         </li>
                         <li class="search-btn-li">
                             <button class="iconfont icon-sousuo" data-ng-click="$ctrl.data.fun.search()"></button>
@@ -42,21 +42,21 @@
             <li class="view-btn-li pull-right ">
                 <p>
                     <a class="view-common-btn" ng-class="{'elem-active':$ctrl.data.info.more==1}" ng-click="$ctrl.data.fun.setMore({switch:1})">
-                        <span class="tips-span">详细</span><span class="pull-left triangle-bottom"></span>
+                        <span class="tips-span">{{'01210027'|translate}}</span><span class="pull-left triangle-bottom"></span>
                         <span class="iconfont icon-sort"></span></a>
                     <a class="view-common-btn" ng-class="{'elem-active':$ctrl.data.info.more==2}" ng-click="$ctrl.data.fun.setMore({switch:2})">
-                        <span class="tips-span">省略</span><span class="pull-left triangle-bottom"></span>
+                        <span class="tips-span">{{'01210028'|translate}}</span><span class="pull-left triangle-bottom"></span>
                         <span class="iconfont icon-more"></span>
                     </a>
                 </p>
             </li>
             <li class="btn-li sort-btn-li pull-right">
                 <div class="common-btn default-btn">
-                    <span class="iconfont icon-sort"></span><span class="btn-name">默认排序</span>
+                    <span class="iconfont icon-sort"></span><span class="btn-name">{{'012100251'|translate}}</span>
                     <div class="list-function-wrap">
                         <ul class="nav-function">
                             <li data-ng-click="$ctrl.data.fun.sort({item:item})" ng-repeat="item in $ctrl.data.info.sort.query" ng-class="{'strong-li':item.orderBy==$ctrl.data.info.sort.current.orderBy}" ng-init="item.asc=item.orderBy==$ctrl.data.info.sort.current.orderBy?$ctrl.data.info.sort.current.asc:item.asc">
-                                {{item.name}}[{{item.asc==0?'升序':'降序'}}]
+                                {{item.name}}[{{item.asc==0?$ctrl.data.info.filter.ascending:$ctrl.data.info.filter.descending}}]
                             </li>
                         </ul>
                     </div>
@@ -72,16 +72,16 @@
                         <label class="iconfont icon-favorfill"></label>
                     </th>
                     <th class="api-name second-th" >
-                        接口名称
+                        {{'012100212'|translate}}
                     </th>
-                    <th class="third-th">接口URI</th>
+                    <th class="third-th">{{'012100213'|translate}}</th>
                     <th class="forth-th" ng-show="$ctrl.data.info.more==1">
-                        {{$ctrl.data.interaction.request.groupID>-2?'最近更新者':'所在分组'}}
+                        {{$ctrl.data.interaction.request.groupID>-2?$ctrl.data.info.filter.updated:$ctrl.data.info.filter.grouped}}
                     </th>
                     <th class="api-time fifth-th" ng-show="$ctrl.data.info.more==1">
-                        {{$ctrl.data.interaction.request.groupID>-2?'更新日期':'删除日期'}}
+                        {{$ctrl.data.interaction.request.groupID>-2?$ctrl.data.info.filter.updatedTime:$ctrl.data.info.filter.deleteTime}}
                     </th>
-                    <th class="sixth-th" ng-class="{'trash-sixth-th':$ctrl.data.interaction.request.groupID==-2}" ng-if="$ctrl.powerObject.readWrite">操作</th>
+                    <th class="sixth-th" ng-class="{'trash-sixth-th':$ctrl.data.interaction.request.groupID==-2}" ng-if="$ctrl.powerObject.readWrite">{{'012100218'|translate}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -106,13 +106,13 @@
                     <td class="fifth-th" ng-show="$ctrl.data.info.more==1">{{$ctrl.data.interaction.request.groupID>-2?item.apiUpdateTime:item.removeTime}}</td>
                     <td class="sixth-th" ng-class="{'hidden':$ctrl.data.interaction.request.groupID==-2}" ng-if="$ctrl.powerObject.readWrite">
                         <!--readWrite权限-->
-                        <a class="home-project-inside-function-edit" data-ng-click="$ctrl.data.fun.edit({item:item,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-bianji" ></span>修改</a>
-                        <a class="home-project-inside-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,switch:0,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-shanchu"></span>删除</a>
+                        <a class="home-project-inside-function-edit" data-ng-click="$ctrl.data.fun.edit({item:item,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-bianji" ></span>{{'012100219'|translate}}</a>
+                        <a class="home-project-inside-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,switch:0,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-shanchu"></span>{{'012100220'|translate}}</a>
                     </td>
                     <td ng-class="{'hidden':$ctrl.data.interaction.request.groupID>-2}" ng-if="$ctrl.powerObject.readWrite">
                         <!--readWrite权限-->
-                        <a class="home-project-inside-function-edit" data-ng-click="$ctrl.data.fun.recover({item:item,$index:$index,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-shuaxin" ></span>恢复</a>
-                        <a class="home-project-inside-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,switch:1,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-close"></span>彻底删除</a>
+                        <a class="home-project-inside-function-edit" data-ng-click="$ctrl.data.fun.recover({item:item,$index:$index,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-shuaxin" ></span>{{'012100221'|translate}}</a>
+                        <a class="home-project-inside-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,switch:1,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-close"></span>{{'012100222'|translate}}</a>
                     </td>
                 </tr>
             </tbody>

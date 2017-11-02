@@ -19,12 +19,11 @@ class ProjectDao
 
     /**
      * 创建项目
-     *
-     * @param $projectName 项目名
-     * @param $projectType 项目类型
-     *            [0/1/2/3]=>[Web/App/PC/其他]
-     * @param $projectVersion 项目版本，默认为1.0
-     * @param $userID 用户ID
+     * @param $projectName string 项目名
+     * @param $projectType int 项目类型 [0/1/2/3]=>[Web/App/PC/其他]
+     * @param $projectVersion string 项目版本，默认为1.0
+     * @param $userID int 用户ID
+     * @return bool|array
      */
     public function addProject(&$projectName, &$projectType, &$projectVersion, &$userID)
     {
@@ -70,7 +69,6 @@ class ProjectDao
 
     /**
      * 判断项目和用户是否匹配
-     *
      * @param $projectID int 项目ID
      * @param $userID int 用户ID
      * @return mixed
@@ -91,8 +89,8 @@ class ProjectDao
 
     /**
      * 删除项目
-     *
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool
      */
     public function deleteProject(&$projectID)
     {
@@ -123,10 +121,9 @@ class ProjectDao
 
     /**
      * 获取项目列表
-     *
-     * @param $userID 用户ID
-     * @param $projectType 项目类型
-     *            [-1/0/1/2/3]=>[全部/Web/App/PC/其他]
+     * @param $userID int 用户ID
+     * @param $projectType int 项目类型[-1/0/1/2/3]=>[全部/Web/App/PC/其他]
+     * @return bool|array
      */
     public function getProjectList(&$userID, &$projectType = -1)
     {
@@ -151,12 +148,11 @@ class ProjectDao
 
     /**
      * 更改项目
-     *
-     * @param $projectID 项目ID
-     * @param $projectName 项目名
-     * @param $projectType 项目类型
-     *            [0/1/2/3]=>[Web/App/PC/其他]
-     * @param $projectVersion 项目版本，默认为1.0
+     * @param $projectID int 项目ID
+     * @param $projectName string 项目名
+     * @param $projectType int 项目类型 [0/1/2/3]=>[Web/App/PC/其他]
+     * @param $projectVersion string 项目版本，默认为1.0
+     * @return bool
      */
     public function editProject(&$projectID, &$projectName, &$projectType, &$projectVersion)
     {
@@ -178,9 +174,9 @@ class ProjectDao
 
     /**
      * 获取项目信息
-     *
-     * @param $projectID 项目ID
-     * @param $userID 用户ID
+     * @param $projectID int 项目ID
+     * @param $userID int 用户ID
+     * @return bool|array
      */
     public function getProject(&$projectID, &$userID)
     {
@@ -198,8 +194,8 @@ class ProjectDao
 
     /**
      * 更新项目更新时间
-     *
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool
      */
     public function updateProjectUpdateTime(&$projectID)
     {
@@ -217,15 +213,15 @@ class ProjectDao
 
     /**
      * 获取环境列表
-     *
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool|array
      */
-    public function getEnvList(&$prjectID)
+    public function getEnvList(&$projectID)
     {
         $db = getDatabase();
 
         $result = $db->prepareExecuteAll("SELECT eo_project_environment.envID,eo_project_environment.envName,eo_project_environment.envURI FROM eo_project_environment WHERE eo_project_environment.projectID = ?;", array(
-            $prjectID
+            $projectID
         ));
 
         if (empty($result))
@@ -236,10 +232,10 @@ class ProjectDao
 
     /**
      * 添加环境
-     *
-     * @param $projectID 项目ID
-     * @param $envName 环境名
-     * @param $envURI 环境地址
+     * @param $projectID int 项目ID
+     * @param $envName string 环境名
+     * @param $envURI string 环境地址
+     * @return bool|int
      */
     public function addEnv(&$projectID, &$envName, &$envURI)
     {
@@ -258,9 +254,9 @@ class ProjectDao
 
     /**
      * 删除环境
-     *
-     * @param $projectID 项目ID
-     * @param $envID 环境ID
+     * @param $projectID int 项目ID
+     * @param $envID int 环境ID
+     * @return bool
      */
     public function deleteEnv(&$projectID, &$envID)
     {
@@ -278,10 +274,10 @@ class ProjectDao
 
     /**
      * 修改环境
-     *
-     * @param $envID 环境ID
-     * @param $envName 环境名
-     * @param $envURI 环境地址
+     * @param $envID int 环境ID
+     * @param $envName string 环境名
+     * @param $envURI string 环境地址
+     * @return bool
      */
     public function editEnv(&$envID, &$envName, &$envURI)
     {
@@ -300,8 +296,8 @@ class ProjectDao
 
     /**
      * 获取项目名称
-     *
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool|array
      */
     public function getProjectName(&$projectID)
     {
@@ -318,8 +314,8 @@ class ProjectDao
 
     /**
      * 导出项目
-     *
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool|array
      */
     public function dumpProject(&$projectID)
     {
@@ -430,8 +426,8 @@ class ProjectDao
 
     /**
      * 获取api数量
-     *
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool|array
      */
     public function getApiNum(&$projectID)
     {

@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @name eolinker open source，eolinker开源版本
  * @link https://www.eolinker.com
  * @package eolinker
  * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2016
-
  *  * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  * 用户讨论QQ群：284421832
@@ -16,59 +16,63 @@
  */
 class UserDao
 {
-	/**
-	 * 修改密码
-	 * @param $hashPassword 新密码
-	 * @param $userID 用户ID
-	 */
-	public function changePassword($hashPassword, $userID)
-	{
-		$db = getDatabase();
+    /**
+     * 修改密码
+     * @param $hashPassword string 新密码
+     * @param $userID int 用户ID
+     * @return bool
+     */
+    public function changePassword($hashPassword, $userID)
+    {
+        $db = getDatabase();
 
-		$db -> prepareExecute('UPDATE eo_user SET eo_user.userPassword =? WHERE eo_user.userID = ?;', array(
-			$hashPassword,
-			$userID
-		));
+        $db->prepareExecute('UPDATE eo_user SET eo_user.userPassword =? WHERE eo_user.userID = ?;', array(
+            $hashPassword,
+            $userID
+        ));
 
-		if ($db -> getAffectRow() < 1)
-			return FALSE;
-		else
-			return TRUE;
-	}
+        if ($db->getAffectRow() < 1)
+            return FALSE;
+        else
+            return TRUE;
+    }
 
-	/**
-	 * 修改昵称
-	 * @param $userID 用户ID
-	 * @param $nickName 昵称
-	 */
-	public function changeNickName(&$userID, &$nickName)
-	{
-		$db = getDatabase();
-		$db -> prepareExecute('UPDATE eo_user SET eo_user.userNickName =? WHERE eo_user.userID = ?;', array(
-			$nickName,
-			$userID
-		));
+    /**
+     * 修改昵称
+     * @param $userID int 用户ID
+     * @param $nickName string 昵称
+     * @return bool
+     */
+    public function changeNickName(&$userID, &$nickName)
+    {
+        $db = getDatabase();
+        $db->prepareExecute('UPDATE eo_user SET eo_user.userNickName =? WHERE eo_user.userID = ?;', array(
+            $nickName,
+            $userID
+        ));
 
-		if ($db -> getAffectRow() < 1)
-			return FALSE;
-		else
-			return TRUE;
-	}
+        if ($db->getAffectRow() < 1)
+            return FALSE;
+        else
+            return TRUE;
+    }
 
-	/**
-	 * 检查用户是否存在
-	 * @param $userName 用户名
-	 */
-	public function checkUserExist(&$userName)
-	{
-		$db = getDatabase();
-		$result = $db -> prepareExecute('SELECT eo_user.userID,eo_user.userNickName FROM eo_user WHERE eo_user.userName = ?;', array($userName));
+    /**
+     * 检查用户是否存在
+     * @param $userName 用户名
+     * @return bool|array
+     */
+    public function checkUserExist(&$userName)
+    {
+        $db = getDatabase();
+        $result = $db->prepareExecute('SELECT eo_user.userID,eo_user.userNickName FROM eo_user WHERE eo_user.userName = ?;', array($userName));
 
-		if (empty($result))
-			return FALSE;
-		else
-			return $result;
-	}
+        if (empty($result))
+            return FALSE;
+        else
+            return $result;
+    }
 
 }
+
 ?>

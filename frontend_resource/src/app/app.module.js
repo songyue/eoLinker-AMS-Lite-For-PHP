@@ -1,8 +1,8 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 全局定义app模块js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [全局定义app模块js] [Global definition app module js]
      * @version  3.0.2
      */
     angular.module('eolinker', [
@@ -11,6 +11,7 @@
         'oc.lazyLoad',
         'ngResource',
         'angular-md5',
+        'pascalprecht.translate',
         'ngCookies',
         //custom part
         'eolinker.resource',
@@ -26,15 +27,15 @@
     .run(AppRun);
 
 
-    AppConfig.$inject = ['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$logProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', 'isDebug'];
+    AppConfig.$inject = ['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$logProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider', '$translateProvider', 'isDebug', 'CN', 'EN', 'HK'];
 
 
-    function AppConfig($controllerProvider, $compileProvider, $filterProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, IsDebug) {
+    function AppConfig($controllerProvider, $compileProvider, $filterProvider, $provide, $logProvider, $stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $translateProvider, IsDebug, CN, EN, HK) {
 
         var data = {
             fun: {
-                init: null, //初始化功能函数
-                param: null, //解析请求参数格式功能函数
+                init: null, //初始化功能函数 initialization
+                param: null, //解析请求参数格式功能函数 Parse the request parameter format
             }
         }
         data.fun.param = function(arg) {
@@ -75,6 +76,10 @@
             // Enable log
             $logProvider.debugEnabled(IsDebug);
             $urlRouterProvider.otherwise('/index');
+            $translateProvider.translations('zh-cn', CN)
+            $translateProvider.translations('en', EN)
+            $translateProvider.translations('zh-hk', HK)
+            $translateProvider.preferredLanguage(window.localStorage.lang||language);
         })();
     }
 

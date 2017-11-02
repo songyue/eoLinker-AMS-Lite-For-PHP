@@ -3,11 +3,11 @@
 
     angular.module('eolinker.resource')
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 接口管理接口服务定义js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [接口管理接口服务定义js] [API management interface service definition js]
      * @version  3.0.2
-     * @service  $resource 注入$resource服务
-     * @constant serverUrl 注入前缀URL
+     * @service  $resource [注入$resource服务] [Inject the $resource service]
+     * @constant serverUrl [注入前缀URL] [Inject the prefix URL]
      */
     .factory('ApiManagementResource', ApiManagementResource)
 

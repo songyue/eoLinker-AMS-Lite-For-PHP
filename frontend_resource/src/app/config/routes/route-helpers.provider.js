@@ -1,11 +1,11 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [路由帮助服务]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [路由帮助服务] [Routing help service]
      * @version  3.0.2
-     * @service  APP_REQUIRES [注入加载应用常量]
-     * @return  data.fun [服务相关方法]
+     * @service  APP_REQUIRES [注入加载应用常量] [inject Loading application constant service]
+     * @return  data.fun [服务相关方法] [Service correlation method]
      */
     angular
         .module('eolinker')
@@ -36,17 +36,17 @@
         }
 
         /**
-         * @function [配置基础路径功能模块]
-         * @param    {[string]}   uri [原始路径]
-         * @return   {[string]}       [基础路径]
+         * @function [配置基础路径功能模块] [Configuring the basic path function module]
+         * @param    {[string]}   uri [原始路径 original path]
+         * @return   {[string]}       [基础路径 Basic path]
          */
         data.fun.basepath = function(uri) {
             return 'app/' + uri;
         }
 
         /**
-         * @function [按需加载功能模块]
-         * @return   {[function]}       [按需加载函数体]
+         * @function [按需加载功能模块] [Load function module on demand]
+         * @return   {[function]}       [按需加载函数体 Loading functions on demand]
          */
         data.fun.resolveFor = function() {
             var _args = arguments;

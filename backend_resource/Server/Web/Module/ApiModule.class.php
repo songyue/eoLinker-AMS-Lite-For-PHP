@@ -1,15 +1,15 @@
 <?php
 
 /**
- * @name eoapi open source，eoapi开源版本
- * @link https://www.eoapi.cn
- * @package eoapi
- * @author www.eoapi.cn 广州银云信息科技有限公司 ©2015-2016
- * eoapi，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
+ * @name eolinker open source，eolinker开源版本
+ * @link https://www.eolinker.com
+ * @package eolinker
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2016
+ *  * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  * 用户讨论QQ群：284421832
  *
- * 注意！eoapi开源版本仅供用户下载试用、学习和交流，禁止“一切公开使用于商业用途”或者“以eoapi开源版本为基础而开发的二次版本”在互联网上流通。
+ * 注意！eolinker开源版本仅供用户下载试用、学习和交流，禁止“一切公开使用于商业用途”或者“以eolinker开源版本为基础而开发的二次版本”在互联网上流通。
  * 注意！一经发现，我们将立刻启用法律程序进行维权。
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
@@ -22,8 +22,9 @@ class ApiModule
     }
 
     /**
+     * get userType by apiID
      * 根据apiID获取项目用户类型
-     * @param $apiID
+     * @param $apiID int 接口ID
      * @return bool
      */
     public function getUserType(&$apiID)
@@ -43,27 +44,30 @@ class ApiModule
     }
 
     /**
+     * add api
      * 添加api
-     * @param $apiName 接口名称
-     * @param $apiURI 接口地址
-     * @param $apiProtocol 请求协议 [0/1]=>[HTTP/HTTPS]
-     * @param $apiSuccessMock 访问成功结果，默认为NULL
-     * @param $apiFailureMock 访问失败结果，默认为NULL
-     * @param $apiRequestType 请求类型 [0/1/2/3/4/5/6]=>[POST/GET/PUT/DELETE/HEAD/OPTIONS/PATCH]
-     * @param $apiStatus 接口状态 [0/1/2]=>[启用/维护/弃用]
-     * @param $groupID 接口分组ID
-     * @param $apiHeader 请求头(JSON格式) [{"headerName":"","headerValue":""]
-     * @param $apiRequestParam 请求参数(JSON格式) [{"paramName":"","paramKey":"","paramType":"","paramLimit":"","paramValue":"","paramNotNull":"","paramValueList":[]}]
-     * @param $apiResultParam 返回参数(JSON格式) ["paramKey":"","paramName":"","paramNotNull":"","paramValueList":[]]
-     * @param $starred 是否加星标 [0/1]=>[否/是]，默认为0
-     * @param $apiNoteType 备注类型 [0/1]=>[富文本/markdown]，默认为0
-     * @param $apiNoteRaw 备注(markdown)，默认为NULL
-     * @param $apiNote 备注(富文本)，默认为NULL
-     * @param $apiRequestParamType 请求参数类型 [0/1]=>[表单类型/源数据类型]，默认为0
-     * @param $apiRequestRaw 请求参数源数据，默认为NULL
+     * @param $apiName string 接口名称
+     * @param $apiURI string 接口地址
+     * @param $apiProtocol int 请求协议 [0/1]=>[HTTP/HTTPS]
+     * @param $apiSuccessMock string 访问成功结果，默认为NULL(default null)
+     * @param $apiFailureMock string 访问失败结果，默认为NULL(default null)
+     * @param $apiRequestType int 请求类型 [0/1/2/3/4/5/6]=>[POST/GET/PUT/DELETE/HEAD/OPTIONS/PATCH]
+     * @param $apiStatus int 接口状态 [0/1/2]=>[启用(using)/维护(maintain)/弃用(abandon)]
+     * @param $groupID int 接口分组ID
+     * @param $apiHeader string 请求头(JSON格式) [{"headerName":"","headerValue":""]
+     * @param $apiRequestParam string 请求参数(JSON格式) [{"paramName":"","paramKey":"","paramType":"","paramLimit":"","paramValue":"","paramNotNull":"","paramValueList":[]}]
+     * @param $apiResultParam string 返回参数(JSON格式) ["paramKey":"","paramName":"","paramNotNull":"","paramValueList":[]]
+     * @param $starred int 是否加星标 [0/1]=>[否(false)/是(true)]，默认为0
+     * @param $apiNoteType int 备注类型 [0/1]=>[富文本(richText)/markdown]，默认为0(default 0)
+     * @param $apiNoteRaw string 备注(markdown)，默认为NULL(default null)
+     * @param $apiNote string 备注(富文本)，默认为NULL(default null)
+     * @param $apiRequestParamType int 请求参数类型 [0/1]=>[表单类型(form-data)/源数据类型(raw)]，默认为0(default 0)
+     * @param $apiRequestRaw string 请求参数源数据，默认为NULL(default null)
+     * @return int|bool
      */
     public function addApi(&$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiFailureMock, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw)
     {
+        //if the request params were null, then assign an empty string to them
         //判断部分请求参数是否为空，如果为空值则赋值成为空字符串
         if (empty($apiSuccessMock)) {
             $apiSuccessMock = '';
@@ -86,7 +90,7 @@ class ApiModule
         $projectDao = new ProjectDao;
         if ($projectID = $groupDao->checkGroupPermission($groupID, $_SESSION['userID'])) {
             $projectDao->updateProjectUpdateTime($projectID);
-
+            //make up a cache json data about the api
             //生成缓存数据
             $cacheJson['baseInfo']['apiName'] = $apiName;
             $cacheJson['baseInfo']['apiURI'] = $apiURI;
@@ -104,6 +108,7 @@ class ApiModule
             $updateTime = date("Y-m-d H:i:s", time());
             $cacheJson['baseInfo']['apiUpdateTime'] = $updateTime;
             $cacheJson['headerInfo'] = $apiHeader;
+            //sort the request params
             //将数组中的数字字符串转换为数字并且进行排序
             //			if (is_array($apiRequestParam))
             //			{
@@ -117,6 +122,7 @@ class ApiModule
             //				array_multisort($sortKey, SORT_ASC, $apiRequestParam);
             //			}
             $cacheJson['requestInfo'] = $apiRequestParam;
+            //sort the result params
             //			if (is_array($apiResultParam))
             //			{
             //				$sortKey = array();
@@ -136,28 +142,31 @@ class ApiModule
     }
 
     /**
+     * edit api
      * 修改api
-     * @param $apiID 接口ID
-     * @param $apiName 接口名称
-     * @param $apiURI 接口地址
-     * @param $apiProtocol 请求协议 [0/1]=>[HTTP/HTTPS]
-     * @param $apiSuccessMock 访问成功结果，默认为NULL
-     * @param $apiFailureMock 访问失败结果，默认为NULL
-     * @param $apiRequestType 请求类型 [0/1/2/3/4/5/6]=>[POST/GET/PUT/DELETE/HEAD/OPTIONS/PATCH]
-     * @param $apiStatus 接口状态 [0/1/2]=>[启用/维护/弃用]
-     * @param $groupID 接口分组ID
-     * @param $apiHeader 请求头(JSON格式) [{"headerName":"","headerValue":""]
-     * @param $apiRequestParam 请求参数(JSON格式) [{"paramName":"","paramKey":"","paramType":"","paramLimit":"","paramValue":"","paramNotNull":"","paramValueList":[]}]
-     * @param $apiResultParam 返回参数(JSON格式) ["paramKey":"","paramName":"","paramNotNull":"","paramValueList":[]]
-     * @param $starred 是否加星标 [0/1]=>[否/是]，默认为0
-     * @param $apiNoteType 备注类型 [0/1]=>[富文本/markdown]，默认为0
-     * @param $apiNoteRaw 备注(markdown)，默认为NULL
-     * @param $apiNote 备注(富文本)，默认为NULL
-     * @param $apiRequestParamType 请求参数类型 [0/1]=>[表单类型/源数据类型]，默认为0
-     * @param $apiRequestRaw 请求参数源数据，默认为NULL
+     * @param $apiID int 接口ID
+     * @param $apiName string 接口名称
+     * @param $apiURI string 接口地址
+     * @param $apiProtocol int 请求协议 [0/1]=>[HTTP/HTTPS]
+     * @param $apiSuccessMock string 访问成功结果，默认为NULL
+     * @param $apiFailureMock string 访问失败结果，默认为NULL
+     * @param $apiRequestType int 请求类型 [0/1/2/3/4/5/6]=>[POST/GET/PUT/DELETE/HEAD/OPTIONS/PATCH]
+     * @param $apiStatus int 接口状态 [0/1/2]=>[启用/维护/弃用]
+     * @param $groupID int 接口分组ID
+     * @param $apiHeader string 请求头(JSON格式) [{"headerName":"","headerValue":""]
+     * @param $apiRequestParam string 请求参数(JSON格式) [{"paramName":"","paramKey":"","paramType":"","paramLimit":"","paramValue":"","paramNotNull":"","paramValueList":[]}]
+     * @param $apiResultParam string 返回参数(JSON格式) ["paramKey":"","paramName":"","paramNotNull":"","paramValueList":[]]
+     * @param $starred int 是否加星标 [0/1]=>[否/是]，默认为0
+     * @param $apiNoteType string 备注类型 [0/1]=>[富文本/markdown]，默认为0
+     * @param $apiNoteRaw string 备注(markdown)，默认为NULL
+     * @param $apiNote string 备注(富文本)，默认为NULL
+     * @param $apiRequestParamType int 请求参数类型 [0/1]=>[表单类型/源数据类型]，默认为0
+     * @param $apiRequestRaw string 请求参数源数据，默认为NULL
+     * @return bool
      */
     public function editApi(&$apiID, &$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiFailureMock, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw)
     {
+        //if the request params were null, then assign an empty string to them
         //判断部分请求参数是否为空，如果为空值则赋值成为空字符串
         if (empty($apiSuccessMock)) {
             $apiSuccessMock = '';
@@ -181,7 +190,7 @@ class ApiModule
         if ($apiDao->checkApiPermission($apiID, $_SESSION['userID'])) {
             if ($projectID = $groupDao->checkGroupPermission($groupID, $_SESSION['userID'])) {
                 $projectDao->updateProjectUpdateTime($projectID);
-
+                //make up a cache json data about the api
                 //生成缓存数据
                 $cacheJson['baseInfo']['apiName'] = $apiName;
                 $cacheJson['baseInfo']['apiURI'] = $apiURI;
@@ -233,8 +242,10 @@ class ApiModule
     }
 
     /**
+     * Delete apis in batches and move them into recycling station
      * 删除api,将其移入回收站
-     * @param $apiID 接口ID
+     * @param $apiID int 接口ID
+     * @return bool
      */
     public function removeApi(&$apiID)
     {
@@ -248,8 +259,10 @@ class ApiModule
     }
 
     /**
+     * recover api
      * 恢复api
-     * @param $apiID 接口ID
+     * @param $apiID int 接口ID
+     * @return bool
      */
     public function recoverApi(&$apiID)
     {
@@ -263,8 +276,10 @@ class ApiModule
     }
 
     /**
+     * delete api
      * 彻底删除api
-     * @param $apiID 接口ID
+     * @param $apiID int 接口ID
+     * @return bool
      */
     public function deleteApi(&$apiID)
     {
@@ -278,8 +293,10 @@ class ApiModule
     }
 
     /**
+     * clean up recycling station
      * 清空回收站
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool
      */
     public function cleanRecyclingStation(&$projectID)
     {
@@ -293,9 +310,11 @@ class ApiModule
     }
 
     /**
+     * get api list by group and order by apiName
      * 获取api列表并按照名称排序
-     * @param $groupID 接口分组ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * @param $groupID int 接口分组ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getApiListOrderByName(&$groupID, &$asc = 0)
     {
@@ -309,9 +328,11 @@ class ApiModule
     }
 
     /**
+     * get api list by group and order by update time
      * 获取api列表并按照时间排序
-     * @param $groupID 接口分组ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * @param $groupID int 接口分组ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getApiListOrderByTime(&$groupID, &$asc = 0)
     {
@@ -325,9 +346,11 @@ class ApiModule
     }
 
     /**
+     * get api list by group and order by starred
      * 获取api列表并按照星标排序
-     * @param $groupID 接口分组ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * @param $groupID int 接口分组ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getApiListOrderByStarred(&$groupID, &$asc = 0)
     {
@@ -341,9 +364,11 @@ class ApiModule
     }
 
     /**
+     * get api list by group and order by URI
      * 获取api列表并按Uri排序
-     * @param $groupID 接口分组ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * @param $groupID int 接口分组ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getApiListOrderByUri(&$groupID, &$asc = 0)
     {
@@ -357,10 +382,11 @@ class ApiModule
     }
 
     /**
+     * get api list by group and order by create time
      * 获取api列表按创建时间排序
-     * @param $groupID
-     * @param int $asc
-     * @return bool
+     * @param $groupID int 分组ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getApiListOrderByCreateTime(&$groupID, &$asc = 0)
     {
@@ -374,9 +400,11 @@ class ApiModule
     }
 
     /**
+     * get recycling station api list by project and order by apiName
      * 获取api列表并按照名称排序
-     * @param $projectID 项目ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * @param $projectID int 项目ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getRecyclingStationApiListOrderByName(&$projectID, &$asc = 0)
     {
@@ -390,9 +418,11 @@ class ApiModule
     }
 
     /**
+     * get recycling station api list by project and order by remove time
      * 获取api列表并按照移除时间排序
-     * @param $projectID 项目ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * @param $projectID int 项目ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getRecyclingStationApiListOrderByRemoveTime(&$projectID, &$asc = 0)
     {
@@ -406,9 +436,11 @@ class ApiModule
     }
 
     /**
+     * get recycling station api list by project and order by starred
      * 获取api列表并按照星标排序
-     * @param $projectID 项目ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * @param $projectID int 项目ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getRecyclingStationApiListOrderByStarred(&$projectID, &$asc = 0)
     {
@@ -422,9 +454,11 @@ class ApiModule
     }
 
     /**
+     * get recycling station api list by project and order by URI
      * 获取api列表并按照Uri排序
-     * @param $projectID 项目ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * @param $projectID int 项目ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getRecyclingStationApiListOrderByUri(&$projectID, &$asc = 0)
     {
@@ -438,9 +472,11 @@ class ApiModule
     }
 
     /**
+     * get recycling station api list by project and order by create time
      * 获取api列表并按照创建时间排序
-     * @param $projectID 项目ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * @param $projectID int 项目ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getRecyclingStationApiListOrderByCreateTime(&$projectID, &$asc = 0)
     {
@@ -454,8 +490,10 @@ class ApiModule
     }
 
     /**
+     * get api detail
      * 获取api详情
-     * @param $apiID 接口ID
+     * @param $apiID int 接口ID
+     * @return array|bool
      */
     public function getApi(&$apiID)
     {
@@ -472,9 +510,11 @@ class ApiModule
     }
 
     /**
+     * get all api list by project and order by apiName
      * 获取所有分组的api并按照名称排序
-     * @param $projectID 项目ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * @param $projectID int 项目ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getAllApiListOrderByName(&$projectID, &$asc = 0)
     {
@@ -488,9 +528,11 @@ class ApiModule
     }
 
     /**
-     * 获取所有分组的api并按照时间排序
-     * @param $projectID 项目ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * get all api list by project and order by apiName
+     * 获取所有分组的api并按照名称排序
+     * @param $projectID int 项目ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getAllApiListOrderByTime(&$projectID, &$asc = 0)
     {
@@ -504,9 +546,11 @@ class ApiModule
     }
 
     /**
-     * 获取所有分组的api并按照时间排序
-     * @param $projectID 项目ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * get all api list by project and order by URI
+     * 获取所有分组的api并按照URI排序
+     * @param $projectID int 项目ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getAllApiListOrderByUri(&$projectID, &$asc = 0)
     {
@@ -520,9 +564,11 @@ class ApiModule
     }
 
     /**
-     * 获取所有分组的api并按照时间排序
-     * @param $projectID 项目ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * get all api list by project and order by create time
+     * 获取所有分组的api并按照创建时间排序
+     * @param $projectID int 项目ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getAllApiListOrderByCreateTime(&$projectID, &$asc = 0)
     {
@@ -536,9 +582,11 @@ class ApiModule
     }
 
     /**
+     * get all api list by project and order by starred
      * 获取所有分组的api并按照星标排序
-     * @param $projectID 项目ID
-     * @param $asc 排序 [0/1]=>[升序/降序]
+     * @param $projectID int 项目ID
+     * @param $asc int 排序 [0/1]=>[升序/降序]
+     * @return bool|array
      */
     public function getAllApiListOrderByStarred(&$projectID, &$asc = 0)
     {
@@ -552,9 +600,11 @@ class ApiModule
     }
 
     /**
+     * search api
      * 搜索api
-     * @param $tips 搜索关键字
-     * @param $projectID 项目ID
+     * @param $tips string 搜索关键字
+     * @param $projectID int 项目ID
+     * @return bool|array
      */
     public function searchApi(&$tips, &$projectID)
     {
@@ -567,8 +617,10 @@ class ApiModule
     }
 
     /**
+     * add star
      * 添加星标
-     * @param $apiID 接口ID
+     * @param $apiID int 接口ID
+     * @return bool
      */
     public function addStar(&$apiID)
     {
@@ -582,8 +634,10 @@ class ApiModule
     }
 
     /**
+     * remove star
      * 去除星标
-     * @param $apiID 接口ID
+     * @param $apiID int 接口ID
+     * @return bool
      */
     public function removeStar(&$apiID)
     {
@@ -597,6 +651,7 @@ class ApiModule
     }
 
     /**
+     * Remove apis in batches from recycling station
      * 批量删除api
      * @param $projectID int 项目ID
      * @param $apiIDs string 接口ID列表
@@ -614,6 +669,7 @@ class ApiModule
     }
 
     /**
+     * Delete apis in batches and move them into recycling station
      * 批量将api移入回收站
      * @param $projectID int 项目ID
      * @param $apiIDs string 接口ID列表
@@ -631,6 +687,7 @@ class ApiModule
     }
 
     /**
+     * Recover api in batches
      * 批量恢复api
      * @param $groupID int 分组ID
      * @param $apiIDs string 接口ID列表

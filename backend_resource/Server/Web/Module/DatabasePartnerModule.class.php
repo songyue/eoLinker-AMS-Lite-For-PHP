@@ -23,7 +23,7 @@ class DatabasePartnerModule
 
     /**
      * 获取数据字典用户类型
-     * @param $dbID
+     * @param $dbID int 数据库ID
      * @return bool|int
      */
     public function getUserType(&$dbID)

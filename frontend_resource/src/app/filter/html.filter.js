@@ -1,31 +1,31 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [HTML相关过滤器]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [HTML相关过滤器] [HTML related filters]
      * @version  3.0.2
      */
     angular.module('eolinker.filter')
 
     /**
-     * @function [HTML解码过滤器]
-     * @param {[string]} text [需过滤的html字符串]
-     * @return   {[string]}   [解码后的html字符串]
+     * @function [HTML解码过滤器] [HTML decoding filter]
+     * @param {[string]} text [需过滤的html字符串] [Need to filter the html string]
+     * @return   {[string]}   [解码后的html字符串] The decoded html string
      */
     .filter('HtmlFilter', function() {
         return function(input) {
             var HtmlUtil = {
                 /**
                  * @function [用浏览器内部转换器实现html解码]
-                 * @param    {[string]}   text [需过滤的html字符串]
-                 * @return   {[string]}        [解码后的html字符串]
+                 * @param    {[string]}   text [需过滤的html字符串] [Need to filter the html string]
+                 * @return   {[string]}        [解码后的html字符串] The decoded html string
                  */
                 htmlDecode: function(text) {
-                    //1.首先动态创建一个容器标签元素，如DIV
+                    //1.首先动态创建一个容器标签元素，如DIV First, dynamically create a container tag element, such as DIV
                     var temp = document.createElement("div");
-                    //2.然后将要转换的字符串设置为这个元素的innerHTML(ie，火狐，google都支持)
+                    //2.然后将要转换的字符串设置为这个元素的innerHTML（ie，火狐，google都支持）And then set the string to be converted to this element's innerHTML (ie, Firefox, google support)
                     temp.innerHTML = text;
-                    //3.最后返回这个元素的innerText(ie支持)或者textContent(火狐，google支持)，即得到经过HTML解码的字符串了。
+                    //3.最后返回这个元素的innerText（ie支持）或者textContent（火狐，google支持），即得到经过HTML解码的字符串了。Finally return this element's innerText (ie support) or textContent (Firefox, google support), that is, through the HTML decoding of the string.
 
                     var output = temp.innerText || temp.textContent;
                     temp = null;
@@ -34,9 +34,9 @@
 
                 },
                 /**
-                 * @function [用正则表达式实现html解码]
-                 * @param    {[string]}   str [需过滤的html字符串]
-                 * @return   {[string]}        [解码后的html字符串]
+                 * @function [用正则表达式实现html解码] [Realize html decoding with regular expression]
+                 * @param    {[string]}   str [需过滤的html字符串 Need to filter the html string] 
+                 * @return   {[string]}        [解码后的html字符串 The decoded html string]
                  */
                 htmlDecodeByRegExp: function(str) {
 
@@ -62,24 +62,24 @@
     })
     
     /**
-     * @function [HTML转码过滤器]
-     * @param {[string]} html [需过滤的html字符串]
-     * @return   {[string]}   [转码后的html字符串]
+     * @function [HTML转码过滤器] [HTML transcoding filter]
+     * @param {[string]} html [需过滤的html字符串 Need to filter the html string]
+     * @return   {[string]}   [转码后的html字符串 Transcoded html string]
      */
     .filter('HtmlEncodeFilter', function() {
         return function(input) {
             var HtmlUtil = {
                 /**
-                 * @function [用浏览器内部转换器实现html转码]
-                 * @param    {[string]}   html [需过滤的html字符串]
-                 * @return   {[string]}        [转码后的html字符串]
+                 * @function [用浏览器内部转换器实现html转码] [Realize html transcoding with the browser internal converter]
+                 * @param    {[string]}   html [需过滤的html字符串 Need to filter the html string] 
+                 * @return   {[string]}        [转码后的html字符串 Transcoded html string]
                  */
                 htmlEncode: function(html) {
-                    //1.首先动态创建一个容器标签元素，如DIV
+                    //1.首先动态创建一个容器标签元素，如DIV First, dynamically create a container tag element, such as DIV
                     var temp = document.createElement("div");
-                    //2.然后将要转换的字符串设置为这个元素的innerText(ie支持)或者textContent(火狐，google支持)
+                    //2.然后将要转换的字符串设置为这个元素的innerText（ie支持）或者textContent（火狐，google支持）And then set the string to be converted to this element's innerText (ie support) or textContent (Firefox, google support)
                     (temp.textContent != undefined) ? (temp.textContent = html) : (temp.innerText = html);
-                    //3.最后返回这个元素的innerHTML，即得到经过HTML编码转换的字符串了
+                    //3.最后返回这个元素的innerHTML，即得到经过HTML编码转换的字符串了 Finally return this element's innerHTML, that is, through the HTML code conversion string
 
                     var output = temp.innerHTML;
                     temp = null;
@@ -88,9 +88,9 @@
 
                 },
                 /**
-                 * @function [用正则表达式实现html转码]
-                 * @param    {[string]}   str [需过滤的html字符串]
-                 * @return   {[string]}        [转码后的html字符串]
+                 * @function [用正则表达式实现html转码] [Realize html transcoding with regular expression]
+                 * @param    {[string]}   str [需过滤的html字符串 Need to filter the html string]
+                 * @return   {[string]}        [转码后的html字符串 Transcoded html string]
                  */
                 htmlEncodeByRegExp: function(str) {
 
@@ -113,10 +113,10 @@
     })
     
     /**
-     * @function [xss过滤器]
-     * @param    {[string]}   input    [需过滤的html字符串]
-     * @param    {[obj]}   options [相关配置]
-     * @return   {[string]}        [过滤后的html字符串]
+     * @function [xss过滤器] [xss filter]
+     * @param    {[string]}   input    [需过滤的html字符串 Need to filter the html string]
+     * @param    {[obj]}   options [相关配置 Related configuration]
+     * @return   {[string]}        [过滤后的html字符串 Filtered html string]
      * 参考https://github.com/leizongmin/js-xss
      */
     .filter('XssFilter', function() {
@@ -145,14 +145,14 @@
             })({
                 1: [function(require, module, exports) {
                     /**
-                     * 默认配置
+                     * 默认配置 default allocation
                      */
 
                     var FilterCSS = require('cssfilter').FilterCSS;
                     var getDefaultCSSWhiteList = require('cssfilter').getDefaultWhiteList;
                     var _ = require('./util');
 
-                    // 默认白名单
+                    // 默认白名单 Default white list
                     function getDefaultWhiteList() {
                         return {
                             a: ['target', 'href', 'title'],
@@ -221,12 +221,12 @@
                         };
                     }
 
-                    // 默认CSS Filter
+                    // 默认CSS Filter Default CSS Filter
                     var defaultCSSFilter = new FilterCSS();
 
                     /**
                      * 匹配到标签时的处理方法
-                     *
+                     * Match the way to the label 
                      * @param {String} tag
                      * @param {String} html
                      * @param {Object} options
@@ -238,7 +238,7 @@
 
                     /**
                      * 匹配到不在白名单上的标签时的处理方法
-                     *
+                     * Match the method when the label is not on the white list
                      * @param {String} tag
                      * @param {String} html
                      * @param {Object} options
@@ -250,7 +250,7 @@
 
                     /**
                      * 匹配到标签属性时的处理方法
-                     *
+                     * The method of handling when matching the label attribute
                      * @param {String} tag
                      * @param {String} name
                      * @param {String} value
@@ -262,7 +262,7 @@
 
                     /**
                      * 匹配到不在白名单上的标签属性时的处理方法
-                     *
+                     * Match the method when the label attribute is not on the whitelist
                      * @param {String} tag
                      * @param {String} name
                      * @param {String} value
@@ -274,7 +274,7 @@
 
                     /**
                      * HTML转义
-                     *
+                     * HTML escapes
                      * @param {String} html
                      */
                     function escapeHtml(html) {
@@ -283,7 +283,7 @@
 
                     /**
                      * 安全的标签属性值
-                     *
+                     * Secure label attribute values
                      * @param {String} tag
                      * @param {String} name
                      * @param {String} value
@@ -291,12 +291,12 @@
                      * @return {String}
                      */
                     function safeAttrValue(tag, name, value, cssFilter) {
-                        // 转换为友好的属性值，再做判断
+                        // 转换为友好的属性值，再做判断 Converted to a friendly attribute value, and then make judgments
                         value = friendlyAttrValue(value);
 
                         if (name === 'href' || name === 'src') {
-                            // 过滤 href 和 src 属性
-                            // 仅允许 http:// | https:// | mailto: | / | # 开头的地址
+                            // 过滤 href 和 src 属性 Filter the href and src properties
+                            // 仅允许 http:// | https:// | mailto: | / | # 开头的地址 Only allow http: // | https: // | mailto: | / | # at the beginning of the address
                             value = _.trim(value);
                             if (value === '#') return '#';
                             if (!(value.substr(0, 7) === 'http://' ||
@@ -307,14 +307,13 @@
                                 return '';
                             }
                         } else if (name === 'background') {
-                            // 过滤 background 属性 （这个xss漏洞较老了，可能已经不适用）
+                            // 过滤 background 属性 （这个xss漏洞较老了，可能已经不适用）Filter the background attribute (this xss vulnerability is older, may not already apply)
                             // javascript:
                             REGEXP_DEFAULT_ON_TAG_ATTR_4.lastIndex = 0;
                             if (REGEXP_DEFAULT_ON_TAG_ATTR_4.test(value)) {
                                 return '';
                             }
                         } else if (name === 'style') {
-                            // /*注释*/
                             /*REGEXP_DEFAULT_ON_TAG_ATTR_3.lastIndex = 0;
                             if (REGEXP_DEFAULT_ON_TAG_ATTR_3.test(value)) {
                               return '';
@@ -338,12 +337,11 @@
                             }
                         }
 
-                        // 输出时需要转义<>"
                         value = escapeAttrValue(value);
                         return value;
                     }
 
-                    // 正则表达式
+                    // 正则表达式 Regular expression
                     var REGEXP_LT = /</g;
                     var REGEXP_GT = />/g;
                     var REGEXP_QUOTE = /"/g;
@@ -360,7 +358,7 @@
 
                     /**
                      * 对双引号进行转义
-                     *
+                     * Double quotes are escaped
                      * @param {String} str
                      * @return {String} str
                      */
@@ -370,7 +368,7 @@
 
                     /**
                      * 对双引号进行转义
-                     *
+                     * Double quotes are escaped
                      * @param {String} str
                      * @return {String} str
                      */
@@ -380,7 +378,7 @@
 
                     /**
                      * 对html实体编码进行转义
-                     *
+                     * The html entity code is escaped
                      * @param {String} str
                      * @return {String}
                      */
@@ -392,7 +390,7 @@
 
                     /**
                      * 对html5新增的危险实体编码进行转义
-                     *
+                     * Up to the new dangerous entity code for html5 escaping
                      * @param {String} str
                      * @return {String}
                      */
@@ -403,7 +401,7 @@
 
                     /**
                      * 清除不可见字符
-                     *
+                     * Clear invisible characters
                      * @param {String} str
                      * @return {String}
                      */
@@ -417,21 +415,21 @@
 
                     /**
                      * 将标签的属性值转换成一般字符，便于分析
-                     *
+                     * Transform the attribute values of the tags into general characters for easy analysis
                      * @param {String} str
                      * @return {String}
                      */
                     function friendlyAttrValue(str) {
-                        str = unescapeQuote(str); // 双引号
-                        str = escapeHtmlEntities(str); // 转换HTML实体编码
-                        str = escapeDangerHtml5Entities(str); // 转换危险的HTML5新增实体编码
-                        str = clearNonPrintableCharacter(str); // 清除不可见字符
+                        str = unescapeQuote(str); // 双引号 Double quotes
+                        str = escapeHtmlEntities(str); // 转换HTML实体编码 Convert HTML entity code
+                        str = escapeDangerHtml5Entities(str); // 转换危险的HTML5新增实体编码 Convert dangerous HTML5 new entity code
+                        str = clearNonPrintableCharacter(str); // 清除不可见字符 Clear invisible characters
                         return str;
                     }
 
                     /**
                      * 转义用于输出的标签属性值
-                     *
+                     * Escape the value of the label attribute used for the output
                      * @param {String} str
                      * @return {String}
                      */
@@ -442,7 +440,7 @@
                     }
 
                     /**
-                     * 去掉不在白名单中的标签onIgnoreTag处理方法
+                     * 去掉不在白名单中的标签onIgnoreTag处理方法 Remove the label in the white list onIgnoreTag processing method
                      */
                     function onIgnoreTagStripAll() {
                         return '';
@@ -450,9 +448,9 @@
 
                     /**
                      * 删除标签体
-                     *
-                     * @param {array} tags 要删除的标签列表
-                     * @param {function} next 对不在列表中的标签的处理函数，可选
+                     * Remove the tag body
+                     * @param {array} tags 要删除的标签列表 List of tags to remove
+                     * @param {function} next 对不在列表中的标签的处理函数，可选 For processing functions that are not in the list of tags, optional
                      */
                     function StripTagBody(tags, next) {
                         if (typeof(next) !== 'function') {
@@ -466,8 +464,8 @@
                             return (_.indexOf(tags, tag) !== -1);
                         }
 
-                        var removeList = []; // 要删除的位置范围列表
-                        var posStart = false; // 当前标签开始位置
+                        var removeList = []; // 要删除的位置范围列表 List of location ranges to remove
+                        var posStart = false; // 当前标签开始位置 Current label start position
 
                         return {
                             onIgnoreTag: function(tag, html, options) {
@@ -503,7 +501,7 @@
 
                     /**
                      * 去除备注标签
-                     *
+                     * Remove the Remark tab
                      * @param {String} html
                      * @return {String}
                      */
@@ -514,7 +512,7 @@
 
                     /**
                      * 去除不可见字符
-                     *
+                     * Remove invisible characters
                      * @param {String} html
                      * @return {String}
                      */
@@ -558,7 +556,7 @@
                 }, { "./util": 4, "cssfilter": 8 }],
                 2: [function(require, module, exports) {
                     /**
-                     * 模块入口
+                     * 模块入口 Module entry
                      */
 
                     var DEFAULT = require('./default');
@@ -568,8 +566,8 @@
 
                     /**
                      * XSS过滤
-                     *
-                     * @param {String} html 要过滤的HTML代码
+                     * SS filtering
+                     * @param {String} html 要过滤的HTML代码 The HTML code to filter
                      * @param {Object} options 选项：whiteList, onTag, onTagAttr, onIgnoreTag, onIgnoreTagAttr, safeAttrValue, escapeHtml
                      * @return {String}
                      */
@@ -579,14 +577,14 @@
                     }
 
 
-                    // 输出
+                    // 输出 Output
                     exports = module.exports = filterXSS;
                     exports.FilterXSS = FilterXSS;
                     for (var i in DEFAULT) exports[i] = DEFAULT[i];
                     for (var i in parser) exports[i] = parser[i];
 
 
-                    // 在浏览器端使用
+                    // 在浏览器端使用 Used at the browser side
                     if (typeof window !== 'undefined') {
                         window.filterXSS = module.exports;
                     }
@@ -601,7 +599,7 @@
 
                     /**
                      * 获取标签的名称
-                     *
+                     * Get the name of the tag
                      * @param {String} html 如：'<a hef="#">'
                      * @return {String}
                      */
@@ -620,7 +618,7 @@
 
                     /**
                      * 是否为闭合标签
-                     *
+                     * Whether it is a closed label
                      * @param {String} html 如：'<a hef="#">'
                      * @return {Boolean}
                      */
@@ -630,26 +628,26 @@
 
                     /**
                      * 分析HTML代码，调用相应的函数处理，返回处理后的HTML
-                     *
+                     * Analyze the HTML code, call the corresponding function to handle, and return the processed HTML
                      * @param {String} html
-                     * @param {Function} onTag 处理标签的函数
+                     * @param {Function} onTag 处理标签的函数 A function that handles a tag
                      *   参数格式： function (sourcePosition, position, tag, html, isClosing)
-                     * @param {Function} escapeHtml 对HTML进行转义的函数
+                     * @param {Function} escapeHtml 对HTML进行转义的函数 A function that escapes HTML
                      * @return {String}
                      */
                     function parseTag(html, onTag, escapeHtml) {
                         'user strict';
 
-                        var rethtml = ''; // 待返回的HTML
-                        var lastPos = 0; // 上一个标签结束位置
-                        var tagStart = false; // 当前标签开始位置
-                        var quoteStart = false; // 引号开始位置
-                        var currentPos = 0; // 当前位置
-                        var len = html.length; // HTML长度
-                        var currentHtml = ''; // 当前标签的HTML代码
-                        var currentTagName = ''; // 当前标签的名称
+                        var rethtml = ''; // 待返回的HTML The HTML to be returned
+                        var lastPos = 0; // 上一个标签结束位置 On the end of a label
+                        var tagStart = false; // 当前标签开始位置 Current label start position
+                        var quoteStart = false; // 引号开始位置 Quotation marks start position
+                        var currentPos = 0; // 当前位置 current location
+                        var len = html.length; // HTML长度 HTML length
+                        var currentHtml = ''; // 当前标签的HTML代码 The current tag's HTML code
+                        var currentTagName = ''; // 当前标签的名称 The name of the current tag
 
-                        // 逐个分析字符
+                        // 逐个分析字符 Analyze characters one by one
                         for (currentPos = 0; currentPos < len; currentPos++) {
                             var c = html.charAt(currentPos);
                             if (tagStart === false) {
@@ -678,7 +676,7 @@
                                         tagStart = false;
                                         continue;
                                     }
-                                    // HTML标签内的引号仅当前一个字符是等于号时才有效
+                                    // HTML标签内的引号仅当前一个字符是等于号时才有效 The quotation marks in the HTML tag are valid only if the current character is equal to the number
                                     if ((c === '"' || c === "'") && html.charAt(currentPos - 1) === '=') {
                                         quoteStart = c;
                                         continue;
@@ -698,24 +696,24 @@
                         return rethtml;
                     }
 
-                    // 不符合属性名称规则的正则表达式
+                    // 不符合属性名称规则的正则表达式 A regular expression that does not conform to the attribute name rule
                     var REGEXP_ATTR_NAME = /[^a-zA-Z0-9_:\.\-]/img;
 
                     /**
                      * 分析标签HTML代码，调用相应的函数处理，返回HTML
-                     *
+                     *Analyze the tag HTML code, call the corresponding function to handle, and return the HTML
                      * @param {String} html 如标签'<a href="#" target="_blank">' 则为 'href="#" target="_blank"'
-                     * @param {Function} onAttr 处理属性值的函数
+                     * @param {Function} onAttr 处理属性值的函数 A function that handles attribute values
                      *   函数格式： function (name, value)
                      * @return {String}
                      */
                     function parseAttr(html, onAttr) {
                         'user strict';
 
-                        var lastPos = 0; // 当前位置
-                        var retAttrs = []; // 待返回的属性列表
-                        var tmpName = false; // 临时属性名称
-                        var len = html.length; // HTML代码长度
+                        var lastPos = 0; // 当前位置 current location
+                        var retAttrs = []; // 待返回的属性列表 The list of attributes to be returned
+                        var tmpName = false; // 临时属性名称 Temporary attribute name
+                        var len = html.length; // HTML代码长度 HTML code length
 
                         function addAttr(name, value) {
                             name = _.trim(name);
@@ -725,7 +723,7 @@
                             if (ret) retAttrs.push(ret);
                         };
 
-                        // 逐个分析字符
+                        // 逐个分析字符 Analyze characters one by one
                         for (var i = 0; i < len; i++) {
                             var c = html.charAt(i);
                             var v, j;
@@ -735,7 +733,7 @@
                                 continue;
                             }
                             if (tmpName !== false) {
-                                // HTML标签内的引号仅当前一个字符是等于号时才有效
+                                // HTML标签内的引号仅当前一个字符是等于号时才有效 The quotation marks in the HTML tag are valid only if the current character is equal to the number
                                 if (i === lastPos && (c === '"' || c === "'") && html.charAt(i - 1) === '=') {
                                     j = html.indexOf(c, i + 1);
                                     if (j === -1) {
@@ -864,7 +862,7 @@
                 }, {}],
                 5: [function(require, module, exports) {
                     /**
-                     * 过滤XSS
+                     * 过滤XSS Filter XSS
                      */
 
                     var FilterCSS = require('cssfilter').FilterCSS;
@@ -877,7 +875,7 @@
 
                     /**
                      * 返回值是否为空
-                     *
+                     * The return value is empty
                      * @param {Object} obj
                      * @return {Boolean}
                      */
@@ -887,7 +885,7 @@
 
                     /**
                      * 取标签内的属性列表字符串
-                     *
+                     * Take the attribute list string in the tag
                      * @param {String} html
                      * @return {Object}
                      *   - {String} html
@@ -912,7 +910,7 @@
 
                     /**
                      * XSS过滤对象
-                     *
+                     * XSS filter object
                      * @param {Object} options
                      *   选项：whiteList, onTag, onTagAttr, onIgnoreTag,
                      *        onIgnoreTagAttr, safeAttrValue, escapeHtml
@@ -948,12 +946,12 @@
 
                     /**
                      * 开始处理
-                     *
+                     * Start processing
                      * @param {String} html
                      * @return {String}
                      */
                     FilterXSS.prototype.process = function(html) {
-                        // 兼容各种奇葩输入
+                        // 兼容各种奇葩输入 Compatible with a variety of wonderful input
                         html = html || '';
                         html = html.toString();
                         if (!html) return '';
@@ -969,17 +967,17 @@
                         var escapeHtml = options.escapeHtml;
                         var cssFilter = me.cssFilter;
 
-                        // 是否清除不可见字符
+                        // 是否清除不可见字符 Whether to remove invisible characters
                         if (options.stripBlankChar) {
                             html = DEFAULT.stripBlankChar(html);
                         }
 
-                        // 是否禁止备注标签
+                        // 是否禁止备注标签 Whether the label is forbidden
                         if (!options.allowCommentTag) {
                             html = DEFAULT.stripCommentTag(html);
                         }
 
-                        // 如果开启了stripIgnoreTagBody
+                        // 如果开启了stripIgnoreTagBody If the stripIgnoreTagBody is turned on
                         var stripIgnoreTagBody = false;
                         if (options.stripIgnoreTagBody) {
                             var stripIgnoreTagBody = DEFAULT.StripTagBody(options.stripIgnoreTagBody, onIgnoreTag);
@@ -994,14 +992,14 @@
                                 isWhite: (tag in whiteList)
                             };
 
-                            // 调用onTag处理
+                            // 调用onTag处理 Call onTag processing
                             var ret = onTag(tag, html, info);
                             if (!isNull(ret)) return ret;
 
-                            // 默认标签处理方法
+                            // 默认标签处理方法 Default label handling method
                             if (info.isWhite) {
-                                // 白名单标签，解析标签属性
-                                // 如果是闭合标签，则不需要解析属性
+                                // 白名单标签，解析标签属性 Whitelist label, parse label attribute
+                                // 如果是闭合标签，则不需要解析属性 If it is a closed tag, you do not need to parse the attribute
                                 if (info.isClosing) {
                                     return '</' + tag + '>';
                                 }
@@ -1010,14 +1008,14 @@
                                 var whiteAttrList = whiteList[tag];
                                 var attrsHtml = parseAttr(attrs.html, function(name, value) {
 
-                                    // 调用onTagAttr处理
+                                    // 调用onTagAttr处理 Call onTagAttr processing
                                     var isWhiteAttr = (_.indexOf(whiteAttrList, name) !== -1);
                                     var ret = onTagAttr(tag, name, value, isWhiteAttr);
                                     if (!isNull(ret)) return ret;
 
-                                    // 默认的属性处理方法
+                                    // 默认的属性处理方法 The default property handling method
                                     if (isWhiteAttr) {
-                                        // 白名单属性，调用safeAttrValue过滤属性值
+                                        // 白名单属性，调用safeAttrValue过滤属性值 White list attribute, call safeAttrValue filter attribute value
                                         value = safeAttrValue(tag, name, value, cssFilter);
                                         if (value) {
                                             return name + '="' + value + '"';
@@ -1025,14 +1023,14 @@
                                             return name;
                                         }
                                     } else {
-                                        // 非白名单属性，调用onIgnoreTagAttr处理
+                                        // 非白名单属性，调用onIgnoreTagAttr处理 Non-whitelist attribute, call onIgnoreTagAttr processing
                                         var ret = onIgnoreTagAttr(tag, name, value, isWhiteAttr);
                                         if (!isNull(ret)) return ret;
                                         return;
                                     }
                                 });
 
-                                // 构造新的标签代码
+                                // 构造新的标签代码 Construct a new tag code
                                 var html = '<' + tag;
                                 if (attrsHtml) html += ' ' + attrsHtml;
                                 if (attrs.closing) html += ' /';
@@ -1040,7 +1038,7 @@
                                 return html;
 
                             } else {
-                                // 非白名单标签，调用onIgnoreTag处理
+                                // 非白名单标签，调用onIgnoreTag处理 Non-white list label, call onIgnoreTag processing
                                 var ret = onIgnoreTag(tag, html, info);
                                 if (!isNull(ret)) return ret;
                                 return escapeHtml(html);
@@ -1048,7 +1046,7 @@
 
                         }, escapeHtml);
 
-                        // 如果开启了stripIgnoreTagBody，需要对结果再进行处理
+                        // 如果开启了stripIgnoreTagBody，需要对结果再进行处理 If stripIgnoreTagBody is turned on, the results need to be processed again
                         if (stripIgnoreTagBody) {
                             retHtml = stripIgnoreTagBody.remove(retHtml);
                         }
@@ -1072,7 +1070,7 @@
 
                     /**
                      * 返回值是否为空
-                     *
+                     * The return value is empty
                      * @param {Object} obj
                      * @return {Boolean}
                      */
@@ -1083,7 +1081,7 @@
 
                     /**
                      * 创建CSS过滤器
-                     *
+                     * Create a CSS filter
                      * @param {Object} options
                      *   - {Object} whiteList
                      *   - {Object} onAttr
@@ -1098,7 +1096,7 @@
                     }
 
                     FilterCSS.prototype.process = function(css) {
-                        // 兼容各种奇葩输入
+                        // 兼容各种奇葩输入 Compatible with a variety of strange input
                         css = css || '';
                         css = css.toString();
                         if (!css) return '';
@@ -1162,6 +1160,11 @@
                         // Function: function (val) { } 返回true表示允许该属性，其他值均表示不允许
                         // RegExp: regexp.test(val) 返回true表示允许该属性，其他值均表示不允许
                         // 除上面列出的值外均表示不允许
+                        // Whitelist Value Description:
+                        // true: Allow the attribute
+                        // Function: function (val) {} returns true to allow the attribute, other values that are not allowed
+                        // RegExp: regexp.test (val) returns true to allow this attribute, other values are not allowed
+                        // In addition to the values listed above, it is not allowed
                         var whiteList = {};
 
                         whiteList['align-content'] = false; // default: auto
@@ -1506,7 +1509,7 @@
 
                     /**
                      * 匹配到白名单上的一个属性时
-                     *
+                     * Match to a property on the whitelist
                      * @param {String} name
                      * @param {String} value
                      * @param {Object} options
@@ -1518,7 +1521,7 @@
 
                     /**
                      * 匹配到不在白名单上的一个属性时
-                     *
+                     * Match to a property that is not on the whitelist
                      * @param {String} name
                      * @param {String} value
                      * @param {Object} options
@@ -1546,8 +1549,8 @@
 
                     /**
                      * XSS过滤
-                     *
-                     * @param {String} css 要过滤的CSS代码
+                     * XSS filtering
+                     * @param {String} css 要过滤的CSS代码 The CSS code to filter
                      * @param {Object} options 选项：whiteList, onAttr, onIgnoreAttr
                      * @return {String}
                      */
@@ -1557,12 +1560,12 @@
                     }
 
 
-                    // 输出
+                    // 输出 Output
                     exports = module.exports = filterCSS;
                     exports.FilterCSS = FilterCSS;
                     for (var i in DEFAULT) exports[i] = DEFAULT[i];
 
-                    // 在浏览器端使用
+                    // 在浏览器端使用 Used at the browser side
                     if (typeof window !== 'undefined') {
                         window.filterCSS = module.exports;
                     }
@@ -1578,9 +1581,9 @@
 
                     /**
                      * 解析style
-                     *
+                     * Parse the style
                      * @param {String} css
-                     * @param {Function} onAttr 处理属性的函数
+                     * @param {Function} onAttr 处理属性的函数 A function that handles a property
                      *   参数格式： function (sourcePosition, position, name, value, source)
                      * @return {String}
                      */
@@ -1594,14 +1597,14 @@
                         var retCSS = '';
 
                         function addNewAttr() {
-                            // 如果没有正常的闭合圆括号，则直接忽略当前属性
+                            // 如果没有正常的闭合圆括号，则直接忽略当前属性 If there is no normal closing parentheses, the current attribute is ignored
                             if (!isParenthesisOpen) {
                                 var source = _.trim(css.slice(lastPos, i));
                                 var j = source.indexOf(':');
                                 if (j !== -1) {
                                     var name = _.trim(source.slice(0, j));
                                     var value = _.trim(source.slice(j + 1));
-                                    // 必须有属性名称
+                                    // 必须有属性名称 Must have attribute name
                                     if (name) {
                                         var ret = onAttr(lastPos, retCSS.length, name, value, source);
                                         if (ret) retCSS += ret + '; ';
@@ -1616,9 +1619,9 @@
                             if (c === '/' && css[i + 1] === '*') {
                                 // 备注开始
                                 var j = css.indexOf('*/', i + 2);
-                                // 如果没有正常的备注结束，则后面的部分全部跳过
+                                // 如果没有正常的备注结束，则后面的部分全部跳过 If there is no normal end of the note, then the latter part of the whole skip
                                 if (j === -1) break;
-                                // 直接将当前位置调到备注结尾，并且初始化状态
+                                // 直接将当前位置调到备注结尾，并且初始化状态 Directly to the current position to the end of the note, and initialize the state
                                 i = j + 1;
                                 lastPos = i + 1;
                                 isParenthesisOpen = false;
@@ -1628,7 +1631,7 @@
                                 isParenthesisOpen = false;
                             } else if (c === ';') {
                                 if (isParenthesisOpen) {
-                                    // 在圆括号里面，忽略
+                                    // 在圆括号里面，忽略 In parentheses inside, ignored
                                 } else {
                                     addNewAttr();
                                 }

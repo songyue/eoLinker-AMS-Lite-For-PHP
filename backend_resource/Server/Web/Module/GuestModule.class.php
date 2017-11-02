@@ -30,9 +30,10 @@ class GuestModule
 
     /**
      * 用户注册
-     * @param $userName 用户名
-     * @param $loginPassword 登录密码
-     * @param $userNickName    用户昵称
+     * @param $userName string 用户名
+     * @param $loginPassword string 登录密码
+     * @param $userNickName string 用户昵称
+     * @return bool
      */
     public function register(&$userName, &$loginPassword, $userNickName)
     {
@@ -53,7 +54,8 @@ class GuestModule
 
     /**
      * 检查用户名是否存在
-     * @param $userName 用户名
+     * @param $userName string 用户名
+     * @return bool
      */
     public function checkUserNameExist(&$userName)
     {
@@ -63,8 +65,9 @@ class GuestModule
 
     /**
      * 登录
-     * @param $loginName 登录用户名
-     * @param $loginPassword 登录密码
+     * @param $loginName string 登录用户名
+     * @param $loginPassword string 登录密码
+     * @return bool
      */
     public function login(&$loginName, &$loginPassword)
     {

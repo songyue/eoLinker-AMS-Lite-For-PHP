@@ -1,18 +1,18 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [参数显示过滤器]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [参数显示过滤器] [Parameter display filter]
      * @version  3.0.2
-     * @service  $sce [注入$sce服务]
-     * @service  $filter [注入过滤器服务]
+     * @service  $sce [注入$sce服务] [Inject $sce service]
+     * @service  $filter [注入过滤器服务] [Inject filter service]
      */
     angular.module('eolinker.filter')
 
     /**
-     * @function [参数层级显示过滤器]
-     * @param    {[array]}   input    [需过滤参数]
-     * @return   {[array]}            [处理后的参数]
+     * @function [参数层级显示过滤器] [Parameter level display filter]
+     * @param    {[array]}   input    [需过滤参数 Filter parameters are required] 
+     * @return   {[array]}            [处理后的参数 Processed parameters]
      */
     .filter('paramLevelFilter', ['$sce', '$filter', function($sce, $filter) {
         var data = {
@@ -27,17 +27,17 @@
             }
         }
         /**
-         * @function [主操作功能函数]
-         * @param    {[obj]}   arg [需过滤参数]
-         * @return   {[array]}       [处理后的参数]
+         * @function [主操作功能函数] [Main operation]
+         * @param    {[obj]}   arg [需过滤参数 Filter parameters are required]
+         * @return   {[array]}       [处理后的参数 Processed parameters]
          */
         data.fun.main = function(arg) {
             var template = {
                 origin: [],
                 array: {
-                    parent: arg.parent || [], //父存储位置数组（字符串）
-                    child: [], //子存储位置数组（json）
-                    item: [], //临时切割变量存放数组
+                    parent: arg.parent || [], //父存储位置数组（字符串）Parent storage location array (string)
+                    child: [], //子存储位置数组（json）Sub storage location array (json)
+                    item: [], //临时切割变量存放数组 Temporarily cut variables to store arrays
                 },
                 loopVar: {
                     $index: 0,
@@ -91,9 +91,9 @@
     }])
     
     /**
-     * @function [参数列表转换json过滤器]
-     * @param    {[array]}   input     [参数列表]
-     * @return   {[string]}            [json字符串]
+     * @function [参数列表转换json过滤器] [Parameter list conversion json filter]
+     * @param    {[array]}   input     [参数列表 parameter list]
+     * @return   {[string]}            [json字符串 json string]
      */
     .filter('paramLevelToJsonFilter', ['$sce', '$filter', function($sce, $filter) {
         var data = {
@@ -104,9 +104,9 @@
             }
         }
         /**
-         * @function [判别类型功能函数]
-         * @param    {[obj]}   object [需判断的对象]
-         * @return   {[string]}          [类型]
+         * @function [判别类型功能函数] [Discriminant type]
+         * @param    {[obj]}   object [需判断的对象 Need to judge the object]
+         * @return   {[string]}          [类型 Types of]
          */
         data.fun.typeof = function(object) {
             var tf = typeof object,
@@ -122,8 +122,8 @@
         }
 
         /**
-         * @function [自循环嵌入子级功能函数]
-         * @param    {[obj]}   object [{array:经过分割的参数名数组,parent:父节点}]
+         * @function [自循环嵌入子级功能函数] [Self - cyclic embedding of sub - functions]
+         * @param    {[obj]}   object [{array:经过分割的参数名数组 An array of parameter names,parent:父节点 Parent node}]
          */
         data.fun.loop = function(arg) {
             var template = {
@@ -172,16 +172,16 @@
         }
 
         /**
-         * @function [主操作功能函数]
-         * @param    {[obj]}   arg [{input:参数列表,parent:父节点,result:上一轮循环的返回结果}]
+         * @function [主操作功能函数] [Main operation]
+         * @param    {[obj]}   arg [{input:参数列表 parameter list,parent:父节点 parameter list,result:上一轮循环的返回结果 Returns the result of the last round of the cycle}]
          */
         data.fun.main = function(arg) {
             var template = {
                 loopObject: null,
                 array: {
-                    parent: arg.parent || [], //父存储位置数组（字符串）
-                    child: [], //子存储位置数组（json）
-                    item: [], //临时切割变量存放数组
+                    parent: arg.parent || [], //父存储位置数组（字符串）Parent storage location array (string)
+                    child: [], //子存储位置数组（json） Sub storage location array (json)
+                    item: [], //临时切割变量存放数组 Temporarily cut variables to store arrays
                 },
                 loopVar: {
                     $index: 0,

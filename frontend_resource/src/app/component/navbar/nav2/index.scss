@@ -28,10 +28,11 @@ eo-navbar2 {
             }
             .nav-li {
                 span {
-                    margin: 0 80px 0 10px;
+                    margin-left: 10px;
                 }
             }
             .navigation-li {
+                min-width: 200px;
                 a,
                 span {
                     color: #999;

@@ -8,6 +8,8 @@ class ExportDao
 {
     /**
      * 获取项目数据
+     * @param $projectID int 项目ID
+     * @return array|bool
      */
     public function getProjectData(&$projectID)
     {

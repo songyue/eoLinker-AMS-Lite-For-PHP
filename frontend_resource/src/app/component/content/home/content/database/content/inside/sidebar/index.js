@@ -1,15 +1,16 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 数据库内页侧边栏模块相关js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [数据库内页侧边栏模块相关js] [Database inside the page sidebar module related js]
      * @version  3.0.2
-     * @service  $scope 注入作用域服务
-     * @service  $rootScope 注入根作用域服务
-     * @service  DatabaseResource 注入数据库接口服务
-     * @service  $state 注入路由服务
-     * @service  GroupService 注入GroupService服务
-     * @constant CODE 注入状态码常量
+     * @service  $scope [注入作用域服务] [inject scope service]
+     * @service  $rootScope [注入根作用域服务] [inject rootScope service]
+     * @service  DatabaseResource [注入数据库接口服务] [inject Database API service]
+     * @service  $state [注入路由服务] [inject state service]
+     * @service  GroupService [注入GroupService服务] [inject GroupService service]
+     * @service  $filter [注入GroupService服务] [inject filter service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
      */
     angular.module('eolinker')
         .component('databaseSidebar', {
@@ -20,9 +21,9 @@
             controller: databaseSidebarController
         })
 
-    databaseSidebarController.$inject = ['$scope', '$rootScope', 'DatabaseResource', '$state', 'GroupService', 'CODE'];
+    databaseSidebarController.$inject = ['$scope', '$rootScope', 'DatabaseResource', '$state', 'GroupService', '$filter', 'CODE'];
 
-    function databaseSidebarController($scope, $rootScope, DatabaseResource, $state, GroupService, CODE) {
+    function databaseSidebarController($scope, $rootScope, DatabaseResource, $state, GroupService, $filter, CODE) {
         var vm = this;
         vm.data = {
             info: {
@@ -38,20 +39,23 @@
                 }
             },
             fun: {
-                init: null, //初始化功能函数
-                click: null, //table单击事件
-                edit: null, //table 编辑事件
-                delete: null, //table删除事件
-                import: null, //导入表功能函数
-                more: null, //更多功能函数
-                dump: null //导出功能函数
+                init: null, 
+                click: null, 
+                edit: null, 
+                delete: null, 
+                import: null, 
+                more: null, 
+                dump: null 
             }
         }
 
-        vm.data.fun.import = function($file) { //导入表函数
+        /**
+         * @function [导入表功能函数] [Import table]
+         */
+        vm.data.fun.import = function($file) { 
             var template = {
                 modal: {
-                    title: '导入表',
+                    title: $filter('translate')('010121'),
                     status: 0
                 }
             }
@@ -61,19 +65,31 @@
                 }
             });
         }
+
+        /**
+         * @function [table单击事件] [table click event]
+         */
         vm.data.fun.click = function(arg) {
             vm.data.interaction.request.tableID = arg.item.tableID;
             $state.go('home.database.inside.table.list', { tableID: arg.item.tableID });
         }
+
+        /**
+         * @function [更多功能函数] [More functional functions]
+         */
         vm.data.fun.more = function(arg) {
             arg.$event.stopPropagation();
             arg.item.listIsClick = true;
         }
+
+        /**
+         * @function [table编辑事件] [edit the event]
+         */
         vm.data.fun.edit = function(arg) {
             arg = arg || {};
             var template = {
                 modal: {
-                    title: arg.item ? '修改表' : '新增表'
+                    title: arg.item ? $filter('translate')('010129') : $filter('translate')('010120')
                 },
                 $index: null
             }
@@ -84,7 +100,7 @@
                             switch (response.statusCode) {
                                 case CODE.COMMON.SUCCESS:
                                     {
-                                        $rootScope.InfoModal(template.modal.title + '成功', 'success');
+                                        $rootScope.InfoModal(template.modal.title + $filter('translate')('0101210'), 'success');
                                         arg.item.tableName = callback.tableName;
                                         arg.item.tableDescription = callback.tableDescription;
                                         GroupService.set(vm.data.interaction.response.query);
@@ -97,7 +113,7 @@
                             switch (response.statusCode) {
                                 case CODE.COMMON.SUCCESS:
                                     {
-                                        $rootScope.InfoModal(template.modal.title + '成功', 'success');
+                                        $rootScope.InfoModal(template.modal.title + $filter('translate')('0101210'), 'success');
                                         if (vm.data.interaction.response.query == 0) {
                                             var newItem = { tableID: parseInt(response.tableID), tableName: callback.tableName, tableDescription: callback.tableDescription, isClick: true };
                                             vm.data.interaction.response.query.push(newItem);
@@ -114,12 +130,16 @@
                 }
             });
         }
+
+        /**
+         * @function [table删除事件] [delete event]
+         */
         vm.data.fun.delete = function(arg) {
             arg = arg || {};
             var template = {
                 modal: {
-                    title: '删除表',
-                    message: '删除表后，该操作无法撤销，确认删除？'
+                    title: $filter('translate')('0101211'),
+                    message: $filter('translate')('0101212')
                 }
             }
             $rootScope.EnsureModal(template.modal.title, false, template.modal.message, {}, function(callback) {
@@ -129,7 +149,7 @@
                             case CODE.COMMON.SUCCESS:
                                 {
                                     vm.data.interaction.response.query.splice(arg.$index, 1);
-                                    $rootScope.InfoModal('表删除成功', 'success');
+                                    $rootScope.InfoModal($filter('translate')('0101213'), 'success');
                                     if (vm.data.interaction.request.tableID == arg.item.tableID) {
                                         if (vm.data.interaction.response.query.length > 0) {
                                             vm.data.fun.click({ item: vm.data.interaction.response.query[0] });
@@ -144,15 +164,23 @@
                 }
             });
         }
+
+        /**
+         * @function [导出功能函数] [Export]
+         */
         vm.data.fun.dump = function() {
             var template={
                 modal:{
-                    title:'导出数据字典',
+                    title:$filter('translate')('010122'),
                     dbID:vm.data.interaction.request.databaseID
                 }
             }
             $rootScope.ExportDatabaseModal(template.modal, function(callback) {});
         }
+
+        /**
+         * @function [初始化功能函数] [initialization]
+         */
         vm.data.fun.init = (function() {
             var template = {
                 request: {
@@ -168,7 +196,7 @@
                             GroupService.set(vm.data.interaction.response.query);
                             if (!vm.data.interaction.request.tableID) {
                                 vm.data.interaction.request.tableID = vm.data.interaction.response.query[0].tableID;
-                                $scope.$emit('$TransferStation', { state: '$LoadingInit', data: { tableID: vm.data.interaction.request.tableID } });
+                                $scope.$emit('$translateferStation', { state: '$LoadingInit', data: { tableID: vm.data.interaction.request.tableID } });
                             }
                         }
                 }

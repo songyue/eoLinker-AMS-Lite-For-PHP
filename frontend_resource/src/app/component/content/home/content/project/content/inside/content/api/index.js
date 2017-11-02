@@ -1,12 +1,12 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function api内页相关服务js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [api内页相关服务js] [api page related services js]
      * @version  3.0.2
-     * @service  $scope 注入作用域服务
-     * @service  $state 注入路由服务
-     * @service  HomeProject_Service 注入HomeProject_Service服务
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $state [注入路由服务] [Injection state service]
+     * @service  HomeProject_Service [注入HomeProject_Service服务] [Injection HomeProject_Service service]
      */
     angular.module('eolinker')
         .config(['$stateProvider', 'RouteHelpersProvider', function($stateProvider, helper) {
@@ -36,12 +36,16 @@
                 status:0
             },
             fun: {
-                init: null //初始化功能函数
+                init: null 
             },
             assistantFun:{
-                init:null//辅助初始化功能函数
+                init:null
             }
         }
+
+        /**
+         * @function [辅助初始化功能函数] [Auxiliary initialization]
+         */
         vm.data.assistantFun.init=function(){
             vm.data.service.home.envObject.fun.resetObject();
             switch ($state.current.name) {
@@ -67,10 +71,18 @@
                     }
             }
         }
-        $scope.$on('$stateChangeSuccess', function() { //路由转换函数，检测是否该显示环境变量
+
+        /**
+         * @function [路由转换函数，检测是否该显示环境变量] [A route conversion function that detects whether the environment variable is displayed]
+         */
+        $scope.$on('$stateChangeSuccess', function() { 
             
             vm.data.assistantFun.init();
         });
+
+        /**
+         * @function [初始化功能函数] [initialization]
+         */
         vm.data.fun.init = (function() {
             vm.data.assistantFun.init();
         })()

@@ -1,12 +1,12 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [路由配置模块]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [路由配置模块] [Routing configuration module]
      * @version  3.0.2
-     * @service  $stateProvider [注入路由服务]
-     * @service  $locationProvider [注入$locationProvider服务]
-     * @service  $urlRouterProvider [注入$urlRouterProvider服务]
+     * @service  $stateProvider [注入路由服务] [inject $stateProvider service]
+     * @service  $locationProvider [注入$locationProvider服务] [inject $locationProvider service]
+     * @service  $urlRouterProvider [注入$urlRouterProvider服务] [inject $urlRouterProvider service]
      */
     angular
         .module('eolinker')
@@ -22,7 +22,7 @@
             }
         }
         /**
-         * @function [初始化功能函数]
+         * @function [初始化功能函数] [Initialization]
          */
         data.fun.init = function() {
             $httpProvider.interceptors.push([

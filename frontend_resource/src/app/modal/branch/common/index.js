@@ -1,8 +1,8 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [公用弹窗controller js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [公用弹窗controller js] [Public bucket controller js]
      * @version  3.0.2
      */
     angular.module('eolinker.modal')
@@ -15,8 +15,6 @@
     }])
 
     .controller('ExpressionBuilderModalCtrl', ExpressionBuilderModalCtrl)
-
-    .controller('SingleSelectModalCtrl', SingleSelectModalCtrl)
 
     .controller('InfoModalCtrl', InfoModalCtrl)
 
@@ -33,8 +31,6 @@
     .controller('ExportDatabaseModalCtrl', ExportDatabaseModalCtrl)
 
     .controller('EnsureModalCtrl', EnsureModalCtrl)
-
-    .controller('CommonSingleInputModalCtrl', CommonSingleInputModalCtrl)
 
     .controller('JsonToParamInputModalCtrl', JsonToParamInputModalCtrl)
 
@@ -61,23 +57,27 @@
     .controller('ResponseParamEditModalCtrl', ResponseParamEditModalCtrl)
 
 
-    RequestParamDetailModalCtrl.$inject = ['$scope', '$uibModalInstance', 'input'];
+    RequestParamDetailModalCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'input'];
     /**
-     * @function [请求参数详情弹窗]
-     * @service  $scope [注入作用域服务]
-     * @service  $uibModalInstance [注入$uibModalInstance服务]
-     * @param    {[obj]}   input [参数详情]
+     * @function [请求参数详情弹窗] [Request parameter details pop]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $filter [注入过滤器服务] [Injection filter service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
      */
-    function RequestParamDetailModalCtrl($scope, $uibModalInstance, input) {
+    function RequestParamDetailModalCtrl($scope, $uibModalInstance, $filter, input) {
         $scope.data = {
+            info: {
+                yes: $filter('translate')('405'),
+            },
             input: {},
             fun: {
-                close: null, //关闭功能函数
+                close: null, 
             }
         }
         var data = {
             fun: {
-                init: null, //初始化功能函数
+                init: null, 
             }
         }
         data.fun.init = (function() {
@@ -88,24 +88,28 @@
         }
     }
 
-    RequestParamEditModalCtrl.$inject = ['$scope', '$uibModalInstance', 'input'];
+    RequestParamEditModalCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'input'];
     /**
-     * @function [请求参数编辑弹窗]
-     * @service  $scope [注入作用域服务]
-     * @service  $uibModalInstance [注入$uibModalInstance服务]
-     * @param    {[obj]}   input [参数详情]
+     * @function [请求参数编辑弹窗] [Request parameters to edit pop]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $filter [注入过滤器服务] [Injection filter service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
      */
-    function RequestParamEditModalCtrl($scope, $uibModalInstance, input) {
+    function RequestParamEditModalCtrl($scope, $uibModalInstance, $filter, input) {
         $scope.data = {
+            info: {
+                yes: $filter('translate')('405'),
+            },
             input: {},
             fun: {
-                close: null, //关闭功能函数
-                ok: null, //确认功能函数
+                close: null, 
+                ok: null, 
             }
         }
         var data = {
             fun: {
-                init: null, //初始化功能函数
+                init: null, 
             }
         }
         data.fun.init = (function() {
@@ -143,23 +147,27 @@
         }
     }
 
-    ResponseParamDetailModalCtrl.$inject = ['$scope', '$uibModalInstance', 'input'];
+    ResponseParamDetailModalCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'input'];
      /**
-     * @function [请求参数编辑弹窗]
-     * @service  $scope [注入作用域服务]
-     * @service  $uibModalInstance [注入$uibModalInstance服务]
-     * @param    {[obj]}   input [参数详情]
+     * @function [请求参数编辑弹窗] [Request parameters to edit pop]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $filter [注入过滤器服务] [Injection filter service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
      */
-    function ResponseParamDetailModalCtrl($scope, $uibModalInstance, input) {
+    function ResponseParamDetailModalCtrl($scope, $uibModalInstance, $filter, input) {
         $scope.data = {
+            info: {
+                yes: $filter('translate')('405'),
+            },
             input: {},
             fun: {
-                close: null, //关闭功能函数
+                close: null, 
             }
         }
         var data = {
             fun: {
-                init: null, //初始化功能函数
+                init: null, 
             }
         }
         data.fun.init = (function() {
@@ -171,24 +179,28 @@
 
     }
 
-    ResponseParamEditModalCtrl.$inject = ['$scope', '$uibModalInstance', 'input'];
+    ResponseParamEditModalCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'input'];
     /**
-     * @function [返回参数编辑弹窗]
-     * @service  $scope [注入作用域服务]
-     * @service  $uibModalInstance [注入$uibModalInstance服务]
-     * @param    {[obj]}   input [参数详情]
+     * @function [返回参数编辑弹窗] [Return the parameters to edit the pop-up window]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $filter [注入过滤器服务] [Injection filter service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
      */
-    function ResponseParamEditModalCtrl($scope, $uibModalInstance, input) {
+    function ResponseParamEditModalCtrl($scope, $uibModalInstance, $filter, input) {
         $scope.data = {
+            info: {
+                yes: $filter('translate')('405'),
+            },
             input: {},
             fun: {
-                close: null, //关闭功能函数
-                ok: null, //确认功能函数
+                close: null, 
+                ok: null, 
             }
         }
         var data = {
             fun: {
-                init: null, //初始化功能函数
+                init: null, 
             }
         }
         data.fun.init = (function() {
@@ -228,10 +240,10 @@
 
     ExpressionBuilderModalCtrl.$inject = ['$scope', '$uibModalInstance', 'data'];
     /**
-     * @function [表达式构造器弹窗]
-     * @service  $scope [注入作用域服务]
-     * @service  $uibModalInstance [注入$uibModalInstance服务]
-     * @param    {[obj]}   data [原始数据]
+     * @function [表达式构造器弹窗] [Expression constructor]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @param    {[obj]}   data [原始数据 original data]
      */
     function ExpressionBuilderModalCtrl($scope, $uibModalInstance, data) {
         $scope.data = {
@@ -244,8 +256,8 @@
                 }
             },
             fun: {
-                init: null, //初始化功能函数
-                callback: null //构造器回调函数
+                init: null, 
+                callback: null 
             }
         }
         $scope.data.fun.init = function(callback) {
@@ -257,29 +269,29 @@
         };
         $scope.data.fun.init();
         $scope.data.fun.callback = function(callback) {
-            console.log(callback)
             $uibModalInstance.close(callback);
         };
     }
 
-    EnsureModalCtrl.$inject = ['$scope', '$uibModalInstance', 'title', 'necessity', 'info', 'btn'];
+    EnsureModalCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'title', 'necessity', 'info', 'btn'];
     /**
-     * @function [确认弹窗]
-     * @service  $scope [注入作用域服务]
-     * @service  $uibModalInstance [注入$uibModalInstance服务]
-     * @param    {[string]}   title [弹窗标题]
-     * @param    {[boolean]}   necessity [是否需要键入yes]
-     * @param    {[string]}   info [弹窗内容]
-     * @param    {[number]}   btn [按钮类型]
+     * @function [确认弹窗] [confirm]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $filter [注入过滤器服务] [Injection filter service]
+     * @param    {[string]}   title [弹窗标题 Pop-up title]
+     * @param    {[boolean]}   necessity [是否需要键入yes Do you need to type yes?]
+     * @param    {[string]}   info [弹窗内容 Pop-up content]
+     * @param    {[number]}   btn [按钮类型 Button type]
      */
-    function EnsureModalCtrl($scope, $uibModalInstance, title, necessity, info, btn) {
+    function EnsureModalCtrl($scope, $uibModalInstance, $filter, title, necessity, info, btn) {
 
         $scope.title = title;
         $scope.necessity = necessity;
         $scope.info = {
-            message: info || '确认删除？',
+            message: info || $filter('translate')('390'),
             btnType: btn.btnType || 0, //0：warning 1：info,2:success,
-            btnMessage: btn.btnMessage || '删除'
+            btnMessage: btn.btnMessage || $filter('translate')('391')
         }
         $scope.ok = function() {
             if ($scope.sureForm.$valid || !$scope.necessity) {
@@ -297,7 +309,12 @@
     }
 
     JsonToParamInputModalCtrl.$inject = ['$scope', '$uibModalInstance', 'input'];
-
+    /**
+     * @function [导入JSON弹窗] [Import JSON]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
+     */
     function JsonToParamInputModalCtrl($scope, $uibModalInstance, input) {
         $scope.data={
             input:input
@@ -319,7 +336,14 @@
     }
 
     MessageModalCtrl.$inject = ['$scope', '$sce', '$uibModalInstance', 'title', 'info'];
-
+    /**
+     * @function [消息弹窗] [Message]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $sce [注入$sce服务] [Injection $sce service]
+     * @param    {[string]}   title [弹窗标题 Pop-up title]
+     * @param    {[string]}   info [弹窗内容 Pop-up content]
+     */
     function MessageModalCtrl($scope, $sce, $uibModalInstance, title, info) {
 
         $scope.title = title;
@@ -333,7 +357,13 @@
     }
 
     TipsModalCtrl.$inject = ['$scope', '$sce', '$uibModalInstance', 'info'];
-
+    /**
+     * @function [提示弹窗] [Tips]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $sce [注入$sce服务] [Injection $sce service]
+     * @param    {[string]}   info [弹窗内容 Pop-up content]
+     */
     function TipsModalCtrl($scope, $sce, $uibModalInstance, info) {
         $scope.info = {
             html: $sce.trustAsHtml(info.html),
@@ -345,13 +375,22 @@
         };
     }
 
-    ImportModalCtrl.$inject = ['$scope', '$uibModalInstance', 'ApiManagementResource', 'CODE', '$rootScope', 'input'];
-
-    function ImportModalCtrl($scope, $uibModalInstance, ApiManagementResource, CODE, $rootScope, input) {
+    ImportModalCtrl.$inject = ['$scope', '$uibModalInstance', 'ApiManagementResource', '$filter', 'CODE', '$rootScope', 'input'];
+    /**
+     * @function [导入项目弹窗] [Import the project]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
+     * @service  $filter [注入过滤器服务] [Inject filter service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
+     */
+    function ImportModalCtrl($scope, $uibModalInstance, ApiManagementResource, $filter, CODE, $rootScope, input) {
         $scope.data = {
             input: input,
             fun: {
-                import: null //导入按钮功能函数
+                import: null 
             }
         }
         $scope.importFile = function(arg) {
@@ -383,7 +422,7 @@
                                 });
                             }
                         } else {
-                            $rootScope.InfoModal('格式需为json,txt,export其中一种', 'error');
+                            $rootScope.InfoModal($filter('translate')('392'), 'error');
                         }
                     }
             }
@@ -408,12 +447,12 @@
                                     }
                                 case CODE.IMPORT_EXPORT.ILLEGAL_IMPORT:
                                     {
-                                        $rootScope.InfoModal('数据格式错误', 'error');
+                                        $rootScope.InfoModal($filter('translate')('393'), 'error');
                                         break;
                                     }
                                 default:
                                     {
-                                        $rootScope.InfoModal('导入失败', 'error');
+                                        $rootScope.InfoModal($filter('translate')('394'), 'error');
                                         break;
                                     }
                             }
@@ -437,17 +476,17 @@
                                     }
                                 case CODE.IMPORT_EXPORT.ILLEGAL_VERSION:
                                     {
-                                        $rootScope.InfoModal('版本错误', 'error');
+                                        $rootScope.InfoModal($filter('translate')('395'), 'error');
                                         break;
                                     }
                                 case CODE.IMPORT_EXPORT.ILLEGAL_IMPORT:
                                     {
-                                        $rootScope.InfoModal('数据格式错误', 'error');
+                                        $rootScope.InfoModal($filter('translate')('396'), 'error');
                                         break;
                                     }
                                 default:
                                     {
-                                        $rootScope.InfoModal('导入失败', 'error');
+                                        $rootScope.InfoModal($filter('translate')('397'), 'error');
                                         break;
                                     }
                             }
@@ -468,12 +507,12 @@
                                     }
                                 case CODE.IMPORT_EXPORT.ILLEGAL_IMPORT:
                                     {
-                                        $rootScope.InfoModal('数据格式错误', 'error');
+                                        $rootScope.InfoModal($filter('translate')('396'), 'error');
                                         break;
                                     }
                                 default:
                                     {
-                                        $rootScope.InfoModal('导入失败', 'error');
+                                        $rootScope.InfoModal($filter('translate')('394'), 'error');
                                         break;
                                     }
                             }
@@ -494,12 +533,12 @@
                                     }
                                 case CODE.IMPORT_EXPORT.ILLEGAL_IMPORT:
                                     {
-                                        $rootScope.InfoModal('解析数据中的modelJSON失败', 'error');
+                                        $rootScope.InfoModal($filter('translate')('397'), 'error');
                                         break;
                                     }
                                 default:
                                     {
-                                        $rootScope.InfoModal('导入失败', 'error');
+                                        $rootScope.InfoModal($filter('translate')('394'), 'error');
                                         break;
                                     }
                             }
@@ -520,12 +559,12 @@
                                     }
                                 case CODE.IMPORT_EXPORT.ILLEGAL_IMPORT:
                                     {
-                                        $rootScope.InfoModal('解析数据中的modelJSON失败', 'error');
+                                        $rootScope.InfoModal($filter('translate')('397'), 'error');
                                         break;
                                     }
                                 default:
                                     {
-                                        $rootScope.InfoModal('导入失败', 'error');
+                                        $rootScope.InfoModal($filter('translate')('394'), 'error');
                                         break;
                                     }
                             }
@@ -548,12 +587,12 @@
                                     }
                                 case '160006':
                                     {
-                                        $rootScope.InfoModal('文件内容格式非法', 'error');
+                                        $rootScope.InfoModal($filter('translate')('398'), 'error');
                                         break;
                                     }
                                 default:
                                     {
-                                        $rootScope.InfoModal('导入失败', 'error');
+                                        $rootScope.InfoModal($filter('translate')('394'), 'error');
                                         break;
                                     }
                             }
@@ -570,9 +609,18 @@
 
     }
 
-    ImportDatabaseModalCtrl.$inject = ['$scope', '$state', '$uibModalInstance', 'input', 'DatabaseResource', 'CODE', '$rootScope'];
-
-    function ImportDatabaseModalCtrl($scope, $state, $uibModalInstance, input, DatabaseResource, CODE, $rootScope) {
+    ImportDatabaseModalCtrl.$inject = ['$scope', '$state', '$uibModalInstance', '$filter', 'input', 'DatabaseResource', 'CODE', '$rootScope'];
+    /**
+     * @function [导入数据库弹窗] [Import the database]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  DatabaseResource [注入接口管理接口服务] [inject database API service]
+     * @service  $filter [注入过滤器服务] [Inject filter service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
+     */
+    function ImportDatabaseModalCtrl($scope, $state, $uibModalInstance, $filter, input, DatabaseResource, CODE, $rootScope) {
         var code = CODE.COMMON.SUCCESS;
         $scope.title = input.title;
         $scope.data = {
@@ -595,7 +643,7 @@
                     });
                 };
             } else {
-                $rootScope.InfoModal('文件格式错误，只能使用.sql及.export其中一种', 'error');
+                $rootScope.InfoModal($filter('translate')('399'), 'error');
             }
         }
         $scope.data.fun.import = function(arg) {
@@ -618,12 +666,12 @@
                                     }
                                 case '310004':
                                     {
-                                        $rootScope.InfoModal('数据格式错误', 'error');
+                                        $rootScope.InfoModal($filter('translate')('393'), 'error');
                                         break;
                                     }
                                 default:
                                     {
-                                        $rootScope.InfoModal('导入失败', 'error');
+                                        $rootScope.InfoModal($filter('translate')('394'), 'error');
                                         break;
                                     }
                             }
@@ -644,12 +692,12 @@
                                     }
                                 case '220010':
                                     {
-                                        $rootScope.InfoModal('数据格式错误', 'error');
+                                        $rootScope.InfoModal($filter('translate')('393'), 'error');
                                         break;
                                     }
                                 default:
                                     {
-                                        $rootScope.InfoModal('导入失败', 'error');
+                                        $rootScope.InfoModal($filter('translate')('394'), 'error');
                                         break;
                                     }
                             }
@@ -665,13 +713,22 @@
         };
     }
 
-    ExportModalCtrl.$inject = ['$scope', '$uibModalInstance', 'ApiManagementResource', 'CODE', '$rootScope', 'input'];
-
-    function ExportModalCtrl($scope, $uibModalInstance, ApiManagementResource, CODE, $rootScope, input) {
+    ExportModalCtrl.$inject = ['$scope', '$uibModalInstance', 'ApiManagementResource', '$filter', 'CODE', '$rootScope', 'input'];
+    /**
+     * @function [导出项目弹窗] [Export the project]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
+     * @service  $filter [注入过滤器服务] [Inject filter service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
+     */
+    function ExportModalCtrl($scope, $uibModalInstance, ApiManagementResource, $filter, CODE, $rootScope, input) {
         $scope.data = {
             input: input,
             fun: {
-                dumpDirective: null //dumpDirective绑定指令
+                dumpDirective: null //
             }
         }
         var data = {
@@ -686,13 +743,13 @@
                         $scope.$broadcast('$DumpDirective_Click_' + arg.switch, {
                             response: arg.response
                         });
-                        $rootScope.InfoModal('导出成功', 'success');
+                        $rootScope.InfoModal($filter('translate')('3910'), 'success');
                         $uibModalInstance.close(false);
                         break;
                     }
                 default:
                     {
-                        $rootScope.InfoModal('导出失败', 'error');
+                        $rootScope.InfoModal($filter('translate')('3911'), 'error');
                         break;
                     }
             }
@@ -720,16 +777,25 @@
 
     }
 
-    ExportDatabaseModalCtrl.$inject = ['$scope', '$uibModalInstance', 'DatabaseResource', 'CODE', '$rootScope', 'input'];
-
-    function ExportDatabaseModalCtrl($scope, $uibModalInstance, DatabaseResource, CODE, $rootScope, input) {
+    ExportDatabaseModalCtrl.$inject = ['$scope', '$uibModalInstance', 'DatabaseResource', '$filter', 'CODE', '$rootScope', 'input'];
+    /**
+     * @function [导出数据库弹窗] [Export the database]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  DatabaseResource [注入接口管理接口服务] [inject database API service]
+     * @service  $filter [注入过滤器服务] [Inject filter service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
+     */
+    function ExportDatabaseModalCtrl($scope, $uibModalInstance, DatabaseResource, $filter, CODE, $rootScope, input) {
         $scope.title = input.title;
         $scope.info = {
             dbID: input.dbID
         }
         $scope.data = {
             fun: {
-                dumpDirective: null //dumpDirective绑定指令
+                dumpDirective: null 
             }
         }
         var data = {
@@ -744,13 +810,13 @@
                         $scope.$broadcast('$DumpDirective_Click_' + arg.switch, {
                             response: arg.response
                         });
-                        $rootScope.InfoModal('导出成功', 'success');
+                        $rootScope.InfoModal($filter('translate')('3910'), 'success');
                         $uibModalInstance.close(false);
                         break;
                     }
                 default:
                     {
-                        $rootScope.InfoModal('导出失败', 'error');
+                        $rootScope.InfoModal($filter('translate')('3911'), 'error');
                         break;
                     }
             }
@@ -786,7 +852,13 @@
     }
 
     InfoModalCtrl.$inject = ['$scope', '$uibModalInstance', '$timeout', 'info', 'type'];
-
+    /**
+     * @function [消息弹窗] [Info]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @param    {[string]}   input [弹窗内容 Pop-up content]
+     * @param    {[string]}   type [弹窗类型 Pop-up type]
+     */
     function InfoModalCtrl($scope, $uibModalInstance, $timeout, info, type) {
 
         $scope.type = type || 'info';
@@ -801,9 +873,20 @@
         });
     }
 
-    FieldModalCtrl.$inject = ['$state', '$scope', '$uibModalInstance', 'DATABASE', 'DatabaseResource', '$rootScope', 'CODE', 'input'];
-
-    function FieldModalCtrl($state, $scope, $uibModalInstance, DATABASE, DatabaseResource, $rootScope, CODE, input) {
+    FieldModalCtrl.$inject = ['$state', '$scope', '$uibModalInstance', 'DatabaseResource', '$filter', '$rootScope', 'DATABASE', 'CODE', 'input'];
+    /**
+     * @function [编辑字段弹窗] [Edit the field]
+     * @service  $state [注入路由服务] [Inject state service]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  DatabaseResource [注入数据库管理接口服务] [inject database API service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @constant DATABASE [注入数据库常量] [inject DATABASE constant service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
+     */
+    function FieldModalCtrl($state, $scope, $uibModalInstance, DatabaseResource, $filter, $rootScope, DATABASE, CODE, input) {
 
         var code = CODE.COMMON.SUCCESS;
         var vm = this;
@@ -823,7 +906,7 @@
             isAdd: true
         }
         $scope.template = {
-            isKeep: false //是否成功单击过继续添加按钮
+            isKeep: false 
         }
         $scope.isDisable = false;
         $scope.query = [];
@@ -876,7 +959,7 @@
                     template.promise.then(function(data) {
                         $scope.isDisable = false;
                         if (code == data.statusCode) {
-                            $rootScope.InfoModal("添加成功！", 'success');
+                            $rootScope.InfoModal($filter('translate')('3912'), 'success');
                             $scope.submited = false;
                             $scope.template.isKeep = true;
                             $scope.info = {
@@ -961,7 +1044,15 @@
     }
 
     ProjectModalCtrl.$inject = ['$scope', '$uibModalInstance', 'ApiManagementResource', 'CODE', 'input'];
-
+    /**
+     * @function [编辑项目弹窗] [Edit the project]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
+     * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
+     */
     function ProjectModalCtrl($scope, $uibModalInstance, ApiManagementResource, CODE, input) {
         var code = CODE.COMMON.SUCCESS;
         var vm = this;
@@ -1020,7 +1111,15 @@
     }
     
     DatabaseModalCtrl.$inject = ['$scope', '$uibModalInstance', 'DatabaseResource', 'CODE', 'input'];
-
+    /**
+     * @function [编辑数据库弹窗] [Edit database]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
+     * @service  DatabaseResource [注入接口管理接口服务] [inject database API service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
+     */
     function DatabaseModalCtrl($scope, $uibModalInstance, DatabaseResource, CODE, input) {
         var code = CODE.COMMON.SUCCESS;
         var vm = this;
@@ -1078,12 +1177,21 @@
         };
     }
 
-    GroupModalCtrl.$inject = ['$scope', '$uibModalInstance', 'title', 'info', 'secondTitle', 'query'];
-
-    function GroupModalCtrl($scope, $uibModalInstance, title, info, secondTitle, query) {
+    GroupModalCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'title', 'info', 'secondTitle', 'query'];
+    /**
+     * @function [编辑分组弹窗] [Edit grouping]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @param    {[string]}   title [弹窗标题 Pop-up title]
+     * @param    {[obj]}   info [输入内容 The contents of the input]
+     * @param    {[string]}   secondTitle [分组内容 Grouping content]
+     * @param    {[string]}   query [分组列表 Group list]
+     */
+    function GroupModalCtrl($scope, $uibModalInstance, $filter, title, info, secondTitle, query) {
         var vm = this;
         $scope.title = title;
-        $scope.secondTitle = secondTitle || '分组';
+        $scope.secondTitle = secondTitle || $filter('translate')('3913');
         $scope.required = info ? (info.required ? true : false) : false;
         $scope.info = {
             groupName: '',
@@ -1093,7 +1201,7 @@
         }
         $scope.params = {
             query: [{
-                groupName: '--不设置父分组--',
+                groupName: $filter('translate')('3914'),
                 groupID: '0'
             }].concat(query),
             hadSelected: query ? true : false
@@ -1124,17 +1232,23 @@
         };
     }
 
-    ApiRecoverModalCtrl.$inject = ['$scope', '$uibModalInstance', 'input'];
-
-    function ApiRecoverModalCtrl($scope, $uibModalInstance, input) {
+    ApiRecoverModalCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'input'];
+    /**
+     * @function [恢复api弹窗] [Restore api pop window]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $filter [注入过滤器服务]  [inject filter service]
+     * @param    {[obj]}   input [{group:分组 Grouping}]
+     */
+    function ApiRecoverModalCtrl($scope, $uibModalInstance, $filter, input) {
         $scope.data = {
-            input: input, //group：分组
+            input: input,
             output: {
                 groupID: '',
                 childGroupID: ''
             },
             fun: {
-                change: null, //切换父分组功能函数
+                change: null, 
             }
         }
         var data = {
@@ -1148,7 +1262,7 @@
                 if (val.groupID == $scope.data.output.groupID) {
                     $scope.data.input.group.child = [{
                         groupID: -1,
-                        groupName: '可选[二级菜单]'
+                        groupName: $filter('translate')('3915')
                     }].concat(val.childGroupList);
                     $scope.data.output.childGroupID = -1;
                     break;
@@ -1159,7 +1273,7 @@
             $scope.data.output.groupID = $scope.data.input.group.parent[0].groupID;
             $scope.data.input.group.child = [{
                 groupID: -1,
-                groupName: '可选[二级菜单]'
+                groupName: $filter('translate')('3915')
             }].concat($scope.data.input.group.parent[0].childGroupList);
             $scope.data.output.childGroupID = -1;
         })()
@@ -1179,9 +1293,15 @@
     }
 
     TableModalCtrl.$inject = ['$scope', '$uibModalInstance', 'title', 'info', 'databaseID'];
-
+    /**
+     * @function [编辑表弹窗] [Edit the table]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @param    {[string]}   title [弹窗标题 Pop-up title]
+     * @param    {[obj]}   info [表信息 Table information]
+     * @param    {[string]}   databaseID [数据库ID Database ID]
+     */
     function TableModalCtrl($scope, $uibModalInstance, title, info, databaseID) {
-        var code = CODE.COMMON.SUCCESS;
         var vm = this;
         $scope.title = title;
         $scope.info = {
@@ -1218,9 +1338,21 @@
         };
     }
 
-    CodeModalCtrl.$inject = ['$scope', '$uibModalInstance', 'ApiManagementResource', '$rootScope', 'CODE', 'title', 'info', 'GroupService'];
-
-    function CodeModalCtrl($scope, $uibModalInstance, ApiManagementResource, $rootScope, CODE, title, info, GroupService) {
+    CodeModalCtrl.$inject = ['$scope', '$uibModalInstance', 'ApiManagementResource', '$rootScope', '$filter', 'CODE', 'title', 'info', 'GroupService'];
+    /**
+     * @function [编辑状态码弹窗] [Edit status code]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  ApiManagementResource [注入数据库管理接口服务] [inject ApiManagement API service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @service  GroupService [注入GroupService服务] [inject GroupService service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     * @param    {[string]}   title [弹窗标题 Pop-up title]
+     * @param    {[obj]}   info [状态码信息 Status code information]
+     * @param    {[string]}   databaseID [数据库ID Database ID]
+     */
+    function CodeModalCtrl($scope, $uibModalInstance, ApiManagementResource, $rootScope, $filter, CODE, title, info, GroupService) {
         var code = CODE.COMMON.SUCCESS;
         var codeGroup = GroupService.get();
         $scope.title = title;
@@ -1240,11 +1372,11 @@
         $scope.query = [];
         $scope.childGroup = [{
             groupID: -1,
-            groupName: '可选[二级菜单]'
+            groupName: $filter('translate')('3915')
         }];
         var initChildGroup = [{
             groupID: -1,
-            groupName: '可选[二级菜单]'
+            groupName: $filter('translate')('3915')
         }];
 
         function init() {
@@ -1305,7 +1437,7 @@
                 template.promise = ApiManagementResource.Code.Add(template.request).$promise;
                 template.promise.then(function(data) {
                     if (code == data.statusCode) {
-                        $rootScope.InfoModal("添加成功！", 'success');
+                        $rootScope.InfoModal($filter('translate')('3912'), 'success');
                         $scope.submited = false;
                         $scope.info = {
                             projectID: $scope.info.projectID,

@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @name eolinker open source，eolinker开源版本
  * @link https://www.eolinker.com
  * @package eolinker
  * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2016
-
  *  * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  * 用户讨论QQ群：284421832
@@ -16,78 +16,107 @@
  */
 class DatabaseTableDao
 {
-	public function addTable(&$dbID, &$tableName, &$tableDesc)
-	{
-		$db = getDatabase();
+    /**
+     * 添加表
+     * @param $dbID int 数据库ID
+     * @param $tableName string 表名称
+     * @param $tableDesc string 表描述
+     * @return bool
+     */
+    public function addTable(&$dbID, &$tableName, &$tableDesc)
+    {
+        $db = getDatabase();
 
-		$db -> prepareExecute('INSERT INTO eo_database_table (eo_database_table.dbID,eo_database_table.tableName,eo_database_table.tableDescription) VALUES (?,?,?);', array(
-			$dbID,
-			$tableName,
-			$tableDesc
-		));
+        $db->prepareExecute('INSERT INTO eo_database_table (eo_database_table.dbID,eo_database_table.tableName,eo_database_table.tableDescription) VALUES (?,?,?);', array(
+            $dbID,
+            $tableName,
+            $tableDesc
+        ));
 
-		if ($db -> getAffectRow() < 1)
-		{
-			return FALSE;
-		}
-		else
-			return $db -> getLastInsertID();
-	}
+        if ($db->getAffectRow() < 1) {
+            return FALSE;
+        } else
+            return $db->getLastInsertID();
+    }
 
-	public function checkTablePermission(&$tableID, &$userID)
-	{
-		$db = getDatabase();
+    /**
+     * 检查数据表权限
+     * @param $tableID int 表ID
+     * @param $userID int 用户ID
+     * @return bool
+     */
+    public function checkTablePermission(&$tableID, &$userID)
+    {
+        $db = getDatabase();
 
-		$result = $db -> prepareExecute('SELECT eo_database.dbID FROM eo_database_table INNER JOIN eo_database ON eo_database_table.dbID = eo_database.dbID INNER JOIN eo_conn_database ON eo_database.dbID = eo_conn_database.dbID WHERE eo_database_table.tableID =? AND eo_conn_database.userID =?;', array(
-			$tableID,
-			$userID
-		));
+        $result = $db->prepareExecute('SELECT eo_database.dbID FROM eo_database_table INNER JOIN eo_database ON eo_database_table.dbID = eo_database.dbID INNER JOIN eo_conn_database ON eo_database.dbID = eo_conn_database.dbID WHERE eo_database_table.tableID =? AND eo_conn_database.userID =?;', array(
+            $tableID,
+            $userID
+        ));
 
-		if (empty($result))
-			return FALSE;
-		else
-			return $result['dbID'];
-	}
+        if (empty($result))
+            return FALSE;
+        else
+            return $result['dbID'];
+    }
 
-	public function deleteTable(&$tableID)
-	{
-		$db = getDatabase();
+    /**
+     * 删除表
+     * @param $tableID int 表ID
+     * @return bool
+     */
+    public function deleteTable(&$tableID)
+    {
+        $db = getDatabase();
 
-		$db -> prepareExecute('DELETE FROM eo_database_table WHERE eo_database_table.tableID = ?;', array($tableID));
+        $db->prepareExecute('DELETE FROM eo_database_table WHERE eo_database_table.tableID = ?;', array($tableID));
 
-		if ($db -> getAffectRow() < 1)
-			return FALSE;
-		else
-			return TRUE;
-	}
+        if ($db->getAffectRow() < 1)
+            return FALSE;
+        else
+            return TRUE;
+    }
 
-	public function getTable(&$dbID)
-	{
-		$db = getDatabase();
+    /**
+     * 获取表列表
+     * @param $dbID int 数据库ID
+     * @return bool
+     */
+    public function getTable(&$dbID)
+    {
+        $db = getDatabase();
 
-		$result = $db -> prepareExecuteAll('SELECT eo_database_table.dbID,eo_database_table.tableID,eo_database_table.tableName,eo_database_table.tableDescription FROM eo_database_table WHERE eo_database_table.dbID =?;', array($dbID));
+        $result = $db->prepareExecuteAll('SELECT eo_database_table.dbID,eo_database_table.tableID,eo_database_table.tableName,eo_database_table.tableDescription FROM eo_database_table WHERE eo_database_table.dbID =?;', array($dbID));
 
-		if (empty($result))
-			return FALSE;
-		else
-			return $result;
-	}
+        if (empty($result))
+            return FALSE;
+        else
+            return $result;
+    }
 
-	public function editTable(&$tableID, &$tableName, &$tableDesc)
-	{
-		$db = getDatabase();
+    /**
+     * 编辑表
+     * @param $tableID int 表ID
+     * @param $tableName string 表名称
+     * @param $tableDesc string 表描述
+     * @return bool
+     */
+    public function editTable(&$tableID, &$tableName, &$tableDesc)
+    {
+        $db = getDatabase();
 
-		$db -> prepareExecute('UPDATE eo_database_table SET eo_database_table.tableName = ?,eo_database_table.tableDescription = ? WHERE eo_database_table.tableID = ?;', array(
-			$tableName,
-			$tableDesc,
-			$tableID
-		));
+        $db->prepareExecute('UPDATE eo_database_table SET eo_database_table.tableName = ?,eo_database_table.tableDescription = ? WHERE eo_database_table.tableID = ?;', array(
+            $tableName,
+            $tableDesc,
+            $tableID
+        ));
 
-		if ($db -> getAffectRow() < 1)
-			return FALSE;
-		else
-			return TRUE;
-	}
+        if ($db->getAffectRow() < 1)
+            return FALSE;
+        else
+            return TRUE;
+    }
 
 }
+
 ?>

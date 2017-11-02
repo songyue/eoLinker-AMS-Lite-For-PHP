@@ -22,8 +22,9 @@ class DatabaseModule
     }
 
     /**
+     * get userType from database
      * 获取数据字典用户类型
-     * @param $dbID
+     * @param $dbID int 数据库ID
      * @return bool|int
      */
     public function getUserType(&$dbID)
@@ -38,19 +39,23 @@ class DatabaseModule
     }
 
     /**
+     * add database
      * 添加数据库
-     * @param $dbName 数据库名
-     * @param $dbVersion 数据库版本，默认1.0
+     * @param $dbName string 数据库名
+     * @param $dbVersion string 数据库版本，默认1.0
+     * @return bool|int
      */
-    public function addDatabase(&$dbName, &$dbVersion = 1.0)
+    public function addDatabase(&$dbName, &$dbVersion = "1.0")
     {
         $databaseDao = new DatabaseDao;
         return $databaseDao->addDatabase($dbName, $dbVersion, $_SESSION['userID']);
     }
 
     /**
+     * delete database
      * 删除数据库
-     * @param $dbID 数据库ID
+     * @param $dbID int 数据库ID
+     * @return bool
      */
     public function deleteDatabase(&$dbID)
     {
@@ -62,7 +67,9 @@ class DatabaseModule
     }
 
     /**
+     * get all database list
      * 获取数据库列表
+     * @return bool|array
      */
     public function getDatabase()
     {
@@ -71,10 +78,12 @@ class DatabaseModule
     }
 
     /**
+     * edit database
      * 修改数据库
-     * @param $dbID 数据库ID
-     * @param $dbName 数据库名
-     * @param $dbVersion 数据库版本
+     * @param $dbID int 数据库ID
+     * @param $dbName string 数据库名
+     * @param $dbVersion string 数据库版本
+     * @return bool
      */
     public function editDatabase(&$dbID, &$dbName, &$dbVersion)
     {
@@ -86,7 +95,11 @@ class DatabaseModule
     }
 
     /**
+     * Import database table which export from mysql
      * 导入数据表
+     * @param $dbID int 数据库ID
+     * @param $tables array 数据库表
+     * @return bool
      */
     public function importDatabase(&$dbID, &$tables)
     {
@@ -171,7 +184,12 @@ class DatabaseModule
             return FALSE;
     }
 
-    // *导入数据字典界面数据库
+    /**
+     * Import database by database's data which export from the api named exportDatabase
+     * 导入数据字典界面数据库
+     * @param $data string 数据库相关数据
+     * @return bool
+     */
     public function importDatabseByJson(&$data)
     {
         $user_id = $_SESSION['userID'];
@@ -184,7 +202,12 @@ class DatabaseModule
             return FALSE;
     }
 
-    //数据表导出成为sql格式
+    /**
+     * Export database's data
+     * 数据表导出成为json格式
+     * @param $dbID int 数据库ID
+     * @return bool|string
+     */
     public function exportDatabase(&$dbID)
     {
         $userID = $_SESSION['userID'];

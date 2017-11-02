@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @name eolinker open source，eolinker开源版本
  * @link https://www.eolinker.com
  * @package eolinker
  * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2016
-
  *  * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  * 用户讨论QQ群：284421832
@@ -16,140 +16,133 @@
  */
 class ProxyModule
 {
-	/**
-	 * 转发请求到目的主机
-	 * @param $method 请求方法
-	 * @param $URL 请求地址
-	 * @param $headers 请求头
-	 * @param $paramArray 请求参数
-	 */
-	public function proxyToDesURL($method, $URL, &$headers = NULL, &$paramArray = NULL)
-	{
-		//初始化请求
-		$require = curl_init($URL);
+    /**
+     * 转发请求到目的主机
+     * @param string $method 请求方法
+     * @param string $URL 请求路径
+     * @param string $headers 请求头部
+     * @param string $param 请求参数
+     * @return bool|array
+     */
+    public function proxyToDesURL(&$method, &$URL, &$headers, &$param = NULL)
+    {
+        //初始化请求
+        $require = curl_init($URL);
 
-		//判断是否HTTPS
-		$isHttps = substr($URL, 0, 8) == "https://" ? TRUE : FALSE;
+        //判断是否HTTPS
+        $isHttps = substr($URL, 0, 8) == "https://" ? TRUE : FALSE;
 
-		//设置请求方式
-		switch($method)
-		{
-			case 'GET' :
-				break;
-			case 'POST' :
-				curl_setopt($require, CURLOPT_POST, TRUE);
-				break;
-			case 'DELETE' :
-				curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'DELETE');
-				break;
-			case 'HEAD' :
-				curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'HEAD');
-				//HEAD请求返回结果不包含BODY
-				curl_setopt($require, CURLOPT_NOBODY, TRUE);
-				break;
-			case 'OPTIONS' :
-				curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'OPTIONS');
-				break;
-			case 'PATCH' :
-				curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'PATCH');
-				break;
-			case 'PUT':
-			 curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'PUT');
-			 if($paramArray){
-			 curl_setopt($require, CURLOPT_POSTFIELDS, $paramArray);
-			 }
-			 break;
-			default :
-				return FALSE;
-		}
+        //设置请求方式
+        switch ($method) {
+            case 'GET' :
+                curl_setopt($require, CURLOPT_CUSTOMREQUEST, "GET");
+                break;
+            case 'POST' : {
+                curl_setopt($require, CURLOPT_CUSTOMREQUEST, "POST");
+                break;
+            }
+            case 'DELETE' :
+                curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                break;
+            case 'HEAD' :
+                curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'HEAD');
+                //HEAD请求返回结果不包含BODY
+                curl_setopt($require, CURLOPT_NOBODY, TRUE);
+                break;
+            case 'OPTIONS' :
+                curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'OPTIONS');
+                break;
+            case 'PATCH' :
+                curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'PATCH');
+                break;
+            case 'PUT' :
+                curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'PUT');
+                break;
+            default :
+                return FALSE;
+        }
+        if ($param) {
+            curl_setopt($require, CURLOPT_POSTFIELDS, $param);
+        }
 
-		if ($paramArray)
-		{
-			curl_setopt($require, CURLOPT_POSTFIELDS, $paramArray);
-		}
-		if ($isHttps)
-		{
-			//跳过证书检查
-			curl_setopt($require, CURLOPT_SSL_VERIFYPEER, FALSE);
-			//检查证书中是否设置域名
-			curl_setopt($require, CURLOPT_SSL_VERIFYHOST, TRUE);
-		}
-		if ($headers)
-		{
-			//设置请求头
-			curl_setopt($require, CURLOPT_HTTPHEADER, $headers);
-		}
+        if ($isHttps) {
+            //跳过证书检查
+            curl_setopt($require, CURLOPT_SSL_VERIFYPEER, FALSE);
+            //检查证书中是否设置域名
+            curl_setopt($require, CURLOPT_SSL_VERIFYHOST, TRUE);
+        }
 
-		//返回结果不直接输出
-		curl_setopt($require, CURLOPT_RETURNTRANSFER, TRUE);
+        if ($headers) {
+            //设置请求头
+            curl_setopt($require, CURLOPT_HTTPHEADER, $headers);
+        }
 
-		//重定向
-		curl_setopt($require, CURLOPT_FOLLOWLOCATION, TRUE);
+        //返回结果不直接输出
+        curl_setopt($require, CURLOPT_RETURNTRANSFER, TRUE);
 
-		//把返回头包含再输出中
-		curl_setopt($require, CURLOPT_HEADER, TRUE);
+        //重定向
+        curl_setopt($require, CURLOPT_FOLLOWLOCATION, TRUE);
 
-		//不验证证书
-		curl_setopt($require, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($require, CURLOPT_SSL_VERIFYHOST, false);
+        //把返回头包含再输出中
+        curl_setopt($require, CURLOPT_HEADER, TRUE);
 
-		$time = date("Y-m-d H:i:s", time());
+        $time = date("Y-m-d H:i:s", time());
 
-		//发送请求
-		$response = curl_exec($require);
+        //发送请求
+        $response = curl_exec($require);
 
-		//获取返回结果状态码
-		$httpCode = curl_getinfo($require, CURLINFO_HTTP_CODE);
+        //获取返回结果状态码
+        $httpCode = curl_getinfo($require, CURLINFO_HTTP_CODE);
 
-		//获取传输总耗时
-		$deny = curl_getinfo($require, CURLINFO_TOTAL_TIME) * 1000;
+        //获取传输总耗时
+        $deny = curl_getinfo($require, CURLINFO_TOTAL_TIME) * 1000;
 
-		//获取头部长度
-		$headerSize = curl_getinfo($require, CURLINFO_HEADER_SIZE);
+        //获取头部长度
+        $headerSize = curl_getinfo($require, CURLINFO_HEADER_SIZE);
 
-		//关闭请求
-		curl_close($require);
+        //关闭请求
+        curl_close($require);
 
-		if ($response)
-		{
-			//返回头部字符串
-			$header = substr($response, 0, $headerSize);
+        if ($response) {
+            //返回头部字符串
+            $header = substr($response, 0, $headerSize);
 
-			//返回体
-			$body = substr($response, $headerSize);
+            //返回体
+            $body = substr($response, $headerSize);
 
-			//过滤隐藏非法字符
-			$body = str_replace('&#65279;', '', $body);
+            //过滤隐藏非法字符
+            $bodyTemp = json_encode(array(0 => $body));
+            $bodyTemp = str_replace('\ufeff', '', $bodyTemp);
+            $bodyTemp = json_decode($bodyTemp, TRUE);
+            $body = trim($bodyTemp[0]);
 
-			//将返回结果头部转成数组
-			$header_rows = array_filter(explode(PHP_EOL, $header), "trim");
-			foreach ($header_rows as $row)
-			{
-				$keylen = strpos($row, ':');
-				if ($keylen)
-				{
-					$respondHeaders[] = array(
-						'key' => substr($row, 0, $keylen),
-						'value' => trim(substr($row, $keylen + 1))
-					);
-				}
-			}
+            //将返回结果头部转成数组
+            $header_rows = array_filter(explode(PHP_EOL, $header), "trim");
+            $respondHeaders = array();
+            foreach ($header_rows as $row) {
+                $keylen = strpos($row, ':');
+                if ($keylen) {
+                    $respondHeaders[] = array(
+                        'key' => substr($row, 0, $keylen),
+                        'value' => trim(substr($row, $keylen + 1))
+                    );
+                }
+            }
 
-			return array(
-				'testTime' => $time,
-				'testDeny' => $deny,
-				'testHttpCode' => $httpCode,
-				'testResult' => array(
-					'headers' => $respondHeaders,
-					'body' => $body
-				)
-			);
-		}
-		else
-		{
-			return NULL;
-		}
-	}
+            return array(
+                'testTime' => $time,
+                'testDeny' => $deny,
+                'testHttpCode' => $httpCode,
+                'testResult' => array(
+                    'headers' => $respondHeaders,
+                    'body' => $body
+                )
+            );
+        } else {
+            return NULL;
+        }
+    }
 
 }
+
 ?>

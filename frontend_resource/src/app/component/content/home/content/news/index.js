@@ -1,8 +1,8 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 消息外页相关指令js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [消息外页相关指令js] [Message Outside page related instructions js]
      * @version  3.0.2
      */
     angular.module('eolinker')

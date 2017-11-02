@@ -22,8 +22,9 @@ class ImportModule
     }
 
     /**
-     * 导入eoapi
-     * @param $data 从eoapi导出的Json格式数据
+     * 导入eolinker导出的Json格式数据
+     * @param $data string 从eolinker导出的Json格式数据
+     * @return bool
      */
     public function eoapiImport(&$data)
     {
@@ -33,7 +34,8 @@ class ImportModule
 
     /**
      * 导入DHC
-     * @param $data 从DHC导出的Json格式数据
+     * @param $data string 从DHC导出的Json格式数据
+     * @return bool
      */
     public function importDHC(&$data)
     {
@@ -144,7 +146,8 @@ class ImportModule
 
     /**
      * 导入V1版本postman
-     * @param $data 从Postman V1版本导出的Json格式数据
+     * @param $data string 从Postman V1版本导出的Json格式数据
+     * @return bool
      */
     public function importPostmanV1(&$data)
     {
@@ -245,7 +248,8 @@ class ImportModule
 
     /**
      * 导入V2版本postman
-     * @param $data 从Postman V2版本导出的Json格式数据
+     * @param $data string 从Postman V2版本导出的Json格式数据
+     * @return bool
      */
     public function importPostmanV2(&$data)
     {
@@ -346,7 +350,7 @@ class ImportModule
     /**
      * 导入swagger
      * @param string $content 内容
-     * @author 李业昌
+     * @return bool
      */
     public function importSwagger(&$content)
     {

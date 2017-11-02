@@ -3,33 +3,33 @@
         <ul class="title-ul">
             <li class="btn-group-li pull-left">
                 <a class="common-btn default-btn" ui-sref="home.project.inside.api.list({groupID: $ctrl.data.interaction.request.groupID,childGroupID:$ctrl.data.interaction.request.childGroupID })">
-                    <span class="iconfont icon-xiangzuo"></span>接口列表
+                    <span class="iconfont icon-xiangzuo"></span>{{'01210030'|translate}}
                 </a>
             </li>
             <li class="menu-li pull-left">
-                <a ui-sref="home.project.inside.api.detail({ groupID: $ctrl.data.interaction.request.groupID,childGroupID:$ctrl.data.interaction.request.childGroupID,apiID:$ctrl.data.interaction.request.apiID })" class="pull-left ">详情
+                <a ui-sref="home.project.inside.api.detail({ groupID: $ctrl.data.interaction.request.groupID,childGroupID:$ctrl.data.interaction.request.childGroupID,apiID:$ctrl.data.interaction.request.apiID })" class="pull-left ">{{'01210031'|translate}}
                     </a>
-                <a class="pull-left elem-active" data-ng-click="$ctrl.data.fun.test()">测试
+                <a class="pull-left elem-active" data-ng-click="$ctrl.data.fun.test()">{{'01210032'|translate}}
                     </a>
             </li>
             <li class="btn-li common-btn default-btn" ng-if="$ctrl.powerObject.readWrite">
-                <span class="iconfont icon-caidan"></span> 更多
+                <span class="iconfont icon-caidan"></span> {{'01210033'|translate}}
                 <div class="list-function-wrap">
                     <ul class="nav-function" ng-if="$ctrl.data.interaction.request.groupID!=-2">
-                        <li ui-sref="home.project.inside.api.edit($ctrl.data.interaction.request)"><span class="iconfont icon-bianji"></span>修改</li>
+                        <li ui-sref="home.project.inside.api.edit($ctrl.data.interaction.request)"><span class="iconfont icon-bianji"></span>{{'01210034'|translate}}</li>
                         <li ui-sref="home.project.inside.api.edit({groupID:$ctrl.data.interaction.request.groupID, childGroupID:$ctrl.data.interaction.request.childGroupID,apiID:$ctrl.data.interaction.request.apiID, type: 2 })">
-                            <span class="iconfont icon-renwuguanli"></span>另存为(复制)
+                            <span class="iconfont icon-renwuguanli"></span>{{'01210035'|translate}}
                         </li>
                         <li data-ng-click="$ctrl.data.fun.delete()">
-                            <span class="iconfont icon-shanchu"></span>删除
+                            <span class="iconfont icon-shanchu"></span>{{'01210036'|translate}}
                         </li>
                     </ul>
                     <ul class="nav-function" ng-if="$ctrl.data.interaction.request.groupID==-2">
                         <li data-ng-click="$ctrl.data.fun.recover()">
-                            <span class="iconfont icon-shuaxin"></span>恢复
+                            <span class="iconfont icon-shuaxin"></span>{{'01210037'|translate}}
                         </li>
                         <li data-ng-click="$ctrl.data.fun.deleteCompletely()">
-                            <span class="iconfont icon-shanchu"></span>彻底删除
+                            <span class="iconfont icon-shanchu"></span>{{'01210038'|translate}}
                         </li>
                     </ul>
                 </div>
@@ -38,9 +38,9 @@
     </header>
     <article class="first-level-article">
         <ul class="tips-ul" data-ng-class="{'warning-ul':!$ctrl.isPlug,'common-ul':$ctrl.isPlug}">
-            <li class="title-li pull-left">温馨提示：</li>
-            <li ng-if="!$ctrl.isPlug">当前正在使用后台测试服务，如需使用更加强大的请求测试功能，请安装我们为您免费提供的 <a href="https://www.eolinker.com/#/plug/introduce" target="_blank"><b>测试增强插件</b> [点击获取]</a>！</li>
-            <li ng-if="$ctrl.isPlug">目前正在使用eolinker测试增强插件来进行测试！</li>
+            <li class="title-li pull-left">{{'01210039'|translate}}</li>
+            <li ng-if="!$ctrl.isPlug">{{'012100310'|translate}} <a href="https://www.eolinker.com/#/plug/introduce" target="_blank"><b>{{'012100311'|translate}}</b> [{{'012100312'|translate}}]</a>！</li>
+            <li ng-if="$ctrl.isPlug">{{'012100313'|translate}}</li>
         </ul>
         <div class="first-part">
             <form name="testForm">
@@ -54,7 +54,7 @@
                                 </select>&nbsp;:
                             </li>
                             <li class="uri-input-li">
-                                <input class="eo-input pull-left" type="text" placeholder="请输入测试地址" data-ng-model="$ctrl.data.service.home.envObject.object.model.URL" name="uri" data-ng-class="{'eo-input-error':($ctrl.submited&&testForm.uri.$invalid)}" required ng-focus="$ctrl.data.info.uri.isFocus=true;" ng-blur="$ctrl.data.fun.blurInput({focus:$ctrl.data.info.uri})">
+                                <input class="eo-input pull-left" type="text" placeholder="{{'012100335'|translate}}" data-ng-model="$ctrl.data.service.home.envObject.object.model.URL" name="uri" data-ng-class="{'eo-input-error':($ctrl.submited&&testForm.uri.$invalid)}" required ng-focus="$ctrl.data.info.uri.isFocus=true;" ng-blur="$ctrl.data.fun.blurInput({focus:$ctrl.data.info.uri})">
                                 <a ng-if="$ctrl.data.info.uri.isFocus" class="iconfont icon-index-magicwand" data-ng-click="$ctrl.data.fun.expressionBuilder({'item':$ctrl.data.service.home.envObject.object.model,'$index':0})"></a>
                             </li>
                             <li class="pull-right">
@@ -78,8 +78,8 @@
         </div>
         <div class="item-part request-header-part">
             <p class="title-p">
-                <b>请求头部</b>
-                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.header=!$ctrl.data.info.spreed.header"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.header,'icon-xiangshang':$ctrl.data.info.spreed.header}"></span>{{$ctrl.data.info.spreed.header?'收缩':'展开'}}</a>
+                <b>{{'01210009'|translate}}</b>
+                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.header=!$ctrl.data.info.spreed.header"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.header,'icon-xiangshang':$ctrl.data.info.spreed.header}"></span>{{$ctrl.data.info.spreed.header?$ctrl.data.info.filter.shrink:$ctrl.data.info.filter.open}}</a>
             </p>
             <div ng-show="$ctrl.data.info.spreed.header">
                 <header>
@@ -94,10 +94,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <td class="num-td">头部</td>
-                                <td class="request-header-label">标签</td>
-                                <td>内容</td>
-                                <td class="operation-td">操作</td>
+                                <td class="num-td">{{'012100325'|translate}}</td>
+                                <td class="request-header-label">{{'012100116'|translate}}</td>
+                                <td>{{'012100117'|translate}}</td>
+                                <td class="operation-td">{{'012100118'|translate}}</td>
                             </tr>
                         </thead>
                     </table>
@@ -111,12 +111,12 @@
                                     </td>
                                     <td class="label-td request-header-label">
                                         <ul class="request-header-icon-form">
-                                            <li auto-complete model="item.headerName" array="$ctrl.data.constant.requestHeader" data-ng-class="{'eo-had-input-error':($ctrl.submited&&!item.headerName)}" placeholder="头部标签" input-change-fun="$ctrl.data.fun.last.header({$last:$last})" padding=2>
+                                            <li auto-complete model="item.headerName" array="$ctrl.data.constant.requestHeader" data-ng-class="{'eo-had-input-error':($ctrl.submited&&!item.headerName)}" placeholder="{{'012100119'|translate}}" input-change-fun="$ctrl.data.fun.last.header({$last:$last})" padding=2>
                                             </li>
                                         </ul>
                                     </td>
                                     <td>
-                                        <input class="eo-input " type="text" name="" data-ng-model="item.headerValue" maxlength="65530" ng-focus="item.isFocus=true;" ng-blur="$ctrl.data.fun.blurInput({focus:item})" placeholder="头部内容" data-ng-change="$ctrl.data.fun.last.header({$last:$last})">
+                                        <input class="eo-input " type="text" name="" data-ng-model="item.headerValue" maxlength="65530" ng-focus="item.isFocus=true;" ng-blur="$ctrl.data.fun.blurInput({focus:item})" placeholder="{{'012100120'|translate}}" data-ng-change="$ctrl.data.fun.last.header({$last:$last})">
                                         <a ng-if="item.isFocus" class="iconfont icon-index-magicwand" data-ng-click="$ctrl.data.fun.expressionBuilder({'item':item,'$index':1})"></a>
                                     </td>
                                     <td class="operation-td">
@@ -131,19 +131,19 @@
                 </article>
                 <article class="basic-auth-article" ng-show="$ctrl.data.info.header.type =='1'">
                     <p class="select-p">
-                        <label>验证类型</label>
+                        <label>{{'012100314'|translate}}</label>
                         <select class="eo-input" placeholder="Basic Auth" ng-model="$ctrl.data.info.auth.status">
-                            <option value="0">-----无验证类型-----</option>
+                            <option value="0">-----{{'012100315'|translate}}-----</option>
                             <option value="1">Basic Auth</option>
                         </select>
                     </p>
                     <div ng-show="$ctrl.data.info.auth.status=='1'">
                         <p class="common-p">
-                            <label>用户名</label>
+                            <label>{{'012100316'|translate}}</label>
                             <input class="eo-input" type="text" placeholder="Username" ng-model="$ctrl.data.info.auth.basicAuth.username">
                         </p>
                         <p class="common-p">
-                            <label>密码</label>
+                            <label>{{'012100317'|translate}}</label>
                             <input class="eo-input" type="password" placeholder="Password" ng-model="$ctrl.data.info.auth.basicAuth.password">
                         </p>
                     </div>
@@ -151,19 +151,19 @@
             </div>
         </div>
         <div class="item-part request-param-part">
-            <p class="title-p"><b>请求参数</b>
-                <tip-directive input="<p><b>[智能表单]</b>&nbsp;自动根据请求方式来发送参数</p><p><b>[RESTful]</b>&nbsp;自动将请求地址中的{参数}通过表单中的同名参数值替换</p><p><b>[源数据]</b>&nbsp;发送Json/XML以及自定义格式等数据</p>"></tip-directive>
-                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.request=!$ctrl.data.info.spreed.request"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.request,'icon-xiangshang':$ctrl.data.info.spreed.request}"></span>{{$ctrl.data.info.spreed.request?'收缩':'展开'}}</a>
+            <p class="title-p"><b>{{'012100121'|translate}}</b>
+                <tip-directive input="<p><b>[{{'012100326'|translate}}]</b>&nbsp;{{'012100327'|translate}}</p><p><b>[RESTful]</b>&nbsp;{{'012100328'|translate}}</p><p><b>[{{'012100123'|translate}}]</b>&nbsp;{{'012100329'|translate}}</p>"></tip-directive>
+                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.request=!$ctrl.data.info.spreed.request"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.request,'icon-xiangshang':$ctrl.data.info.spreed.request}"></span>{{$ctrl.data.info.spreed.request?$ctrl.data.info.filter.shrink:$ctrl.data.info.filter.open}}</a>
             </p>
             <div ng-show="$ctrl.data.info.spreed.request">
                 <header>
                     <ul>
-                        <li class="pull-left test-nav-li success-li" ng-class="{'active':$ctrl.data.service.home.envObject.object.model.requestType=='0'}" data-ng-click="$ctrl.data.service.home.envObject.object.model.requestType = '0'">表单[form-data]</li>
+                        <li class="pull-left test-nav-li success-li" ng-class="{'active':$ctrl.data.service.home.envObject.object.model.requestType=='0'}" data-ng-click="$ctrl.data.service.home.envObject.object.model.requestType = '0'">{{'012100122'|translate}}[form-data]</li>
                         <li class="pull-left test-nav-li" ng-class="{'active':$ctrl.data.service.home.envObject.object.model.requestType=='2','failure-li':$ctrl.data.interaction.response.apiInfo.baseInfo.type != '0' &&$ctrl.data.interaction.response.apiInfo.baseInfo.type != '2'}" data-ng-click="$ctrl.data.service.home.envObject.object.model.requestType = '2'">RESTful</li>
-                        <li style="border-left:none;" class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.service.home.envObject.object.model.requestType=='1'}" data-ng-click="$ctrl.data.service.home.envObject.object.model.requestType = '1'" ng-show="$ctrl.data.interaction.response.apiInfo.baseInfo.type == '0' || $ctrl.data.interaction.response.apiInfo.baseInfo.type == '2'">源数据[raw]</li>
+                        <li style="border-left:none;" class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.service.home.envObject.object.model.requestType=='1'}" data-ng-click="$ctrl.data.service.home.envObject.object.model.requestType = '1'" ng-show="$ctrl.data.interaction.response.apiInfo.baseInfo.type == '0' || $ctrl.data.interaction.response.apiInfo.baseInfo.type == '2'">{{'012100123'|translate}}[raw]</li>
                         <li ng-show="$ctrl.data.service.home.envObject.object.model.requestType!='1'&&($ctrl.data.interaction.response.apiInfo.baseInfo.type == '0' || $ctrl.data.interaction.response.apiInfo.baseInfo.type == '2'|| $ctrl.data.interaction.response.apiInfo.baseInfo.type == '6')">
-                            <button class="form-to-json-btn" data-ng-click="$ctrl.data.fun.json()"><span class="eo-checkbox pull-left iconfont" data-ng-class="{'icon-check':$ctrl.data.info.toJson.checkbox}"></span>表单转源数据[Json]</button>
-                            <tip-directive input="<p>选中之后，会自动将表单转换为JSON格式发送</p>"></tip-directive>
+                            <button class="form-to-json-btn" data-ng-click="$ctrl.data.fun.json()"><span class="eo-checkbox pull-left iconfont" data-ng-class="{'icon-check':$ctrl.data.info.toJson.checkbox}"></span>{{'012100130'|translate}}[Json]</button>
+                            <tip-directive input="<p>{{'012100336'|translate}}</p>"></tip-directive>
                         </li>
                     </ul>
                 </header>
@@ -171,11 +171,11 @@
                     <table ng-class="{'hidden':$ctrl.data.service.home.envObject.object.model.requestType=='1'}">
                         <thead>
                             <tr>
-                                <td class="request-param-label">请求</td>
-                                <td class="name-td">参数名</td>
-                                <td class="type-td" ng-show="$ctrl.data.service.home.envObject.object.model.requestType=='0'">类型</td>
-                                <td>参数值</td>
-                                <td class="operation-td">操作</td>
+                                <td class="request-param-label">{{'012100331'|translate}}</td>
+                                <td class="name-td">{{'012100017'|translate}}</td>
+                                <td class="type-td" ng-show="$ctrl.data.service.home.envObject.object.model.requestType=='0'">{{'012100020'|translate}}</td>
+                                <td>{{'012100332'|translate}}</td>
+                                <td class="operation-td">{{'012100118'|translate}}</td>
                             </tr>
                         </thead>
                     </table>
@@ -188,7 +188,7 @@
                                         <label for="{{'param_checkbox_'+$index}}" class="eo-checkbox pull-left iconfont" data-ng-class="{'icon-check':item.checkbox}"></label>
                                     </td>
                                     <td class="name-td">
-                                        <input class="eo-input" data-ng-model="item.paramKey" data-ng-class="{'eo-input-error':($ctrl.submited&&!item.paramKey)}" maxlength="255" data-ng-change="$ctrl.data.fun.last.request({$last:$last})" placeholder="参数名" required>
+                                        <input class="eo-input" data-ng-model="item.paramKey" data-ng-class="{'eo-input-error':($ctrl.submited&&!item.paramKey)}" maxlength="255" data-ng-change="$ctrl.data.fun.last.request({$last:$last})" placeholder="{{'012100125'|translate}}" required>
                                     </td>
                                     <td class="type-td" ng-show="$ctrl.data.service.home.envObject.object.model.requestType=='0'">
                                         <select class="eo-input request-type-select" data-ng-model="item.paramType" ng-init="item.paramType=''+item.paramType;item.paramType=(item.paramType!='0'&&item.paramType!='1'?'0':item.paramType)">
@@ -203,9 +203,9 @@
                                         <a ng-if="item.isFocus" class="iconfont icon-index-magicwand" data-ng-click="$ctrl.data.fun.expressionBuilder({'item':item,'$index':2})"></a>
                                     </td>
                                     <td ng-if="item.paramType=='1'&&$ctrl.isPlug&&!$ctrl.data.info.toJson.checkbox&&$ctrl.data.service.home.envObject.object.model.requestType=='0'">
-                                        <input class="eo-input pull-left" data-ng-model="item.paramInfo" disabled="true" placeholder="请选择测试文件" title="{{item.paramInfo}}" data-ng-change="$ctrl.data.fun.last.request({$last:$last})">
+                                        <input class="eo-input pull-left" data-ng-model="item.paramInfo" disabled="true" placeholder="{{'012100333'|translate}}" title="{{item.paramInfo}}" data-ng-change="$ctrl.data.fun.last.request({$last:$last})">
                                         <input type="file" id="request-param-file-{{$index}}" name="{{item.paramKey}}" class="eo-button-info file-btn eo-absolute" onchange="angular.element(this).scope().importFile({file:this.files})" ng-init="item.$index=$index" multiple="multiple" placeholder="{{item.paramName}}">
-                                        <label for="request-param-file-{{$index}}" class="eo-button-info  eo-absolute file-btn-label">选择文件</label>
+                                        <label for="request-param-file-{{$index}}" class="eo-button-info  eo-absolute file-btn-label">{{'012100318'|translate}}</label>
                                     </td>
                                     <td class="operation-td">
                                         <label ng-switch-when=false>
@@ -217,7 +217,7 @@
                         </li>
                     </ul>
                     <div class="raw-div" ng-show="$ctrl.data.service.home.envObject.object.model.requestType=='1'">
-                        <textarea class="back-result-content" data-ng-model="$ctrl.data.service.home.envObject.object.model.raw" maxlength="65530" placeholder="源数据">
+                        <textarea class="back-result-content" data-ng-model="$ctrl.data.service.home.envObject.object.model.raw" maxlength="65530" placeholder="{{'012100123'|translate}}">
                         </textarea>
                     </div>
                 </article>
@@ -225,8 +225,8 @@
         </div>
         <div class="item-part response-example-part">
             <p class="title-p">
-                <b>返回结果</b>
-                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.response=!$ctrl.data.info.spreed.response"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.response,'icon-xiangshang':$ctrl.data.info.spreed.response}"></span>{{$ctrl.data.info.spreed.response?'收缩':'展开'}}</a>
+                <b>{{'012100334'|translate}}</b>
+                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.response=!$ctrl.data.info.spreed.response"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.response,'icon-xiangshang':$ctrl.data.info.spreed.response}"></span>{{$ctrl.data.info.spreed.response?$ctrl.data.info.filter.shrink:$ctrl.data.info.filter.open}}</a>
             </p>
             <div ng-show="$ctrl.data.info.spreed.response">
                 <header>
@@ -234,17 +234,17 @@
                         <li class="pull-left test-nav-li success-li" ng-class="{'active':!$ctrl.data.info.response.isHeader}" data-ng-click="$ctrl.data.info.response.isHeader=!$ctrl.data.info.response.isHeader">body</li>
                         <li class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.info.response.isHeader}" data-ng-click="$ctrl.data.info.response.isHeader=!$ctrl.data.info.response.isHeader">header</li>
                         <li class="pull-left" ng-hide="$ctrl.data.info.response.isHeader">
-                            <button class="eo-button-info change-type-btn send-format" arrange-format="apiResult_js" ng-model="$ctrl.data.info.format.message"><span class="iconfont icon-magic"></span>格式整理</button>
+                            <button class="eo-button-info change-type-btn send-format" arrange-format="apiResult_js" ng-model="$ctrl.data.info.format.message"><span class="iconfont icon-magic"></span>{{'012100029'|translate}}</button>
                         </li>
                         <li class="pull-left" ng-hide="$ctrl.data.info.response.isHeader">
                             <button class="change-type-btn send-format eo-button-info" ng-disabled="!$ctrl.data.info.format.message" data-ng-click="$ctrl.data.fun.window()">
-                                <span class="iconfont icon-xinchuangkoudakai"></span>新开页面
+                                <span class="iconfont icon-xinchuangkoudakai"></span>{{'012100319'|translate}}
                             </button>
                         </li>
                         <li ng-hide="$ctrl.data.info.response.isHeader">
                             <button class="change-type-btn send-format copy-opacity-btn " copy-directive copy-model="$ctrl.data.info.format.message" is-popup="true" switch-templet="0"></button>
                             <button class="change-type-btn send-format eo-button-info" ng-disabled="!$ctrl.data.info.format.message">
-                                <span class="iconfont icon-renwuguanli"></span>复制
+                                <span class="iconfont icon-renwuguanli"></span>{{'012100320'|translate}}
                             </button>
                         </li>
                     </ul>
@@ -257,30 +257,30 @@
                     </span>
                     </div>
                     <pre class="back-result-content " id="apiResult_js">
-                <span class="null-tip-span">尚无返回结果</span>
-                </pre>
+                        <span class="null-tip-span">No Response</span>
+                    </pre>
                 </article>
                 <article ng-show="$ctrl.data.info.response.isHeader">
                     <ul class="test-header-ul" ng-switch="$ctrl.data.info.response.testResult.headers.length>0">
                         <li ng-repeat="item in $ctrl.data.info.response.testResult.headers" ng-switch-when=true>
                             <span class="test-header-key">{{item.key}}</span>&nbsp;:&nbsp;{{item.value}}
                         </li>
-                        <li ng-switch-when=false><span class="null-tip-span">尚无头部信息</span></li>
+                        <li ng-switch-when=false><span class="null-tip-span">{{'012100322'|translate}}</span></li>
                     </ul>
                 </article>
             </div>
         </div>
         <div class="part test-history-part" data-ng-hide="$ctrl.data.interaction.response.apiInfo.testHistory.length<=0">
             <p class="title-p">
-            <b>请求历史</b>
-            <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.history=!$ctrl.data.info.spreed.history"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.history,'icon-xiangshang':$ctrl.data.info.spreed.history}"></span>{{$ctrl.data.info.spreed.history?'收缩':'展开'}}</a>
+            <b>{{'012100323'|translate}}</b>
+            <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.history=!$ctrl.data.info.spreed.history"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.history,'icon-xiangshang':$ctrl.data.info.spreed.history}"></span>{{$ctrl.data.info.spreed.history?$ctrl.data.info.filter.shrink:$ctrl.data.info.filter.open}}</a>
             </p>
             <div ng-show="$ctrl.data.info.spreed.history">
                 <header>
                     <ul>
                         <li class="pull-left">
                             <button class="clear-btn eo-button-info" ng-click="$ctrl.data.fun.testList.clear()">
-                                清空历史记录
+                                {{'012100324'|translate}}
                             </button>
                         </li>
                     </ul>

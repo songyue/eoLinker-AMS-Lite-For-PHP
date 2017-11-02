@@ -1,7 +1,7 @@
 (function() {
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 项目列表外页相关服务js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [项目列表外页相关服务js] [Item List Outside Page Related Services js]
      * @version  3.0.2
      */
     'use strict';

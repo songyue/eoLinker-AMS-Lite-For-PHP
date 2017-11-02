@@ -74,8 +74,16 @@ class InstallController
             $dbUser = quickInput('dbUser');
             $dbPassword = quickInput('dbPassword');
             $websiteName = quickInput('websiteName');
+            $language = quickInput('language');
+            if (empty($language)) {
+                $language = 'zh-cn';
+            }
+            if (empty($dbURL) || empty($dbName) || empty($dbUser)) {
+                $this->returnJson['statusCode'] = '200003';
+                exitOutput($this->returnJson);
+            }
             $server = new InstallModule;
-            if ($server->createConfigFile($dbURL, $dbName, $dbUser, $dbPassword, $websiteName)) {
+            if ($server->createConfigFile($dbURL, $dbName, $dbUser, $dbPassword, $websiteName, $language)) {
                 //写入成功
                 quickRequire(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php');
                 if ($server->installDatabase()) {

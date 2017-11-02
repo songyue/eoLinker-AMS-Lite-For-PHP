@@ -1,25 +1,25 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [测试指令js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [测试指令js] [Test instructions js]
      * @version  3.0.2
-     * @service  $filter [注入过滤器服务]
-     * @service  $timeout [注入$timeout服务]
-     * @service  $rootScope [注入根作用域服务]
-     * @service  ApiManagementResource [注入接口管理接口服务]
-     * @constant CODE [注入状态码常量]
-     * @param    version [版本：0个人 1企业]
-     * @param    auth [验证类型]
-     * @param    json [转json参数]
-     * @param    message [值可能性object类集（可选）]
-     * @param    result [双向绑定测试后返回结果]
-     * @param    detail [双向绑定测试初始化getApi内容]
-     * @param    format [双向绑定格式整理内容]
-     * @param    testForm [双向绑定基本表单信息是否填写完整]
-     * @param    info [双向绑定基本的路由信息]
-     * @param    isPlug [双向绑定是否为插件（用于对界面有无插件的差异性显示）]
-     * @param    envParam [环境变量全局参数数组]
+     * @service  $filter [注入过滤器服务] [Inject filter service]
+     * @service  $timeout [注入$timeout服务] [Inject filter service]
+     * @service  $rootScope [注入根作用域服务] [Inject rootScope service]
+     * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     * @param    version [版本：0个人 1企业] [Version: 0 Personal 1 Business]
+     * @param    auth [验证类型] [Authentication type]
+     * @param    json [转json参数] [Turn json parameters]
+     * @param    message [值可能性object类集（可选）] [Value Possibility object Class Set (optional)]
+     * @param    result [双向绑定测试后返回结果] [Return the result after bidirectional binding test]
+     * @param    detail [双向绑定测试初始化getApi内容] [Bidirectional binding test initializes getApi content]
+     * @param    format [双向绑定格式整理内容] [Two-way binding format]
+     * @param    testForm [双向绑定基本表单信息是否填写完整] [Bind the basic form information is complete]
+     * @param    info [双向绑定基本的路由信息] [Bind the basic routing information]
+     * @param    isPlug [双向绑定是否为插件（用于对界面有无插件的差异性显示）] [Whether the two-way binding for the plug-in (for the interface with or without plug-in differences show)]
+     * @param    envParam [环境变量全局参数数组] [Environment variable global parameter array]
      */
     angular.module('eolinker.directive')
 
@@ -28,7 +28,7 @@
                 restrict: 'A',
                 transclude: true,
                 replace: true,
-                template: '<div>' + '<button class="eo-button-info " data-ng-click="test()" >' + ' <span class="iconfont icon-fasong" ng-class="{\'hidden\':send.disable}"></span> {{send.disable?"中止&nbsp;"+(send.countdown>0?send.countdown:""):\'发送\'}}' + '</button>' + '<div class="hidden" id="plug-in-result-js"></div>' + '<div class="hidden" id="plug-in-js">{"method":{{detail.baseInfo.type}},"requestInfo":{{message}},"env":{{envParam}},"formDataToJson":{"checkbox":{{json.checkbox}},"raw":{{message.params|paramLevelToJsonFilter}}},"auth":{{auth}}}</div>' + '</div>',
+                template: '<div>' + '<button class="eo-button-info " data-ng-click="test()" >' + ' <span class="iconfont icon-fasong" ng-class="{\'hidden\':send.disable}"></span> {{send.disable?data.info.stop&nbsp;+(send.countdown>0?send.countdown:""):data.info.send}}' + '</button>' + '<div class="hidden" id="plug-in-result-js"></div>' + '<div class="hidden" id="plug-in-js">{"method":{{detail.baseInfo.type}},"requestInfo":{{message}},"env":{{envParam}},"formDataToJson":{"checkbox":{{json.checkbox}},"raw":{{message.params|paramLevelToJsonFilter}}},"auth":{{auth}}}</div>' + '</div>',
                 scope: {
                     version: '@', 
                     auth: '=', 
@@ -50,6 +50,12 @@
                         countdown: '',
                         disable: false
                     }
+                    $scope.data = {
+                        info: {
+                            stop: $filter('translate')('350'),
+                            send: $filter('translate')('351'),
+                        },
+                    }
                     var data = {
                         fun: {
                             restfulSet: null
@@ -57,7 +63,7 @@
                     }
 
                     /**
-                     * @function [检测插件是否存在功能函数]
+                     * @function [检测插件是否存在功能函数] [Check if the plugin is present]
                      */
                     var checkPlug = function() { 
                         if (typeof(chrome) !== 'undefined') {
@@ -70,9 +76,9 @@
                     }
 
                     /**
-                     * @function [环境变量全局参数重构功能函数]
-                     * @param    {[obj]}   origin [原始值]
-                     * @return   {[obj]}          [重构后的值]
+                     * @function [环境变量全局参数重构功能函数] [Global Parameter Reconstruction of Environment Variables]
+                     * @param    {[obj]}   origin [原始值 Original value]
+                     * @return   {[obj]}          [重构后的值 Reconstructed value]
                      */
                     var envSet = function(origin) { 
                         if ($scope.envParam.length > 0) {
@@ -95,9 +101,9 @@
                     }
                     
                     /**
-                     * @function [显示测试结果调用功能函数]
-                     * @param    {[obj]}   testHistory [测试历史]
-                     * @param    {[obj]}   data        [测试数据]
+                     * @function [显示测试结果调用功能函数] [Show test result call]
+                     * @param    {[obj]}   testHistory [测试历史] [Test history]
+                     * @param    {[obj]}   data        [测试数据] [Test Data]
                      */
                     var showTestResult = function(testHistory, data) { 
                         if ($scope.send.disable) {
@@ -135,8 +141,8 @@
                     }
 
                     /**
-                     * @function [插件测试调用功能函数]
-                     * @param    {[obj]}   testHistory [测试历史]
+                     * @function [插件测试调用功能函数] [The plugin test calls the function function]
+                     * @param    {[obj]}   testHistory [测试历史 Test history]
                      */
                     var plugTest = function(testHistory) { 
                         var data = {};
@@ -198,7 +204,7 @@
                     }
 
                     /**
-                     * @function [服务器测试调用功能函数]
+                     * @function [服务器测试调用功能函数] [Server test call]
                      */
                     var serverTest = function() { 
                         var template={
@@ -208,165 +214,159 @@
                             }
                         }
                         if (!$scope.send.disable) {
-                            if (/(localhost)|(192.168.)/.test($scope.message.URL)) {
-                                var html = '<div style="line-height:30px;"><p>当前正在使用在线测试服务，如需对本地服务器进行请求测试，请安装我们为您免费提供的&nbsp;<a href="https://www.eolinker.com/#/plug/introduce" target="_blank" style="color: #EF6C00;" > <b style="color: #EF6C00;">测试增强插件</b> [点击获取]</a>！</p></div>'
-
-                                $rootScope.MessageModal('温馨提示', html, function(data) {});
-                            } else {
-                                var info = {
-                                    apiProtocol: $scope.message.httpHeader,
-                                    URL: $scope.message.URL,
-                                    headers: {},
-                                    params: {},
+                            var info = {
+                                apiProtocol: $scope.message.httpHeader,
+                                URL: $scope.message.URL,
+                                headers: {},
+                                params: {},
+                            }
+                            if (/(http:\/\/)/.test(info.URL.substring(0, 7))) {
+                                info.URL = info.URL.substring(7);
+                            } else if (/(https:\/\/)/.test(info.URL.substring(0, 8))) {
+                                info.URL = info.URL.substring(8);
+                            }
+                            info = envSet(info);
+                            var testHistory = {
+                                requestInfo: {
+                                    apiProtocol: info.apiProtocol,
+                                    URL: info.URL,
+                                    headers: [],
+                                    params: [],
+                                    method: $scope.detail.baseInfo.type == '0' ? 'POST' : $scope.detail.baseInfo.type == '1' ? 'GET' : $scope.detail.baseInfo.type == '2' ? 'PUT' : $scope.detail.baseInfo.type == '3' ? 'DELETE' : $scope.detail.baseInfo.type == '4' ? 'HEAD' : $scope.detail.baseInfo.type == '5' ? 'OPTIONS' : 'PATCH',
+                                    methodType: $scope.detail.baseInfo.type,
+                                    requestType: ($scope.json.checkbox && $scope.message.requestType != '1'&&/0|2|6/.test($scope.detail.baseInfo.type)) ? 1 : $scope.message.requestType
                                 }
-                                if (/(http:\/\/)/.test(info.URL.substring(0, 7))) {
-                                    info.URL = info.URL.substring(7);
-                                } else if (/(https:\/\/)/.test(info.URL.substring(0, 8))) {
-                                    info.URL = info.URL.substring(8);
-                                }
-                                info = envSet(info);
-                                var testHistory = {
-                                    requestInfo: {
-                                        apiProtocol: info.apiProtocol,
-                                        URL: info.URL,
-                                        headers: [],
-                                        params: [],
-                                        method: $scope.detail.baseInfo.type == '0' ? 'POST' : $scope.detail.baseInfo.type == '1' ? 'GET' : $scope.detail.baseInfo.type == '2' ? 'PUT' : $scope.detail.baseInfo.type == '3' ? 'DELETE' : $scope.detail.baseInfo.type == '4' ? 'HEAD' : $scope.detail.baseInfo.type == '5' ? 'OPTIONS' : 'PATCH',
-                                        methodType: $scope.detail.baseInfo.type,
-                                        requestType: ($scope.json.checkbox && $scope.message.requestType != '1'&&/0|2|6/.test($scope.detail.baseInfo.type)) ? 1 : $scope.message.requestType
-                                    }
-                                };
-                                if ($scope.testForm.$valid) {
-                                    angular.forEach(template.env.headers, function(val, key) {
-                                        if (val.checkbox) {
-                                            if (!!val.headerName) {
-                                                info.headers[val.headerName] = val.headerValue;
-                                                var history = {
-                                                    name: val.headerName,
-                                                    value: val.headerValue
-                                                }
-                                                testHistory.requestInfo.headers.push(history);
+                            };
+                            if ($scope.testForm.$valid) {
+                                angular.forEach(template.env.headers, function(val, key) {
+                                    if (val.checkbox) {
+                                        if (!!val.headerName) {
+                                            info.headers[val.headerName] = val.headerValue;
+                                            var history = {
+                                                name: val.headerName,
+                                                value: val.headerValue
                                             }
+                                            testHistory.requestInfo.headers.push(history);
                                         }
-                                    });
-                                    switch ($scope.auth.status) {
-                                        case '1':
-                                            {
-                                                info.headers['Authorization'] = $filter('base64Filter')($scope.auth.basicAuth.username + ':' + $scope.auth.basicAuth.password);
-                                                testHistory.requestInfo.headers.push({ name: 'Authorization', value: $filter('base64Filter')($scope.auth.basicAuth.username + ':' + $scope.auth.basicAuth.password) });
-                                                break;
-                                            }
                                     }
-                                    switch ($scope.message.requestType) {
-                                        case '0':
-                                            {
-                                                if ($scope.json.checkbox&&/0|2|6/.test($scope.detail.baseInfo.type)) {
-                                                    info.params = testHistory.requestInfo.params = $filter('paramLevelToJsonFilter')(template.env.params);
-                                                } else {
-                                                    angular.forEach(template.env.params, function(val, key) {
-                                                        if (val.checkbox) {
-                                                            if (!!val.paramKey) {
-                                                                info.params[val.paramKey] = val.paramInfo;
-                                                                var history = {
-                                                                    key: val.paramKey,
-                                                                    value: val.paramInfo
-                                                                }
-                                                                testHistory.requestInfo.params.push(history);
-                                                            }
-                                                        }
-                                                    });
-                                                    info.params = angular.toJson(info.params);
-                                                }
-                                                break;
-                                            }
-                                        case '1':
-                                            {
-                                                info.params = testHistory.requestInfo.params = $scope.message.raw;
-                                                break;
-                                            }
-                                        case '2':
-                                            {
+                                });
+                                switch ($scope.auth.status) {
+                                    case '1':
+                                        {
+                                            info.headers['Authorization'] = $filter('base64Filter')($scope.auth.basicAuth.username + ':' + $scope.auth.basicAuth.password);
+                                            testHistory.requestInfo.headers.push({ name: 'Authorization', value: $filter('base64Filter')($scope.auth.basicAuth.username + ':' + $scope.auth.basicAuth.password) });
+                                            break;
+                                        }
+                                }
+                                switch ($scope.message.requestType) {
+                                    case '0':
+                                        {
+                                            if ($scope.json.checkbox&&/0|2|6/.test($scope.detail.baseInfo.type)) {
+                                                info.params = testHistory.requestInfo.params = $filter('paramLevelToJsonFilter')(template.env.params);
+                                            } else {
                                                 angular.forEach(template.env.params, function(val, key) {
                                                     if (val.checkbox) {
-                                                        if (val.paramKey) {
-                                                            if (info.URL.trim().indexOf('{' + val.paramKey + '}') > -1) {
-                                                                info.URL = info.URL.replace(eval('/(\\\{' + val.paramKey + '\\\})/g'), val.paramInfo);
-                                                            } else {
-                                                                template.restfulObject.hadFilterParams.push(val);
-                                                                info.params[val.paramKey] = val.paramInfo;
-                                                                var history = {
-                                                                    key: val.paramKey,
-                                                                    value: val.paramInfo
-                                                                }
-                                                                testHistory.requestInfo.params.push(history);
+                                                        if (!!val.paramKey) {
+                                                            info.params[val.paramKey] = val.paramInfo;
+                                                            var history = {
+                                                                key: val.paramKey,
+                                                                value: val.paramInfo
                                                             }
+                                                            testHistory.requestInfo.params.push(history);
                                                         }
                                                     }
                                                 });
-                                                if ($scope.json.checkbox&&/0|2|6/.test($scope.detail.baseInfo.type)) {
-                                                    info.params = testHistory.requestInfo.params = $filter('paramLevelToJsonFilter')(template.restfulObject.hadFilterParams);
-                                                } else {
-                                                    info.params = angular.toJson(info.params);
-                                                }
-                                                testHistory.requestInfo.URL = info.URL;
-                                                break;
+                                                info.params = angular.toJson(info.params);
                                             }
-                                    }
-                                    var message = {
-                                        apiProtocol: info.apiProtocol,
-                                        URL: info.URL,
-                                        headers: angular.toJson(info.headers),
-                                        params: info.params,
-                                        apiID: $scope.info.apiID,
-                                        projectID: $scope.info.projectID,
-                                        requestType: testHistory.requestInfo.requestType
-                                    }
-                                    var type = $scope.detail.baseInfo.type;
-                                    testHistory.testTime = $filter('currentTimeFilter')();
-                                    var result = {};
-                                    $scope.send.countdown = 0;
-                                    $scope.send.disable = true;
-                                    countdown = setInterval(function() {
-                                        $scope.send.countdown++;
-                                        $scope.$digest(); // 通知视图模型的变化
-                                    }, 1000);
-                                    switch ($scope.detail.baseInfo.type) {
-                                        case '0':
-                                            ApiManagementResource.Test.Post(message).$promise.then(function(data) {
-                                                showTestResult(testHistory, data);
-                                            })
                                             break;
-                                        case '1':
-                                            ApiManagementResource.Test.Get(message).$promise.then(function(data) {
-                                                showTestResult(testHistory, data);
-                                            })
+                                        }
+                                    case '1':
+                                        {
+                                            info.params = testHistory.requestInfo.params = $scope.message.raw;
                                             break;
-                                        case '2':
-                                            ApiManagementResource.Test.Put(message).$promise.then(function(data) {
-                                                showTestResult(testHistory, data);
-                                            })
+                                        }
+                                    case '2':
+                                        {
+                                            angular.forEach(template.env.params, function(val, key) {
+                                                if (val.checkbox) {
+                                                    if (val.paramKey) {
+                                                        if (info.URL.trim().indexOf('{' + val.paramKey + '}') > -1) {
+                                                            info.URL = info.URL.replace(eval('/(\\\{' + val.paramKey + '\\\})/g'), val.paramInfo);
+                                                        } else {
+                                                            template.restfulObject.hadFilterParams.push(val);
+                                                            info.params[val.paramKey] = val.paramInfo;
+                                                            var history = {
+                                                                key: val.paramKey,
+                                                                value: val.paramInfo
+                                                            }
+                                                            testHistory.requestInfo.params.push(history);
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                            if ($scope.json.checkbox&&/0|2|6/.test($scope.detail.baseInfo.type)) {
+                                                info.params = testHistory.requestInfo.params = $filter('paramLevelToJsonFilter')(template.restfulObject.hadFilterParams);
+                                            } else {
+                                                info.params = angular.toJson(info.params);
+                                            }
+                                            testHistory.requestInfo.URL = info.URL;
                                             break;
-                                        case '3':
-                                            ApiManagementResource.Test.Delete(message).$promise.then(function(data) {
-                                                showTestResult(testHistory, data);
-                                            })
-                                            break;
-                                        case '4':
-                                            ApiManagementResource.Test.Head(message).$promise.then(function(data) {
-                                                showTestResult(testHistory, data);
-                                            })
-                                            break;
-                                        case '5':
-                                            ApiManagementResource.Test.Options(message).$promise.then(function(data) {
-                                                showTestResult(testHistory, data);
-                                            })
-                                            break;
-                                        case '6':
-                                            ApiManagementResource.Test.Patch(message).$promise.then(function(data) {
-                                                showTestResult(testHistory, data);
-                                            })
-                                            break;
-                                    }
+                                        }
+                                }
+                                var message = {
+                                    apiProtocol: info.apiProtocol,
+                                    URL: info.URL,
+                                    headers: angular.toJson(info.headers),
+                                    params: info.params,
+                                    apiID: $scope.info.apiID,
+                                    projectID: $scope.info.projectID,
+                                    requestType: testHistory.requestInfo.requestType
+                                }
+                                var type = $scope.detail.baseInfo.type;
+                                testHistory.testTime = $filter('currentTimeFilter')();
+                                var result = {};
+                                $scope.send.countdown = 0;
+                                $scope.send.disable = true;
+                                countdown = setInterval(function() {
+                                    $scope.send.countdown++;
+                                    $scope.$digest(); // 通知视图模型的变化 Notification changes to the view model
+                                }, 1000);
+                                switch ($scope.detail.baseInfo.type) {
+                                    case '0':
+                                        ApiManagementResource.Test.Post(message).$promise.then(function(data) {
+                                            showTestResult(testHistory, data);
+                                        })
+                                        break;
+                                    case '1':
+                                        ApiManagementResource.Test.Get(message).$promise.then(function(data) {
+                                            showTestResult(testHistory, data);
+                                        })
+                                        break;
+                                    case '2':
+                                        ApiManagementResource.Test.Put(message).$promise.then(function(data) {
+                                            showTestResult(testHistory, data);
+                                        })
+                                        break;
+                                    case '3':
+                                        ApiManagementResource.Test.Delete(message).$promise.then(function(data) {
+                                            showTestResult(testHistory, data);
+                                        })
+                                        break;
+                                    case '4':
+                                        ApiManagementResource.Test.Head(message).$promise.then(function(data) {
+                                            showTestResult(testHistory, data);
+                                        })
+                                        break;
+                                    case '5':
+                                        ApiManagementResource.Test.Options(message).$promise.then(function(data) {
+                                            showTestResult(testHistory, data);
+                                        })
+                                        break;
+                                    case '6':
+                                        ApiManagementResource.Test.Patch(message).$promise.then(function(data) {
+                                            showTestResult(testHistory, data);
+                                        })
+                                        break;
                                 }
                             }
                         } else {
@@ -377,7 +377,7 @@
                     }
 
                     /**
-                     * @function [初始化，判断是否存在插件功能函数]
+                     * @function [初始化，判断是否存在插件功能函数] [initialization,determine if there is a plugin]
                      */
                     var init = function() { 
                         $scope.isPlug = checkPlug();
@@ -385,7 +385,7 @@
                     init();
 
                     /**
-                     * @function [初始化，判断是否存在插件功能函数（页面加载完成时执行）]
+                     * @function [初始化，判断是否存在插件功能函数（页面加载完成时执行）] [initialization,to determine whether there is a plug-in (when the page is loaded)]
                      */
                     timer = $timeout(function() { 
                         if (!$scope.isPlug) {
@@ -394,7 +394,7 @@
                     }, 0, true);
 
                     /**
-                     * @function [绑定click，执行测试功能函数]
+                     * @function [绑定click，执行测试功能函数] [Bind the click, perform the test]
                      */
                     $scope.test = function() { 
                         var template = {
@@ -541,7 +541,7 @@
                     }
 
                     /**
-                     * @function [销毁页面时销毁计时器]
+                     * @function [销毁页面时销毁计时器] [Destroy the timer when the page is destroyed]
                      */
                     $scope.$on('$destroy', function() { 
                         if (timer) {
@@ -550,7 +550,7 @@
                     });
 
                     /**
-                     * @function [路由开始转换时清除计时器]
+                     * @function [路由开始转换时清除计时器] [The timer clears the timer when the route starts to transition]
                      */
                     $scope.$on('$stateChangeStart', function() { 
                         if (!!templateCountdown) {

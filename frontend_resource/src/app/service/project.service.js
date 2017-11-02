@@ -1,8 +1,8 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 项目信息相关服务js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [项目信息相关服务js] [Project information related services js]
      * @version  3.0.2
      */
     angular.module('eolinker')
@@ -13,29 +13,42 @@
     function ProjectFactory() {
         var data = {
             info: {
-                detail: null,//project详情存储变量
-                list:null//project列表存储变量
+                detail: null,//project详情存储变量 [project details store variables]
+                list:null//project列表存储变量 [The project list stores variables]
             },
             fun: {
                 detail:{
-                    get:null,//获取project详情功能函数
-                    set:null//设置project详情功能函数
+                    get:null,
+                    set:null
                 },
                 list:{
-                    get:null,//获取project list功能函数
-                    set:null//设置project list功能函数
+                    get:null,
+                    set:null
                 }
             }
         }
+        /**
+         * @function [获取project详情功能函数] [Get the project details function]
+         */
         data.fun.detail.get=function(){
             return data.info.detail;
         }
+        /**
+         * @function [设置project详情功能函数] [Set the project details function]
+         */
         data.fun.detail.set=function(request){
             data.info.detail=request;
         }
+        /**
+         * @function [获取project list功能函数] [Get the project list function function]
+         */
         data.fun.list.get=function(){
             return data.info.list;
         }
+
+        /**
+         * @function [设置project list功能函数] [Set the project list function]
+         */
         data.fun.list.set=function(request){
             data.info.list=request;
         }

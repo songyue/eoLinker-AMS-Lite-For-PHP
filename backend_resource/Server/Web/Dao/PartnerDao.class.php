@@ -18,8 +18,9 @@ class PartnerDao
 {
     /**
      * 邀请协作人员
-     * @param $projectID 项目ID
-     * @param $inviteUserID 邀请人ID
+     * @param $projectID int 项目ID
+     * @param $inviteUserID int 邀请人ID
+     * @return bool|int
      */
     public function invitePartner(&$projectID, &$userID, &$inviteUserID)
     {
@@ -38,8 +39,9 @@ class PartnerDao
 
     /**
      * 移除协作人员
-     * @param $projectID 项目ID
-     * @param $connID 用户与项目联系ID
+     * @param $projectID int 项目ID
+     * @param $connID int 用户与项目联系ID
+     * @return bool
      */
     public function removePartner(&$projectID, &$connID)
     {
@@ -57,7 +59,8 @@ class PartnerDao
 
     /**
      * 获取协作人员列表
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool|array
      */
     public function getPartnerList(&$projectID)
     {
@@ -72,8 +75,9 @@ class PartnerDao
 
     /**
      * 退出协作项目
-     * @param $projectID 项目ID
-     * @param $userID 用户ID
+     * @param $projectID int 项目ID
+     * @param $userID int 用户ID
+     * @return bool
      */
     public function quitPartner(&$projectID, &$userID)
     {
@@ -91,8 +95,9 @@ class PartnerDao
 
     /**
      * 查询是否已经加入过项目
-     * @param $projectID 项目ID
-     * @param $userName 用户名
+     * @param $projectID int 项目ID
+     * @param $userName string 用户名
+     * @return bool
      */
     public function checkIsInvited(&$projectID, &$userName)
     {
@@ -109,7 +114,8 @@ class PartnerDao
 
     /**
      * 获取用户ID
-     * @param $connID 用户与项目联系ID
+     * @param $connID int 用户与项目联系ID
+     * @return bool|int
      */
     public function getUserID(&$connID)
     {
@@ -123,6 +129,10 @@ class PartnerDao
 
     /**
      * 修改协作成员的昵称
+     * @param $project_id int 项目ID
+     * @param $conn_id int 连接ID
+     * @param $nick_name string 昵称
+     * @return bool
      */
     public function editPartnerNickName(&$project_id, &$conn_id, &$nick_name)
     {
@@ -141,6 +151,10 @@ class PartnerDao
 
     /**
      * 修改协作成员的类型
+     * @param $project_id int 项目ID
+     * @param $conn_id int 连接ID
+     * @param $user_type int 用户类型
+     * @return bool
      */
     public function editPartnerType(&$project_id, &$conn_id, &$user_type)
     {

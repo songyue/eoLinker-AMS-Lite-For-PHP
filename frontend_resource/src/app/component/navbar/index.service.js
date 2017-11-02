@@ -1,13 +1,13 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [顶部栏（navbar）相关服务js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [顶部栏（navbar）相关服务js] [Top bar (navbar) related services js]
      * @version  3.0.2
-     * @service  $state [注入路由服务]
-     * @service  CommonResource [注入通用接口服务]
-     * @constant CODE [注入状态码常量]
-     * @return   data [服务相关对象]
+     * @service  $state [注入路由服务] [inject state service]
+     * @service  CommonResource [注入通用接口服务] [inject common API service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     * @return   data [服务相关对象] [Service related object]
      */
     angular.module('eolinker')
         .factory('NavbarService', NavbarService);
@@ -17,7 +17,7 @@
     function NavbarService($state, CommonResource, CODE) {
         var data = {
             info: {
-                status: 0, //登录状态 0：没登录，1：已登录
+                status: 0, //登录状态 Login status 0：没登录 Not logged in ，1：已登录 Has logged
                 userInfo: {
                     unreadMsgNum: null
                 },
@@ -33,7 +33,7 @@
         }
 
         /**
-         * @function [退出登录功能函数]
+         * @function [退出登录功能函数] [Exit the login function function]
          */
         data.fun.logout = function() {
             var template = {
@@ -58,7 +58,7 @@
         }
 
         /**
-         * @function [路由更换功能函数]
+         * @function [路由更换功能函数] [Routing replacement function function]
          */
         data.fun.$router = function() {
             var template = {

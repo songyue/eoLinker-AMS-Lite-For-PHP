@@ -5,7 +5,7 @@
             <div class="second-level-div">
                 <header>
                     <ul>
-                        <li class="pull-left">请求参数详情</li>
+                        <li class="pull-left">{{'400'|translate}}</li>
                         <li class="pull-right">
                             <a class="iconfont icon-close" data-ng-click="data.fun.close()"></a>
                         </li>
@@ -15,17 +15,17 @@
                     <table>
                         <thead>
                             <tr>
-                                <td class="param-name">参数名</td>
-                                <td class="param-desc">说明</td>
-                                <td class="require-label">必填</td>
-                                <td class="type-label">类型</td>
+                                <td class="param-name">{{'401'|translate}}</td>
+                                <td class="param-desc">{{'402'|translate}}</td>
+                                <td class="require-label">{{'403'|translate}}</td>
+                                <td class="type-label">{{'404'|translate}}</td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <th>{{data.input.item.paramKey}}</th>
                                 <td>{{data.input.item.paramName}}</td>
-                                <td>{{data.input.item.paramNotNull==0?'是':''}}</td>
+                                <td>{{data.input.item.paramNotNull==0?data.info.yes:''}}</td>
                                 <td>{{data.input.item.paramType==0?"[string]":data.input.item.paramType==1?"[file]":data.input.item.paramType==2?"[json]":data.input.item.paramType==3?"[int]":data.input.item.paramType==4?"[float]":data.input.item.paramType==5?"[double]":data.input.item.paramType==6?"[date]":data.input.item.paramType==7?"[datetime]":data.input.item.paramType==8?"[boolean]":data.input.item.paramType==9?"[byte]":data.input.item.paramType==10?"[short]":data.input.item.paramType==11?"[long]":data.input.item.paramType==12?"[array]":"[object]"}}</td>
                             </tr>
                         </tbody>
@@ -33,7 +33,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <td>参数限制</td>
+                                <td>{{'406'|translate}}</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,10 +45,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <td class="num-td">序号</td>
-                                <td class="param-name">参数值可能性</td>
-                                <td>说明</td>
-                                <td>默认值</td>
+                                <td class="num-td">{{'407'|translate}}</td>
+                                <td class="param-name">{{'408'|translate}}</td>
+                                <td>{{'409'|translate}}</td>
+                                <td>{{'4010'|translate}}</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,14 +58,14 @@
                                 </td>
                                 <td>{{item.value}}</td>
                                 <td>{{item.valueDescription}}</td>
-                                <td>{{$index==data.input.item.default?'是':''}}</td>
+                                <td>{{$index==data.input.item.default?data.info.yes:''}}</td>
                             </tr>
                         </tbody>
                     </table>
                     <table>
                         <thead>
                             <tr>
-                                <td>示例</td>
+                                <td>{{'4011'|translate}}</td>
                             </tr>
                         </thead>
                     </table>
@@ -84,17 +84,17 @@
             <div class="second-level-div">
                 <header>
                     <ul>
-                        <li class="pull-left">请求参数详情</li>
+                        <li class="pull-left">{{'410'|translate}}</li>
                     </ul>
                 </header>
                 <div class="article">
                     <table>
                         <thead>
                             <tr>
-                                <td class="param-name">参数名</td>
-                                <td class="param-desc">说明</td>
-                                <td class="require-label">必填</td>
-                                <td class="type-label">类型</td>
+                                <td class="param-name">{{'401'|translate}}</td>
+                                <td class="param-desc">{{'402'|translate}}</td>
+                                <td class="require-label">{{'403'|translate}}</td>
+                                <td class="type-label">{{'404'|translate}}</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -103,7 +103,7 @@
                                     {{data.input.item.paramKey}}
                                 </th>
                                 <td>{{data.input.item.paramName}}</td>
-                                <td>{{data.input.item.paramNotNull?'是':''}}</td>
+                                <td>{{data.input.item.paramNotNull?data.info.yes:''}}</td>
                                 <td>{{data.input.item.paramType==0?"[string]":data.input.item.paramType==1?"[file]":data.input.item.paramType==2?"[json]":data.input.item.paramType==3?"[int]":data.input.item.paramType==4?"[float]":data.input.item.paramType==5?"[double]":data.input.item.paramType==6?"[date]":data.input.item.paramType==7?"[datetime]":data.input.item.paramType==8?"[boolean]":data.input.item.paramType==9?"[byte]":data.input.item.paramType==10?"[short]":data.input.item.paramType==11?"[long]":data.input.item.paramType==12?"[array]":"[object]"}}</td>
                             </tr>
                         </tbody>
@@ -111,12 +111,12 @@
                     <table>
                         <thead>
                             <tr>
-                                <td>参数限制</td>
+                                <td>{{'406'|translate}}</td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="limit-td" auto-complete model="data.input.item.paramLimit" array="data.input.constant" placeholder="参数限制条件" padding=12>
+                                <td class="limit-td" auto-complete model="data.input.item.paramLimit" array="data.input.constant" placeholder="{{'410'|translate}}" padding=12>
                                 </td>
                             </tr>
                         </tbody>
@@ -124,10 +124,10 @@
                     <table class="param-value-table">
                         <thead>
                             <tr>
-                                <td class="num-td">默认</td>
-                                <td class="param-name">参数值可能性</td>
-                                <td>说明</td>
-                                <td class="operation-td">操作</td>
+                                <td class="num-td">{{'411'|translate}}</td>
+                                <td class="param-name">{{'408'|translate}}</td>
+                                <td>{{'409'|translate}}</td>
+                                <td class="operation-td">{{'412'|translate}}</td>
                             </tr>
                         </thead>
                     </table>
@@ -140,10 +140,10 @@
                                         <label for="request-param-form-default-{{data.input.item.$index}}-{{$index}}" class="eo-checkbox iconfont" data-ng-class="{'icon-check':data.input.item.default==$index}">{{data.input.item.default==$index?'':'&nbsp;'}}</label>
                                     </td>
                                     <td class="param-name">
-                                        <input class="eo-input" type="text" name="" data-ng-model="item.value"  data-ng-change="data.input.fun.paramAdd({$last:$last,item:data.input.item})" data-ng-class="{'eo-input-error':(!item.value&&item.valueDescription)}" placeholder="参数值可能性">
+                                        <input class="eo-input" type="text" name="" data-ng-model="item.value"  data-ng-change="data.input.fun.paramAdd({$last:$last,item:data.input.item})" data-ng-class="{'eo-input-error':(!item.value&&item.valueDescription)}" placeholder="{{'408'|translate}}">
                                     </td>
                                     <td>
-                                        <input class="eo-input" type="text" data-ng-model="item.valueDescription" maxlength="255" data-ng-change="data.input.fun.paramAdd({$last:$last,item:data.input.item})" placeholder="说明">
+                                        <input class="eo-input" type="text" data-ng-model="item.valueDescription" maxlength="255" data-ng-change="data.input.fun.paramAdd({$last:$last,item:data.input.item})" placeholder="{{'409'|translate}}">
                                     </td>
                                     <td class="operation-td">
                                         <label class="eo-sv-handle iconfont icon-111zhuanhuan number-label" sv-handle></label>
@@ -158,19 +158,19 @@
                     <table>
                         <thead>
                             <tr>
-                                <td>示例</td>
+                                <td>{{'4011'|translate}}</td>
                             </tr>
                         </thead>
                     </table>
                     <div class="raw-div">
-                        <textarea class="back-result-content" data-ng-model="data.input.item.paramValue" maxlength="65530" placeholder="请求参数示例">
+                        <textarea class="back-result-content" data-ng-model="data.input.item.paramValue" maxlength="65530" placeholder="{{'413'|translate}}">
                         </textarea>
                     </div>
                 </div>
                 <footer style="border-top: 1px solid #e5e5e5;">
                     <div class="btn-group">
-                        <button class="eo-button-success save-change-btn pull-left" ng-click="data.fun.ok()">确定</button>
-                        <a class="eo-button-default " ng-click="data.fun.close()">取消</a>
+                        <button class="eo-button-success save-change-btn pull-left" ng-click="data.fun.ok()">{{'414'|translate}}</button>
+                        <a class="eo-button-default " ng-click="data.fun.close()">{{'415'|translate}}</a>
                     </div>
                 </footer>
             </div>
@@ -183,7 +183,7 @@
             <div class="second-level-div">
                 <header>
                     <ul>
-                        <li class="pull-left">返回参数详情</li>
+                        <li class="pull-left">{{'420'|translate}}</li>
                         <li class="pull-right">
                             <a class="iconfont icon-close" data-ng-click="data.fun.close()"></a>
                         </li>
@@ -193,17 +193,17 @@
                     <table>
                         <thead>
                             <tr>
-                                <td class="param-name">参数名</td>
-                                <td class="param-desc">说明</td>
-                                <td class="require-label">必含</td>
-                                <td class="type-label">类型</td>
+                                <td class="param-name">{{'401'|translate}}</td>
+                                <td class="param-desc">{{'402'|translate}}</td>
+                                <td class="require-label">{{'420'|translate}}</td>
+                                <td class="type-label">{{'404'|translate}}</td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <th>{{data.input.item.paramKey}}</th>
                                 <td>{{data.input.item.paramName}}</td>
-                                <td>{{data.input.item.paramNotNull==0?'是':''}}</td>
+                                <td>{{data.input.item.paramNotNull==0?data.info.yes:''}}</td>
                                 <td>{{data.input.item.paramType==0?"[string]":data.input.item.paramType==1?"[file]":data.input.item.paramType==2?"[json]":data.input.item.paramType==3?"[int]":data.input.item.paramType==4?"[float]":data.input.item.paramType==5?"[double]":data.input.item.paramType==6?"[date]":data.input.item.paramType==7?"[datetime]":data.input.item.paramType==8?"[boolean]":data.input.item.paramType==9?"[byte]":data.input.item.paramType==10?"[short]":data.input.item.paramType==11?"[long]":data.input.item.paramType==12?"[array]":"[object]"}}</td>
                             </tr>
                         </tbody>
@@ -211,9 +211,9 @@
                     <table>
                         <thead>
                             <tr>
-                                <td class="num-td">序号</td>
-                                <td class="param-name">返回值可能性</td>
-                                <td>说明</td>
+                                <td class="num-td">{{'407'|translate}}</td>
+                                <td class="param-name">{{'421'|translate}}</td>
+                                <td>{{'409'|translate}}</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -238,17 +238,17 @@
             <div class="second-level-div">
                 <header>
                     <ul>
-                        <li class="pull-left">返回参数详情</li>
+                        <li class="pull-left">{{'420'|translate}}</li>
                     </ul>
                 </header>
                 <div class="article">
                     <table>
                         <thead>
                             <tr>
-                                <td class="param-name">参数名</td>
-                                <td class="param-desc">说明</td>
-                                <td class="require-label">必含</td>
-                                <td class="type-label">类型</td>
+                                <td class="param-name">{{'401'|translate}}</td>
+                                <td class="param-desc">{{'402'|translate}}</td>
+                                <td class="require-label">{{'421'|translate}}</td>
+                                <td class="type-label">{{'404'|translate}}</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -257,7 +257,7 @@
                                     {{data.input.item.paramKey}}
                                 </th>
                                 <td>{{data.input.item.paramName}}</td>
-                                <td>{{data.input.item.paramNotNull?'是':''}}</td>
+                                <td>{{data.input.item.paramNotNull?data.info.yes:''}}</td>
                                 <td>{{data.input.item.paramType==0?"[string]":data.input.item.paramType==1?"[file]":data.input.item.paramType==2?"[json]":data.input.item.paramType==3?"[int]":data.input.item.paramType==4?"[float]":data.input.item.paramType==5?"[double]":data.input.item.paramType==6?"[date]":data.input.item.paramType==7?"[datetime]":data.input.item.paramType==8?"[boolean]":data.input.item.paramType==9?"[byte]":data.input.item.paramType==10?"[short]":data.input.item.paramType==11?"[long]":"[array]"}}</td>
                             </tr>
                         </tbody>
@@ -265,9 +265,9 @@
                     <table class="param-value-table">
                         <thead>
                             <tr>
-                                <td class="param-name">参数值可能性</td>
-                                <td>说明</td>
-                                <td class="operation-td">操作</td>
+                                <td class="param-name">{{'408'|translate}}</td>
+                                <td>{{'409'|translate}}</td>
+                                <td class="operation-td">{{'412'|translate}}</td>
                             </tr>
                         </thead>
                     </table>
@@ -276,10 +276,10 @@
                             <table ng-switch="$last">
                                 <tbody>
                                     <td class="param-name">
-                                        <input class="eo-input" type="text" name="" data-ng-model="item.value"  data-ng-change="data.input.fun.paramAdd({$last:$last,item:data.input.item})" data-ng-class="{'eo-input-error':(!item.value&&item.valueDescription)}" placeholder="返回值可能性">
+                                        <input class="eo-input" type="text" name="" data-ng-model="item.value"  data-ng-change="data.input.fun.paramAdd({$last:$last,item:data.input.item})" data-ng-class="{'eo-input-error':(!item.value&&item.valueDescription)}" placeholder="{{'422'|translate}}">
                                     </td>
                                     <td>
-                                        <input class="eo-input" type="text" name="" data-ng-model="item.valueDescription" maxlength="255" data-ng-change="data.input.fun.paramAdd({$last:$last,item:data.input.item})" placeholder="说明">
+                                        <input class="eo-input" type="text" name="" data-ng-model="item.valueDescription" maxlength="255" data-ng-change="data.input.fun.paramAdd({$last:$last,item:data.input.item})" placeholder="{{'402'|translate}}">
                                     </td>
                                     <td class="operation-td">
                                         <label class="eo-sv-handle iconfont icon-111zhuanhuan number-label" sv-handle></label>
@@ -294,8 +294,8 @@
                 </div>
                 <footer style="border-top: 1px solid #e5e5e5;">
                     <div class="btn-group">
-                        <button class="eo-button-success save-change-btn pull-left" ng-click="data.fun.ok()">确定</button>
-                        <a class="eo-button-default " ng-click="data.fun.close()">取消</a>
+                        <button class="eo-button-success save-change-btn pull-left" ng-click="data.fun.ok()">{{'414'|translate}}</button>
+                        <a class="eo-button-default " ng-click="data.fun.close()">{{'415'|translate}}</a>
                     </div>
                 </footer>
             </div>
@@ -343,7 +343,7 @@
                 <ul>
                     <li class="pull-left header-title" data-ng-bind="::title"></li>
                     <li class="btn-group pull-right">
-                        <a class="eo-button-default " ng-click="cancel()">关闭</a>
+                        <a class="eo-button-default " ng-click="cancel()">{{'430'|translate}}</a>
                     </li>
                 </ul>
             </header>
@@ -367,7 +367,7 @@
                 <ul>
                     <li class="pull-left header-title" data-ng-bind="::data.input.title"></li>
                     <li class="btn-group pull-right">
-                        <a class="eo-button-default " ng-click="cancel()">关闭</a>
+                        <a class="eo-button-default " ng-click="cancel()">{{'430'|translate}}</a>
                     </li>
                 </ul>
             </header>
@@ -443,7 +443,7 @@
                 <ul>
                     <li class="pull-left header-title" data-ng-bind="::title"></li>
                     <li class="btn-group pull-right">
-                        <a class="eo-button-default " ng-click="cancel()">关闭</a>
+                        <a class="eo-button-default " ng-click="cancel()">{{'430'|translate}}</a>
                     </li>
                 </ul>
             </header>
@@ -486,7 +486,7 @@
                 <ul>
                     <li class="pull-left header-title" data-ng-bind="::data.input.title"></li>
                     <li class="btn-group pull-right">
-                        <a class="eo-button-default " ng-click="cancel()">关闭</a>
+                        <a class="eo-button-default " ng-click="cancel()">{{'430'|translate}}</a>
                     </li>
                 </ul>
             </header>
@@ -515,7 +515,7 @@
                 <ul>
                     <li class="pull-left header-title" data-ng-bind="::title"></li>
                     <li class="btn-group pull-right">
-                        <a class="eo-button-default " ng-click="cancel()">关闭</a>
+                        <a class="eo-button-default " ng-click="cancel()">{{'430'|translate}}</a>
                     </li>
                 </ul>
             </header>
@@ -541,22 +541,22 @@
         <div class="modal-sure eo-modal modal-json-to-param">
             <header>
                 <ul ng-switch="data.input.method">
-                    <li ng-switch-when='1'>GET参数形式转换返回参数</li>
-                    <li ng-switch-when='2'>头部形式转换返回头部</li>
-                    <li ng-switch-default>JSON转换返回参数</li>
+                    <li ng-switch-when='1'>{{'440'|translate}}</li>
+                    <li ng-switch-when='2'>{{'441'|translate}}</li>
+                    <li ng-switch-default>{{'442'|translate}}</li>
                 </ul>
             </header>
             <article>
                 <form name="sureForm">
                     <ul>
                         <li>
-                            <textarea type="text" name="description" data-ng-model="info.desc" placeholder="请输入相关字符串。" class="eo-input desc-textarea" data-ng-class="{'eo-input-error':(submited&&sureForm.description.$invalid)}">
+                            <textarea type="text" name="description" data-ng-model="info.desc" placeholder="{{'443'|translate}}" class="eo-input desc-textarea" data-ng-class="{'eo-input-error':(submited&&sureForm.description.$invalid)}">
                             </textarea>
                         </li>
                         <li class="btn-group">
-                            <button class="eo-button-info" ng-click="ok(0)">插入</button>
-                            <button class="eo-button-info" ng-click="ok(1)">替换</button>
-                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                            <button class="eo-button-info" ng-click="ok(0)">{{'444'|translate}}</button>
+                            <button class="eo-button-info" ng-click="ok(1)">{{'445'|translate}}</button>
+                            <a class="eo-button-default " ng-click="cancel()">{{'446'|translate}}</a>
                         </li>
                     </ul>
                 </form>
@@ -578,11 +578,11 @@
                     <ul>
                         <li data-ng-bind="::info.message"></li>
                         <li ng-if="necessity">
-                            <input type="text" name="sure" data-ng-model="sure" placeholder="删除操作不可撤回，确定请输入yes" class="eo-input " data-ng-class="{'eo-input-error':(submited&&sureForm.sure.$invalid)}" ng-pattern="/^[y|Y][e|E][s|S]$/" autofocus="true" required>
+                            <input type="text" name="sure" data-ng-model="sure" placeholder="{{'450'|translate}}" class="eo-input " data-ng-class="{'eo-input-error':(submited&&sureForm.sure.$invalid)}" ng-pattern="/^[y|Y][e|E][s|S]$/" autofocus="true" required>
                         </li>
                         <li class="btn-group">
                             <button data-ng-class="{'eo-button-warning':info.btnType==0,'eo-button-info':info.btnType==1,'eo-button-success':info.btnType==2}" ng-click="ok()">{{info.btnMessage}}</button>
-                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                            <a class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</a>
                         </li>
                     </ul>
                 </form>
@@ -606,51 +606,51 @@
                             <ul>
                                 <li class="pull-left">
                                     <ul class="field-name">
-                                        <li>字段名：</li>
+                                        <li>{{'460'|translate}}:</li>
                                         <li>
-                                            <input type="text" name="name" data-ng-model="info.fieldName" placeholder="字段名(2~255位)" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editFieldForm.name.$invalid)}" ng-pattern="/^.{2,255}$/" maxlength="255" required>
+                                            <input type="text" name="name" data-ng-model="info.fieldName" placeholder="{{'460'|translate}}(2~255位)" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editFieldForm.name.$invalid)}" ng-pattern="/^.{2,255}$/" maxlength="255" required>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="field-type pull-left">
                                     <ul>
-                                        <li>类型：</li>
+                                        <li>{{'404'|translate}}：</li>
                                         <li class="input-li" auto-complete model="info.fieldType" array="typeList" data-ng-class="{'eo-had-input-error':(submited&&!isType)}">
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="pull-left">
                                     <ul class="field-length">
-                                        <li>长度：</li>
+                                        <li>{{'461'|translate}}:</li>
                                         <li>
-                                            <input type="text" name="length" data-ng-model="info.fieldLength" placeholder="长度" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editFieldForm.length.$invalid)}" ng-pattern="/^[1-9]\d{0,12}$/" maxlength="12" required>
+                                            <input type="text" name="length" data-ng-model="info.fieldLength" placeholder="{{'461'|translate}}" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editFieldForm.length.$invalid)}" ng-pattern="/^[1-9]\d{0,12}$/" maxlength="12" required>
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="field-key pull-left">
                                     <ul>
-                                        <li>主键：</li>
+                                        <li>{{'462'|translate}}：</li>
                                         <li>
                                             <input class="hidden" type="checkbox" id="key_checkbox_js" data-ng-model="info.isPrimaryKey" data-ng-change="changeKey()">
                                             <label for="key_checkbox_js" class="checkbox iconfont" data-ng-class="{'icon-check':info.isPrimaryKey}">
                                                 {{info.isPrimaryKey?'':'&nbsp;'}}
                                             </label>
                                             <!-- <select data-ng-model="info.isPrimaryKey" class="eo-input" data-ng-change="changeKey()" required>
-                                                <option value="0">否</option>
-                                                <option value="1">是</option>
+                                                <option value="0">{{'463'|translate}}</option>
+                                                <option value="1">{{'464'|translate}}</option>
                                             </select> -->
                                         </li>
                                     </ul>
                                 </li>
                                 <li class="field-null">
                                     <ul>
-                                        <li>必填：</li>
+                                        <li>{{'465'|translate}}：</li>
                                         <li>
                                             <input class="hidden" type="checkbox" id="null_checkbox_js" data-ng-model="info.isNotNull" ng-disabled="info.isPrimaryKey">
                                             <label for="null_checkbox_js" class="checkbox iconfont" data-ng-class="{'icon-check':info.isNotNull}">{{info.isNotNull?'':'&nbsp;'}}</label>
                                             <!-- <select data-ng-model="info.isNotNull" class="eo-input" ng-disabled="info.isPrimaryKey=='1'" required>
-                                                <option value="0">否</option>
-                                                <option value="1">是</option>
+                                                <option value="0">{{'463'|translate}}</option>
+                                                <option value="1">{{'464'|translate}}</option>
                                             </select> -->
                                         </li>
                                     </ul>
@@ -661,9 +661,9 @@
                             <ul>
                                 <li>
                                     <ul class="field-description">
-                                        <li>默认值：</li>
+                                        <li>{{'466'|translate}}：</li>
                                         <li>
-                                            <input class="eo-input" name="defaultValue" data-ng-model="info.defaultValue" maxlength="250" placeholder="字段默认值">
+                                            <input class="eo-input" name="defaultValue" data-ng-model="info.defaultValue" maxlength="250" placeholder="{{'467'|translate}}">
                                         </li>
                                     </ul>
                                 </li>
@@ -673,18 +673,18 @@
                             <ul>
                                 <li>
                                     <ul class="field-description">
-                                        <li>描述：</li>
+                                        <li>{{'468'|translate}}：</li>
                                         <li>
-                                            <input class="eo-input" name="description" data-ng-model="info.fieldDesc" maxlength="250" placeholder="字段描述">
+                                            <input class="eo-input" name="description" data-ng-model="info.fieldDesc" maxlength="250" placeholder="{{'469'|translate}}">
                                         </li>
                                     </ul>
                                 </li>
                             </ul>
                         </li>
                         <li class="btn-group">
-                            <button class="eo-button-success " ng-click="ok()">确定</button>
-                            <a class="eo-button-info " ng-if="info.isAdd" ng-click="keep()">继续添加</a>
-                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                            <button class="eo-button-success " ng-click="ok()">{{'414'|translate}}</button>
+                            <a class="eo-button-info " ng-if="info.isAdd" ng-click="keep()">{{'4611'|translate}}</a>
+                            <a class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</a>
                         </li>
                     </ul>
                 </form>
@@ -706,37 +706,37 @@
                     <ul>
                         <li>
                             <ul class="project-name">
-                                <li>项目名称：</li>
+                                <li>{{'470'|translate}}：</li>
                                 <li>
-                                    <input type="text" name="name" data-ng-model="info.projectName" placeholder="1~32位字符串" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editProjectForm.name.$invalid)}" maxlength="32" ng-pattern="/^.{1,32}$/" required>
+                                    <input type="text" name="name" data-ng-model="info.projectName" placeholder="{{'471'|translate}}" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editProjectForm.name.$invalid)}" maxlength="32" ng-pattern="/^.{1,32}$/" required>
                                 </li>
                             </ul>
                         </li>
                         <li class="pull-left">
                             <ul class="project-version">
-                                <li>版本号：</li>
+                                <li>{{'472'|translate}}：</li>
                                 <li>
-                                    <input type="text" name="version" data-ng-model="info.projectVersion" placeholder="1-6位数字版本号" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editProjectForm.version.$invalid)}" ng-pattern="/^[0-9.]{1,6}$/" maxlength="5" required>
+                                    <input type="text" name="version" data-ng-model="info.projectVersion" placeholder="{{'473'|translate}}" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editProjectForm.version.$invalid)}" ng-pattern="/^[0-9.]{1,6}$/" maxlength="5" required>
                                 </li>
                             </ul>
                         </li>
                         <li class="project-type">
                             <ul>
-                                <li>项目类型</li>
+                                <li>{{'474'|translate}}</li>
                                 <li>
                                     <select data-ng-model="info.projectType" class="eo-input " required>
                                         <option value="0">Web</option>
                                         <option value="1">App</option>
                                         <option value="2">PC</option>
-                                        <option value="3">硬件/物联网</option>
-                                        <option value="4">其他</option>
+                                        <option value="3">{{'475'|translate}}</option>
+                                        <option value="4">{{'476'|translate}}</option>
                                     </select>
                                 </li>
                             </ul>
                         </li>
                         <li class="btn-group">
-                            <button class="eo-button-success " ng-click="ok()">确定</button>
-                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                            <button class="eo-button-success " ng-click="ok()">{{'414'|translate}}</button>
+                            <a class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</a>
                         </li>
                     </ul>
                 </form>
@@ -758,9 +758,9 @@
                     <ul>
                         <li>
                             <ul class="project-name">
-                                <li>数据库名称：</li>
+                                <li>{{'480'|translate}}：</li>
                                 <li>
-                                    <input type="text" name="name" data-ng-model="info.dbName" placeholder="1~32位字符串" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editDatabaseForm.name.$invalid)}" maxlength="32" ng-pattern="/^.{1,32}$/" required>
+                                    <input type="text" name="name" data-ng-model="info.dbName" placeholder="{{'471'|translate}}" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editDatabaseForm.name.$invalid)}" maxlength="32" ng-pattern="/^.{1,32}$/" required>
                                 </li>
                             </ul>
                         </li>
@@ -768,13 +768,13 @@
                             <ul class="project-name">
                                 <li>版本号：</li>
                                 <li>
-                                    <input type="text" name="version" data-ng-model="info.dbVersion" placeholder="1-6位数字版本号" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editDatabaseForm.version.$invalid)}" ng-pattern="/^[0-9.]{1,6}$/" maxlength="6" required>
+                                    <input type="text" name="version" data-ng-model="info.dbVersion" placeholder="{{'473'|translate}}" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editDatabaseForm.version.$invalid)}" ng-pattern="/^[0-9.]{1,6}$/" maxlength="6" required>
                                 </li>
                             </ul>
                         </li>
                         <li class="btn-group">
-                            <button class="eo-button-success " ng-click="ok()">确定</button>
-                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                            <button class="eo-button-success " ng-click="ok()">{{'414'|translate}}</button>
+                            <a class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</a>
                         </li>
                     </ul>
                 </form>
@@ -796,14 +796,14 @@
                     <ul>
                         <li>
                             <ul class="group-select group-ul pull-left">
-                                <li>父分组：</li>
+                                <li>{{'490'|translate}}：</li>
                                 <li>
                                     <select class="eo-input " data-ng-model="data.output.groupID" data-ng-options="group.groupID as group.groupName for group in data.input.group.parent" data-ng-change="$ctrl.data.fun.change.group()">
                                     </select>
                                 </li>
                             </ul>
                             <ul class="group-name  group-ul">
-                                <li>子分组：</li>
+                                <li>{{'491'|translate}}：</li>
                                 <li>
                                     <select class="eo-input" data-ng-model="data.output.childGroupID" data-ng-options="group.groupID as group.groupName for group in data.input.group.child">
                                     </select>
@@ -811,8 +811,8 @@
                             </ul>
                         </li>
                         <li class="btn-group">
-                            <button class="eo-button-success " ng-click="ok()">确定</button>
-                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                            <button class="eo-button-success " ng-click="ok()">{{'414'|translate}}</button>
+                            <a class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</a>
                         </li>
                     </ul>
                 </form>
@@ -834,7 +834,7 @@
                     <ul>
                         <li>
                             <ul class="group-select group-ul pull-left" ng-if="params.hadSelected">
-                                <li>父分组：</li>
+                                <li>{{'490'|translate}}：</li>
                                 <li>
                                     <select class="eo-input " data-ng-model="info.$index">
                                         <option ng-repeat="item in params.query" value="{{$index}}">{{item.groupName}}</option>
@@ -844,13 +844,13 @@
                             <ul class="group-inherit  group-ul" data-ng-class="{'group-name':params.hadSelected}">
                                 <li>{{secondTitle}}：</li>
                                 <li>
-                                    <input type="text" name="name" data-ng-model="info.groupName" placeholder="1~32位字符串" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editGroupForm.name.$invalid)}" ng-pattern="/^.{1,32}$/" maxlength="32" ng-required="{{!required}}">
+                                    <input type="text" name="name" data-ng-model="info.groupName" placeholder="{{'471'|translate}}" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editGroupForm.name.$invalid)}" ng-pattern="/^.{1,32}$/" maxlength="32" ng-required="{{!required}}">
                                 </li>
                             </ul>
                         </li>
                         <li class="btn-group">
-                            <button class="eo-button-success " ng-click="ok()">确定</button>
-                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                            <button class="eo-button-success " ng-click="ok()">{{'414'|translate}}</button>
+                            <a class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</a>
                         </li>
                     </ul>
                 </form>
@@ -872,9 +872,9 @@
                     <ul>
                         <li>
                             <ul class="table-name">
-                                <li>表名称：</li>
+                                <li>{{'492'|translate}}：</li>
                                 <li>
-                                    <input type="text" name="name" data-ng-model="info.tableName" placeholder="2~120位字符串" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editTableForm.name.$invalid)}" ng-pattern="/^.{2,120}$/" maxlength="120" required>
+                                    <input type="text" name="name" data-ng-model="info.tableName" placeholder="{{'493'|translate}}" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editTableForm.name.$invalid)}" ng-pattern="/^.{2,120}$/" maxlength="120" required>
                                 </li>
                             </ul>
                         </li>
@@ -887,8 +887,8 @@
                             </ul>
                         </li>
                         <li class="btn-group">
-                            <button class="eo-button-success " ng-click="ok()">确定</button>
-                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                            <button class="eo-button-success " ng-click="ok()">{{'414'|translate}}</button>
+                            <a class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</a>
                         </li>
                     </ul>
                 </form>
@@ -910,15 +910,15 @@
                     <ul>
                         <li class="pull-left">
                             <ul class="project-version">
-                                <li>状态码：</li>
+                                <li>{{'494'|translate}}：</li>
                                 <li>
-                                    <input type="text" name="name" data-ng-model="info.code" placeholder="1~32位字符串" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editProjectForm.name.$invalid)}" maxlength="32" ng-pattern="/^.{1,32}$/" required>
+                                    <input type="text" name="name" data-ng-model="info.code" placeholder="{{'471'|translate}}" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editProjectForm.name.$invalid)}" maxlength="32" ng-pattern="/^.{1,32}$/" required>
                                 </li>
                             </ul>
                         </li>
                         <li class="project-type">
                             <ul>
-                                <li>状态码分组：</li>
+                                <li>{{'495'|translate}}：</li>
                                 <li>
                                     <select data-ng-model="info.groupID" class="eo-input" data-ng-options="group.groupID as group.groupName for group in query" data-ng-change="changeChildGroup()">
                                     </select>
@@ -929,16 +929,16 @@
                         </li>
                         <li class="code-desc">
                             <ul>
-                                <li>状态码概述：</li>
+                                <li>{{'496'|translate}}：</li>
                                 <li>
                                     <input type="text" name="desc" data-ng-model="info.codeDesc" class="eo-input" placeholder="1~255位" data-ng-class="{'eo-input-error':(submited&&editProjectForm.desc.$invalid)}" maxlength="255" ng-pattern="/^.{1,255}$/" required>
                                 </li>
                             </ul>
                         </li>
                         <li class="btn-group">
-                            <button class="eo-button-success " ng-click="ok()">确定</button>
-                            <a class="eo-button-info" ng-if="info.isAdd" ng-click="keep()">继续添加</a>
-                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                            <button class="eo-button-success " ng-click="ok()">{{'414'|translate}}</button>
+                            <a class="eo-button-info" ng-if="info.isAdd" ng-click="keep()">{{'4611'|translate}}</a>
+                            <a class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</a>
                         </li>
                     </ul>
                 </form>

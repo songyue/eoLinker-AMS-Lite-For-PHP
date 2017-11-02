@@ -23,7 +23,7 @@ class GroupModule
 
     /**
      * 获取项目中用户类型
-     * @param $groupID
+     * @param $groupID int 分组ID
      * @return bool|int
      */
     public function getUserType(&$groupID)
@@ -43,9 +43,10 @@ class GroupModule
 
     /**
      * 添加项目分组
-     * @param $projectID 项目ID
-     * @param $groupName 分组名
-     * @param $parentGroupID 父分组ID，默认为0
+     * @param $projectID int 项目ID
+     * @param $groupName string 分组名
+     * @param $parentGroupID int 父分组ID，默认为0
+     * @return int|bool
      */
     public function addGroup(&$projectID, &$groupName, &$parentGroupID)
     {
@@ -63,7 +64,8 @@ class GroupModule
 
     /**
      * 删除项目分组
-     * @param $groupID 分组ID
+     * @param $groupID int 分组ID
+     * @return bool
      */
     public function deleteGroup(&$groupID)
     {
@@ -78,7 +80,8 @@ class GroupModule
 
     /**
      * 获取项目分组
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool|array
      */
     public function getGroupList(&$projectID)
     {
@@ -92,8 +95,9 @@ class GroupModule
 
     /**
      * 修改项目分组
-     * @param $groupID 分组ID
-     * @param $groupName 分组名
+     * @param $groupID int 分组ID
+     * @param $groupName string 分组名
+     * @return bool
      */
     public function editGroup(&$groupID, &$groupName)
     {
@@ -108,8 +112,8 @@ class GroupModule
 
     /**
      * 修改分组排序
-     * @param $projectID
-     * @param $orderList
+     * @param $projectID int 项目ID
+     * @param $orderList string 排序列表
      * @return bool
      */
     public function sortGroup(&$projectID, &$orderList)
@@ -128,7 +132,7 @@ class GroupModule
 
     /**
      * 获取分组排序列表
-     * @param $projectID
+     * @param $projectID int 项目ID
      * @return bool
      */
     public function getGroupOrderList(&$projectID)

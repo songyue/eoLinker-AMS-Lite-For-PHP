@@ -1,11 +1,11 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 公用接口resource服务定义js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [公用接口resource服务定义js] [Common API resource service definition js]
      * @version  3.0.2
-     * @service  $resource 注入$resource服务
-     * @constant serverUrl 注入前缀URL
+     * @service  $resource [注入$resource服务] [Inject the $resource service]
+     * @constant serverUrl [注入前缀URL] [Inject the prefix URL]
      */
     angular.module('eolinker.resource')
 

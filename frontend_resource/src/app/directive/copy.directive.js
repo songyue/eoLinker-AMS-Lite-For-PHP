@@ -1,13 +1,13 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [复制input值到剪贴板js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [复制input值到剪贴板js] [Copy input value to clipboard JS]
      * @version  3.0.2
-     * @service  $compile [注入$compile服务]
-     * @service  $filter [注入过滤器服务]
-     * @service  $rootScope [注入根作用域服务]
-     * @param    copyModel [copy的内容]
+     * @service  $compile [注入$compile服务] [inject $compile service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @service  $rootScope [注入根作用域服务] [inject rootScope service]
+     * @param    copyModel [copy的内容] [The content of copy]
      */
     angular.module('eolinker.directive')
 
@@ -40,7 +40,7 @@
                             isClick: false,
                             success: false,
                             fun: '',
-                            text:attrs.buttonHtml || '点击复制'//显示button文本（默认文本'点击复制'）
+                            text:attrs.buttonHtml || $filter('translate')('370')//显示button文本（默认文本'点击复制'）Display button text (default text 'click Copy')
                         }
                     },
                     fun: {
@@ -49,8 +49,8 @@
                 }
 
                 /**
-                 * @function [重置功能函数]
-                 * @param    {[obj]}   arg [{class:html相应class}]
+                 * @function [重置功能函数] [Reset function]
+                 * @param    {[obj]}   arg [{class:html相应class HTML相应类}]
                  */
                 data.fun.reset = function(arg) {
                     $scope.data.info.clipboard.fun = new Clipboard(arg.class);
@@ -58,10 +58,10 @@
                         $scope.data.info.clipboard.success = true;
                         $scope.data.info.clipboard.isClick = true;
                         console.info('Text:', _default.text);
-                        if (attrs.isPopup) {//成功或者失败是否以弹窗形式提醒
-                            $rootScope.InfoModal("已复制到剪贴板", 'success');
+                        if (attrs.isPopup) {//成功或者失败是否以弹窗形式提醒 Does the success or failure remind in popups
+                            $rootScope.InfoModal($filter('translate')('371'), 'success');
                         } else {
-                            $scope.data.info.clipboard.text = '复制成功';
+                            $scope.data.info.clipboard.text = $filter('translate')('372');
                         }
                         $scope.$digest();
                         _default.clearSelection();
@@ -72,36 +72,36 @@
                         $scope.data.info.clipboard.isClick = true;
                         console.info('Text:', _default.text);
                         if (attrs.isPopup) {
-                            $rootScope.InfoModal("复制到剪贴板失败", 'error');
+                            $rootScope.InfoModal($filter('translate')('373'), 'error');
                         } else {
-                            $scope.data.info.clipboard.text = '复制失败';
+                            $scope.data.info.clipboard.text = $filter('translate')('374');
                         }
                         $scope.$digest();
                     });
                 }
 
                 /**
-                 * @function [单击功能函数]
+                 * @function [单击功能函数] [Click function]
                  */
                 $scope.data.fun.click = function() {
                     $scope.data.info.clipboard.isClick = false;
                 }
 
                 /**
-                 * @function [页面销毁功能函数]
+                 * @function [页面销毁功能函数] [Page destruction function]
                  */
                 data.fun.$destroy = function() {
                     $scope.data.info.clipboard.fun.destroy();
                 }
 
                 /**
-                 * @function [初始化功能函数]
+                 * @function [初始化功能函数] [Initialization function]
                  */
                 data.fun.init = (function() {
                     var template = {
                         html: ''
                     }
-                    switch (attrs.switchTemplet) {//选择模板（0：button模板，1：input模板，2：textarea模板，默认input模板）
+                    switch (attrs.switchTemplet) {//选择模板（0：button模板，1：input模板，2：textarea模板，默认input模板）Select templates (0:button templates, 1:input templates, 2:textarea templates, default input templates)
                         case '0':
                             {
                                 template.html = data.info.templet.button;

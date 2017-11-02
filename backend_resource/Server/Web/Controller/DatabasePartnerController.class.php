@@ -16,14 +16,17 @@
  */
 class DatabasePartnerController
 {
+    // return json object
     // 返回json类型
     private $returnJson = array('type' => 'partner');
 
     /**
+     * checkout login status
      * 检查登录状态
      */
     public function __construct()
     {
+        // identity authentication
         // 身份验证
         $server = new GuestModule;
         if (!$server->checkLogin()) {
@@ -33,6 +36,7 @@ class DatabasePartnerController
     }
 
     /**
+     * get partner's personal information by userName
      * 获取人员信息
      */
     public function getPartnerInfo()
@@ -41,6 +45,7 @@ class DatabasePartnerController
         $dbID = securelyInput('dbID');
 
         if (!preg_match('/^([a-zA-Z][0-9a-zA-Z_]{3,59})$/', $userName)) {
+            // illegal userName length
             //userName格式非法
             $this->returnJson['statusCode'] = '250001';
         } else {
@@ -60,6 +65,7 @@ class DatabasePartnerController
                     $this->returnJson['userInfo']['isInvited'] = 0;
                 }
             } else {
+                //the user doesn't exist
                 //用户不存在
                 $this->returnJson['statusCode'] = '250002';
             }
@@ -69,6 +75,7 @@ class DatabasePartnerController
     }
 
     /**
+     * invite a user to join the database
      * 邀请协作人员
      */
     public function invitePartner()
@@ -83,6 +90,7 @@ class DatabasePartnerController
         }
 
         if (!preg_match('/^([a-zA-Z][0-9a-zA-Z_]{3,59})$/', $userName)) {
+            // illegal userName
             //userName格式非法
             $this->returnJson['statusCode'] = '250001';
         } else {
@@ -90,8 +98,10 @@ class DatabasePartnerController
             $userInfo = $userServer->checkUserExist($userName);
             if ($userInfo) {
                 $partnerServer = new DatabasePartnerModule;
+                //check if the user have been invited
                 //检查是否已经被邀请过
                 if ($partnerServer->checkIsInvited($dbID, $userName)) {
+                    // Has been invited
                     //已被邀请
                     $this->returnJson['statusCode'] = '250007';
                 } else {
@@ -99,11 +109,13 @@ class DatabasePartnerController
                         $this->returnJson['statusCode'] = '000000';
                         $this->returnJson['connID'] = $connID;
                     } else {
+                        //invite fail, the user has been invited
                         //添加协作成员失败，成员已经添加
                         $this->returnJson['statusCode'] = '250003';
                     }
                 }
             } else {
+                // userName doesn't exist
                 //用户不存在
                 $this->returnJson['statusCode'] = '250002';
             }
@@ -112,6 +124,7 @@ class DatabasePartnerController
     }
 
     /**
+     * remove user from database
      * 移除协作人员
      */
     public function removePartner()
@@ -129,6 +142,7 @@ class DatabasePartnerController
         if ($server->removePartner($dbID, $connID)) {
             $this->returnJson['statusCode'] = '000000';
         } else {
+            // remove user fail, the user has been removed
             //移除成员失败，成员已经被移出
             $this->returnJson['statusCode'] = '250004';
         }
@@ -136,6 +150,7 @@ class DatabasePartnerController
     }
 
     /**
+     * get database partner list
      * 获取协作人员列表
      */
     public function getPartnerList()
@@ -148,6 +163,7 @@ class DatabasePartnerController
             $this->returnJson['statusCode'] = '000000';
             $this->returnJson['partnerList'] = $result;
         } else {
+            //the partner list is empty
             //协作人员列表为空
             $this->returnJson['statusCode'] = '250005';
         }
@@ -155,7 +171,8 @@ class DatabasePartnerController
     }
 
     /**
-     * 退出协作项目
+     * quit the database
+     * 退出协作数据字典
      */
     public function quitPartner()
     {
@@ -166,6 +183,7 @@ class DatabasePartnerController
         if ($result) {
             $this->returnJson['statusCode'] = '000000';
         } else {
+            //quit fail, the user has quited
             //退出协作项目失败，已退出协作项目
             $this->returnJson['statusCode'] = '250006';
         }
@@ -173,6 +191,7 @@ class DatabasePartnerController
     }
 
     /**
+     * edit partner's nickName
      * 修改协作成员的昵称
      */
     public function editPartnerNickName()
@@ -181,20 +200,25 @@ class DatabasePartnerController
         $conn_id = securelyInput('connID');
         $nick_name = securelyInput('nickName');
         $name_length = mb_strlen(quickInput('nickName'), 'utf8');
+        //verify connID
         //判断关联ID是否合法
         if (!preg_match('/^[0-9]{1,11}$/', $conn_id)) {
+            //illegal connID
             //关联ID格式非法
             $this->returnJson['statusCode'] = '250003';
         } elseif ($name_length < 1 || $name_length > 32) {
+            //illegal nickName
             //昵称格式非法
             $this->returnJson['statusCode'] = '250004';
         } else {
             $module = new DatabasePartnerModule();
             $result = $module->editPartnerNickName($dbID, $conn_id, $nick_name);
             if ($result) {
+                //edit success
                 //成功
                 $this->returnJson['statusCode'] = '000000';
             } else {
+                //edit fail
                 //失败
                 $this->returnJson['statusCode'] = '250000';
             }
@@ -218,18 +242,22 @@ class DatabasePartnerController
         $user_type = securelyInput('userType');
 
         if (!preg_match('/^[0-9]{1,11}$/', $conn_id)) {
+            //illegal connID
             //关联ID格式非法
             $this->returnJson['statusCode'] = '250003';
         } elseif (!preg_match('/^[1-3]{1}$/', $user_type)) {
+            //illegal userType
             //用户类型格式非法
             $this->returnJson['statusCode'] = '250005';
         } else {
             $module = new DatabasePartnerModule();
             $result = $module->editPartnerType($dbID, $conn_id, $user_type);
             if ($result) {
+                //edit success
                 //成功
                 $this->returnJson['statusCode'] = '000000';
             } else {
+                //edit fail
                 //失败
                 $this->returnJson['statusCode'] = '250000';
             }

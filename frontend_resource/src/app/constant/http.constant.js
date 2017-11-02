@@ -1,15 +1,14 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function HTTP相关常量集
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [HTTP相关常量集] [HTTP related constant sets]
      * @version  3.0.2
      */
     angular
         .module('eolinker.constant')
         .constant('HTTP_CONSTANT', {
-            //--请求头部常量--
-            REQUEST_HEADER: [
+            REQUEST_HEADER: [//请求头部常量 Request header constant
                 'Accept', 'Accept-Charset', 'Accept-Encoding', 'Accept-Language', 'Accept-Ranges', 'Authorization',
                 'Cache-Control', 'Connection', 'Cookie', 'Content-Length', 'Content-Type', 'Content-MD5',
                 'Date',
@@ -26,8 +25,7 @@
                 'Via',
                 'Warning'
             ],
-            //--常用请求参数--
-            REQUEST_PARAM: [
+            REQUEST_PARAM: [//常用请求参数 Common request parameters
                 '11位中国大陆手机号',
                 '纯数字',
                 '纯英文字母',

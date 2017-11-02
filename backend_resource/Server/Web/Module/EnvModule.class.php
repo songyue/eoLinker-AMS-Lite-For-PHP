@@ -23,7 +23,8 @@ class EnvModule
 
     /**
      * 获取环境列表
-     * @param $project_id 项目的数字ID
+     * @param $project_id int 项目的数字ID
+     * @return bool|array
      */
     public function getEnvList(&$project_id)
     {
@@ -37,13 +38,13 @@ class EnvModule
 
     /**
      * 添加环境
-     * @param $project_id 项目的数字ID
-     * @param $user_id 用户的数字ID
-     * @param $env_name 环境名称
-     * @param $front_uri 前置URI
-     * @param $headers 请求头部
-     * @param $params 全局变量
-     * @param $apply_protocol 应用的请求类型,[-1]=>[所有请求类型]
+     * @param $project_id int 项目的数字ID
+     * @param $env_name string 环境名称
+     * @param $front_uri string 前置URI
+     * @param $headers string 请求头部
+     * @param $params string 全局变量
+     * @param $apply_protocol int 应用的请求类型,[-1]=>[所有请求类型]
+     * @return bool|int
      */
     public function addEnv(&$project_id, &$env_name, &$front_uri, &$headers, &$params, $apply_protocol)
     {
@@ -62,8 +63,9 @@ class EnvModule
 
     /**
      * 删除环境
-     * @param $project_id 项目的数字ID
-     * @param $env_id 环境的数字ID
+     * @param $project_id int 项目的数字ID
+     * @param $env_id int 环境的数字ID
+     * @return bool
      */
     public function deleteEnv(&$project_id, &$env_id)
     {
@@ -85,14 +87,13 @@ class EnvModule
 
     /**
      * 修改环境
-     * @param $project_id 项目的数字ID
-     * @param $user_id 用户的数字ID
-     * @param $env_id 环境的数字ID
-     * @param $env_name 环境名称
-     * @param $front_uri 前置URI
-     * @param $headers 请求头部
-     * @param $params 全局变量
-     * @param $apply_protocol 应用的请求类型,[-1]=>[所有请求类型]
+     * @param $env_id int 环境的数字ID
+     * @param $env_name string 环境名称
+     * @param $front_uri string 前置URI
+     * @param $headers string 请求头部
+     * @param $params string 全局变量
+     * @param $apply_protocol int 应用的请求类型,[-1]=>[所有请求类型]
+     * @return bool
      */
     public function editEnv(&$env_id, &$env_name, &$front_uri, &$headers, &$params, $apply_protocol)
     {

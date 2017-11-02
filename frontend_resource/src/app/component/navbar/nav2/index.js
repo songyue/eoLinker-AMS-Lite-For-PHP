@@ -1,10 +1,10 @@
 (function() {
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [全局navbar指令相关js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [全局navbar指令相关js] [Global navbar instruction related js]
      * @version  3.0.2
-     * @service  $scope [注入作用域服务]
-     * @service  NavbarService [注入NavbarService服务]
+     * @service  $scope [注入作用域服务] [inject state service]
+     * @service  NavbarService [注入NavbarService服务] [inject NavbarService service]
      */
     angular.module('eolinker')
         .component('eoNavbar2', {

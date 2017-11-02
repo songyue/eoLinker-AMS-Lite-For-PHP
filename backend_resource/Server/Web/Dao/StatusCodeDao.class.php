@@ -18,9 +18,10 @@ class StatusCodeDao
 {
     /**
      * 添加状态码
-     * @param $groupID 分组ID
-     * @param $codeDesc 状态码描述，默认为NULL
-     * @param $code 状态码
+     * @param $groupID int 分组ID
+     * @param $codeDesc string 状态码描述，默认为NULL
+     * @param $code string 状态码
+     * @return bool|int
      */
     public function addCode(&$groupID, &$codeDesc, &$code)
     {
@@ -37,7 +38,8 @@ class StatusCodeDao
 
     /**
      * 删除状态码
-     * @param $codeID 状态码ID
+     * @param $codeID int 状态码ID
+     * @return bool
      */
     public function deleteCode(&$codeID)
     {
@@ -53,7 +55,8 @@ class StatusCodeDao
 
     /**
      * 获取状态码列表
-     * @param $groupID 分组ID
+     * @param $groupID int 分组ID
+     * @return bool|array
      */
     public function getCodeList(&$groupID)
     {
@@ -69,7 +72,8 @@ class StatusCodeDao
 
     /**
      * 获取所有状态码列表
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool|array
      */
     public function getAllCodeList(&$projectID)
     {
@@ -85,10 +89,11 @@ class StatusCodeDao
 
     /**
      * 修改状态码
-     * @param $groupID 分组ID
-     * @param $codeID 状态码ID
-     * @param $code 状态码
-     * @param $codeDesc 状态码描述，默认为NULL
+     * @param $groupID int 分组ID
+     * @param $codeID int 状态码ID
+     * @param $code string 状态码
+     * @param $codeDesc string 状态码描述，默认为NULL
+     * @return bool
      */
     public function editCode(&$groupID, &$codeID, &$code, &$codeDesc)
     {
@@ -104,8 +109,9 @@ class StatusCodeDao
 
     /**
      * 检查状态码与用户的联系
-     * @param $codeID 状态码ID
-     * @param $userID 用户ID
+     * @param $codeID int 状态码ID
+     * @param $userID int 用户ID
+     * @return bool|int
      */
     public function checkStatusCodePermission(&$codeID, &$userID)
     {
@@ -121,8 +127,9 @@ class StatusCodeDao
 
     /**
      * 搜索状态码
-     * @param $projectID 项目ID
-     * @param $tips 搜索关键字
+     * @param $projectID int 项目ID
+     * @param $tips string 搜索关键字
+     * @return bool|array
      */
     public function searchStatusCode(&$projectID, &$tips)
     {
@@ -138,7 +145,8 @@ class StatusCodeDao
 
     /**
      * 获取状态码数量
-     * @param $projectID 项目ID
+     * @param $projectID int 项目ID
+     * @return bool|int
      */
     public function getStatusCodeNum(&$projectID)
     {
@@ -154,7 +162,7 @@ class StatusCodeDao
 
     /**
      * 批量删除状态码
-     * @param $code_ids
+     * @param $code_ids string 状态码列表
      * @return bool
      */
     public function deleteCodes(&$code_ids)

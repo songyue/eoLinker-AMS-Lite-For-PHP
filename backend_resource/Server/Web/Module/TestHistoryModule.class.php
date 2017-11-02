@@ -23,10 +23,11 @@ class TestHistoryModule
 
     /**
      * 添加测试记录
-     * @param $apiID 接口ID
-     * @param $requestInfo 测试请求信息
-     * @param $resultInfo 测试结果信息
-     * @param $testTime 测试时间
+     * @param $apiID int 接口ID
+     * @param $requestInfo string 测试请求信息
+     * @param $resultInfo string 测试结果信息
+     * @param $testTime string 测试时间
+     * @return bool|int
      */
     public function addTestHistory(&$apiID, &$requestInfo, &$resultInfo, &$testTime)
     {
@@ -48,7 +49,8 @@ class TestHistoryModule
 
     /**
      * 删除测试记录
-     * @param $testID 测试记录ID
+     * @param $testID int 测试记录ID
+     * @return bool
      */
     public function deleteTestHistory(&$testID)
     {
@@ -63,7 +65,8 @@ class TestHistoryModule
 
     /**
      * 获取测试记录信息
-     * @param $testID 测试记录ID
+     * @param $testID int 测试记录ID
+     * @return bool|array
      */
     public function getTestHistory(&$testID)
     {
@@ -78,7 +81,7 @@ class TestHistoryModule
 
     /**
      * 删除所有测试记录
-     * @param $apiID
+     * @param $apiID int 接口ID
      * @return bool
      */
     public function deleteAllTestHistory(&$apiID)

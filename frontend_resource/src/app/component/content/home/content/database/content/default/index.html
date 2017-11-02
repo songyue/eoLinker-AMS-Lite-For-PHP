@@ -2,8 +2,8 @@
     <header>
         <ul class="title-ul">
             <li class="btn-group-li">
-                <a class="eo-button-success common-btn" data-ng-click="$ctrl.data.fun.edit()"><span class="iconfont icon-tianjia"></span>新增数据库</a>
-                <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.import()"><span class="iconfont icon-shangchuan"></span>导入数据库</a>
+                <a class="eo-button-success common-btn" data-ng-click="$ctrl.data.fun.edit()"><span class="iconfont icon-tianjia"></span>{{'01000'|translate}}</a>
+                <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.import()"><span class="iconfont icon-shangchuan"></span>{{'01001'|translate}}</a>
             </li>
         </ul>
     </header>
@@ -11,10 +11,10 @@
         <table>
             <thead>
                 <tr>
-                    <th class="first-th">数据库名称</th>
-                    <th class="second-th">版本号</th>
-                    <th class="third-th">数据库最后修改时间</th>
-                    <th class="forth-th">操作</th>
+                    <th class="first-th">{{'01002'|translate}}</th>
+                    <th class="second-th">{{'01003'|translate}}</th>
+                    <th class="third-th">{{'01004'|translate}}</th>
+                    <th class="forth-th">{{'01005'|translate}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,13 +24,13 @@
                     <td>{{item.dbUpdateTime}}</td>
                     <td>
                         <div ng-hide="item.userType>1">
-                            <a class="home-function-edit" data-ng-click="$ctrl.data.fun.edit({item:item,$index:$index,$event:$event})"><span class="iconfont icon-bianji"></span>修改</a>
-                            <a class="home-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,$event:$event})"><span class="iconfont icon-shanchu"></span>删除</a>
+                            <a class="home-function-edit" data-ng-click="$ctrl.data.fun.edit({item:item,$index:$index,$event:$event})"><span class="iconfont icon-bianji"></span>{{'01006'|translate}}</a>
+                            <a class="home-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,$event:$event})"><span class="iconfont icon-shanchu"></span>{{'01007'|translate}}</a>
                         </div>
                     </td>
                 </tr>
                 <tr class="eo-none-tr" ng-if="$ctrl.data.interaction.response.query.length==0">
-                    <td colspan="5">尚未新建任何数据库</td>
+                    <td colspan="5">{{'01008'|translate}}</td>
                 </tr>
             </tbody>
         </table>

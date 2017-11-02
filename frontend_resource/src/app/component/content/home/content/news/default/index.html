@@ -2,13 +2,13 @@
     <header>
         <ul class="title-ul" style="position: fixed;width: 100%;">
             <li class="title-li">
-                <span class="pull-left icon">用户消息</span>
+                <span class="pull-left icon">{{'0110'|translate}}</span>
             </li>
             <li class="btn-group-li">
                 <ul>
                     <button data-ng-click="$ctrl.data.fun.clean()" ng-disabled="$ctrl.data.interaction.response.query.length<1">
                         <li class="btn-li">
-                            <span class="iconfont icon-hotfill"></span>清空消息
+                            <span class="iconfont icon-hotfill"></span>{{'0111'|translate}}
                         </li>
                     </button>
                 </ul>
@@ -19,22 +19,22 @@
         <table class="thead-table">
             <thead>
                 <tr>
-                    <th class="first-th">类型</th>
-                    <th class="second-th">消息</th>
-                    <th class="third-th">时间</th>
+                    <th class="first-th">{{'0112'|translate}}</th>
+                    <th class="second-th">{{'0113'|translate}}</th>
+                    <th class="third-th">{{'0114'|translate}}</th>
                     <th class="forth-th"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="eo-none-tr" ng-if="$ctrl.data.interaction.response.query.length==0">
-                    <td colspan="4">尚无任何消息</td>
+                    <td colspan="4">{{'0115'|translate}}</td>
                 </tr>
             </tbody>
         </table>
         <table class="tbody-table" data-ng-repeat='item in $ctrl.data.interaction.response.query'>
             <tbody>
                 <tr class="tr-title" data-ng-click="$ctrl.data.fun.read({item:item,$index:$index})" data-ng-class="{'isRead':item.isRead==1}">
-                    <th class="first-th">{{item.msgType==0?'系统':'项目'}}</th>
+                    <th class="first-th">{{item.msgType==0?$ctrl.data.info.filter.system:$ctrl.data.info.filter.project}}</th>
                     <td class="second-th">{{item.summary}}</td>
                     <td class="third-th">{{item.msgSendTime}}</td>
                     <td class="forth-th">
@@ -48,7 +48,7 @@
                             <li data-ng-bind-html="item.msg">
                             </li>
                             <li class="function-btn-group">
-                                <a class="function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index,$index})"><span class="iconfont icon-delete"></span>删除</a>
+                                <a class="function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index,$index})"><span class="iconfont icon-delete"></span>{{'0118'|translate}}</a>
                             </li>
                         </ul>
                     </td>

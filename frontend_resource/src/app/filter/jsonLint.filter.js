@@ -1,8 +1,8 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [json高亮抛出错误指令js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [json高亮抛出错误指令js] [json highlight throws the wrong instruction js]
      * @version  3.0.2
      * 参考至https://www.github.com/circlecell/jsonlintdotcom
      */

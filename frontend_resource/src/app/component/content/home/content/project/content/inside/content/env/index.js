@@ -1,15 +1,16 @@
 (function() {
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 环境模块相关js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [环境模块相关js] [Environment module related js]
      * @version  3.0.2
-     * @service  $scope 注入作用域服务
-     * @service  $rootScope 注入根作用域服务
-     * @service  ApiManagementResource 注入接口管理接口服务
-     * @service  $state 注入路由服务
-     * @service  HomeProject_Service 注入HomeProject_Service服务
-     * @constant CODE 注入状态码常量
-     * @constant HTTP_CONSTANT 注入HTTP相关常量集
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $rootScope [注入根作用域服务] [Injection rootscope service]
+     * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
+     * @service  $state [注入路由服务] [Injection state service]
+     * @service  HomeProject_Service [注入HomeProject_Service服务] [Injection HomeProject_Service service]
+     * @service  $filter [注入过滤器服务] [Injection filter service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     * @constant HTTP_CONSTANT [注入HTTP相关常量集] [inject HTTP related constant service]
      */
     'use strict';
     angular.module('eolinker')
@@ -28,9 +29,9 @@
             controller: homeProjectInsideEnv
         })
 
-    homeProjectInsideEnv.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'HomeProject_Service', 'CODE', 'HTTP_CONSTANT'];
+    homeProjectInsideEnv.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'HomeProject_Service', '$filter', 'CODE', 'HTTP_CONSTANT'];
 
-    function homeProjectInsideEnv($scope, $rootScope, ApiManagementResource, $state, HomeProject_Service, CODE, HTTP_CONSTANT) {
+    function homeProjectInsideEnv($scope, $rootScope, ApiManagementResource, $state, HomeProject_Service, $filter, CODE, HTTP_CONSTANT) {
 
         var vm = this;
         vm.data = {
@@ -89,18 +90,24 @@
                 }
             },
             fun: {
-                cancle: null, //取消功能函数
-                init: null, //初始化功能函数
-                click: null, //菜单单击功能函数
-                add: null, //添加菜单里面功能函数
-                edit: null, //编辑功能函数
+                cancle: null, 
+                init: null, 
+                click: null, 
+                add: null, 
+                confirm: null, 
+                change: null, 
+                initQuery: null,
                 delete:{
                     sidebar: null,
                     headerList:null,
                     paramList:null
-                }, //删除功能函数
+                }, 
             }
         }
+
+        /**
+         * @function [菜单单击功能函数] [Menu click]
+         */
         vm.data.fun.click = function(arg) {
             if ((arg.item.envID == vm.data.interaction.request.envID)&&vm.data.info.current.envID==-1) {
                 vm.data.info.current = vm.data.info.pre||arg.item;
@@ -109,18 +116,30 @@
             }
 
         }
+
+        /**
+         * @function [删除头部列表功能函数] [Delete the header list]
+         */
         vm.data.fun.delete.headerList=function(arg){
             vm.data.info.current.headerList.splice(arg.$index,1);
         }
+
+        /**
+         * @function [删除参数列表功能函数] [Delete the parameter list]
+         */
         vm.data.fun.delete.paramList=function(arg){
             vm.data.info.current.paramList.splice(arg.$index,1);
         }
+
+        /**
+         * @function [删除侧边栏功能函数] [Delete the sidebar]
+         */
         vm.data.fun.delete.sidebar = function(arg) {
             arg.$event.stopPropagation();
             var template = {
                 modal: {
-                    title: '删除环境',
-                    message: '请问是否删除该环境？'
+                    title: $filter('translate')('0121214'),
+                    message: $filter('translate')('0121215')
                 }
             }
             $rootScope.EnsureModal(template.modal.title, false, template.modal.message, {}, function(callback) {
@@ -130,7 +149,7 @@
                             case CODE.COMMON.SUCCESS:
                                 {
                                     vm.data.interaction.response.query.splice(arg.$index, 1);
-                                    $rootScope.InfoModal('环境删除成功', 'success');
+                                    $rootScope.InfoModal($filter('translate')('0121216'), 'success');
                                     if (vm.data.interaction.request.envID == arg.item.envID) {
                                         if (vm.data.interaction.response.query.length > 0) {
                                             vm.data.fun.click({ item: vm.data.interaction.response.query[0] });
@@ -147,6 +166,10 @@
                 }
             });
         }
+
+        /**
+         * @function [编辑功能函数] [edit]
+         */
         vm.data.fun.change = function(arg) {
             arg.item = arg.item || vm.data.info.current;
             var template = {
@@ -182,10 +205,18 @@
             }
 
         }
+
+        /**
+         * @function [取消功能函数] [cancel]
+         */
         vm.data.fun.cancle = function() {
             vm.data.interaction.response.query.splice(vm.data.interaction.response.query.length - 1, 1);
             vm.data.info.current = vm.data.info.pre;
         }
+
+        /**
+         * @function [添加菜单功能函数] [Add menu]
+         */
         vm.data.fun.add = function() {
             if (vm.data.interaction.response.query[vm.data.interaction.response.query.length - 1] && vm.data.interaction.response.query[vm.data.interaction.response.query.length - 1].envID == -1) return;
             var template = {
@@ -195,9 +226,13 @@
             vm.data.info.current = {};
             angular.copy(vm.data.info.reset, vm.data.info.current);
             angular.copy(vm.data.info.reset, template.object);
-            template.object.envName = '新环境';
+            template.object.envName = $filter('translate')('0121217');
             vm.data.interaction.response.query.push(template.object);
         }
+
+        /**
+         * @function [初始化环境变量列表功能函数] [Initialize the list of environment variables]
+         */
         vm.data.fun.initQuery = function(arg) {
             if (vm.data.interaction.request.envID == arg.item.envID) {
                 arg.item.$index = arg.$index;
@@ -205,6 +240,10 @@
                 vm.data.fun.change({ switch: -1, $last: 1 });
             }
         }
+
+        /**
+         * @function [确认功能函数] [Confirm]
+         */
         vm.data.fun.confirm = function() {
             if ($scope.ConfirmForm.$invalid) return;
             var template = {
@@ -241,12 +280,12 @@
                             {
                                 vm.data.interaction.response.query[vm.data.info.current.$index] = {};
                                 angular.copy(vm.data.info.current, vm.data.interaction.response.query[vm.data.info.current.$index]);
-                                $rootScope.InfoModal('修改环境变量成功！', 'success');
+                                $rootScope.InfoModal($filter('translate')('0121218'), 'success');
                                 break;
                             }
                         default:
                             {
-                                $rootScope.InfoModal('修改环境变量失败，请稍候再试或到论坛提交bug！', 'error');
+                                $rootScope.InfoModal($filter('translate')('0121219'), 'error');
                                 break;
                             }
                     }
@@ -257,19 +296,19 @@
                     switch (response.statusCode) {
                         case CODE.COMMON.SUCCESS:
                             {
-                                $rootScope.InfoModal('新增环境变量成功！', 'success');
+                                $rootScope.InfoModal($filter('translate')('0121220'), 'success');
                                 vm.data.info.current.envID = response.envID;
                                 vm.data.interaction.response.query.splice(vm.data.interaction.response.query.length - 1, 1, vm.data.info.current);
                                 vm.data.info.current = {};
                                 angular.copy(vm.data.info.reset, vm.data.info.current);
                                 angular.copy(vm.data.info.reset, template.object);
-                                template.object.envName = '新环境';
+                                template.object.envName = $filter('translate')('0121217');
                                 vm.data.interaction.response.query.push(template.object);
                                 break;
                             }
                         default:
                             {
-                                $rootScope.InfoModal('新增环境变量失败，请稍候再试或到论坛提交bug！', 'error');
+                                $rootScope.InfoModal($filter('translate')('0121221'), 'error');
                                 break;
                             }
                     }
@@ -277,6 +316,10 @@
             }
             return template.promise;
         }
+
+        /**
+         * @function [初始化功能函数] [initialization]
+         */
         vm.data.fun.init = (function() {
             var template = {
                 cache: vm.data.service.container.envObject.query,
@@ -284,7 +327,7 @@
                     projectID: vm.data.interaction.request.projectID
                 }
             }
-            $scope.$emit('$WindowTitleSet', { list: ['环境管理', $state.params.projectName, '接口管理'] });
+            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('0121222'), $state.params.projectName, $filter('translate')('0121223')] });
             if (template.cache) {
                 vm.data.interaction.response.query = template.cache;
             } else {

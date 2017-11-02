@@ -3,26 +3,26 @@
         <ul class="title-ul">
             <li class="btn-group-li pull-left">
                 <a class="common-btn default-btn" ng-click="$ctrl.data.fun.back()">
-                    <span class="iconfont icon-xiangzuo"></span>{{!$ctrl.data.info.reset.apiID?'接口列表':'返回详情'}}
+                    <span class="iconfont icon-xiangzuo"></span>{{!$ctrl.data.info.reset.apiID?$ctrl.data.info.filter.apiList:$ctrl.data.info.filter.returnTodetails}}
                 </a>
             </li>
             <li class="menu-li pull-left">
                 <a class="pull-left " ng-class="{'elem-active':$ctrl.data.info.menu==0}" ng-click="$ctrl.data.fun.menu({switch:0})">
-                            基础信息
+                            {{'01210012'|translate}}
                     </a>
                 <a class="pull-left" ng-class="{'elem-active':$ctrl.data.info.menu==1}" ng-click="$ctrl.data.fun.menu({switch:1})">
-                            详细说明
+                            {{'01210013'|translate}}
                     </a>
             </li>
             <li class="btn-group-li pull-right">
                 <button class="eo-button-success common-btn " button-set-disable-directive="$ctrl.data.fun.requestProcessing({status:0})"  ng-if="!$ctrl.data.interaction.response.apiInfo.apiID">
-                    继续添加
+                    {{'01210014'|translate}}
                 </button>
                 <button class="eo-button-success common-btn last-btn " ng-hide="!$ctrl.data.interaction.response.apiInfo.apiID||$ctrl.data.info.reset.type==2" button-set-disable-directive="$ctrl.data.fun.requestProcessing({status:1})">
-                    保存
+                    {{'01210015'|translate}}
                 </button>
                 <button class="eo-button-success common-btn last-btn " ng-show="!$ctrl.data.interaction.response.apiInfo.apiID||$ctrl.data.info.reset.type==2" button-set-disable-directive="$ctrl.data.fun.requestProcessing({status:2})">
-                    保存
+                    {{'01210015'|translate}}
                 </button>
             </li>
         </ul>
@@ -33,7 +33,7 @@
                 <ul>
                     <li>
                         <ul class="api-message-send">
-                            <li class="pull-left first-select-li"><span>分组：</span></li>
+                            <li class="pull-left first-select-li"><span>{{'01210017'|translate}}</span></li>
                             <li class="pull-left ">
                                 <select class="eo-input " ng-model="$ctrl.data.interaction.response.apiInfo.groupID" ng-options="group.groupID as group.groupName for group in $ctrl.data.info.group.parent" ng-change="$ctrl.data.fun.change.group()">
                                 </select>
@@ -42,22 +42,22 @@
                                 <select class="eo-input" ng-model="$ctrl.data.interaction.response.apiInfo.childGroupID" ng-options="group.groupID as group.groupName for group in $ctrl.data.info.group.child">
                                 </select>
                             </li>
-                            <li class="pull-left"><span class="center-span">状态：</span></li>
+                            <li class="pull-left"><span class="center-span">{{'01210018'|translate}}</span></li>
                             <li class="pull-left">
                                 <select class="eo-input" ng-model="$ctrl.data.interaction.response.apiInfo.apiStatus">
-                                    <option value="0">启用</option>
-                                    <option value="1">维护</option>
-                                    <option value="2">弃用</option>
+                                    <option value="0">{{'01210019'|translate}}</option>
+                                    <option value="1">{{'012100110'|translate}}</option>
+                                    <option value="2">{{'012100111'|translate}}</option>
                                 </select>
                             </li>
-                            <li class="pull-left"><span class="center-span">请求协议：</span></li>
+                            <li class="pull-left"><span class="center-span">{{'012100112'|translate}}</span></li>
                             <li class="pull-left">
                                 <select class="eo-input" ng-model="$ctrl.data.interaction.response.apiInfo.apiProtocol">
                                     <option value="0">HTTP</option>
                                     <option value="1">HTTPS</option>
                                 </select>
                             </li>
-                            <li class="pull-left"><span class="center-span">请求方式：</span></li>
+                            <li class="pull-left"><span class="center-span">{{'012100113'|translate}}</span></li>
                             <li class="pull-left">
                                 <select class="eo-input" ng-model="$ctrl.data.interaction.response.apiInfo.apiRequestType" ng-change="$ctrl.data.fun.change.requestType()">
                                     <option value="0">POST</option>
@@ -86,7 +86,7 @@
                     </li>
                     <li>
                         <ul class="api-message-name">
-                            <li class="pull-left"><span>名称：</span></li>
+                            <li class="pull-left"><span>{{'012100114'|translate}}</span></li>
                             <li>
                                 <input class="eo-input" type="text" name="name" ng-model="$ctrl.data.interaction.response.apiInfo.apiName" ng-class="{'eo-input-error':($ctrl.data.info.input.submited&&editForm.name.$invalid)}" maxlength="255" required>
                             </li>
@@ -96,7 +96,7 @@
             </ng-form>
         </div>
         <div class="item-part request-header-part">
-            <p class="title-p"><b>请求头部</b></p>
+            <p class="title-p"><b>{{'012100115'|translate}}</b></p>
             <header>
                 <ul>
                     <li ng-hide="$ctrl.data.interaction.response.apiInfo.apiRequestParamType=='1'">
@@ -107,9 +107,9 @@
             <table>
                 <thead>
                     <tr>
-                        <td class="request-header-label">标签</td>
-                        <td>内容</td>
-                        <td class="operation-td">操作</td>
+                        <td class="request-header-label">{{'012100116'|translate}}</td>
+                        <td>{{'012100117'|translate}}</td>
+                        <td class="operation-td">{{'012100118'|translate}}</td>
                     </tr>
                 </thead>
             </table>
@@ -119,12 +119,12 @@
                         <tbody>
                             <td class="label-td request-header-label">
                                 <ul class="request-header-icon-form">
-                                    <li auto-complete model="item.headerName" array="$ctrl.data.constant.requestHeader" ng-class="{'eo-had-input-error':(item.headerValue&&!item.headerName)}" input-change-fun="$ctrl.data.fun.last.header({$last:$last})" placeholder="头部标签" padding=2>
+                                    <li auto-complete model="item.headerName" array="$ctrl.data.constant.requestHeader" ng-class="{'eo-had-input-error':(item.headerValue&&!item.headerName)}" input-change-fun="$ctrl.data.fun.last.header({$last:$last})" placeholder="{{'012100119'|translate}}" padding=2>
                                     </li>
                                 </ul>
                             </td>
                             <td>
-                                <input class="eo-input " type="text" name="" ng-model="item.headerValue" maxlength="65530" ng-change="$ctrl.data.fun.last.header({$last:$last})" placeholder="头部内容">
+                                <input class="eo-input " type="text" name="" ng-model="item.headerValue" maxlength="65530" ng-change="$ctrl.data.fun.last.header({$last:$last})" placeholder="{{'012100120'|translate}}">
                             </td>
                             <td class="operation-td" ng-switch-when=true><span sv-handle></span></td>
                             <td class="operation-td" ng-switch-when=false>
@@ -139,12 +139,12 @@
             </ul>
         </div>
         <div class="item-part request-param-part">
-            <p class="title-p"><b>请求参数</b></p>
+            <p class="title-p"><b>{{'012100121'|translate}}</b></p>
             <header>
                 <ul>
-                    <li class="pull-left test-nav-li success-li" ng-class="{'active':$ctrl.data.interaction.response.apiInfo.apiRequestParamType=='0'}" ng-click="$ctrl.data.interaction.response.apiInfo.apiRequestParamType = '0'">表单[form-data]</li>
+                    <li class="pull-left test-nav-li success-li" ng-class="{'active':$ctrl.data.interaction.response.apiInfo.apiRequestParamType=='0'}" ng-click="$ctrl.data.interaction.response.apiInfo.apiRequestParamType = '0'">{{'012100122'|translate}}[form-data]</li>
                     <li class="pull-left test-nav-li" ng-class="{'active':$ctrl.data.interaction.response.apiInfo.apiRequestParamType=='2','failure-li':$ctrl.data.interaction.response.apiInfo.apiRequestType != '0' &&$ctrl.data.interaction.response.apiInfo.apiRequestType != '2'}" ng-click="$ctrl.data.interaction.response.apiInfo.apiRequestParamType = '2'">RESTful</li>
-                    <li class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.interaction.response.apiInfo.apiRequestParamType=='1'}" ng-click="$ctrl.data.interaction.response.apiInfo.apiRequestParamType = '1'" ng-show="$ctrl.data.interaction.response.apiInfo.apiRequestType == '0' || $ctrl.data.interaction.response.apiInfo.apiRequestType == '2'">源数据[raw]</li>
+                    <li class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.interaction.response.apiInfo.apiRequestParamType=='1'}" ng-click="$ctrl.data.interaction.response.apiInfo.apiRequestParamType = '1'" ng-show="$ctrl.data.interaction.response.apiInfo.apiRequestType == '0' || $ctrl.data.interaction.response.apiInfo.apiRequestType == '2'">{{'012100123'|translate}}[raw]</li>
                     <li ng-hide="$ctrl.data.interaction.response.apiInfo.apiRequestParamType=='1'">
                         <button class="eo-button-info change-type-btn send-format" set-json-to-params="paramKey" item="{{$ctrl.data.info.jsonToParamObject.requestItem}}" value-item="{{$ctrl.data.info.jsonToParamObject.requestValueItem}}" reset-result="$ctrl.data.interaction.response.apiInfo.apiRequestParam" set-value="paramValueList" set-value-key="value"></button>
                         <button class="eo-button-info change-type-btn send-format" set-json-to-params="paramKey" item="{{$ctrl.data.info.jsonToParamObject.requestItem}}" value-item="{{$ctrl.data.info.jsonToParamObject.requestValueItem}}" reset-result="$ctrl.data.interaction.response.apiInfo.apiRequestParam" set-value="paramValueList" set-value-key="value" import-method='1'></button>
@@ -154,12 +154,12 @@
             <table ng-class="{'hidden':$ctrl.data.interaction.response.apiInfo.apiRequestParamType=='1'}">
                 <thead>
                     <tr>
-                        <td class="request-param-label">必填</td>
-                        <td class="name-td">参数名</td>
-                        <td>说明</td>
-                        <td class="type-td">类型</td>
-                        <td>示例</td>
-                        <td class="operation-td">操作</td>
+                        <td class="request-param-label">{{'012100124'|translate}}</td>
+                        <td class="name-td">{{'012100125'|translate}}</td>
+                        <td>{{'012100126'|translate}}</td>
+                        <td class="type-td">{{'012100127'|translate}}</td>
+                        <td>{{'012100128'|translate}}</td>
+                        <td class="operation-td">{{'012100129'|translate}}</td>
                     </tr>
                 </thead>
             </table>
@@ -172,10 +172,10 @@
                                 <label for="request-body-{{$index}}" class="radio-input iconfont " ng-class="{'icon-check':item.paramNotNull}">{{item.paramNotNull?'':'&nbsp;'}}</label>
                             </td>
                             <td class="name-td">
-                                <input class="eo-input" type="text" name="" ng-model="item.paramKey" ng-class="{'eo-input-error':(!item.paramKey&&item.paramName)}" maxlength="255" placeholder="参数名" ng-change="$ctrl.data.fun.last.request({$last:$last})" required>
+                                <input class="eo-input" type="text" name="" ng-model="item.paramKey" ng-class="{'eo-input-error':(!item.paramKey&&item.paramName)}" maxlength="255" placeholder="{{'012100125'|translate}}" ng-change="$ctrl.data.fun.last.request({$last:$last})" required>
                             </td>
                             <td>
-                                <input class="eo-input" type="text" name="" ng-model="item.paramName" maxlength="255" placeholder="参数说明" ng-change="$ctrl.data.fun.last.request({$last:$last})">
+                                <input class="eo-input" type="text" name="" ng-model="item.paramName" maxlength="255" placeholder="{{'012100130'|translate}}" ng-change="$ctrl.data.fun.last.request({$last:$last})">
                             </td>
                             <td class="type-td">
                                 <select class="eo-input request-type-select" ng-model="item.paramType" ng-change="$ctrl.data.fun.last.request({$last:$last})">
@@ -196,11 +196,11 @@
                                 </select>
                             </td>
                             <td>
-                                <input class="eo-input" type="text" name="" ng-model="item.paramValue" placeholder="参数示例" ng-change="$ctrl.data.fun.last.request({$last:$last})">
+                                <input class="eo-input" type="text" name="" ng-model="item.paramValue" placeholder="{{'012100131'|translate}}" ng-change="$ctrl.data.fun.last.request({$last:$last})">
                             </td>
                             <td class="operation-td" ng-switch-when=true><span sv-handle></span></td>
                             <td class="operation-td" ng-switch-when=false>
-                                <button class="get-more-btn eo-button-default" ng-click="$ctrl.data.fun.more.request({item:item,$index:$index})" ng-disabled="!item.paramKey">更多设置</button>
+                                <button class="get-more-btn eo-button-default" ng-click="$ctrl.data.fun.more.request({item:item,$index:$index})" ng-disabled="!item.paramKey">{{'012100132'|translate}}</button>
                                 <label class="eo-sv-handle iconfont icon-111zhuanhuan number-label" sv-handle></label>
                                 <label >
                                     <a class="iconfont icon-shanchu number-label" ng-click="$ctrl.data.fun.requestList.delete({$index:$index})"></a>
@@ -219,10 +219,10 @@
                                 <label for="request-body-{{$index}}" class="radio-input iconfont " ng-class="{'icon-check':item.paramNotNull}">{{item.paramNotNull?'':'&nbsp;'}}</label>
                             </td>
                             <td class="name-td">
-                                <input class="eo-input" type="text" name="" ng-model="item.paramKey" ng-class="{'eo-input-error':(!item.paramKey&&item.paramName)}" maxlength="255" placeholder="参数名" ng-change="$ctrl.data.fun.last.request({$last:$last})" required>
+                                <input class="eo-input" type="text" name="" ng-model="item.paramKey" ng-class="{'eo-input-error':(!item.paramKey&&item.paramName)}" maxlength="255" placeholder="{{'012100131'|translate}}{{'012100125'|translate}}" ng-change="$ctrl.data.fun.last.request({$last:$last})" required>
                             </td>
                             <td>
-                                <input class="eo-input" type="text" name="" ng-model="item.paramName" maxlength="255" placeholder="参数说明" ng-change="$ctrl.data.fun.last.request({$last:$last})">
+                                <input class="eo-input" type="text" name="" ng-model="item.paramName" maxlength="255" placeholder="{{'012100131'|translate}}" ng-change="$ctrl.data.fun.last.request({$last:$last})">
                             </td>
                             <td class="type-td">
                                 <select class="eo-input request-type-select" ng-model="item.paramType" ng-change="$ctrl.data.fun.last.request({$last:$last})">
@@ -243,11 +243,11 @@
                                 </select>
                             </td>
                             <td>
-                                <input class="eo-input" type="text" name="" ng-model="item.paramValue" placeholder="参数示例" ng-change="$ctrl.data.fun.last.request({$last:$last})">
+                                <input class="eo-input" type="text" name="" ng-model="item.paramValue" placeholder="{{'012100131'|translate}}" ng-change="$ctrl.data.fun.last.request({$last:$last})">
                             </td>
                             <td class="operation-td" ng-switch-when=true><span sv-handle></span></td>
                             <td class="operation-td" ng-switch-when=false>
-                                <button class="get-more-btn eo-button-default" ng-click="$ctrl.data.fun.more.request({item:item,$index:$index})" ng-disabled="!item.paramKey">更多设置</button>
+                                <button class="get-more-btn eo-button-default" ng-click="$ctrl.data.fun.more.request({item:item,$index:$index})" ng-disabled="!item.paramKey">{{'012100132'|translate}}</button>
                                 <label class="eo-sv-handle iconfont icon-111zhuanhuan number-label" sv-handle></label>
                                 <label >
                                     <a class="iconfont icon-shanchu number-label" ng-click="$ctrl.data.fun.requestList.delete({$index:$index})"></a>
@@ -263,7 +263,7 @@
             </div>
         </div>
         <div class="item-part response-param-part">
-            <p class="title-p"><b>返回参数</b></p>
+            <p class="title-p"><b>{{'012100133'|translate}}</b></p>
             <header>
                 <ul>
                     <li>
@@ -274,11 +274,11 @@
             <table>
                 <thead>
                     <tr>
-                        <td class="request-param-label">必含</td>
-                        <td class="name-td">字段名</td>
-                        <td>说明</td>
-                        <td class="type-td">类型</td>
-                        <td class="operation-td">操作</td>
+                        <td class="request-param-label">{{'012100134'|translate}}</td>
+                        <td class="name-td">{{'012100135'|translate}}</td>
+                        <td>{{'012100126'|translate}}</td>
+                        <td class="type-td">{{'012100127'|translate}}</td>
+                        <td class="operation-td">{{'012100129'|translate}}</td>
                     </tr>
                 </thead>
             </table>
@@ -316,7 +316,7 @@
                             </td>
                             <td class="operation-td" ng-switch-when=true><span sv-handle></span></td>
                             <td class="operation-td" ng-switch-when=false>
-                                <button class="get-more-btn eo-button-default" ng-click="$ctrl.data.fun.more.response({item:item,$index:$index})" ng-disabled="!item.paramKey">更多设置</button>
+                                <button class="get-more-btn eo-button-default" ng-click="$ctrl.data.fun.more.response({item:item,$index:$index})" ng-disabled="!item.paramKey">{{'012100132'|translate}}</button>
                                 <label class="eo-sv-handle iconfont icon-111zhuanhuan number-label" sv-handle></label>
                                 <label >
                                     <a class="iconfont icon-shanchu number-label" ng-click="$ctrl.data.fun.resultList.delete({$index:$index})"></a>
@@ -328,11 +328,11 @@
             </ul>
         </div>
         <div class="item-part response-example-part">
-            <p class="title-p"><b>返回示例</b></p>
+            <p class="title-p"><b>{{'012100136'|translate}}</b></p>
             <header>
                 <ul>
-                    <li class="pull-left test-nav-li success-li" ng-class="{'active':!$ctrl.data.info.mock.isFailure}" ng-click="$ctrl.data.info.mock.isFailure = false">成功</li>
-                    <li class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.info.mock.isFailure}" ng-click="$ctrl.data.info.mock.isFailure = true">失败</li>
+                    <li class="pull-left test-nav-li success-li" ng-class="{'active':!$ctrl.data.info.mock.isFailure}" ng-click="$ctrl.data.info.mock.isFailure = false">{{'012100137'|translate}}</li>
+                    <li class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.info.mock.isFailure}" ng-click="$ctrl.data.info.mock.isFailure = true">{{'012100138'|translate}}</li>
                 </ul>
             </header>
             <article>
@@ -349,10 +349,10 @@
     </article>
     <article class="first-level-article" ng-show="$ctrl.data.info.menu==1">
         <div class="item-part remark-part">
-            <p class="title-p"><b>详细说明</b></p>
+            <p class="title-p"><b>{{'012100139'|translate}}</b></p>
             <header>
                 <ul>
-                    <li class="pull-left test-nav-li success-li" ng-class="{'active':$ctrl.data.interaction.response.apiInfo.apiNoteType=='0'}" ng-click="$ctrl.data.interaction.response.apiInfo.apiNoteType = '0'">富文本</li>
+                    <li class="pull-left test-nav-li success-li" ng-class="{'active':$ctrl.data.interaction.response.apiInfo.apiNoteType=='0'}" ng-click="$ctrl.data.interaction.response.apiInfo.apiNoteType = '0'">{{'012100140'|translate}}</li>
                     <li class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.interaction.response.apiInfo.apiNoteType=='1'}" ng-click="$ctrl.data.interaction.response.apiInfo.apiNoteType = '1';$ctrl.data.fun.change.noteType()">markdown</li>
                 </ul>
             </header>
@@ -366,72 +366,6 @@
             </article>
             <footer>
             </footer>
-        </div>
-    </article>
-    <article class="first-level-article" ng-show="$ctrl.data.info.menu==2">
-        <div class="item-part mock-part">
-            <p class="title-p"><b>Mock设置</b></p>
-            <table>
-                <thead>
-                    <tr>
-                        <td class="name-td">字段名</td>
-                        <td class="type-td">类型</td>
-                        <td>生成规则</td>
-                        <td class="value-td">属性值</td>
-                    </tr>
-                </thead>
-            </table>
-            <ul>
-                <li style="background-color: #fff;" ng-repeat="item in $ctrl.data.interaction.response.apiInfo.mockRule | filter:$ctrl.data.fun.filterMock track by $index">
-                    <table>
-                        <tbody>
-                            <th class="name-td">
-                                <label>{{item.paramKey}}</label>
-                            </th>
-                            <td class="type-td">
-                                <select class="eo-input request-type-select" ng-model="item.paramType" ng-change="$ctrl.data.fun.last.response({$last:$last})">
-                                    <option value="0">[string]</option>
-                                    <option value="1">[file]</option>
-                                    <option value="2">[json]</option>
-                                    <option value="3">[int]</option>
-                                    <option value="4">[float]</option>
-                                    <option value="5">[double]</option>
-                                    <option value="6">[date]</option>
-                                    <option value="7">[datetime]</option>
-                                    <option value="8">[boolean]</option>
-                                    <option value="9">[byte]</option>
-                                    <option value="10">[short]</option>
-                                    <option value="11">[long]</option>
-                                    <option value="12">[array]</option>
-                                    <option value="13">[object]</option>
-                                </select>
-                            </td>
-                            <td class="rule-td">
-                                <input class="eo-input" type="text" name="" placeholder="请输入mock生成规则" ng-model="item.rule">
-                            </td>
-                            <td class="value-td">
-                                <input class="eo-input" type="text" name="" placeholder="请输入mock属性值，如@mock=true" ng-model="item.value">
-                            </td>
-                        </tbody>
-                    </table>
-                </li>
-            </ul>
-        </div>
-        <div class="item-part mock-data-part">
-            <p class="title-p"><b>mock数据预览</b></p>
-            <header>
-                <ul>
-                    <li>
-                        <button class="eo-button-info change-type-btn send-format" ng-click="$ctrl.data.fun.refresh()">刷新数据</button>
-                    </li>
-                </ul>
-            </header>
-            <article>
-                <div arrange-format="mock-result-js" interaction="{request:{onlyOneTime:true}}" ng-model="$ctrl.data.interaction.response.apiInfo.mockResult">
-                    <pre class="back-result-content " id="mock-result-js">
-                    </pre>
-                </div>
-            </article>
         </div>
     </article>
     <footer>

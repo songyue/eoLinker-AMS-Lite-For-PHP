@@ -1,16 +1,16 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [格式整理过滤器]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [格式整理过滤器] [Formatting filters]
      * @version  3.0.2
      */
     angular.module('eolinker.filter')
         /**
-         * @function [JSON格式整理过滤器]
-         * @param    {[obj]}    object [需过滤对象]
-         * @param    {[number]}   indent_count [缩进长度]
-         * @return   {[string]}      [过滤后的html字符串]
+         * @function [JSON格式整理过滤器] [JSON format finishing filter]
+         * @param    {[obj]}    object [需过滤对象 The object to be filtered]
+         * @param    {[number]}   indent_count [缩进长度 Indentation length]
+         * @return   {[string]}      [过滤后的html字符串 Filtered html string]
          */
         .filter('JsonformatFilter', function() {
             var data = {
@@ -31,10 +31,10 @@
             }
 
             /**
-             * @function [循环功能函数]
-             * @param    {[obj]}   object       [需过滤对象]
-             * @param    {[number]}   indent_count [缩进长度]
-             * @return   {[obj]}                [函数调用返回结果存储变量]
+             * @function [循环功能函数] [loop]
+             * @param    {[obj]}   object       [需过滤对象 The object to be filtered]
+             * @param    {[number]}   indent_count [缩进长度 Indentation length]
+             * @return   {[obj]}                [函数调用返回结果存储变量 The function call returns the result store variable]
              */
             data.fun.format.loop = function(object, indent_count) {
                 var template = {
@@ -64,36 +64,36 @@
             }
 
             /**
-             * @function [类型为null型功能函数]
-             * @param    {[obj]}   object       [需过滤对象]
-             * @return   {[string]}                [过滤后的html字符串]
+             * @function [类型为null型功能函数] [Type is a null function]
+             * @param    {[obj]}   object       [需过滤对象 The object to be filtered]
+             * @return   {[string]}                [过滤后的html字符串 Filtered html string]
              */
             data.fun.format.typeNull = function(object) {
                 return '<span class="json_null">null</span>';
             }
 
             /**
-             * @function [类型为boolean型功能函数]
-             * @param    {[obj]}   object       [需过滤对象]
-             * @return   {[string]}                [过滤后的html字符串]
+             * @function [类型为boolean型功能函数] [Type boolean type function function]
+             * @param    {[obj]}   object       [需过滤对象 The object to be filtered]
+             * @return   {[string]}                [过滤后的html字符串 Filtered html string]
              */
             data.fun.format.typeBoolean = function(object) {
                 return '<span class="json_boolean">' + object + '</span>';
             }
 
             /**
-             * @function [类型为number型功能函数]
-             * @param    {[obj]}   object       [需过滤对象]
-             * @return   {[string]}                [过滤后的html字符串]
+             * @function [类型为number型功能函数] [Type is a function of type number]
+             * @param    {[obj]}   object       [需过滤对象 The object to be filtered]
+             * @return   {[string]}                [过滤后的html字符串 Filtered html string]
              */
             data.fun.format.typeNumber = function(object) {
                 return '<span class="json_number">' + object + '</span>';
             }
 
             /**
-             * @function [类型为string型功能函数]
-             * @param    {[obj]}   object       [需过滤对象]
-             * @return   {[string]}                [过滤后的html字符串]
+             * @function [类型为string型功能函数] [Type is a string function]
+             * @param    {[obj]}   object       [需过滤对象 The object to be filtered]
+             * @return   {[string]}                [过滤后的html字符串 Filtered html string]
              */
             data.fun.format.typeString = function(object) {
                 object = object.replace(/\</g, "&lt;");
@@ -107,9 +107,9 @@
             }
 
             /**
-             * @function [类型为array型功能函数]
-             * @param    {[obj]}   object       [需过滤对象]
-             * @return   {[string]}                [过滤后的html字符串]
+             * @function [类型为array型功能函数] [Type is an array function function]
+             * @param    {[obj]}   object       [需过滤对象 The object to be filtered]
+             * @return   {[string]}                [过滤后的html字符串 Filtered html string]
              */
             data.fun.format.typeArray = function(object, indent_count) {
                 var template = {
@@ -139,9 +139,9 @@
             }
 
             /**
-             * @function [类型为object型功能函数]
-             * @param    {[obj]}   object       [需过滤对象]
-             * @return   {[string]}                [过滤后的html字符串]
+             * @function [类型为object型功能函数] [Type is an object-type function function]
+             * @param    {[obj]}   object       [需过滤对象 The object to be filtered]
+             * @return   {[string]}                [过滤后的html字符串 Filtered html string]
              */
             data.fun.format.typeObject = function(object, indent_count) {
                 var template = {
@@ -168,9 +168,9 @@
             }
 
             /**
-             * @function [判别类型功能函数]
-             * @param    {[obj]}   object       [需过滤对象]
-             * @return   {[string]}                [类型]
+             * @function [判别类型功能函数] [Discriminant type]
+             * @param    {[obj]}   object       [需过滤对象 The object to be filtered]
+             * @return   {[string]}                [过滤后的html字符串 Filtered html string]
              */
             data.fun.format.typeof = function(object) {
                 var tf = typeof object,
@@ -186,16 +186,16 @@
             }
 
             /**
-             * @function [添加空格功能函数]
-             * @param    {[number]}   indent_count       [缩进长度]
-             * @return   {[string]}                [过滤后的html字符串]
+             * @function [添加空格功能函数] [Add a space]
+             * @param    {[obj]}   object       [需过滤对象 The object to be filtered]
+             * @return   {[string]}                [过滤后的html字符串 Filtered html string]
              */
             data.fun.textIndent = function(indent_count) {
                 return (new Array(indent_count + 1)).join('&nbsp;&nbsp;&nbsp;&nbsp;');
             }
 
             /**
-             * @function [css样式加载功能函数]
+             * @function [css样式加载功能函数] [css style load function function]
              */
             data.fun.loadCss = function() {
                 var template = {
@@ -239,9 +239,9 @@
         })
         
         /**
-         * @function [HTML格式整理过滤器]
-         * @param    {[obj]}    object [需过滤对象]
-         * @return   {[string]}      [过滤后的html字符串]
+         * @function [HTML格式整理过滤器] [HTML formatting filters]
+         * @param    {[obj]}   object       [需过滤对象 The object to be filtered]
+             * @return   {[string]}                [过滤后的html字符串 Filtered html string]
          * 参考至http://www.codeforge.com/read/306518/beautifyhtml.js__html
          */
         .filter('HtmlformatFilter', function() {

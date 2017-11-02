@@ -1,32 +1,32 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [环境变量指令js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [环境变量指令js] [Environment variable instruction js]
      * @version  3.0.2
-     * @service  $sce [注入$sce服务]
-     * @service  $state [注入路由服务]
-     * @service  $timeout [注入$timeout服务]
-     * @service  $filter [注入过滤器服务]
-     * @param    version [版本管理]
-     * @param    envModel [model页面相应内容]
-     * @param    envQueryInit [env list页相应返回显示apiURI函数]
-     * @param    envParam [环境变量全局参数绑定数组]
+     * @service  $sce [注入$sce服务] [inject $sce service]
+     * @service  $state [注入路由服务] [inject state service]
+     * @service  $timeout [注入$timeout服务] [inject $timeout service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @param    version [版本管理] [Version management]
+     * @param    envModel [model页面相应内容] [The corresponding content of the model page]
+     * @param    envQueryInit [env list页相应返回显示apiURI函数] [The env list page returns the apiURI function]
+     * @param    envParam [环境变量全局参数绑定数组] [Environment variable global parameter binding array]
      */
     angular.module('eolinker.directive')
 
     .directive('enV', ['ApiManagementResource', '$sce', '$state', '$timeout', '$filter', function(ApiManagementResource, $sce, $state, $timeout, $filter) {
         return {
             restrict: 'A',
-            transclude: true,
+            translateclude: true,
             template: '<div class="eo-env" ><div style="display:inline-block;" class="en-v-li"  ng-mouseleave="data.info.isShow=false"><ul>' +
                 '<li class="child-input-li"  data-ng-click="data.info.isShow=true">' +
-                '<input style="height:30px;" class="eo-input" placeholder="没有测试环境" type="text" data-ng-model="data.info.isModel.envName" readonly>' +
+                '<input style="height:30px;" class="eo-input" placeholder="{{\'310\'|translate}}" type="text" data-ng-model="data.info.isModel.envName" readonly>' +
                 '<label class="iconfont icon-xiangxia" style="color:#333;height:30px;line-height:30px;"></label>' +
                 '</li>' +
                 '<li class="absolute enV-child-li" ng-class="{hidden:!data.info.isShow}">' +
                 '<ul class="message-ul">' +
-                '<li class="list-li" data-ng-click="data.fun.isClick(null)">无测试环境</li>' +
+                '<li class="list-li" data-ng-click="data.fun.isClick(null)">{{\'311\'|translate}}</li>' +
                 '<li class="list-li" ng-repeat="query in data.info.envQuery track by $index" data-ng-click="data.fun.isClick(query)">' +
                 '{{query.envName}}' +
                 '</li>' +
@@ -76,9 +76,9 @@
                 var timer = null;
 
                 /**
-                 * @function [接口列表页初始化环境变量功能函数]
-                 * @param    {[string]}   attr [接口uri]
-                 * @return   {[string]}        [接口uri]
+                 * @function [接口列表页初始化环境变量功能函数] [The interface list page initializes the environment variable]
+                 * @param    {[string]}   attr [接口uri API uri]
+                 * @return   {[string]}        [接口uri API uri]
                  */
                 $scope.envQueryInit = function(attr) {
                     
@@ -86,7 +86,7 @@
                 };
 
                 /**
-                 * @function [辅助初始化功能函数]
+                 * @function [辅助初始化功能函数] [Auxiliary initialization]
                  */
                 data.fun.initMessage = function() {
                     var envItem = null;
@@ -218,7 +218,7 @@
                 }
 
                 /**
-                 * @function [初始化功能函数]
+                 * @function [初始化功能函数] [initialization]
                  */
                 data.fun.init = function() {
                     data.storage = JSON.parse(window.localStorage['ENV_DIRECTIVE_TABLE'] || '{}');
@@ -233,8 +233,8 @@
                 }
 
                 /**
-                 * @function [下拉按钮单击功能函数]
-                 * @param    {[string]}   query [环境变量列表项]
+                 * @function [下拉按钮单击功能函数] [Drop down button click]
+                 * @param    {[string]}   query [环境变量列表项 Environment variable list item]
                  */
                 $scope.data.fun.isClick = function(query) { 
                     var template = { output: null }
@@ -346,9 +346,9 @@
                 }
 
                 /**
-                 * @function [监听初始化功能函数]
-                 * @param    {[obj]}   _default [原生传参]
-                 * @param    {[obj]}   _default [{reset:是否重置,resetInfo:重置内容}]
+                 * @function [监听初始化功能函数] [Monitor the initialization]
+                 * @param    {[obj]}   _default [原生传参 Native parameters]
+                 * @param    {[obj]}   _default [{reset:是否重置 Whether to reset,resetInfo:重置内容 Reset the content}]
                  */
                 $scope.$on('$EnvInitReady', function(_default, attr) { 
                     if (attr.reset && data.info.reset) {
@@ -368,7 +368,7 @@
                 });
 
                 /**
-                 * @function [页面销毁功能函数]
+                 * @function [页面销毁功能函数 Destroy the page]
                  */
                 $scope.$on('$destroy', function() {
                     if (timer) {

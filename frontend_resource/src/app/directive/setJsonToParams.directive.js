@@ -1,16 +1,16 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [匹配Json转换为Param指令js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [匹配Json转换为Param指令js] [Match Json to param command js]
      * @version  3.0.2
-     * @service  $compile [注入$compile服务]
-     * @service  $rootScope [注入根作用域服务]
-     * @service  $filter [注入过滤器服务]
-     * @param    importMethod [导入文本方式，默认json，1：get请求参数形式,2:请求头部形式]
-     * @param    item [设置初始object类集（可选）]
-     * @param    resetResult [插入结果位置集（必选）]
-     * @param    valueItem [值可能性object类集（可选）]
+     * @service  $compile [注入$compile服务] [inject $compile service]
+     * @service  $rootScope [注入根作用域服务] [inject rootScope service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @param    importMethod [导入文本方式，默认json，1：get请求参数形式,2:请求头部形式] [Import text mode, default json, 1: get request parameter form, 2: request header form]
+     * @param    item [设置初始object类集（可选）] [Set the initial object class set (optional)]
+     * @param    resetResult [插入结果位置集（必选）] [Insert result set (required)]
+     * @param    valueItem [值可能性object类集（可选）] [Value Possibility object Class Set (optional)]
      */
     angular.module('eolinker.directive')
         .directive('setJsonToParams', ['$compile', '$rootScope', '$filter', function($compile, $rootScope, $filter) {
@@ -23,13 +23,13 @@
                     valueItem: '@' 
                 },
                 replace: true,
-                template: '<button class="eo-button-info add-param-btn import-btn" data-ng-click="data.fun.confirm()">{{importMethod=="1"?\'导入GET参数\':(importMethod=="2"?\'导入头部\':\'导入JSON\')}}</button>',
+                template: '<button class="eo-button-info add-param-btn import-btn" data-ng-click="data.fun.confirm()">{{importMethod=="1"?data.info.get:(importMethod=="2"?data.info.header:data.info.json)}}</button>',
                 link: function($scope, elem, attrs, ngModel) {
                     var data = {
                         input: {
-                            key: attrs.setJsonToParams || 'key', //数组参数个例变量名
-                            valueKey: attrs.setValueKey || 'key', //数组参数个例值变量结果（如果value存储为array及object时存在）
-                            value: attrs.setValue || 'value' //数组参数个例值变量名
+                            key: attrs.setJsonToParams || 'key', //数组参数个例变量名 Array parameter case variable name
+                            valueKey: attrs.setValueKey || 'key', //数组参数个例值变量结果（如果value存储为array及object时存在）Array parameter case value variable result (if value is stored as array and object exists)
+                            value: attrs.setValue || 'value' //数组参数个例值变量名 Array parameter case value variable name
                         },
                         fun: {
                             format: {
@@ -44,14 +44,19 @@
                         output: []
                     }
                     $scope.data = {
+                        info: {
+                            get: $filter('translate')('340'),
+                            header: $filter('translate')('341'),
+                            json: $filter('translate')('342'),
+                        },
                         fun: {
-                            confirm: null, //确认导入功能函数
+                            confirm: null, //确认导入功能函数 Confirm the import
                         }
                     }
 
                     /**
-                     * @function [json字段值设置功能函数]
-                     * @param    {[obj]}   object [需过滤对象]
+                     * @function [json字段值设置功能函数] [json field value set]
+                     * @param    {[obj]}   object [需过滤对象] [Need to filter the object]
                      */
                     data.fun.format.value = function(object) {
                         if (!object) return;
@@ -78,10 +83,10 @@
                     }
 
                     /**
-                     * @function [json值字段为array]
-                     * @param    {[obj]}   object       [需过滤对象]
-                     * @param    {[number]}   indent_count [缩进长度]
-                     * @param    {[obj]}   parent       [该对象的父对象]
+                     * @function [json值字段为array] [The json value field is array]
+                     * @param    {[obj]}   object       [需过滤对象] [Need to filter the object]
+                     * @param    {[number]}   indent_count [缩进长度] [Indentation length]
+                     * @param    {[obj]}   parent       [该对象的父对象] [The parent of the object]
                      */
                     data.fun.format.array = function(object, indent_count, parent) {
                         if (object.length > 0) {
@@ -90,10 +95,10 @@
                     }
 
                     /**
-                     * @function [json值字段为object]
-                     * @param    {[obj]}   object       [需过滤对象]
-                     * @param    {[number]}   indent_count [缩进长度]
-                     * @param    {[obj]}   parent       [该对象的父对象]
+                     * @function [json值字段为object] [The json value field is object]
+                     * @param    {[obj]}   object       [需过滤对象] [Need to filter the object]
+                     * @param    {[number]}   indent_count [缩进长度] [Indentation length]
+                     * @param    {[obj]}   parent       [该对象的父对象] [The parent of the object]
                      */
                     data.fun.format.object = function(object, indent_count, parent) {
                         var template = {
@@ -146,8 +151,8 @@
                     }
 
                     /**
-                     * @function [判别类型功能函数]
-                     * @param    {[obj]}   object       [需过滤对象]
+                     * @function [判别类型功能函数] [Discriminant type]
+                     * @param    {[obj]}   object       [需过滤对象 Need to filter the object]
                      */
                     data.fun.format.typeof = function(object) {
                         var tf = typeof object,
@@ -163,10 +168,10 @@
                     }
 
                     /**
-                     * @function [判断类型执行相应格式处理函数]
-                     * @param    {[obj]}   object       [需过滤对象]
-                     * @param    {[number]}   indent_count [缩进长度]
-                     * @param    {[obj]}   parent       [该对象的父对象]
+                     * @function [判断类型执行相应格式处理函数] [The judgment type performs the corresponding format processing function]
+                     * @param    {[obj]}   object       [需过滤对象] [Need to filter the object]
+                     * @param    {[number]}   indent_count [缩进长度] [Indentation length]
+                     * @param    {[obj]}   parent       [该对象的父对象] [The parent of the object]
                      */
                     data.fun.format.default = function(object, indent_count, parent) {
                         switch (data.fun.format.typeof(object)) {
@@ -186,7 +191,7 @@
                     }
 
                     /**
-                     * @function [导入头部主函数]
+                     * @function [导入头部主函数] [Import the head main function]
                      * @param    {[string]}   string       [JSON]
                      */
                     data.fun.format.getHeaderDefault = function(string) {
@@ -207,7 +212,7 @@
                     }
 
                     /**
-                     * @function [导入参数主函数]
+                     * @function [导入参数主函数] [Import the parameter main function]
                      * @param    {[string]}   string       [JSON]
                      */
                     data.fun.format.getParamDefault = function(string) {
@@ -231,7 +236,7 @@
                     }
 
                     /**
-                     * @function [插入返回参数集]
+                     * @function [插入返回参数集] [Insert the return parameter set]
                      */
                     $scope.data.fun.confirm = function() { 
                         var template = {
@@ -249,7 +254,7 @@
                                             try {
                                                 template.input = JSON.parse(data.fun.format.getParamDefault(callback.desc));
                                             } catch (e) {
-                                                $rootScope.InfoModal('GET参数编写格式有误', 'error');
+                                                $rootScope.InfoModal($filter('translate')('380'), 'error');
                                             }
 
                                             break;
@@ -259,7 +264,7 @@
                                             try {
                                                 template.input = JSON.parse(data.fun.format.getHeaderDefault(callback.desc));
                                             } catch (e) {
-                                                $rootScope.InfoModal('头部格式有误', 'error');
+                                                $rootScope.InfoModal($filter('translate')('381'), 'error');
                                             }
                                             break;
                                         }
@@ -285,7 +290,7 @@
                                                 template.input = eval('(' + template.jsonToParamObject.result + ')');
 
                                             } catch (e) {
-                                                $rootScope.InfoModal('JSON格式有误', 'error');
+                                                $rootScope.InfoModal($filter('translate')('382'), 'error');
                                             }
                                             break;
                                         }

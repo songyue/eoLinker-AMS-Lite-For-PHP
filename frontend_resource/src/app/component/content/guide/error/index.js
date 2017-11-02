@@ -1,21 +1,21 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [安装引导失败页]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [安装引导失败页] [Installation failed page]
      * @version  3.0.2
-     * @service  CommonResource [注入通用接口服务]
-     * @service  $state [注入路由服务]
-     * @service  $window [注入window服务]
-     * @constant CODE [注入状态码常量]
+     * @service  CommonResource [注入通用接口服务] [inject common API service]
+     * @service  $state [注入路由服务] [inject $state service]
+     * @service  $window [注入window服务] [inject window service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
      */
     angular.module('eolinker')
         .config(['$stateProvider','RouteHelpersProvider', function($stateProvider,helper) {
             $stateProvider
                 .state('guide.error', {
-                    url: '/error', // url相对路径/error
+                    url: '/error', 
                     template: '<error></error>',
-                    auth: true // 页面权限，值为true时在未登录状态可以显示页面，默认为false
+                    auth: true // 页面权限，值为true时在未登录状态可以显示页面，默认为假 When the value is true, the page can be displayed without login. The default is false
                 });
         }])
         .component('error', {
@@ -35,7 +35,7 @@
         }
 
         /**
-         * @function [初始化功能函数，检测是否已安装，若已安装则跳转首页]
+         * @function [初始化功能函数，检测是否已安装，若已安装则跳转首页] [Initialize, check whether it is installed, if it is installed, jump home page]
          */
         vm.data.fun.init = function() {
             if (window.localStorage['INSTALLINFO']) {

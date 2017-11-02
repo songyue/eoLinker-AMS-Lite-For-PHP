@@ -5,7 +5,6 @@
  * @link https://www.eolinker.com
  * @package eolinker
  * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2016
- 
  *  * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  * 用户讨论QQ群：284421832
@@ -19,36 +18,37 @@ class DatabaseDao
 {
 
     /**
+     * add database
      * 添加数据库
-     * 
-     * @param $dbName 数据库名            
-     * @param $dbVersion 数据库版本，默认1.0            
-     * @param $userID 用户ID            
+     * @param $dbName string 数据库名
+     * @param $dbVersion string 数据库版本，默认1.0
+     * @param $userID int 用户ID
+     * @return int|bool
      */
     public function addDatabase(&$dbName, &$dbVersion, &$userID)
     {
         $db = getDatabase();
-        
+
         $db->beginTransaction();
-        
+
         $db->prepareExecute('INSERT INTO eo_database (eo_database.dbName,eo_database.dbVersion,eo_database.dbUpdateTime) VALUE (?,?,?);', array(
             $dbName,
             $dbVersion,
             date('Y-m-d H:i:s', time())
         ));
-        
+
         if ($db->getAffectRow() < 1) {
             $db->rollback();
             return FALSE;
         }
         $dbID = $db->getLastInsertID();
-        
+
         // 生成数据库与用户的联系
         $db->prepareExecute('INSERT INTO eo_conn_database (eo_conn_database.dbID,eo_conn_database.userID) VALUES (?,?);', array(
             $dbID,
             $userID
         ));
-        
+
         if ($db->getAffectRow() < 1) {
             $db->rollback();
             return FALSE;
@@ -59,20 +59,21 @@ class DatabaseDao
     }
 
     /**
+     * check database permission
      * 检查数据库跟用户是否匹配
-     * 
-     * @param $dbID 数据库ID            
-     * @param $userID 用户ID            
+     * @param $dbID int 数据库ID
+     * @param $userID int 用户ID
+     * @return bool|int
      */
     public function checkDatabasePermission(&$dbID, &$userID)
     {
         $db = getDatabase();
-        
+
         $result = $db->prepareExecute('SELECT eo_conn_database.dbID FROM eo_conn_database WHERE eo_conn_database.dbID = ? AND eo_conn_database.userID = ?;', array(
             $dbID,
             $userID
         ));
-        
+
         if (empty($result))
             return FALSE;
         else
@@ -80,18 +81,19 @@ class DatabaseDao
     }
 
     /**
+     * delete database
      * 删除数据库
-     * 
-     * @param $dbID 数据库ID            
+     * @param $dbID int 数据库ID
+     * @return bool
      */
     public function deleteDatabase(&$dbID)
     {
         $db = getDatabase();
-        
+
         $db->prepareExecute('DELETE FROM eo_database WHERE eo_database.dbID = ?;', array(
             $dbID
         ));
-        
+
         if ($db->getAffectRow() < 1) {
             return FALSE;
         } else
@@ -99,18 +101,19 @@ class DatabaseDao
     }
 
     /**
+     * get database list
      * 获取数据库列表
-     * 
-     * @param $userID 用户ID            
+     * @param $userID int 用户ID
+     * @return array|bool
      */
     public function getDatabase(&$userID)
     {
         $db = getDatabase();
-        
+
         $result = $db->prepareExecuteAll('SELECT eo_database.dbID,eo_database.dbName,eo_database.dbVersion,eo_database.dbUpdateTime,eo_conn_database.userType FROM eo_database INNER JOIN eo_conn_database ON eo_database.dbID = eo_conn_database.dbID WHERE eo_conn_database.userID = ?;', array(
             $userID
         ));
-        
+
         if (empty($result))
             return FALSE;
         else
@@ -118,51 +121,56 @@ class DatabaseDao
     }
 
     /**
+     * edit database
      * 修改数据库
-     * 
-     * @param $dbID 数据库ID            
-     * @param $dbName 数据库名            
-     * @param $dbVersion 数据库版本            
+     * @param $dbID int 数据库ID
+     * @param $dbName string 数据库名
+     * @param $dbVersion string 数据库版本
+     * @return bool
      */
     public function editDatabase(&$dbID, &$dbName, &$dbVersion)
     {
         $db = getDatabase();
-        
+
         $db->prepareExecute('UPDATE eo_database SET eo_database.dbName = ?,eo_database.dbVersion =?,eo_database.dbUpdateTime =? WHERE eo_database.dbID =?;', array(
             $dbName,
             $dbVersion,
             date('Y-m-d H:i:s', time()),
             $dbID
         ));
-        
+
         if ($db->getAffectRow() < 1) {
             return FALSE;
         } else
             return TRUE;
     }
 
-    // database import function for data dictionary
-    //
-    //
+    /**
+     * Import database table which export from mysql
+     * 导入数据表
+     * @param $dbID int 数据库ID
+     * @param $tableList array 数据库表
+     * @return bool
+     */
     public function importDatabase(&$dbID, &$tableList)
     {
         $db = getDatabase();
         try {
             $db->beginTransaction();
-            
+
             foreach ($tableList as $table) {
                 $db->prepareExecute('INSERT INTO eo_database_table (eo_database_table.dbID,eo_database_table.tableName,eo_database_table.tableDescription) VALUES (?,?,?);', array(
                     $dbID,
                     $table['tableName'],
                     NULL
                 ));
-                
+
                 if ($db->getAffectRow() < 1) {
                     throw new \PDOException("add databaseTable error");
                 }
-                
+
                 $tableID = $db->getLastInsertID();
-                
+
                 foreach ($table['fieldList'] as $field) {
                     $db->prepareExecute('INSERT INTO eo_database_table_field (eo_database_table_field.tableID,eo_database_table_field.fieldName,eo_database_table_field.fieldType,eo_database_table_field.fieldLength,eo_database_table_field.isNotNull,eo_database_table_field.isPrimaryKey,eo_database_table_field.fieldDescription) VALUES (?,?,?,?,?,?,?);', array(
                         $tableID,
@@ -173,7 +181,7 @@ class DatabaseDao
                         $field['isPrimaryKey'],
                         NULL
                     ));
-                    
+
                     if ($db->getAffectRow() < 1) {
                         throw new \PDOException("add databaseTableField error");
                     }
@@ -187,7 +195,12 @@ class DatabaseDao
         return TRUE;
     }
 
-    // 得到数据库的信息方便文件导出
+    /**
+     * get database info
+     * 获取数据库信息
+     * @param $dbID int 数据库ID
+     * @return array|bool
+     */
     public function getDatabaseInfo(&$dbID)
     {
         $db = getDatabase();
@@ -208,41 +221,47 @@ class DatabaseDao
             $field_list = $db->prepareExecuteAll("SELECT fieldName,fieldType,fieldLength,isNotNull,isPrimaryKey,fieldDescription AS fieldDesc,defaultValue FROM eo_database_table_field WHERE eo_database_table_field.tableID = ?;", array(
                 $table['tableID']
             ));
-            
+
             $dumpJson['tableList'][$i]['fieldList'] = array();
             $j = 0;
             foreach ($field_list as $field_list) {
                 $dumpJson['tableList'][$i]['fieldList'][$j] = $field_list;
-                ++ $j;
+                ++$j;
             }
-            ++ $i;
+            ++$i;
         }
-        if (! empty($dumpJson))
+        if (!empty($dumpJson))
             return $dumpJson;
         else
             return FALSE;
     }
 
     /**
+     * update database update time
      * 更新数据库更新时间
-     * 
-     * @param $dbID 数据库ID            
+     * @param $dbID int 数据库ID
      */
     public function updateDatabaseUpdateTime(&$dbID)
     {
         $db = getDatabase();
-        
+
         $db->prepareExecute('UPDATE eo_database SET eo_database.dbUpdateTime =? WHERE eo_database.dbID =?;', array(
             date('Y-m-d H:i:s', time()),
             $dbID
         ));
     }
 
-    // 导入eolinker格式数据库
+    /**
+     * Import database by database's data which export from the api named exportDatabase
+     * 导入数据字典界面数据库
+     * @param $userID int 用户ID
+     * @param $data string 数据库相关数据
+     * @return bool
+     */
     public function importDatabaseByJson(&$userID, &$data)
     {
         $db = getDatabase();
-        
+
         try {
             // 开始事务
             $db->beginTransaction();
@@ -274,7 +293,7 @@ class DatabaseDao
                 if ($db->getAffectRow() < 1) {
                     throw new \PDOException('insert table error');
                 }
-                
+
                 $table_id = $db->getLastInsertID();
                 foreach ($table['fieldList'] as $field) {
                     // 生成字段表
@@ -288,7 +307,7 @@ class DatabaseDao
                         $table_id,
                         $field['defaultValue']
                     ));
-                    
+
                     if ($db->getAffectRow() < 1) {
                         throw new \PDOException('insert field error');
                     }
@@ -304,4 +323,5 @@ class DatabaseDao
         return TRUE;
     }
 }
+
 ?>

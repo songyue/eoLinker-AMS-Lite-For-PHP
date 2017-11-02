@@ -1,14 +1,14 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function 项目内页模块相关js
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [项目内页模块相关js] [Project inside page module related js]
      * @version  3.0.2
-     * @service  $scope 注入作用域服务
-     * @service  ApiManagementResource 注入接口管理接口服务
-     * @service  $state 注入路由服务
-     * @service  ProjectService 注入ProjectService服务
-     * @constant CODE 注入状态码常量
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
+     * @service  $state [注入路由服务] [Injection state service]
+     * @service  ProjectService [注入ProjectService服务] [Injection ProjectService service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
      */
     angular.module('eolinker')
         .config(['$stateProvider', 'RouteHelpersProvider', function($stateProvider, helper) {
@@ -42,11 +42,17 @@
         vm.data = {
             info: {
                 shrinkObject: {},
-                powerObject:{}
+                powerObject: {}
+            },
+            fun: {
+                init: null,
             }
         }
 
-        function init() {
+        /**
+         * @function [初始化功能函数] [initialization]
+         */
+        vm.data.fun.init = function() {
             $scope.$emit('$Home_ShrinkSidebar',{shrink:false});
             ProjectService.detail.set(null);
             ApiManagementResource.Project.Detail({ projectID: vm.info.projectID }).$promise.then(function(data) {
@@ -57,7 +63,11 @@
                 }
             })
         }
-        init();
+        vm.data.fun.init();
+
+        /**
+         * @function [路由转换重置项目信息] [The route translation resets the project information]
+         */
         $scope.$on('$stateChangeStart', function() {
             ProjectService.detail.set({ reset: true });
         });

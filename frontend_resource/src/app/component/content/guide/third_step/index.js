@@ -1,21 +1,21 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [安装引导页step three]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [安装引导页step three] [Installation step three page]
      * @version  3.0.2
-     * @service  $state [注入路由服务]
-     * @service  $window [注入window服务]
-     * @service  CommonResource [注入通用接口服务]
-     * @constant CODE [注入状态码常量]
+     * @service  $state [注入路由服务] [inject state service]
+     * @service  $window [注入window服务] [inject window service]
+     * @service  CommonResource [注入通用接口服务] [inject common API service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
      */
     angular.module('eolinker')
         .config(['$stateProvider','RouteHelpersProvider', function($stateProvider,helper) {
             $stateProvider
                 .state('guide.third_step', {
-                    url: '/third_step',// url相对路径/third_step
+                    url: '/third_step',
                     template: '<third></third>',
-                    auth: true // 页面权限，值为true时在未登录状态可以显示页面，默认为false
+                    auth: true // 页面权限，值为true时在未登录状态可以显示页面，默认为假 When the value is true, the page can be displayed without login. The default is false
                 });
         }])
         .component('third', {
@@ -51,7 +51,7 @@
         }
         
         /**
-         * @function [初始化功能函数，检测是否已安装，若已安装则跳转首页]
+         * @function [初始化功能函数，检测是否已安装，若已安装则跳转首页] [Initialize, check whether it is installed, if it is installed, jump home page]
          */
         vm.data.fun.init = function() {
             CommonResource.Install.Config().$promise.then(function(data) {
@@ -68,6 +68,7 @@
                     vm.data.interaction.request.dbUser = info.userName;
                     vm.data.interaction.request.dbPassword = info.password;
                     vm.data.interaction.request.websiteName = info.pageTitle;
+                    vm.data.interaction.request.language = window.localStorage.lang;
                 } catch (e) {
                     $state.go('guide.second_step');
                 }
@@ -78,7 +79,7 @@
         }
 
         /**
-         * @function [检测配置功能函数]
+         * @function [检测配置功能函数] [Detects configuration]
          */
         vm.data.fun.checkConfig = function() {
             CommonResource.Install.Check(vm.data.interaction.request).$promise.then(function(data) {
@@ -106,17 +107,17 @@
         vm.data.fun.init();
        
         /**
-         * @function [返回上一步功能函数]
+         * @function [返回上一步功能函数] [Return to the previous step]
          */
         vm.data.fun.enterSecond = function() {
             $state.go('guide.second_step');
         }
 
         /**
-         * @function [安装功能函数]
+         * @function [安装功能函数] [installation]
          */
         vm.data.fun.install = function() {
-            vm.installing = true;
+            vm.data.info.installing = true;
             CommonResource.Install.Post(vm.data.interaction.request).$promise.then(function(data) {
                 if (data.statusCode == CODE.COMMON.SUCCESS) {
                     $state.go('guide.finish');

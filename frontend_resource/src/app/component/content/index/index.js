@@ -1,17 +1,18 @@
 (function() {
     'use strict';
     /**
-     * @Author   广州银云信息科技有限公司
-     * @function [登录页相关指令js]
+     * @Author   广州银云信息科技有限公司 eolinker
+     * @function [登录页相关指令js] [Login page related instructions js]
      * @version  3.0.2
-     * @service  $cookies [注入$cookies服务]
-     * @service  $scope [注入作用域服务]
-     * @service  $rootScope [注入根作用域服务]
-     * @service  CommonResource [注入通用接口服务]
-     * @service  $state [注入路由服务]
-     * @service  md5 [注入md5服务]
-     * @constant COOKIE_CONFIG [注入COOKIE_CONFIG常量]
-     * @constant CODE [注入状态码常量]
+     * @service  $cookies [注入$cookies服务] [inject cookies service]
+     * @service  $scope [注入作用域服务] [inject scope service]
+     * @service  $rootScope [注入根作用域服务] [inject rootScope service]
+     * @service  CommonResource [注入通用接口服务] [inject common API service]
+     * @service  $state [注入路由服务] [inject state service]
+     * @service  md5 [注入md5服务] [inject md5 service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @constant COOKIE_CONFIG [注入COOKIE_CONFIG常量] [inject COOKIE_CONFIG constant service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
      */
     angular.module('eolinker')
         .config(['$stateProvider', 'RouteHelpersProvider', function($stateProvider, helper) {
@@ -27,9 +28,9 @@
             controller: loginController
         })
 
-    loginController.$inject = ['$cookies', '$scope', '$rootScope', 'CommonResource', '$state', 'md5', 'NavbarService', 'COOKIE_CONFIG', 'CODE'];
+    loginController.$inject = ['$cookies', '$scope', '$rootScope', 'CommonResource', '$state', 'md5', 'NavbarService', '$filter', 'COOKIE_CONFIG', 'CODE'];
 
-    function loginController($cookies, $scope, $rootScope, CommonResource, $state, md5, NavbarService, COOKIE_CONFIG, CODE) {
+    function loginController($cookies, $scope, $rootScope, CommonResource, $state, md5, NavbarService, $filter, COOKIE_CONFIG, CODE) {
 
         var vm = this;
         vm.data = {
@@ -55,7 +56,7 @@
         }
 
         /**
-         * @function [确认登录功能函数]
+         * @function [确认是否已登录功能函数] [Confirm if you are logged in]
          */
         vm.data.fun.confirm = function() {
             var template = {
@@ -86,7 +87,7 @@
                             }
                         default:
                             {
-                                $rootScope.InfoModal('登录失败,请检查密码是否正确！', 'error');
+                                $rootScope.InfoModal($filter('translate')('0206'), 'error');
                                 break;
                             }
                     }
@@ -97,7 +98,7 @@
         }
 
         /**
-         * @function [密码是否显示功能函数]
+         * @function [密码是否显示功能函数] [Whether the password is displayed]
          */
         vm.data.fun.changeView = function() {
             if (vm.data.interaction.request.loginPassword) {
@@ -106,7 +107,7 @@
         }
 
         /**
-         * @function [初始化功能函数]
+         * @function [初始化功能函数] [initialization]
          */
         vm.data.fun.init = (function() {
             var template = {
@@ -118,7 +119,7 @@
                 switch (response.statusCode) {
                     case CODE.COMMON.SUCCESS:
                         {
-                            $scope.$emit('$WindowTitleSet', { list: ['登录'] });
+                            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('0203')] });
                             if (window.localStorage['LOGININFO']) {
                                 try {
                                     vm.data.interaction.request.loginName = template.interaction.request.loginName;
@@ -132,7 +133,7 @@
                         }
                     default:
                         {
-                            $state.go('guide.first_step');
+                            $state.go('guide.lang');
                             break;
                         }
                 }
