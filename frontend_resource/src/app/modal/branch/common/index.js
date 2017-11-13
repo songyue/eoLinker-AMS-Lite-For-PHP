@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [公用弹窗controller js] [Public bucket controller js]
-     * @version  3.0.2
+     * @version  3.1.1
      */
     angular.module('eolinker.modal')
 
@@ -901,7 +901,7 @@
             fieldLength: '',
             isNotNull: false,
             isPrimaryKey: false,
-            fieldDesc: '',
+            fieldDescription: '',
             defaultValue: '',
             isAdd: true
         }
@@ -925,7 +925,7 @@
                     isNotNull: input.interaction.request.isNotNull == 1,
                     isPrimaryKey: input.interaction.request.isPrimaryKey == 1,
                     defaultValue: input.interaction.request.defaultValue,
-                    fieldDesc: input.interaction.request.fieldDesc,
+                    fieldDescription: input.interaction.request.fieldDescription,
                     isAdd: false
                 }
             }
@@ -973,7 +973,7 @@
                                 isNotNull: false,
                                 isPrimaryKey: false,
                                 defaultValue: '',
-                                fieldDesc: '',
+                                fieldDescription: '',
                                 isAdd: true
                             }
                             $scope.isType = false;

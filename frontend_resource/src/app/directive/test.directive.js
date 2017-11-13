@@ -23,7 +23,7 @@
      */
     angular.module('eolinker.directive')
 
-        .directive('testDirective', ['$filter', '$timeout', '$rootScope', 'ApiManagementResource','CODE',  function($filter, $timeout, $rootScope, ApiManagementResource, CODE) {
+        .directive('testDirective', ['$window', '$filter', '$timeout', '$rootScope', 'ApiManagementResource','CODE',  function($window, $filter, $timeout, $rootScope, ApiManagementResource, CODE) {
             return {
                 restrict: 'A',
                 transclude: true,
@@ -59,19 +59,6 @@
                     var data = {
                         fun: {
                             restfulSet: null
-                        }
-                    }
-
-                    /**
-                     * @function [检测插件是否存在功能函数] [Check if the plugin is present]
-                     */
-                    var checkPlug = function() { 
-                        if (typeof(chrome) !== 'undefined') {
-                            if ((!!navigator.mimeTypes['application/eolinker']) || (window.plug && window.plug.type == "application/eolinker")) {
-                                return true;
-                            } else {
-                                return false;
-                            }
                         }
                     }
 
@@ -377,23 +364,6 @@
                     }
 
                     /**
-                     * @function [初始化，判断是否存在插件功能函数] [initialization,determine if there is a plugin]
-                     */
-                    var init = function() { 
-                        $scope.isPlug = checkPlug();
-                    }
-                    init();
-
-                    /**
-                     * @function [初始化，判断是否存在插件功能函数（页面加载完成时执行）] [initialization,to determine whether there is a plug-in (when the page is loaded)]
-                     */
-                    timer = $timeout(function() { 
-                        if (!$scope.isPlug) {
-                            init();
-                        }
-                    }, 0, true);
-
-                    /**
                      * @function [绑定click，执行测试功能函数] [Bind the click, perform the test]
                      */
                     $scope.test = function() { 
@@ -407,7 +377,7 @@
                             }
                         }
                         if (!$scope.send.disable) {
-                            if (checkPlug()) {
+                            if ($window.plug && $window.plug.type == "application/eolinker") {
                                 document.getElementById('plug-in-result-js').innerText = '';
                                 var info = {
                                     apiProtocol: $scope.message.httpHeader,

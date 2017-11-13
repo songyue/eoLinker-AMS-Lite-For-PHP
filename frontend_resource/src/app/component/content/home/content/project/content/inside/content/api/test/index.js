@@ -31,13 +31,14 @@
             controller: homeProjectInsideApiTestController
         })
 
-    homeProjectInsideApiTestController.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'ApiDetailService', 'GroupService', 'HomeProject_Service', '$filter', 'CODE', 'HTTP_CONSTANT'];
+    homeProjectInsideApiTestController.$inject = ['$window', '$scope', '$rootScope', 'ApiManagementResource', '$state', 'ApiDetailService', 'GroupService', 'HomeProject_Service', '$filter', 'CODE', 'HTTP_CONSTANT'];
 
-    function homeProjectInsideApiTestController($scope, $rootScope, ApiManagementResource, $state, ApiDetailService, GroupService, HomeProject_Service, $filter, CODE, HTTP_CONSTANT) {
+    function homeProjectInsideApiTestController($window, $scope, $rootScope, ApiManagementResource, $state, ApiDetailService, GroupService, HomeProject_Service, $filter, CODE, HTTP_CONSTANT) {
         var vm = this;
         vm.data = {
             service: {
                 home: HomeProject_Service,
+                $window: $window
             },
             constant: {
                 requestHeader: HTTP_CONSTANT.REQUEST_HEADER
@@ -128,7 +129,6 @@
                 init: null 
             }
         }
-
         /**
          * @function [构造器失焦状态检测] [Constructor out of focus state detection]
          */

@@ -104,9 +104,9 @@
                                         <li class="list-function-detail">
                                             <ul>
                                                 <li data-ng-click="$ctrl.data.fun.setNickName({item:item})">{{'0101018'|translate}}</li>
-                                                <li data-ng-click="$ctrl.data.fun.setType({item:item,userType:1,$index:$index})" ng-class="{'hidden':$ctrl.data.info.power>0}" >{{'0101019'|translate}} </li>
-                                                <li data-ng-click="$ctrl.data.fun.setType({item:item,userType:2,$index:$index})" ng-class="{'hidden':$ctrl.data.info.power>0||item.userType==2}" >{{'01010110'|translate}}</li>
-                                                <li data-ng-click="$ctrl.data.fun.setType({item:item,userType:3,$index:$index})" ng-class="{'hidden':$ctrl.data.info.power>0||item.userType==3}" >{{'01010111'|translate}}</li>
+                                                <li data-ng-click="$ctrl.data.fun.setType({item:item,userType:1,$index:$index})" ng-class="{'hidden':$ctrl.data.info.power>0}" >{{'01010125'|translate}} </li>
+                                                <li data-ng-click="$ctrl.data.fun.setType({item:item,userType:2,$index:$index})" ng-class="{'hidden':$ctrl.data.info.power>0||item.userType==2}" >{{'0101019'|translate}}</li>
+                                                <li data-ng-click="$ctrl.data.fun.setType({item:item,userType:3,$index:$index})" ng-class="{'hidden':$ctrl.data.info.power>0||item.userType==3}" >{{'01010110'|translate}}</li>
                                                 <li data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,isAdmin:false})">{{!($ctrl.data.info.power==2)? $ctrl.data.info.filter.kick: $ctrl.data.info.filter.quit}}</li>
                                             </ul>
                                         </li>

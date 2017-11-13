@@ -91,11 +91,7 @@ gulp.task('clean', function () {
 gulp.task('styles:compass',['inject_sass'],function () {
   return gulp.src(path.join(config.paths.src,'app/index.scss'))
     .pipe($.plumber(config.errorHandler()))
-    .pipe($.compass({
-      config_file: path.join(__dirname, '/../config.rb'),
-        css: path.join(config.paths.tmp, '/serve/app/'),
-        sass: path.join(config.paths.src, '/app/'),
-    }))
+    .pipe($.sass())
     //sprite图片路径修复
     .pipe($.replace('../../../src/assets/images/', '../assets/images/'))
     .pipe(gulp.dest(path.join(config.paths.tmp,'/serve/app/')))

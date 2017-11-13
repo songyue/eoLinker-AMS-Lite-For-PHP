@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [数据库协作页（list）模块相关js] [Database collaboration page (list) module related js]
-     * @version  3.0.2
+     * @version  3.1.1
      * @service  $scope [注入作用域服务] [inject scope service] 
      * @service  $rootScope [注入根作用域服务] [inject rootScope service]
      * @service  DatabaseResource [注入数据库接口服务] [inject Database API service]

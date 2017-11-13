@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [数据库内页列表（list）模块相关js] [Database inner page list module related js]
-     * @version  3.0.2
+     * @version  3.1.1
      * @service  $scope [注入作用域服务] [inject scope service]
      * @service  $rootScope [注入根作用域服务] [inject rootScope service]
      * @service  DatabaseResource [注入数据库接口服务] [inject Database API service]
@@ -126,7 +126,7 @@
          * @function [显示字段描述功能函数] [Show field description]
          */
         vm.data.fun.value = function(info) {
-            $rootScope.MessageModal(info.fieldName + $filter('translate')('01010018'), info.fieldDesc, function(data) {});
+            $rootScope.MessageModal(info.fieldName + $filter('translate')('01010018'), info.fieldDescription, function(data) {});
         }
 
         /**

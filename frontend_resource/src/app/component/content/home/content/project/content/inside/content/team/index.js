@@ -2,7 +2,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [环境模块相关js] [Environment module related js]
-     * @version  3.0.2
+     * @version  3.1.1
      * @service  $scope [注入作用域服务] [Injection scope service]
      * @service  $rootScope [注入根作用域服务] [Injection tootscope service]
      * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
@@ -39,6 +39,15 @@
                 power: 2, //0：管理员，1：协作管理员，2：普通成员 0: admin, 1: collaboration manager, 2: regular member
                 timer: {
                     fun: null
+                },
+                filter: {
+                    unknown: $filter('translate')('0101012'),
+                    unknownNickName: $filter('translate')('0101013'),
+                    haveJoined: $filter('translate')('0101014'),
+                    add: $filter('translate')('0101015'),
+                    administrators: $filter('translate')('0101017'),
+                    kick: $filter('translate')('01010111'),
+                    quit: $filter('translate')('01010112'),
                 }
             },
             interaction: {

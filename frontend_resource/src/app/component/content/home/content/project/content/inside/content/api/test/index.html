@@ -36,11 +36,14 @@
             </li>
         </ul>
     </header>
-    <article class="first-level-article">
-        <ul class="tips-ul" data-ng-class="{'warning-ul':!$ctrl.isPlug,'common-ul':$ctrl.isPlug}">
+    <article class="first-level-article" ng-switch="$ctrl.data.service.$window.plug.type">
+        <ul class="tips-ul warning-ul" ng-switch-default>
             <li class="title-li pull-left">{{'01210039'|translate}}</li>
-            <li ng-if="!$ctrl.isPlug">{{'012100310'|translate}} <a href="https://www.eolinker.com/#/plug/introduce" target="_blank"><b>{{'012100311'|translate}}</b> [{{'012100312'|translate}}]</a>！</li>
-            <li ng-if="$ctrl.isPlug">{{'012100313'|translate}}</li>
+            <li>{{'012100310'|translate}} <a href="https://www.eolinker.com/#/plug/introduce" target="_blank"><b>{{'012100311'|translate}}</b> [{{'012100312'|translate}}]</a>！</li>
+        </ul>
+        <ul class="tips-ul common-ul" ng-switch-when='application/eolinker'>
+            <li class="title-li pull-left">{{'01210039'|translate}}</li>
+            <li>{{'012100313'|translate}}</li>
         </ul>
         <div class="first-part">
             <form name="testForm">
