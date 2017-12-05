@@ -40,9 +40,11 @@
 
 ## 快速入门
 
- [安装指南](https://www.eolinker.com/#/os/guide?point=require#require)
- [视屏试用指南](http://blog.eolinker.com/#/course/)
- QQ群：284421832
+1. [安装指南](https://www.eolinker.com/#/os/guide?point=require#require)
+
+2. [视屏使用指南](http://blog.eolinker.com/#/course/)
+
+3. QQ群：284421832
 
 ## 注意事项
 
@@ -72,3 +74,38 @@
 ![](http://data.eolinker.com/course/nNmSD28e4ef5c7339c5449cb4f8c5904be7f025d0d6ae72)
 ![](http://data.eolinker.com/course/Rgz8DcQ4f21471cb1172573fdb595a1c165148f6bcfdb22)
 ![](http://data.eolinker.com/course/JPGkitw9d6f38f7fc541d9202850c3dffe82d1e575c2a6c)
+
+## 更新日志
+
+### V3.1.6
+
+新增：
+1. 加入项目文档
+2. 加入代码生成文档
+3. 加入人员权限显示
+
+优化：
+1. 完善界面体验
+
+修复：
+1. 修复分组重命名失败的问题
+
+### V3.1.5
+
+新增：
+1. 加入项目概况，可以查看项目的整体信息；
+2. 加入项目动态，可以查看项目操作历史记录；
+3. 支持简易Mock；
+4. 支持一键自动更新；
+5. 开源版安装配置增加mbstring模块及session路径权限的检测；
+6. 修改接口分组及状态码分组支持直接切换到其他父分组下；
+7. 新增接口测试历史；
+
+优化：
+1. 完善引导页提示；
+2. 改善页面显示效果；
+3. 完善项目协作管理的权限检测;
+
+修复：
+1. 去掉搜索用户时重复出现的“添加”字样；
+2. 修复导入RAP文档失败的bug；
