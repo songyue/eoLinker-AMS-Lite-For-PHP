@@ -1,237 +1,61 @@
-##[CHN]eoLinker接口管理系统开源版
-![intro.jpg](http://data.eolinker.com//blog/eioasd13os_banner.jpg)
+#eoLinker API接口管理系统开源版
+![](http://data.eolinker.com/course/QPW3uZ9b6f87bfa7a61f53e3a9120a32027e55cbd642f27)
 
-```注意：3.x版本与2.x版本并不兼容，因此无法直接由2.x升级到3.x，也无法通过覆盖代码的方式进行升级，切勿随意尝试以防数据丢失```
+##简介
+**eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。**
 
-```
-如果需要进行数据的迁移，可以使用eoLinker接口管理系统中的【导出项目】功能
-将项目导出为eoLinker专用格式（.export），然后在3.x版本中导入。
-同时为了防止数据丢失，请在执行任何关键操作之前妥善备份数据库。
-```
+目前eoLinker为Google、IBM、中国联通、海尔、神州优车、国美等数千家企业提供快速、专业、稳定的API管理服务。
+
+同时eoLinker还是Google谷歌开发者联盟的合作产品与企业，不定期举办线下交流分享活动促进国内API管理领域的发展。
+
+##特性
+
+1. 免费且开源，eoLinker拥有强大的免费产品，在过去的一年里面eoLinker已迭代超过300个版本，优化近千功能点，同时秉承开源精神，提供国际化的开源产品（支持中文简体、繁体以及英语），为广大的开发、测试以及管理人员提供专业的产品。
+
+2. 同类产品中最强大的API文档管理系统，支持目前HTTP/HTTPS协议以及所有主流请求方式，并且提供了强大的版本管理功能，可以随时随地回滚API信息。同时支持数据库管理、状态码管理、项目文档管理等常用管理功能。
+
+3. 代码自动生成文档，通过读取代码中的EOML（eoLinker标注语言）注解，eoLinker可以自动生成API文档，省去了重复录入的麻烦，无缝连接开发与管理工作。
+
+4. API接口测试，支持文件、在线、跨域、自动化测试等功能。同时拥有参数构造器，可以对请求参数进行自动构造，加密、分割、随机字符串等功能一应俱全。配合测试用例可以非常方便地对比请求结果与模型，找出API可能出现的问题。
+
+5. API自动化测试（*目前仅支持线上版本），eoLinker是目前全球唯一一款支持界面与代码双模式的自动化测试工具。在UI界面模式下，你不需要编写任何代码即可创建数据相互关联的API测试用例（比如注册-登录-检查登陆状况-退出登录）；同时你也可以通过编写Javascript代码来构造复杂的自动化测试场景。这些都极大地简化了开发测试人员的API测试工作，每次开发完成只需要一个键即可自动测试所有API并且生成测试报告，帮助了解项目API的健康状况。
+
+6. API Mock测试，提供最强的Mock功能，支持MockJS，支持自动刷新返回结果以及多种返回的结果。同时还支持对API进行请求校验，当参数或值不符合预设的模板时能够及时找出问题所在。
+
+7. 支持文档分享和导出，你可以通过eoLinker在线生成接口文档，也可以导出成为HTML、PDF以及Word等，快速分享或发布API信息。
+
+8. 支持Postman、RAP、RestClint等数据导入，无需重新录入API信息，一键导入即可切换平台。
+
+9. 强大的团队协作功能，你可以通过URL快速邀请成员或者加入某个项目，eoLinker提供了全面的日志追踪以及权限管理功能。
+
+10. 拥有最全面的产品线，eoLinker除了拥有线上版本之外，还提供了免费开源版本、浏览器插件、PC端桌面程序等，可以满足企业所有的API管理需求。
+
 ## 部署要求
-
-* PHP 5.3+
+* PHP 5.5+
 * mysql  5.5+
 * Apache / Nginx
 
-## 安装
- [详细图文指南](https://www.eolinker.com/#/os/guide?point=require#require)
+## 快速入门
+ [安装指南](https://www.eolinker.com/#/os/guide?point=require#require)
+ [视屏试用指南](http://blog.eolinker.com/#/course/)
+ QQ群：284421832
 
+##注意事项
+1. 3.x版本与2.x版本并不兼容，因此无法直接由2.x升级到3.x，也无法通过覆盖代码的方式进行升级，切勿随意尝试以防数据丢失。
+2. 如果需要进行数据的迁移，可以使用eoLinker接口管理系统中的【导出项目】功能：将项目导出为eoLinker专用格式（.export），然后在3.x版本中导入。
+3. 为了防止数据丢失，请在执行任何关键操作之前妥善备份数据库。
 
-## 前端二次开发代码说明 
-**如果无需进行二次开发，则可以完全忽略以下内容**
+##相关链接
+> 中文官网：www.eolinker.com
+> 开源支持：https://www.eolinker.com/#/os/download
+> Github：https://github.com/eolinker
+> 码云：https://gitee.com/eoLinker-API-Management
+> Coding：https://coding.net/u/eolinker/project
+> Blog：http://blog.eolinker.com
+> 视频教程：http://blog.eolinker.com/#/course/
 
-#### 快速开始
-```bash
-git clone https://github.com/eolinker/CHN-eoLinker-API-Management-System-OS-3.X/tree/master/frontend_resource
-```
-安装依赖
-```bash
-cd frontend_resource
-#安装前端依赖
-npm install
-#安装运行依赖
-bower install
-```
-
-#### 调试
-开发模式
-```bash
-gulp serve 
-````
-编译模式（将项目文件输出为上线文件）
-```bash
-gulp build 
-```
-调试上线模式
-```bash
-gulp serve:dist 
-```
-
-
-#### 前端目录结构
-##### Gulp
-```
-gulp
-├─base.js |配置基本项目依赖
-├─build.js |生成上线版本脚本
-├─config.js |全局配置文件
-└server.js |代理服务器/服务器启动脚本
-
-#详细配置见文件注释
-```
-
-##### 框架目录
-
-主要功能目录
-```
-eo-os
-├─gulp |脚本管理
-├─app.conf.json | Angular全部变量配置文件,通过[dev-config/prod-config任务编译]
-├─config.rb |compass配置文件
-├─config.js |全局配置文件
-├─vendor.base.json   |前端启动依赖文件(打包会随源文件一同压缩)
-├─vendor.json   |前端依赖库文件(通过Lazyload模块加载)
-├─package.json |编译模块依赖文件以及项目配置--新增模块请注意加上 npm install --save 新安装模块
-└bower.json   |前端依赖库json文件 bower install --save 新安装模块
-```
-
-
-##### 源文件
-
-app目录主要文件
-```
-app
-├─assets |存放静态文件
-├─config|全局配置文件,包括路由配置模块routes,全局定义模块core,以及按需加载模块lazyload
-├─directive |指令模块,页面所有的指令文件写在这里,模块位置为eo-shop(项目名).directive
-├─service |服务模块,页面所有的服务文件写在这里,模块位置为eo-shop(项目名).service
-├─filter |过滤器模块,页面所有的过滤器文件写在这里,模块位置为eo-shop(项目名).filter
-├─constant |存放常量文件
-├─resource |Api配置模块,全局的Api配置位置
-├─app.module.js|全局模块依赖声明模块,如无需全局依赖更改,不要随意改动该文件内容.
-├─app.conf.js |由app.conf.json编译而来的全局变量文件,配置当前开发模式DEV/PRODUCTION
-├─vendor.js |前端依赖js库文件,随index.html注入文档
-├─vendor.scss |前端依赖scss库文件,通过在index.scss中引入
-└index.scss |全局的样式文件.
-
-
-```
-## 常见问题
-## 关于我们
-1. **eoLinker官方交流QQ群**： [284421832](http://shang.qq.com/wpa/qunwpa?idkey=208b23b73761039b9994d71378ccbf7c84c872d5577d557e45168b37fd290c12) 
-2. **eolinker官网**：[eoLinker接口管理平台](https://www.eolinker.com/)
-
-```线上以及开源的数据是可以互相导入导出的。```
-
-
-```
-eoLinker开源版接口管理系统仅供用户下载试用、学习和交流，禁止一切公开使用于商业用途或者以eolinker开源版本为基础而开发的二次版本在互联网上流通。
-一经发现违反上条规则，我们将立刻启用法律程序进行维权。
-希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
-```
-
-
-The eoLinker interface manages open source versions
-
-
-`` `Note: 3.x version and 2.x version is not compatible, it can not be directly from the 2.x upgrade to 3.x and cover the way to upgrade the code. do not try upgrading to prevent data loss` `` `
-
-`` ``
-If you need to migrate data, you can use the eoLinker interface to manage the [export project] function
-Export the project as an eoLinker private format (.export) and import it in version 3.x.
-Also, to prevent data loss, properly back up the database before performing any critical operations.
-`` ``
-## Deployment requirements
-
-* PHP 5.3+
-* mysql 5.5+
-* Apache / Nginx
-
-## install
- [Detailed graphic guide] (https://www.eolinker.com/#/os/guide?point=require#require)
-
-
-## Front end development code description
-** If you don’t need secondary development, you can completely ignore the following **
-
-#### Quick start
-`` `bash
-git clone https://github.com/eolinker/CHN-eoLinker-API-Management-System-OS-3.X/tree/master/frontend_resource
-`` ``
-Installation dependency
-`` `bash
-cd frontend_resource
-# Install front-end dependencies
-npm install
-# Install run dependencies
-bower install
-`` ``
-
-#### Debugging
-Development model
-`` `bash
-gulp serve
-`` ``
-Compile mode (output the project file as an online file)
-`` `bash
-gulp build
-`` ``
-Debug on line mode
-`` `bash
-gulp serve: dist
-`` ``
-
-
-#### Front-end file directory
-##### Gulp
-`` ``
-gulp
-├ ─base.js | Configure basic project dependencies
-├─build.js | Generates online script
-├─config.js | global configuration file
-└server.js | proxy server / server startup script
-
-# See the file for details
-`` ``
-
-##### Frame directory
-
-Main function directory
-`` ``
-eo-os
-├─gulp | script management
-├─app.conf.json | Angular All variable configuration files, compiled via [dev-config / prod-config]
-├─config.rb | compass configuration file
-├─config.js | global configuration file
-├─vendor.base.json | front-end dependency file (package will be compressed with the source file)
-├─vendor.json | Front-end dependent library files (loaded via Lazyload module)
-├─package.json | Compile module dependency file and project configuration - Add module Please note that add npm install --save new install module
-└bower.json | front-end dependent library json file bower install --save new install module
-`` ``
-
-
-##### Source File
-
-app directory main file
-`` ``
-app
-├ ─assets | store static files
-├─config | global configuration file, including routing configuration module routes, global definition module core, and on-demand loading module lazyload
-├ ─ directive | command module, the page all the instruction files written here, the module location for the eo-shop (project name).
-├─service | service module, the page all the service files written here, the module location for the eo-shop (project name) .service
-├─filter | filter module, page All filter files are written here, the module location is eo-shop (project name) .filter
-├─constant | store constant files
-├─resource | Api configuration module, global Api configuration location
-├─app.module.js | global module dependent statement module, if no global dependencies change, do not arbitrarily change the contents of the file.
-├─app.conf.js | compiled by the app.conf.json global variable file, configure the current development mode DEV / PRODUCTION
-├─vendor.js | front-end dependent js library files, with index.html into the document
-├─vendor.scss | front-end dependent on the scss library file, by introducing in index.scss
-└index.scss | global style file.
-
-
-`` ``
-#### Background file directory
-`` ``
-├─server | background source code file directory
-├─dump | Export the file directory
-├─RTP | background framework core directory, including common methods, configuration files, database files, etc.
-├ ─Server | background interface three-tier structure directory
-├─Controller | Control layer - Data filtering
-├ ─Module | business layer - logical processing
-├Dao | data access layer - database operation
-`` ``
-## common problem
-## about us
-1. ** eoLinker official exchange QQ group **: [284421832] (http://shang.qq.com/wpa/qunwpa?idkey=208b23b73761039b9994d71378ccbf7c84c872d5577d557e45168b37fd290c12)
-2. ** eolinker official website **: [eoLinker interface management platform] (https://www.eolinker.com/)
-
-`` `` Open source version contains only the basic version of the online version, if you need to use more features, please use the free [online version] (https://www.eolinker.com/) `` `
-
-`` `Online and open source data can be imported from each other. `` ``
-
-`` ``
-eo-os only for users to download the trial, learning and communication, prohibit all open for commercial use or eolinker open source version based on the development of the secondary version of the Internet in circulation.
-Once found to violate the above rules, we will immediately enable the legal procedures for rights.
-Hope that we can jointly maintain the domestic Internet open source civilization and normal business order.
-`` ``
+##图片介绍
+![](http://data.eolinker.com/course/UKqa58Lb051cf1085b22bf4d1e24c52022c981dc32166bd)
+![](http://data.eolinker.com/course/nNmSD28e4ef5c7339c5449cb4f8c5904be7f025d0d6ae72)
+![](http://data.eolinker.com/course/Rgz8DcQ4f21471cb1172573fdb595a1c165148f6bcfdb22)
+![](http://data.eolinker.com/course/JPGkitw9d6f38f7fc541d9202850c3dffe82d1e575c2a6c)
