@@ -53,6 +53,11 @@ class PartnerModule
             //邀请协作人员
             $partnerDao = new PartnerDao;
             if ($connID = $partnerDao->invitePartner($projectID, $inviteUserID, $_SESSION['userID'])) {
+                $inviteUserCall = $partnerDao->getPartnerUserCall($inviteUserID);
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_PARTNER, $inviteUserID, ProjectLogDao::$OP_TYPE_ADD, "邀请新成员:'$inviteUserCall'", date("Y-m-d H:i:s", time()));
+
                 //给协作人员发送邀请信息
                 $msgDao = new MessageDao;
                 $msgDao->sendMessage($_SESSION['userID'], $inviteUserID, 1, $summary, $msg);
@@ -80,6 +85,11 @@ class PartnerModule
             $partnerDao = new PartnerDao;
             $remotePartnerID = $partnerDao->getUserID($connID);
             if ($partnerDao->removePartner($projectID, $connID)) {
+                $inviteUserCall = $partnerDao->getPartnerUserCall($remotePartnerID);
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_PARTNER, $remotePartnerID, ProjectLogDao::$OP_TYPE_DELETE, "移除成员:'$inviteUserCall'", date("Y-m-d H:i:s", time()));
+
                 //给协作人员发送邀请信息
                 $msgDao = new MessageDao;
                 $msgDao->sendMessage(0, $remotePartnerID, 1, $summary, $msg);
@@ -124,9 +134,14 @@ class PartnerModule
         $projectDao = new ProjectDao;
         if ($projectDao->checkProjectPermission($projectID, $_SESSION['userID'])) {
             $partnerDao = new PartnerDao;
-            if ($partnerDao->quitPartner($projectID, $_SESSION['userID']))
+            if ($partnerDao->quitPartner($projectID, $_SESSION['userID'])) {
+                $user_call = $partnerDao->getPartnerUserCall($_SESSION['userID']);
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_PARTNER, $_SESSION['userID'], ProjectLogDao::$OP_TYPE_OTHERS, "'$user_call'退出项目协作", date("Y-m-d H:i:s", time()));
+
                 return TRUE;
-            else
+            } else
                 return FALSE;
         } else
             return FALSE;
@@ -167,7 +182,30 @@ class PartnerModule
     public function editPartnerType(&$project_id, &$conn_id, &$user_type)
     {
         $dao = new PartnerDao();
-        return $dao->editPartnerType($project_id, $conn_id, $user_type);
+        $result = $dao->editPartnerType($project_id, $conn_id, $user_type);
+        if ($result) {
+            $remote_partner_id = $dao->getUserID($conn_id);
+            $invite_user_call = $dao->getPartnerUserCall($remote_partner_id);
+            switch ($user_type) {
+                case 1:
+                    $type = '管理员';
+                    break;
+                case 2:
+                    $type = '普通成员（读写）';
+                    break;
+                case 3:
+                    $type = '普通成员（只读）';
+                    break;
+                default:
+                    break;
+            }
+            //将操作写入日志
+            $log_dao = new ProjectLogDao();
+            $log_dao->addOperationLog($project_id, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_PARTNER, $remote_partner_id, ProjectLogDao::$OP_TYPE_DELETE, "修改成员:'$invite_user_call'为'$type'", date("Y-m-d H:i:s", time()));
+            return $result;
+        } else {
+            return FALSE;
+        }
     }
 
 }

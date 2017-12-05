@@ -51,11 +51,19 @@ class StatusCodeModule
     public function addCode(&$groupID, &$codeDesc, &$code)
     {
         $projectDao = new ProjectDao;
-        $statucCodeGroupDao = new StatusCodeGroupDao;
+        $statusCodeGroupDao = new StatusCodeGroupDao;
         $statusCodeDao = new StatusCodeDao;
-        if ($projectID = $statucCodeGroupDao->checkStatusCodeGroupPermission($groupID, $_SESSION['userID'])) {
+        if ($projectID = $statusCodeGroupDao->checkStatusCodeGroupPermission($groupID, $_SESSION['userID'])) {
             $projectDao->updateProjectUpdateTime($projectID);
-            return $statusCodeDao->addCode($groupID, $codeDesc, $code);
+            $result = $statusCodeDao->addCode($groupID, $codeDesc, $code);
+            if ($result) {
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_STATUS_CODE, $result, ProjectLogDao::$OP_TYPE_ADD, "添加状态码:'{$code}'", date("Y-m-d H:i:s", time()));
+                return $result;
+            } else {
+                return FALSE;
+            }
         } else
             return FALSE;
     }
@@ -70,8 +78,18 @@ class StatusCodeModule
         $projectDao = new ProjectDao;
         $statusCodeDao = new StatusCodeDao;
         if ($projectID = $statusCodeDao->checkStatusCodePermission($codeID, $_SESSION['userID'])) {
-            $projectDao->updateProjectUpdateTime($projectID);
-            return $statusCodeDao->deleteCode($codeID);
+            $status_codes = $statusCodeDao->getStatusCodes($code_ids);
+            $result = $statusCodeDao->deleteCode($codeID);
+            if ($result) {
+                $projectDao->updateProjectUpdateTime($projectID);
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_STATUS_CODE, $code_ids, ProjectLogDao::$OP_TYPE_DELETE, "删除状态码:'{$status_codes}'", date("Y-m-d H:i:s", time()));
+
+                return TRUE;
+            } else {
+                return FALSE;
+            }
         } else
             return FALSE;
     }
@@ -90,8 +108,13 @@ class StatusCodeModule
                 return FALSE;
         }
         $projectDao = new ProjectDao;
-        $projectDao->updateProjectUpdateTime($projectID);
+        $status_codes = $status_code_dao->getStatusCodes($code_ids);
         if ($status_code_dao->deleteCodes($code_ids)) {
+            $projectDao->updateProjectUpdateTime($projectID);
+            //将操作写入日志
+            $log_dao = new ProjectLogDao();
+            $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_STATUS_CODE, $code_ids, ProjectLogDao::$OP_TYPE_DELETE, "删除状态码:'{$status_codes}'", date("Y-m-d H:i:s", time()));
+
             return TRUE;
         } else {
             return FALSE;
@@ -142,7 +165,15 @@ class StatusCodeModule
         $statusCodeDao = new StatusCodeDao;
         if ($projectID = $statusCodeDao->checkStatusCodePermission($codeID, $_SESSION['userID'])) {
             $projectDao->updateProjectUpdateTime($projectID);
-            return $statusCodeDao->editCode($groupID, $codeID, $code, $codeDesc);
+            $result = $statusCodeDao->editCode($groupID, $codeID, $code, $codeDesc);
+            if ($result) {
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_STATUS_CODE, $codeID, ProjectLogDao::$OP_TYPE_UPDATE, "修改状态码:'{$code}'", date("Y-m-d H:i:s", time()));
+                return $result;
+            } else {
+                return FALSE;
+            }
         } else
             return FALSE;
     }

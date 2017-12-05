@@ -4,7 +4,6 @@
  * @link https://www.eolinker.com
  * @package eolinker
  * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2016
-
  *  * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  * 用户讨论QQ群：284421832
@@ -24,7 +23,7 @@ $filePaths = NULL;
  */
 function getDatabase($isNewInstance = false)
 {
-	return $isNewInstance ? M\DatabaseModule::getNewInstance() : M\DatabaseModule::getInstance();
+    return $isNewInstance ? M\DatabaseModule::getNewInstance() : M\DatabaseModule::getInstance();
 }
 
 /**
@@ -33,17 +32,16 @@ function getDatabase($isNewInstance = false)
  */
 function quickFlush()
 {
-	ob_start();
-	$outputFlush = M\OutputStorageModule::getAll();
-	if (is_null($outputFlush))
-		return;
-	foreach ($outputFlush as $value)
-	{
-		echo $value;
-	}
-	//输出缓冲区并且清除缓冲区内容
-	ob_end_flush();
-	M\OutputStorageModule::clean();
+    ob_start();
+    $outputFlush = M\OutputStorageModule::getAll();
+    if (is_null($outputFlush))
+        return;
+    foreach ($outputFlush as $value) {
+        echo $value;
+    }
+    //输出缓冲区并且清除缓冲区内容
+    ob_end_flush();
+    M\OutputStorageModule::clean();
 }
 
 /**
@@ -51,37 +49,31 @@ function quickFlush()
  */
 function quickInput($paramName, $defaultValue = NULL)
 {
-	switch (strtolower(AT))
-	{
-		case 'auto' :
-		{
-			if (is_null($_GET[$paramName]) || $_GET[$paramName] == '')
-			{
-				if (is_null($_POST[$paramName] || $_POST[$paramName] == ''))
-					return $defaultValue;
-				else
-					return $_POST[$paramName];
-			}
-			else
-				return $_GET[$paramName];
-		}
-		case 'post' :
-		{
-			if (is_null($_POST[$paramName]) || $_POST[$paramName] == '')
-				return $defaultValue;
-			else
-				return $_POST[$paramName];
-		}
-		case 'get' :
-		{
-			if (is_null($_GET[$paramName]) || $_GET[$paramName] == '')
-				return $defaultValue;
-			else
-				return $_GET[$paramName];
-		}
-		default :
-			return NULL;
-	}
+    switch (strtolower(AT)) {
+        case 'auto' : {
+            if (is_null($_GET[$paramName]) || $_GET[$paramName] == '') {
+                if (is_null($_POST[$paramName] || $_POST[$paramName] == ''))
+                    return $defaultValue;
+                else
+                    return $_POST[$paramName];
+            } else
+                return $_GET[$paramName];
+        }
+        case 'post' : {
+            if (is_null($_POST[$paramName]) || $_POST[$paramName] == '')
+                return $defaultValue;
+            else
+                return $_POST[$paramName];
+        }
+        case 'get' : {
+            if (is_null($_GET[$paramName]) || $_GET[$paramName] == '')
+                return $defaultValue;
+            else
+                return $_GET[$paramName];
+        }
+        default :
+            return NULL;
+    }
 }
 
 /**
@@ -89,37 +81,31 @@ function quickInput($paramName, $defaultValue = NULL)
  */
 function securelyInput($paramName, $defaultValue = NULL)
 {
-	switch (strtolower(AT))
-	{
-		case 'auto' :
-		{
-			if (is_null($_GET[$paramName]) || $_GET[$paramName] == '')
-			{
-				if (is_null($_POST[$paramName]) || $_POST[$paramName] == '')
-					return $defaultValue;
-				else
-					return cleanFormat($_POST[$paramName]);
-			}
-			else
-				return cleanFormat($_GET[$paramName]);
-		}
-		case 'post' :
-		{
-			if (is_null($_POST[$paramName]) || $_POST[$paramName] == '')
-				return $defaultValue;
-			else
-				return cleanFormat($_POST[$paramName]);
-		}
-		case 'get' :
-		{
-			if (is_null($_GET[$paramName]) || $_GET[$paramName] == '')
-				return $defaultValue;
-			else
-				return cleanFormat($_GET[$paramName]);
-		}
-		default :
-			return NULL;
-	}
+    switch (strtolower(AT)) {
+        case 'auto' : {
+            if (is_null($_GET[$paramName]) || $_GET[$paramName] == '') {
+                if (is_null($_POST[$paramName]) || $_POST[$paramName] == '')
+                    return $defaultValue;
+                else
+                    return cleanFormat($_POST[$paramName]);
+            } else
+                return cleanFormat($_GET[$paramName]);
+        }
+        case 'post' : {
+            if (is_null($_POST[$paramName]) || $_POST[$paramName] == '')
+                return $defaultValue;
+            else
+                return cleanFormat($_POST[$paramName]);
+        }
+        case 'get' : {
+            if (is_null($_GET[$paramName]) || $_GET[$paramName] == '')
+                return $defaultValue;
+            else
+                return cleanFormat($_GET[$paramName]);
+        }
+        default :
+            return NULL;
+    }
 }
 
 /**
@@ -127,7 +113,7 @@ function securelyInput($paramName, $defaultValue = NULL)
  */
 function quickOutput($output)
 {
-	echo is_array($output) ? json_encode($output) : $output;
+    echo is_array($output) ? json_encode($output) : $output;
 }
 
 /**
@@ -135,7 +121,7 @@ function quickOutput($output)
  */
 function exitOutput($output)
 {
-	exit(is_array($output) ? json_encode($output) : $output);
+    exit(is_array($output) ? json_encode($output) : $output);
 }
 
 /**
@@ -143,10 +129,10 @@ function exitOutput($output)
  */
 function serialPrint($output, $distinct = FALSE)
 {
-	if ($distinct)
-		if (M\OutputStorageModule::isExist($output))
-			return;
-	M\OutputStorageModule::set($output);
+    if ($distinct)
+        if (M\OutputStorageModule::isExist($output))
+            return;
+    M\OutputStorageModule::set($output);
 }
 
 /**
@@ -154,23 +140,19 @@ function serialPrint($output, $distinct = FALSE)
  */
 function quickRequire($filePath)
 {
-	global $filePaths;
-	if (is_null($filePaths))
-		$filePaths = array();
+    global $filePaths;
+    if (is_null($filePaths))
+        $filePaths = array();
 
-	if (!isset($filePaths[$filePath]))
-	{
-		if (is_file($filePath))
-		{
-			//require不使用函数形式是因为参数带括号会降低运行速度
-			require $filePath;
-			$filePaths[$filePath] = TRUE;
-		}
-		else
-		{
-			$filePaths[$filePath] = FALSE;
-		}
-	}
+    if (!isset($filePaths[$filePath])) {
+        if (is_file($filePath)) {
+            //require不使用函数形式是因为参数带括号会降低运行速度
+            require $filePath;
+            $filePaths[$filePath] = TRUE;
+        } else {
+            $filePaths[$filePath] = FALSE;
+        }
+    }
 }
 
 /**
@@ -178,16 +160,14 @@ function quickRequire($filePath)
  */
 function quickSession(&$key, &$value)
 {
-	if (session_status() == 1)
-		session_start();
-	if (isset($_SESSION[$key]))
-	{
-		if (isset($value))
-			$_SESSION[$key] = $value;
-		return $_SESSION[$key];
-	}
-	else
-		$_SESSION[$key] = $value;
+    if (session_status() == 1)
+        session_start();
+    if (isset($_SESSION[$key])) {
+        if (isset($value))
+            $_SESSION[$key] = $value;
+        return $_SESSION[$key];
+    } else
+        $_SESSION[$key] = $value;
 }
 
 /**
@@ -195,7 +175,7 @@ function quickSession(&$key, &$value)
  */
 function cleanFormat(&$value)
 {
-	return htmlspecialchars(stripcslashes(trim($value)));
+    return htmlspecialchars(stripcslashes(trim($value)));
 }
 
 /**
@@ -203,9 +183,26 @@ function cleanFormat(&$value)
  */
 function printFormatted(array $info)
 {
-	foreach ($info as $key => $value)
-	{
-		echo "$key:$value</br>";
-	};
+    foreach ($info as $key => $value) {
+        echo "$key:$value</br>";
+    };
 }
+
+/**
+ * 判断请求协议是否为https
+ * @return bool
+ */
+function is_https()
+{
+    if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
+        return TRUE;
+    } elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+        return TRUE;
+    } elseif (!empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off') {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
 ?>

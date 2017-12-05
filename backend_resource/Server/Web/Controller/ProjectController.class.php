@@ -102,21 +102,16 @@ class ProjectController
      */
     public function getProjectList()
     {
-        if (!function_exists('mb_strlen')) {
-            $this->returnJson['statusCode'] = '140024';
-            $this->returnJson['msg'] = 'Please checkout your mbString module.';
-            exitOutput($this->returnJson);
-        }
         $nameLen = mb_strlen(quickInput('projectName'), 'utf8');
         $projectType = securelyInput('projectType');
-        $projectName = securelyInput('projectName');
+        //$projectName = securelyInput('projectName');
         if (!preg_match('/^[0-3]|[-1]{1}$/', $projectType) || ($nameLen != 0 && $nameLen < 1 || $nameLen > 30)) {
             // 项目类型或项目名称不合法
             $this->returnJson['statusCode'] = '140002';
             exitOutput($this->returnJson);
         } else {
             $service = new ProjectModule();
-            $result = $service->getProjectList($projectType, $projectName);
+            $result = $service->getProjectList($projectType);
 
             if ($result) {
                 // 获取项目列表成功
@@ -126,7 +121,6 @@ class ProjectController
                 // 项目列表为空
                 $this->returnJson['statusCode'] = '140005';
             }
-
         }
 
         exitOutput($this->returnJson);
@@ -195,108 +189,108 @@ class ProjectController
         exitOutput($this->returnJson);
     }
 
-    /**
-     * 获取项目环境列表
-     */
-    public function getEnvList()
-    {
-        $projectID = securelyInput('projectID');
-
-        if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
-            //项目ID不合法
-            $this->returnJson['statusCode'] = '140004';
-        } else {
-            $service = new ProjectModule;
-            $result = $service->getEnvList($projectID);
-            if ($result) {
-                $this->returnJson['statusCode'] = '000000';
-                $this->returnJson['envList'] = $result;
-            } else {
-                //环境列表为空
-                $this->returnJson['statusCode'] = '140018';
-            }
-        }
-        exitOutput($this->returnJson);
-    }
-
-    /**
-     * 添加项目环境
-     */
-    public function addEnv()
-    {
-        $projectID = securelyInput('projectID');
-        $envName = securelyInput('envName');
-        $envURI = securelyInput('envURI');
-
-        if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
-            //项目ID不合法
-            $this->returnJson['statusCode'] = '140004';
-        } else {
-            $service = new ProjectModule;
-            $result = $service->addEnv($projectID, $envName, $envURI);
-            if ($result) {
-                $this->returnJson['statusCode'] = '000000';
-                $this->returnJson['envID'] = $result;
-            } else {
-                $this->returnJson['statusCode'] = '140019';
-            }
-        }
-        exitOutput($this->returnJson);
-    }
-
-    /**
-     * 删除项目环境
-     */
-    public function deleteEnv()
-    {
-        $projectID = securelyInput('projectID');
-        $envID = securelyInput('envID');
-
-        if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
-            //项目ID不合法
-            $this->returnJson['statusCode'] = '140004';
-        } elseif (!preg_match('/^[0-9]{1,11}$/', $envID)) {
-            //环境ID不合法
-            $this->returnJson['statusCode'] = '140022';
-        } else {
-            $service = new ProjectModule;
-            if ($service->deleteEnv($projectID, $envID)) {
-                $this->returnJson['statusCode'] = '000000';
-            } else {
-                //删除环境失败，projectID与envID不匹配
-                $this->returnJson['statusCode'] = '140020';
-            }
-        }
-        exitOutput($this->returnJson);
-    }
-
-    /**
-     * 修改项目环境
-     */
-    public function editEnv()
-    {
-        $projectID = securelyInput('projectID');
-        $envID = securelyInput('envID');
-        $envName = securelyInput('envName');
-        $envURI = securelyInput('envURI');
-
-        if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
-            //项目ID不合法
-            $this->returnJson['statusCode'] = '140004';
-        } elseif (!preg_match('/^[0-9]{1,11}$/', $envID)) {
-            //环境ID不合法
-            $this->returnJson['statusCode'] = '140022';
-        } else {
-            $service = new ProjectModule;
-            if ($service->editEnv($projectID, $envID, $envName, $envURI)) {
-                $this->returnJson['statusCode'] = '000000';
-            } else {
-                //修改失败
-                $this->returnJson['statusCode'] = '140021';
-            }
-        }
-        exitOutput($this->returnJson);
-    }
+//    /**
+//     * 获取项目环境列表
+//     */
+//    public function getEnvList()
+//    {
+//        $projectID = securelyInput('projectID');
+//
+//        if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
+//            //项目ID不合法
+//            $this->returnJson['statusCode'] = '140004';
+//        } else {
+//            $service = new ProjectModule;
+//            $result = $service->getEnvList($projectID);
+//            if ($result) {
+//                $this->returnJson['statusCode'] = '000000';
+//                $this->returnJson['envList'] = $result;
+//            } else {
+//                //环境列表为空
+//                $this->returnJson['statusCode'] = '140018';
+//            }
+//        }
+//        exitOutput($this->returnJson);
+//    }
+//
+//    /**
+//     * 添加项目环境
+//     */
+//    public function addEnv()
+//    {
+//        $projectID = securelyInput('projectID');
+//        $envName = securelyInput('envName');
+//        $envURI = securelyInput('envURI');
+//
+//        if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
+//            //项目ID不合法
+//            $this->returnJson['statusCode'] = '140004';
+//        } else {
+//            $service = new ProjectModule;
+//            $result = $service->addEnv($projectID, $envName, $envURI);
+//            if ($result) {
+//                $this->returnJson['statusCode'] = '000000';
+//                $this->returnJson['envID'] = $result;
+//            } else {
+//                $this->returnJson['statusCode'] = '140019';
+//            }
+//        }
+//        exitOutput($this->returnJson);
+//    }
+//
+//    /**
+//     * 删除项目环境
+//     */
+//    public function deleteEnv()
+//    {
+//        $projectID = securelyInput('projectID');
+//        $envID = securelyInput('envID');
+//
+//        if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
+//            //项目ID不合法
+//            $this->returnJson['statusCode'] = '140004';
+//        } elseif (!preg_match('/^[0-9]{1,11}$/', $envID)) {
+//            //环境ID不合法
+//            $this->returnJson['statusCode'] = '140022';
+//        } else {
+//            $service = new ProjectModule;
+//            if ($service->deleteEnv($projectID, $envID)) {
+//                $this->returnJson['statusCode'] = '000000';
+//            } else {
+//                //删除环境失败，projectID与envID不匹配
+//                $this->returnJson['statusCode'] = '140020';
+//            }
+//        }
+//        exitOutput($this->returnJson);
+//    }
+//
+//    /**
+//     * 修改项目环境
+//     */
+//    public function editEnv()
+//    {
+//        $projectID = securelyInput('projectID');
+//        $envID = securelyInput('envID');
+//        $envName = securelyInput('envName');
+//        $envURI = securelyInput('envURI');
+//
+//        if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
+//            //项目ID不合法
+//            $this->returnJson['statusCode'] = '140004';
+//        } elseif (!preg_match('/^[0-9]{1,11}$/', $envID)) {
+//            //环境ID不合法
+//            $this->returnJson['statusCode'] = '140022';
+//        } else {
+//            $service = new ProjectModule;
+//            if ($service->editEnv($projectID, $envID, $envName, $envURI)) {
+//                $this->returnJson['statusCode'] = '000000';
+//            } else {
+//                //修改失败
+//                $this->returnJson['statusCode'] = '140021';
+//            }
+//        }
+//        exitOutput($this->returnJson);
+//    }
 
     /**
      * 导出项目
@@ -343,6 +337,36 @@ class ProjectController
         exitOutput($this->returnJson);
     }
 
+    /**
+     * 获取项目动态
+     */
+    public function getProjectLogList()
+    {
+        //项目ID
+        $project_id = securelyInput('projectID');
+        //页码，默认1
+        $page = securelyInput('page', 1);
+        //每页的条目数量，默认10
+        $page_size = securelyInput('pageSize', 15);
+
+        if (!preg_match('/^[0-9]{1,11}$/', $project_id)) {
+            // 项目ID不合法
+            $this->returnJson['statusCode'] = '140004';
+        } else {
+            $service = new ProjectModule();
+            $result = $service->getProjectLogList($project_id, $page, $page_size);
+
+            if ($result) {
+                //成功
+                $this->returnJson['statusCode'] = '000000';
+                $this->returnJson = array_merge($this->returnJson, $result);
+            } else {
+                //获取失败，可能数据库出错
+                $this->returnJson['statusCode'] = '140000';
+            }
+        }
+        exitOutput($this->returnJson);
+    }
 }
 
 ?>

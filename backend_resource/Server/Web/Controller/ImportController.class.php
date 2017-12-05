@@ -123,6 +123,35 @@ class ImportController
         }
         exitOutput($this->returnJson);
     }
+
+    /**
+     *导入RAP
+     */
+    public function importRAP()
+    {
+        $json = quickInput('data');
+        $data = json_decode($json, TRUE);
+        //判断数据是否为空
+        if (empty($data['modelJSON'])) {
+            $this->returnJson['statusCode'] = '310001';
+            exitOutput($this->returnJson);
+        }
+        $model_json = json_decode(str_replace("\'", "'", $data['modelJSON']), TRUE);
+        //以json格式解析modelJSON失败
+        if (empty($model_json)) {
+            $this->returnJson['statusCode'] = '310003';
+            exitOutput($this->returnJson);
+        }
+        $server = new ImportModule();
+        $result = $server->importRAP($model_json);
+        //验证结果
+        if ($result) {
+            $this->returnJson['statusCode'] = '000000';
+        } else {
+            $this->returnJson['statusCode'] = '310000';
+        }
+        exitOutput($this->returnJson);
+    }
 }
 
 ?>

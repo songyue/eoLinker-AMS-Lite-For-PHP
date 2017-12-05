@@ -54,10 +54,28 @@ class StatusCodeGroupModule
         $statusCodeGroupDao = new StatusCodeGroupDao;
         if ($projectDao->checkProjectPermission($projectID, $_SESSION['userID'])) {
             $projectDao->updateProjectUpdateTime($projectID);
-            if (is_null($parentGroupID))
-                return $statusCodeGroupDao->addGroup($projectID, $groupName);
-            else
-                return $statusCodeGroupDao->addChildGroup($projectID, $groupName, $parentGroupID);
+            if (is_null($parentGroupID)) {
+                $result = $statusCodeGroupDao->addGroup($projectID, $groupName);
+                if ($result) {
+                    //将操作写入日志
+                    $log_dao = new ProjectLogDao();
+                    $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_STATUS_CODE_GROUP, $result, ProjectLogDao::$OP_TYPE_ADD, "新增状态码分组:'$groupName'", date("Y-m-d H:i:s", time()));
+                    return $result;
+                } else {
+                    return FALSE;
+                }
+            } else {
+                $result = $statusCodeGroupDao->addChildGroup($projectID, $groupName, $parentGroupID);
+                if ($result) {
+                    $parent_group_name = $statusCodeGroupDao->getGroupName($parentGroupID);
+                    //将操作写入日志
+                    $log_dao = new ProjectLogDao();
+                    $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_STATUS_CODE_GROUP, $result, ProjectLogDao::$OP_TYPE_ADD, "新增状态码子分组:'$parent_group_name>>$groupName'", date("Y-m-d H:i:s", time()));
+                    return $result;
+                } else {
+                    return FALSE;
+                }
+            }
         } else
             return FALSE;
     }
@@ -72,8 +90,17 @@ class StatusCodeGroupModule
         $projectDao = new ProjectDao;
         $statusCodeGroupDao = new StatusCodeGroupDao;
         if ($projectID = $statusCodeGroupDao->checkStatusCodeGroupPermission($groupID, $_SESSION['userID'])) {
-            $projectDao->updateProjectUpdateTime($projectID);
-            return $statusCodeGroupDao->deleteGroup($groupID);
+            $group_name = $statusCodeGroupDao->getGroupName($groupID);
+            $result = $statusCodeGroupDao->deleteGroup($groupID);
+            if ($result) {
+                $projectDao->updateProjectUpdateTime($projectID);
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_STATUS_CODE_GROUP, $groupID, ProjectLogDao::$OP_TYPE_DELETE, "删除状态码分组:'$group_name'", date("Y-m-d H:i:s", time()));
+                return $result;
+            } else {
+                return FALSE;
+            }
         } else
             return FALSE;
     }
@@ -97,15 +124,28 @@ class StatusCodeGroupModule
      * 修改状态码分组
      * @param $groupID int 分组ID
      * @param $groupName string 分组名
+     * @param $parentGroupID int 父分组ID
      * @return bool
      */
-    public function editGroup(&$groupID, &$groupName)
+    public function editGroup(&$groupID, &$groupName, &$parentGroupID)
     {
         $projectDao = new ProjectDao;
         $statusCodeGroupDao = new StatusCodeGroupDao;
         if ($projectID = $statusCodeGroupDao->checkStatusCodeGroupPermission($groupID, $_SESSION['userID'])) {
+            if ($parentGroupID && !$statusCodeGroupDao->checkStatusCodeGroupPermission($parentGroupID, $_SESSION['userID'])) {
+                return FALSE;
+            }
             $projectDao->updateProjectUpdateTime($projectID);
-            return $statusCodeGroupDao->editGroup($groupID, $groupName);
+            $result = $statusCodeGroupDao->editGroup($groupID, $groupName, $parentGroupID);
+            if ($result) {
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_STATUS_CODE_GROUP, $groupID, ProjectLogDao::$OP_TYPE_UPDATE, "修改状态码分组:'$groupName'", date("Y-m-d H:i:s", time()));
+
+                return $result;
+            } else {
+                return FALSE;
+            }
         } else
             return FALSE;
     }
@@ -123,6 +163,10 @@ class StatusCodeGroupModule
         if ($projectDao->checkProjectPermission($projectID, $_SESSION['userID'])) {
             if ($groupDao->sortGroup($projectID, $orderList)) {
                 $projectDao->updateProjectUpdateTime($projectID);
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_STATUS_CODE_GROUP, $projectID, ProjectLogDao::$OP_TYPE_UPDATE, "修改状态码分组排序", date("Y-m-d H:i:s", time()));
+
                 return TRUE;
             } else {
                 return FALSE;

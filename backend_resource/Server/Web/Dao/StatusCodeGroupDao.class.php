@@ -144,16 +144,26 @@ class StatusCodeGroupDao
      * 修改分组
      * @param $groupID int 分组ID
      * @param $groupName string 分组名
+     * @param $parentGroupID int 父分组ID
      * @return bool
      */
-    public function editGroup(&$groupID, &$groupName)
+    public function editGroup(&$groupID, &$groupName, $parentGroupID)
     {
         $db = getDatabase();
 
-        $db->prepareExecute('UPDATE eo_project_status_code_group SET eo_project_status_code_group.groupName = ? WHERE groupID = ?;', array(
-            $groupName,
-            $groupID
-        ));
+        if (!$parentGroupID) {
+            $db->prepareExecute('UPDATE eo_project_status_code_group SET eo_project_status_code_group.groupName = ?,isChild = 0,parentGroupID = NULL WHERE eo_project_status_code_group.groupID = ?;', array(
+                $groupName,
+                $groupID
+            ));
+        } else {
+            $db->prepareExecute('UPDATE eo_project_status_code_group SET eo_project_status_code_group.groupName = ?,isChild = 1,parentGroupID = ? WHERE eo_project_status_code_group.groupID = ?;', array(
+                $groupName,
+                $parentGroupID,
+                $groupID
+            ));
+        }
+
 
         if ($db->getAffectRow() < 1)
             return FALSE;
@@ -178,6 +188,22 @@ class StatusCodeGroupDao
             return TRUE;
         else
             return FALSE;
+    }
+
+    /**
+     * 获取分组名称
+     * @param $group_id
+     * @return bool
+     */
+    public function getGroupName(&$group_id)
+    {
+        $db = getDatabase();
+        $result = $db->prepareExecute('SELECT eo_project_status_code_group.groupName FROM eo_project_status_code_group WHERE eo_project_status_code_group.groupID = ?;', array($group_id));
+        if (empty($result)) {
+            return FALSE;
+        } else {
+            return $result['groupName'];
+        }
     }
 }
 

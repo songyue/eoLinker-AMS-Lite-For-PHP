@@ -587,6 +587,223 @@ class ImportModule
             return FALSE;
         }
     }
+
+    /**
+     * 导入RAP
+     * @param $data
+     * @return bool
+     */
+    public function importRAP(&$data)
+    {
+        $user_id = $_SESSION['userID'];
+        $param_type = array('string' => '0', 'file' => '1', 'json' => '2', 'int' => '3', 'float' => '4', 'double' => '5', 'date' => '6', 'datetime' => '7', 'boolean' => '8', 'byte' => '9', 'short' => '10', 'long' => '11', 'array' => '12', 'object' => '13', 'number' => '14');
+        try {
+            $project_info = array(
+                'projectName' => $data['name'],
+                'projectType' => 0,
+                'projectVersion' => 1.0
+            );
+
+            $group_info_list = array();
+
+            foreach ($data['moduleList'] as $module) {
+                $api_list = array();
+                $group_info = array(
+                    'groupName' => $module['name'],
+                    'apiList' => array()
+                );
+
+                foreach ($module['pageList'] as $pageList) {
+                    foreach ($pageList['actionList'] as $action) {
+                        $api_info = array();
+                        $api_info['baseInfo']['apiName'] = $action['name'];
+                        $api_info['baseInfo']['apiURI'] = stripcslashes($action['requestUrl']);
+                        $api_info['baseInfo']['apiProtocol'] = 1;
+                        $api_info['baseInfo']['apiStatus'] = 0;
+                        $api_info['baseInfo']['starred'] = 0;
+                        $api_info['baseInfo']['apiSuccessMock'] = $action['responseTemplate'];
+                        $api_info['baseInfo']['apiFailureMock'] = '';
+                        $api_info['baseInfo']['apiRequestParamType'] = 0;
+                        $api_info['baseInfo']['apiRequestRaw'] = '';
+                        $api_info['baseInfo']['apiNoteType'] = 0;
+                        $api_info['baseInfo']['apiNote'] = '&lt;p&gt;' . $action['description'] . '&lt;p&gt;';
+                        $api_info['baseInfo']['apiNoteRaw'] = '';
+                        $api_info['baseInfo']['apiUpdateTime'] = date("Y-m-d H:i:s", time());
+                        switch ($action['requestType']) {
+                            case '1' :
+                                $api_info['baseInfo']['apiRequestType'] = 1;
+                                //GET
+                                break;
+                            case '2' :
+                                $api_info['baseInfo']['apiRequestType'] = 0;
+                                //POST
+                                break;
+                            case '3' :
+                                $api_info['baseInfo']['apiRequestType'] = 2;
+                                //PUT
+                                break;
+                            case '4' :
+                                $api_info['baseInfo']['apiRequestType'] = 3;
+                                //DELETE
+                                break;
+                            default :
+                                $api_info['baseInfo']['apiRequestType'] = 1;
+                                //默认设置为GET
+                                break;
+                        }
+
+                        $api_info['headerInfo'] = array();
+
+                        $api_request_param = array();
+                        foreach ($action['requestParameterList'] as $parameter) {
+                            $param = array();
+                            $param['paramKey'] = $parameter['identifier'];
+                            $param['paramValue'] = $parameter['remark'];
+                            //获取请求参数类型
+                            switch ($parameter['dataType']) {
+                                case "integer":
+                                    $param['paramType'] = $param_type['int'];
+                                    break;
+                                case "string":
+                                    $param['paramType'] = $param_type['string'];
+                                    break;
+                                case 'long':
+                                    $param['paramType'] = $param_type['long'];
+                                    break;
+                                case 'float':
+                                    $param['paramType'] = $param_type['float'];
+                                    break;
+                                case 'double':
+                                    $param['paramType'] = $param_type['double'];
+                                    break;
+                                case 'byte':
+                                    $param['paramType'] = $param_type['byte'];
+                                    break;
+                                case 'file':
+                                    $param['paramType'] = $param_type['file'];
+                                    break;
+                                case 'date':
+                                    $param['paramType'] = $param_type['date'];
+                                    break;
+                                case 'dateTime':
+                                    $param['paramType'] = $param_type['dateTime'];
+                                    break;
+                                case 'boolean':
+                                    $param['paramType'] = $param_type['boolean'];
+                                    break;
+                                case 'array':
+                                    $param['paramType'] = $param_type['array'];
+                                    break;
+                                case 'json':
+                                    $param['paramType'] = $param_type['json'];
+                                    break;
+                                case 'object':
+                                    $param['paramType'] = $param_type['object'];
+                                    break;
+                                case 'number':
+                                    $param['paramType'] = $param_type['number'];
+                                    break;
+                                default:
+                                    $param['paramType'] = $param_type['array'];
+
+                            }
+                            $param['paramNotNull'] = 0;
+                            $param['paramName'] = $parameter['name'];
+                            $param['paramLimit'] = $parameter['dataType'];
+                            $param['paramValueList'] = array();
+                            foreach ($parameter['parameterList'] as $value) {
+                                $param['paramValueList'][] = array(
+                                    'value' => $value['identifier'],
+                                    'valueDescription' => $value['name']
+                                );
+                            }
+                            $api_request_param[] = $param;
+                            unset($param);
+                        }
+                        $api_info['requestInfo'] = $api_request_param;
+                        unset($api_request_param);
+
+                        $api_result_param = array();
+                        foreach ($action['responseParameterList'] as $parameter) {
+                            $param['paramKey'] = $parameter['identifier'];
+                            $param['paramNotNull'] = 0;
+                            $param['paramName'] = $parameter['name'];
+                            $param['paramValueList'] = array();
+                            foreach ($parameter['parameterList'] as $value) {
+                                $param['paramValueList'][] = array(
+                                    'value' => $value['identifier'],
+                                    'valueDescription' => $value['name']
+                                );
+                            }
+                            //获取请求参数类型
+                            switch ($parameter['dataType']) {
+                                case "integer":
+                                    $param['paramType'] = $param_type['int'];
+                                    break;
+                                case "string":
+                                    $param['paramType'] = $param_type['string'];
+                                    break;
+                                case 'long':
+                                    $param['paramType'] = $param_type['long'];
+                                    break;
+                                case 'float':
+                                    $param['paramType'] = $param_type['float'];
+                                    break;
+                                case 'double':
+                                    $param['paramType'] = $param_type['double'];
+                                    break;
+                                case 'byte':
+                                    $param['paramType'] = $param_type['byte'];
+                                    break;
+                                case 'file':
+                                    $param['paramType'] = $param_type['file'];
+                                    break;
+                                case 'date':
+                                    $param['paramType'] = $param_type['date'];
+                                    break;
+                                case 'dateTime':
+                                    $param['paramType'] = $param_type['dateTime'];
+                                    break;
+                                case 'boolean':
+                                    $param['paramType'] = $param_type['boolean'];
+                                    break;
+                                case 'array':
+                                    $param['paramType'] = $param_type['array'];
+                                    break;
+                                case 'json':
+                                    $param['paramType'] = $param_type['json'];
+                                    break;
+                                case 'object':
+                                    $param['paramType'] = $param_type['object'];
+                                    break;
+                                case 'number':
+                                    $param['paramType'] = $param_type['number'];
+                                    break;
+                                default:
+                                    $param['paramType'] = $param_type['array'];
+
+                            }
+                            $api_result_param[] = $param;
+                            unset($param);
+                        }
+                        $api_info['resultInfo'] = $api_result_param;
+                        unset($api_result_param);
+
+                        $api_list[] = $api_info;
+                        unset($api_info);
+                    }
+                    $group_info['apiList'] = array_merge($group_info['apiList'], $api_list);
+                    unset($api_list);
+                }
+                $group_info_list[] = $group_info;
+                unset($group_info);
+            }
+            $dao = new ImportDao();
+            return $dao->importOther($project_info, $group_info_list, $user_id);
+        } catch (\PDOException $e) {
+            return FALSE;
+        }
+    }
 }
 
 ?>

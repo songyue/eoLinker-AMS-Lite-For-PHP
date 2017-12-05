@@ -100,9 +100,8 @@ class InstallController
                 $this->returnJson['statusCode'] = '200001';
                 unlink(realpath(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php'));
             }
+            exitOutput($this->returnJson);
         }
-
-        exitOutput($this->returnJson);
     }
 
 }

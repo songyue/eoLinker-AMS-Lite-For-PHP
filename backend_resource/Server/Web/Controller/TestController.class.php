@@ -605,7 +605,7 @@ class TestController
                 $this->returnJson['statusCode'] = '000000';
                 $this->returnJson['projectID'] = $result['projectID'];
                 $this->returnJson['apiID'] = $result['apiID'];
-                $this->retrunJson['testID'] = $result['testID'];
+                $this->returnJson['testID'] = $result['testID'];
                 $this->returnJson['requestInfo'] = json_decode($result['requestInfo'], TRUE);
                 $this->returnJson['resultInfo'] = json_decode($result['resultInfo'], TRUE);
                 $this->returnJson['testTime'] = $result['testTime'];
@@ -739,6 +739,33 @@ class TestController
             $result = $module->deleteAllTestHistory($apiID);
             if ($result) {
                 $this->returnJson['statusCode'] = '000000';
+            } else {
+                $this->returnJson['statusCode'] = '210000';
+            }
+        }
+        exitOutput($this->returnJson);
+    }
+
+    /**
+     * 添加测试历史
+     */
+    public function addTestHistory()
+    {
+        $api_id = securelyInput('apiID');
+        $request_info = quickInput('requestInfo');
+        $result_info = quickInput('resultInfo');
+        $test_time = date('Y-m-d H:i:s', time());
+        if (!preg_match('/^[0-9]{1,11}$/', $api_id)) {
+            //apiID格式非法
+            $this->returnJson['statusCode'] = '210008';
+        } elseif (empty(json_decode($request_info, TRUE))) {
+            $this->returnJson['statusCode'] = '210014';
+        } else {
+            $server = new TestHistoryModule();
+            $result = $server->addTestHistory($api_id, $request_info, $result_info, $test_time);
+            if ($result) {
+                $this->returnJson['statusCode'] = '000000';
+                $this->returnJson['testID'] = $result;
             } else {
                 $this->returnJson['statusCode'] = '210000';
             }

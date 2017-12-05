@@ -54,7 +54,6 @@ class InstallModule
                 $dbURL[1] = '3306';
 
             if (!class_exists('PDO')) {
-                var_dump('error');
                 $result['db'] = 0;
             } else {
                 $conInfo = 'mysql:host=' . $dbURL[0] . ';port=' . $dbURL[1] . ';dbname=' . $dbName . ';charset=utf8';
@@ -76,6 +75,30 @@ class InstallModule
                     $result['curl'] = 1;
                 } else
                     $result['curl'] = 0;
+            }
+
+            //检测mbString
+            if (!function_exists('mb_strlen')) {
+                $result['mbString'] = 0;
+            } else {
+                $len = mb_strlen('test', 'utf8');
+                if ($len) {
+                    $result['mbString'] = 1;
+                } else {
+                    $result['mbString'] = 0;
+                }
+            }
+
+            //检测session路径写入权限
+            if (session_save_path() == '') {
+                $session_path = strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? 'C:/Windows/Temp' : '/tmp';
+            } else {
+                $session_path = session_save_path();
+            }
+            if (is_writable($session_path)) {
+                $result['sessionPath'] = 1;
+            } else {
+                $result['sessionPath'] = 0;
             }
         } catch (\PDOException $e) {
             return array('error' => $e->getMessage());

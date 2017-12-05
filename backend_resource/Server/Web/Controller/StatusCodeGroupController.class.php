@@ -131,6 +131,7 @@ class StatusCodeGroupController
     {
         $nameLen = mb_strlen(quickInput('groupName'), 'utf8');
         $groupID = securelyInput('groupID');
+        $parentGroupID = securelyInput('parentGroupID');
         $module = new StatusCodeGroupModule();
         $userType = $module->getUserType($groupID);
         if ($userType < 0 || $userType > 2) {
@@ -139,15 +140,17 @@ class StatusCodeGroupController
         }
         $groupName = securelyInput('groupName');
 
-        if (!preg_match('/^[0-9]{1,11}$/', $groupID)) {
+        if (!preg_match('/^[0-9]{1,11}$/', $groupID) || ($parentGroupID != NULL && !preg_match('/^[0-9]{1,11}$/', $parentGroupID))) {
             //项目ID格式不合法
             $this->returnJson['statusCode'] = '180003';
         } elseif (!($nameLen >= 1 && $nameLen <= 32)) {
             //分组名称不合法
             $this->returnJson['statusCode'] = '180004';
+        } elseif ($groupID == $parentGroupID) {
+            $this->returnJson['statusCode'] = '180009';
         } else {
             $service = new StatusCodeGroupModule;
-            $result = $service->editGroup($groupID, $groupName);
+            $result = $service->editGroup($groupID, $groupName, $parentGroupID);
             if ($result) {
                 $this->returnJson['statusCode'] = '000000';
             } else {

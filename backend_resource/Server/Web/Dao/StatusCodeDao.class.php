@@ -175,6 +175,22 @@ class StatusCodeDao
             return TRUE;
         }
     }
+
+    /**
+     * 获取状态码名称
+     * @param $code_ids
+     * @return bool
+     */
+    public function getStatusCodes(&$code_ids)
+    {
+        $db = getDatabase();
+        $result = $db->prepareExecute("SELECT GROUP_CONCAT(DISTINCT eo_project_status_code.code) AS statusCodes FROM eo_project_status_code WHERE eo_project_status_code.codeID IN ($code_ids)", array());
+        if (empty($result)) {
+            return FALSE;
+        } else {
+            return $result['statusCodes'];
+        }
+    }
 }
 
 ?>

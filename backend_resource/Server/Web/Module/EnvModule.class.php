@@ -55,6 +55,9 @@ class EnvModule
         }
         $env_id = $env_dao->addEnv($project_id, $env_name, $front_uri, $headers, $params, $apply_protocol);
         if ($env_id) {
+            //将操作写入日志
+            $log_dao = new ProjectLogDao();
+            $log_dao->addOperationLog($project_id, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_ENVIRONMENT, $env_id, ProjectLogDao::$OP_TYPE_ADD, "添加环境:'{$env_name}'", date("Y-m-d H:i:s", time()));
             return $env_id;
         } else {
             return FALSE;
@@ -75,7 +78,12 @@ class EnvModule
             if (!$env_dao->checkEnvPermission($env_id, $_SESSION['userID'])) {
                 return FALSE;
             }
+            $env_name = $env_dao->getEnvName($env_id);
             if ($env_dao->deleteEnv($project_id, $env_id)) {
+                //将操作写入日志
+                $log_dao = new \ProjectLogDao();
+                $log_dao->addOperationLog($project_id, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_ENVIRONMENT, $env_id, ProjectLogDao::$OP_TYPE_DELETE, "删除环境:'$env_name'", date("Y-m-d H:i:s", time()));
+
                 return TRUE;
             } else {
                 return FALSE;
@@ -98,10 +106,14 @@ class EnvModule
     public function editEnv(&$env_id, &$env_name, &$front_uri, &$headers, &$params, $apply_protocol)
     {
         $env_dao = new EnvDao;
-        if (!$env_dao->checkEnvPermission($env_id, $_SESSION['userID'])) {
+        if (!($project_id = $env_dao->checkEnvPermission($env_id, $_SESSION['userID']))) {
             return FALSE;
         }
         if ($env_dao->editEnv($env_id, $env_name, $front_uri, $headers, $params, $apply_protocol)) {
+            //将操作写入日志
+            $log_dao = new ProjectLogDao();
+            $log_dao->addOperationLog($project_id, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_ENVIRONMENT, $project_id, ProjectLogDao::$OP_TYPE_UPDATE, "修改环境:'{$env_name}'", date("Y-m-d H:i:s", time()));
+
             return TRUE;
         } else {
             return FALSE;

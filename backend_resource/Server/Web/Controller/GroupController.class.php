@@ -127,6 +127,7 @@ class GroupController
     {
         $nameLen = mb_strlen(quickInput('groupName'), 'utf8');
         $groupID = securelyInput('groupID');
+        $parentGroupID = securelyInput('parentGroupID');
         $module = new GroupModule();
         $userType = $module->getUserType($groupID);
         if ($userType < 0 || $userType > 2) {
@@ -136,8 +137,12 @@ class GroupController
         $groupName = securelyInput('groupName');
         // 判断分组ID和组名格式是否合法
         if (preg_match('/^[0-9]{1,11}$/', $groupID) && $nameLen >= 1 && $nameLen <= 30) {
+            if ($groupID == $parentGroupID) {
+                $this->returnJson['statusCode'] = '150008';
+                exitOutput($this->returnJson);
+            }
             $service = new GroupModule();
-            $result = $service->editGroup($groupID, $groupName);
+            $result = $service->editGroup($groupID, $groupName, $parentGroupID);
             if ($result)
                 // 修改api分组成功
                 $this->returnJson['statusCode'] = '000000';

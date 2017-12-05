@@ -24,7 +24,7 @@ class ProxyModule
      * @param string $param 请求参数
      * @return bool|array
      */
-    public function proxyToDesURL(&$method, &$URL, &$headers, &$param = NULL)
+    public function proxyToDesURL($method, $URL, &$headers = NULL, &$param = NULL)
     {
         //初始化请求
         $require = curl_init($URL);

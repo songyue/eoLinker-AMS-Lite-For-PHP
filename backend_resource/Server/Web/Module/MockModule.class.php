@@ -14,48 +14,44 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class InstallDao
+class MockModule
 {
     /**
-     * 检查数据库是否可以连接
+     * 获取成功结果示例
+     * @param $project_id
+     * @param $api_uri
+     * @param $request_type
+     * @return bool
      */
-    public function checkDBConnect()
+    public function success(&$project_id, &$api_uri, &$request_type)
     {
-        $conInfo = DB_TYPE . ':host=' . DB_URL . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8';
-        $option = array(
-            \PDO::MYSQL_ATTR_INIT_COMMAND => "set names 'utf8'",
-            \PDO::ATTR_EMULATE_PREPARES => FALSE
-        );
-        $db_con = new \PDO($conInfo, DB_USER, DB_PASSWORD, $option);
-        return $db_con;
+        $dao = new MockDao();
+        return $dao->getSuccessResult($project_id, $api_uri, $request_type);
     }
 
     /**
-     * 安装数据库
-     * @param $sqlArray array 创建数据库的语句
+     * 获取失败结果示例
+     * @param $project_id
+     * @param $api_uri
+     * @param $request_type
      * @return bool
      */
-    public function installDatabase(&$sqlArray)
+    public function failure(&$project_id, &$api_uri, &$request_type)
     {
-        $db = getDatabase();
-        $db->beginTransaction();
-        try {
-            foreach ($sqlArray as $query) {
-                $db->query($query);
-                if ($db->getError()) {
-                    $db->rollback();
-                    return FALSE;
-                }
-            }
-        } catch (\Exception $e) {
-            $db->rollback();
-            return FALSE;
-        }
-
-        $db->commit();
-        return TRUE;
+        $dao = new MockDao();
+        return $dao->getFailureResult($project_id, $api_uri, $request_type);
     }
 
+    /**
+     * 获取高级mock结果
+     * @param $project_id
+     * @param $api_uri
+     * @param $request_type
+     * @return bool
+     */
+    public function getMockResult(&$project_id, &$api_uri, &$request_type)
+    {
+        $dao = new MockDao();
+        return $dao->getMockResult($project_id, $api_uri, $request_type);
+    }
 }
-
-?>

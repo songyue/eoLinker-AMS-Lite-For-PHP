@@ -42,6 +42,7 @@ class ApiController
     public function addApi()
     {
         $groupID = securelyInput('groupID');
+        //检查操作权限
         $module = new GroupModule();
         $userType = $module->getUserType($groupID);
         if ($userType < 0 || $userType > 2) {
@@ -64,9 +65,12 @@ class ApiController
         $apiHeader = json_decode($_POST['apiHeader'], TRUE);
         $apiRequestParam = json_decode($_POST['apiRequestParam'], TRUE);
         $apiResultParam = json_decode($_POST['apiResultParam'], TRUE);
+        $mockRule = json_decode(quickInput('mockRule'), TRUE);
+        $mockResult = securelyInput('mockResult');
+        $mockConfig = quickInput('mockConfig');
 
         $service = new ApiModule;
-        $result = $service->addApi($apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw);
+        $result = $service->addApi($apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw, $mockRule, $mockResult, $mockConfig);
         if ($result) {
             $this->returnJson['statusCode'] = '000000';
             $this->returnJson['apiID'] = $result['apiID'];
@@ -85,6 +89,7 @@ class ApiController
     {
         $apiID = securelyInput('apiID');
         $module = new ApiModule();
+        //检查操作权限
         $userType = $module->getUserType($apiID);
         if ($userType < 0 || $userType > 2) {
             $this->returnJson['statusCode'] = '120007';
@@ -107,9 +112,13 @@ class ApiController
         $apiHeader = json_decode($_POST['apiHeader'], TRUE);
         $apiRequestParam = json_decode($_POST['apiRequestParam'], TRUE);
         $apiResultParam = json_decode($_POST['apiResultParam'], TRUE);
+        $update_desc = securelyInput('updateDesc');
+        $mockRule = json_decode(quickInput('mockRule'), TRUE);
+        $mockResult = securelyInput('mockResult');
+        $mockConfig = quickInput('mockConfig');
 
         $service = new ApiModule;
-        $result = $service->editApi($apiID, $apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw);
+        $result = $service->editApi($apiID, $apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw, $update_desc, $mockRule, $mockResult, $mockConfig);
         if ($result) {
             $this->returnJson['statusCode'] = '000000';
             $this->returnJson['apiID'] = $result['apiID'];
@@ -154,6 +163,7 @@ class ApiController
         //接口ID
         $ids = securelyInput('apiID');
         $projectID = securelyInput('projectID');
+        //检查操作权限
         $module = new ProjectModule();
         $userType = $module->getUserType($projectID);
         if ($userType < 0 || $userType > 2) {
@@ -192,6 +202,7 @@ class ApiController
         //接口ID
         $ids = securelyInput('apiID');
         $groupID = securelyInput('groupID');
+        //检查操作权限
         $module = new GroupModule();
         $userType = $module->getUserType($groupID);
         if ($userType < 0 || $userType > 2) {
@@ -230,6 +241,7 @@ class ApiController
         //接口ID
         $ids = securelyInput('apiID');
         $projectID = securelyInput('projectID');
+        //检查操作权限
         $module = new ProjectModule();
         $userType = $module->getUserType($projectID);
         if ($userType < 0 || $userType > 2) {
@@ -521,6 +533,149 @@ class ApiController
         exitOutput($this->returnJson);
     }
 
+    /**
+     * 获取接口修改历史
+     */
+    public function getApiHistoryList()
+    {
+        //接口ID
+        $api_id = securelyInput('apiID');
+        //判断接口ID是否合法
+        if (!preg_match('/^[0-9]{1,11}$/', $api_id)) {
+            $this->returnJson['statusCode'] = '160001';
+        } else {
+            $api_module = new ApiModule();
+            $result = $api_module->getApiHistoryList($api_id);
+            //验证结果是否成功
+            if ($result) {
+                $this->returnJson['statusCode'] = '000000';
+                $this->returnJson = array_merge($this->returnJson, $result);
+            } else {
+                $this->returnJson['statusCode'] = '160000';
+            }
+        }
+        exitOutput($this->returnJson);
+    }
+
+    /**
+     * 删除历史记录
+     */
+    public function deleteApiHistory()
+    {
+        //接口历史记录ID
+        $api_history_id = securelyInput('apiHistoryID');
+        //接口ID
+        $api_id = securelyInput('apiID');
+        //检查操作权限
+        $api_module = new ApiModule();
+        $userType = $api_module->getUserType($api_id);
+        if ($userType < 0 || $userType > 2) {
+            $this->returnJson['statusCode'] = '120007';
+            exitOutput($this->returnJson);
+        }
+        //判断接口ID是否合法
+        if (!preg_match('/^[0-9]{1,11}$/', $api_id)) {
+            $this->returnJson['statusCode'] = '160001';
+        } //判断接口历史记录ID是否合法
+        elseif (!preg_match('/^[0-9]{1,11}$/', $api_history_id)) {
+            $this->returnJson['statusCode'] = '160004';
+        } else {
+            $result = $api_module->deleteApiHistory($api_id, $api_history_id);
+            //验证结果是否成功
+            if ($result) {
+                $this->returnJson['statusCode'] = '000000';
+            } else {
+                $this->returnJson['statusCode'] = '160000';
+            }
+        }
+        exitOutput($this->returnJson);
+    }
+
+    /**
+     * 切换接口历史版本
+     */
+    public function toggleApiHistory()
+    {
+        //接口历史记录ID
+        $api_history_id = securelyInput('apiHistoryID');
+        //接口ID
+        $api_id = securelyInput('apiID');
+        //检查操作权限
+        $api_module = new ApiModule();
+        $userType = $api_module->getUserType($api_id);
+        if ($userType < 0 || $userType > 2) {
+            $this->returnJson['statusCode'] = '120007';
+            exitOutput($this->returnJson);
+        }
+        //验证接口ID是否为空
+        if (!preg_match('/^[0-9]{1,11}$/', $api_id)) {
+            $this->returnJson['statusCode'] = '160001';
+        } //验证接口历史记录ID是否合法
+        elseif (!preg_match('/^[0-9]{1,11}$/', $api_history_id)) {
+            $this->returnJson['statusCode'] = '160004';
+        } else {
+            $result = $api_module->toggleApiHistory($api_id, $api_history_id);
+            //验证结果是否成功
+            if ($result) {
+                $this->returnJson['statusCode'] = '000000';
+            } else {
+                $this->returnJson['statusCode'] = '160000';
+            }
+        }
+        exitOutput($this->returnJson);
+    }
+
+    /**
+     * 获取接口mock数据
+     */
+    public function getApiMockData()
+    {
+        $api_id = securelyInput('apiID');
+        //验证接口ID是否为空
+        if (!preg_match('/^[0-9]{1,11}$/', $api_id)) {
+            $this->returnJson['statusCode'] = '160001';
+        } else {
+            $module = new ApiModule();
+            $result = $module->getApiMockData($api_id);
+            if ($result) {
+                $this->returnJson['statusCode'] = '000000';
+                $this->returnJson = array_merge($this->returnJson, $result);
+            } else {
+                $this->returnJson['statusCode'] = '160000';
+            }
+        }
+        exitOutput($this->returnJson);
+    }
+
+    /**
+     * 编辑接口mock数据
+     */
+    public function editApiMockData()
+    {
+        $api_id = securelyInput('apiID');
+        $module = new ApiModule();
+        //检查操作权限
+        $userType = $module->getUserType($api_id);
+        if ($userType < 0 || $userType > 2) {
+            $this->returnJson['statusCode'] = '120007';
+            exitOutput($this->returnJson);
+        }
+        $mock_rule = quickInput('mockRule', '');
+        $mock_result = securelyInput('mockResult', '');
+        $mock_config = quickInput('mockConfig');
+        //验证接口ID是否为空
+        if (!preg_match('/^[0-9]{1,11}$/', $api_id)) {
+            $this->returnJson['statusCode'] = '160001';
+        } else {
+            $result = $module->editApiMockData($api_id, $mock_rule, $mock_result, $mock_config);
+            if ($result) {
+                $this->returnJson['statusCode'] = '000000';
+            } else {
+                $this->returnJson['statusCode'] = '160000';
+            }
+        }
+        exitOutput($this->returnJson);
+    }
 }
 
 ?>

@@ -53,13 +53,37 @@ class GroupModule
         $groupDao = new GroupDao;
         $projectDao = new ProjectDao;
         if ($projectDao->checkProjectPermission($projectID, $_SESSION['userID'])) {
-            $projectDao->updateProjectUpdateTime($projectID);
-            if (is_null($parentGroupID))
-                return $groupDao->addGroup($projectID, $groupName);
-            else
-                return $groupDao->addChildGroup($projectID, $groupName, $parentGroupID);
-        } else
+            if (is_null($parentGroupID)) {
+                $result = $groupDao->addGroup($projectID, $groupName);
+                if ($result) {
+                    $projectDao->updateProjectUpdateTime($projectID);
+                    //将操作写入日志
+                    $log_dao = new ProjectLogDao();
+                    $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_API_GROUP, $result, ProjectLogDao::$OP_TYPE_ADD, "添加接口分组:'{$groupName}'", date("Y-m-d H:i:s", time()));
+                    return $result;
+                } else {
+                    return FALSE;
+                }
+            } else {
+                if ($groupDao->checkGroupPermission($parentGroupID, $_SESSION['userID'])) {
+                    $result = $groupDao->addChildGroup($projectID, $groupName, $parentGroupID);
+                    if ($result) {
+                        $projectDao->updateProjectUpdateTime($projectID);
+                        $parent_group_name = $groupDao->getGroupName($parentGroupID);
+                        //将操作写入日志
+                        $log_dao = new ProjectLogDao();
+                        $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_API_GROUP, $result, ProjectLogDao::$OP_TYPE_ADD, "添加接口子分组:'{$parent_group_name}>>{$groupName}'", date("Y-m-d H:i:s", time()));
+                        return $result;
+                    } else {
+                        return FALSE;
+                    }
+                } else {
+                    return FALSE;
+                }
+            }
+        } else {
             return FALSE;
+        }
     }
 
     /**
@@ -72,8 +96,17 @@ class GroupModule
         $groupDao = new GroupDao;
         $projectDao = new ProjectDao;
         if ($projectID = $groupDao->checkGroupPermission($groupID, $_SESSION['userID'])) {
-            $projectDao->updateProjectUpdateTime($projectID);
-            return $groupDao->deleteGroup($groupID);
+            $group_name = $groupDao->getGroupName($groupID);
+            $result = $groupDao->deleteGroup($groupID);
+            if ($result) {
+                $projectDao->updateProjectUpdateTime($projectID);
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_API_GROUP, $groupID, ProjectLogDao::$OP_TYPE_DELETE, "删除接口分组:'$group_name'", date("Y-m-d H:i:s", time()));
+                return $result;
+            } else {
+                return FALSE;
+            }
         } else
             return FALSE;
     }
@@ -97,15 +130,27 @@ class GroupModule
      * 修改项目分组
      * @param $groupID int 分组ID
      * @param $groupName string 分组名
+     * @param $parentGroupID int 父分组ID
      * @return bool
      */
-    public function editGroup(&$groupID, &$groupName)
+    public function editGroup(&$groupID, &$groupName, &$parentGroupID)
     {
         $groupDao = new GroupDao;
         $projectDao = new ProjectDao;
         if ($projectID = $groupDao->checkGroupPermission($groupID, $_SESSION['userID'])) {
+            if ($parentGroupID && !$groupDao->checkGroupPermission($parentGroupID, $_SESSION['userID'])) {
+                return FALSE;
+            }
             $projectDao->updateProjectUpdateTime($projectID);
-            return $groupDao->editGroup($groupID, $groupName);
+            $result = $groupDao->editGroup($groupID, $groupName, $parentGroupID);
+            if ($result) {
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_API_GROUP, $groupID, ProjectLogDao::$OP_TYPE_UPDATE, "修改接口分组:'{$groupName}'", date("Y-m-d H:i:s", time()));
+                return $result;
+            } else {
+                return FALSE;
+            }
         } else
             return FALSE;
     }
@@ -123,6 +168,11 @@ class GroupModule
         if ($projectDao->checkProjectPermission($projectID, $_SESSION['userID'])) {
             if ($groupDao->sortGroup($projectID, $orderList)) {
                 $projectDao->updateProjectUpdateTime($projectID);
+
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_API_GROUP, $projectID, ProjectLogDao::$OP_TYPE_UPDATE, "修改接口分组排序", date("Y-m-d H:i:s", time()));
+
                 return TRUE;
             } else {
                 return FALSE;

@@ -170,6 +170,24 @@ class PartnerDao
         } else
             return FALSE;
     }
+
+    /**
+     * 获取协作成员账号名
+     * @param $user_id
+     * @return bool
+     */
+    public function getPartnerUserCall(&$user_id)
+    {
+        $db = getDatabase();
+        $result = $db->prepareExecute('SELECT eo_user.userName FROM eo_user WHERE eo_user.userID = ?;', array(
+            $user_id
+        ));
+        if (empty($result)) {
+            return FALSE;
+        } else {
+            return $result['userName'];
+        }
+    }
 }
 
 ?>

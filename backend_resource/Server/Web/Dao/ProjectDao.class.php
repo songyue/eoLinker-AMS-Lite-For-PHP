@@ -19,10 +19,15 @@ class ProjectDao
 
     /**
      * 创建项目
-     * @param $projectName string 项目名
-     * @param $projectType int 项目类型 [0/1/2/3]=>[Web/App/PC/其他]
-     * @param $projectVersion string 项目版本，默认为1.0
-     * @param $userID int 用户ID
+     *
+     * @param $projectName string
+     *            项目名
+     * @param $projectType int
+     *            项目类型 [0/1/2/3]=>[Web/App/PC/其他]
+     * @param $projectVersion string
+     *            项目版本，默认为1.0
+     * @param $userID int
+     *            用户ID
      * @return bool|array
      */
     public function addProject(&$projectName, &$projectType, &$projectVersion, &$userID)
@@ -69,8 +74,11 @@ class ProjectDao
 
     /**
      * 判断项目和用户是否匹配
-     * @param $projectID int 项目ID
-     * @param $userID int 用户ID
+     *
+     * @param $projectID int
+     *            项目ID
+     * @param $userID int
+     *            用户ID
      * @return mixed
      */
     public function checkProjectPermission(&$projectID, &$userID)
@@ -89,7 +97,9 @@ class ProjectDao
 
     /**
      * 删除项目
-     * @param $projectID int 项目ID
+     *
+     * @param $projectID int
+     *            项目ID
      * @return bool
      */
     public function deleteProject(&$projectID)
@@ -110,19 +120,32 @@ class ProjectDao
             $projectID
         ));
 
-        if ($db->getAffectRow() > 0) {
-            $db->commit();
-            return TRUE;
-        } else {
+        if ($db->getAffectRow() < 1) {
             $db->rollback();
             return FALSE;
         }
+
+        $db->prepareExecuteAll('DELETE FROM eo_api_group WHERE eo_api_group.projectID = ?;', array($projectID));
+        $db->prepareExecuteAll('DELETE FROM eo_api_header WHERE eo_api_header.apiID IN (SELECT eo_api.apiID FROM eo_api WHERE eo_api.projectID = ?);', array($projectID));
+        $db->prepareExecuteAll('DELETE FROM eo_api_request_value WHERE eo_api_request_value.paramID IN (SELECT eo_api_request_param.paramID FROM eo_api_request_param LEFT JOIN eo_api ON eo_api_request_param.apiID = eo_api.apiID WHERE eo_api.projectID = ?);', array($projectID));
+        $db->prepareExecuteAll('DELETE FROM eo_api_request_param WHERE eo_api_request_param.apiID IN (SELECT eo_api.apiID FROM eo_api WHERE eo_api.projectID = ?)', array($projectID));
+        $db->prepareExecuteAll('DELETE FROM eo_api_result_value WHERE eo_api_result_value.paramID IN (SELECT eo_api_result_param.paramID FROM eo_api_result_param LEFT JOIN eo_api ON eo_api_result_param.apiID = eo_api.apiID WHERE eo_api.projectID = ?);', array($projectID));
+        $db->prepareExecuteAll('DELETE FROM eo_api_result_param WHERE eo_api_result_param.apiID IN (SELECT eo_api.apiID FROM eo_api WHERE eo_api.projectID = ?)', array($projectID));
+        $db->prepareExecuteAll('DELETE FROM eo_api_group WHERE eo_api_group.projectID = ?;', array($projectID));
+        $db->prepareExecuteAll('DELETE FROM eo_api WHERE eo_api.projectID = ?;', array($projectID));
+        $db->prepareExecuteAll('DELETE FROM eo_api_cache WHERE eo_api_cache.projectID = ?;', array($projectID));
+
+        $db->commit();
+        return TRUE;
     }
 
     /**
      * 获取项目列表
-     * @param $userID int 用户ID
-     * @param $projectType int 项目类型[-1/0/1/2/3]=>[全部/Web/App/PC/其他]
+     *
+     * @param $userID int
+     *            用户ID
+     * @param $projectType int
+     *            项目类型[-1/0/1/2/3]=>[全部/Web/App/PC/其他]
      * @return bool|array
      */
     public function getProjectList(&$userID, &$projectType = -1)
@@ -148,10 +171,15 @@ class ProjectDao
 
     /**
      * 更改项目
-     * @param $projectID int 项目ID
-     * @param $projectName string 项目名
-     * @param $projectType int 项目类型 [0/1/2/3]=>[Web/App/PC/其他]
-     * @param $projectVersion string 项目版本，默认为1.0
+     *
+     * @param $projectID int
+     *            项目ID
+     * @param $projectName string
+     *            项目名
+     * @param $projectType int
+     *            项目类型 [0/1/2/3]=>[Web/App/PC/其他]
+     * @param $projectVersion string
+     *            项目版本，默认为1.0
      * @return bool
      */
     public function editProject(&$projectID, &$projectName, &$projectType, &$projectVersion)
@@ -174,27 +202,50 @@ class ProjectDao
 
     /**
      * 获取项目信息
-     * @param $projectID int 项目ID
-     * @param $userID int 用户ID
+     *
+     * @param $projectID int
+     *            项目ID
+     * @param $userID int
+     *            用户ID
      * @return bool|array
      */
     public function getProject(&$projectID, &$userID)
     {
         $db = getDatabase();
-        $result = $db->prepareExecute("SELECT eo_project.projectName, eo_project.projectType, eo_project.projectUpdateTime,eo_project.projectVersion,eo_conn_project.userType FROM eo_project INNER JOIN eo_conn_project ON eo_project.projectID = eo_conn_project.projectID WHERE eo_project.projectID= ? AND eo_conn_project.userID = ?;", array(
+        $project_info = array();
+        $project_info = $db->prepareExecute("SELECT eo_project.projectID, eo_project.projectName, eo_project.projectType, eo_project.projectUpdateTime,eo_project.projectVersion,eo_conn_project.userType FROM eo_project INNER JOIN eo_conn_project ON eo_project.projectID = eo_conn_project.projectID WHERE eo_project.projectID= ? AND eo_conn_project.userID = ?;", array(
             $projectID,
             $userID
         ));
+        // 获取接口数
+        $api_count = $db->prepareExecute('SELECT COUNT(eo_api.apiID) AS count FROM eo_api WHERE eo_api.projectID = ? AND eo_api.removed = 0;', array(
+            $projectID
+        ));
+        $project_info['apiCount'] = $api_count['count'] ? $api_count['count'] : 0;
+        // 获取状态码数
+        $status_code_count = $db->prepareExecute('SELECT COUNT(eo_project_status_code.codeID) AS count FROM eo_project_status_code LEFT JOIN eo_project_status_code_group ON eo_project_status_code.groupID = eo_project_status_code_group.groupID WHERE eo_project_status_code_group.projectID = ?;', array(
+            $projectID
+        ));
+        $project_info['statusCodeCount'] = $status_code_count['count'] ? $status_code_count['count'] : 0;
+        // 获取协作人员数量
+        $partner_count = $db->prepareExecute('SELECT COUNT(eo_conn_project.connID) AS count FROM eo_conn_project WHERE eo_conn_project.projectID = ?;', array(
+            $projectID
+        ));
+        $project_info['partnerCount'] = $partner_count['count'] ? $partner_count['count'] : 0;
 
-        if (empty($result))
+        $project_info['importURL'] = (is_https() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'] . '?g=Web&c=AutoGenerate&o=importApi';
+
+        if (empty($project_info))
             return FALSE;
         else
-            return $result;
+            return $project_info;
     }
 
     /**
      * 更新项目更新时间
-     * @param $projectID int 项目ID
+     *
+     * @param $projectID int
+     *            项目ID
      * @return bool
      */
     public function updateProjectUpdateTime(&$projectID)
@@ -211,92 +262,107 @@ class ProjectDao
             return FALSE;
     }
 
-    /**
-     * 获取环境列表
-     * @param $projectID int 项目ID
-     * @return bool|array
-     */
-    public function getEnvList(&$projectID)
-    {
-        $db = getDatabase();
-
-        $result = $db->prepareExecuteAll("SELECT eo_project_environment.envID,eo_project_environment.envName,eo_project_environment.envURI FROM eo_project_environment WHERE eo_project_environment.projectID = ?;", array(
-            $projectID
-        ));
-
-        if (empty($result))
-            return FALSE;
-        else
-            return $result;
-    }
-
-    /**
-     * 添加环境
-     * @param $projectID int 项目ID
-     * @param $envName string 环境名
-     * @param $envURI string 环境地址
-     * @return bool|int
-     */
-    public function addEnv(&$projectID, &$envName, &$envURI)
-    {
-        $db = getDatabase();
-        $result = $db->prepareExecute("INSERT INTO eo_project_environment (eo_project_environment.envName,eo_project_environment.envURI,eo_project_environment.projectID) VALUES (?,?,?);", array(
-            $envName,
-            $envURI,
-            $projectID
-        ));
-
-        if ($db->getAffectRow() > 0)
-            return $db->getLastInsertID();
-        else
-            return FALSE;
-    }
-
-    /**
-     * 删除环境
-     * @param $projectID int 项目ID
-     * @param $envID int 环境ID
-     * @return bool
-     */
-    public function deleteEnv(&$projectID, &$envID)
-    {
-        $db = getDatabase();
-        $result = $db->prepareExecute("DELETE FROM eo_project_environment WHERE eo_project_environment.envID = ? AND eo_project_environment.projectID = ?;", array(
-            $envID,
-            $projectID
-        ));
-
-        if ($db->getAffectRow() > 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
-
-    /**
-     * 修改环境
-     * @param $envID int 环境ID
-     * @param $envName string 环境名
-     * @param $envURI string 环境地址
-     * @return bool
-     */
-    public function editEnv(&$envID, &$envName, &$envURI)
-    {
-        $db = getDatabase();
-        $result = $db->prepareExecute("UPDATE eo_project_environment SET eo_project_environment.envName = ?,eo_project_environment.envURI = ? WHERE eo_project_environment.envID = ?;", array(
-            $envName,
-            $envURI,
-            $envID
-        ));
-
-        if ($db->getAffectRow() > 0)
-            return TRUE;
-        else
-            return FALSE;
-    }
+//    /**
+//     * 获取环境列表
+//     *
+//     * @param $projectID int
+//     *            项目ID
+//     * @return bool|array
+//     */
+//    public function getEnvList(&$projectID)
+//    {
+//        $db = getDatabase();
+//
+//        $result = $db->prepareExecuteAll("SELECT eo_project_environment.envID,eo_project_environment.envName,eo_project_environment.envURI FROM eo_project_environment WHERE eo_project_environment.projectID = ?;", array(
+//            $projectID
+//        ));
+//
+//        if (empty($result))
+//            return FALSE;
+//        else
+//            return $result;
+//    }
+//
+//    /**
+//     * 添加环境
+//     *
+//     * @param $projectID int
+//     *            项目ID
+//     * @param $envName string
+//     *            环境名
+//     * @param $envURI string
+//     *            环境地址
+//     * @return bool|int
+//     */
+//    public function addEnv(&$projectID, &$envName, &$envURI)
+//    {
+//        $db = getDatabase();
+//        $result = $db->prepareExecute("INSERT INTO eo_project_environment (eo_project_environment.envName,eo_project_environment.envURI,eo_project_environment.projectID) VALUES (?,?,?);", array(
+//            $envName,
+//            $envURI,
+//            $projectID
+//        ));
+//
+//        if ($db->getAffectRow() > 0)
+//            return $db->getLastInsertID();
+//        else
+//            return FALSE;
+//    }
+//
+//    /**
+//     * 删除环境
+//     *
+//     * @param $projectID int
+//     *            项目ID
+//     * @param $envID int
+//     *            环境ID
+//     * @return bool
+//     */
+//    public function deleteEnv(&$projectID, &$envID)
+//    {
+//        $db = getDatabase();
+//        $result = $db->prepareExecute("DELETE FROM eo_project_environment WHERE eo_project_environment.envID = ? AND eo_project_environment.projectID = ?;", array(
+//            $envID,
+//            $projectID
+//        ));
+//
+//        if ($db->getAffectRow() > 0)
+//            return TRUE;
+//        else
+//            return FALSE;
+//    }
+//
+//    /**
+//     * 修改环境
+//     *
+//     * @param $envID int
+//     *            环境ID
+//     * @param $envName string
+//     *            环境名
+//     * @param $envURI string
+//     *            环境地址
+//     * @return bool
+//     */
+//    public function editEnv(&$envID, &$envName, &$envURI)
+//    {
+//        $db = getDatabase();
+//        $result = $db->prepareExecute("UPDATE eo_project_environment SET eo_project_environment.envName = ?,eo_project_environment.envURI = ? WHERE eo_project_environment.envID = ?;", array(
+//            $envName,
+//            $envURI,
+//            $envID
+//        ));
+//
+//        if ($db->getAffectRow() > 0)
+//            return TRUE;
+//        else
+//            return FALSE;
+//    }
 
     /**
      * 获取项目名称
-     * @param $projectID int 项目ID
+     *
+     * @param $projectID int
+     *            项目ID
      * @return bool|array
      */
     public function getProjectName(&$projectID)
@@ -314,7 +380,9 @@ class ProjectDao
 
     /**
      * 导出项目
-     * @param $projectID int 项目ID
+     *
+     * @param $projectID int
+     *            项目ID
      * @return bool|array
      */
     public function dumpProject(&$projectID)
@@ -345,7 +413,7 @@ class ProjectDao
             $j = 0;
             foreach ($apiList as $api) {
                 $dumpJson['apiGroupList'][$i]['apiList'][$j] = json_decode($api['apiJson'], TRUE);
-                //$dumpJson['apiGroupList'][$i]['apiList'][$j]['baseInfo']['starred'] = $api['starred'];
+                // $dumpJson['apiGroupList'][$i]['apiList'][$j]['baseInfo']['starred'] = $api['starred'];
                 ++$j;
             }
             $apiGroupChildList = $db->prepareExecuteAll('SELECT * FROM eo_api_group WHERE eo_api_group.projectID = ? AND eo_api_group.parentGroupID = ?', array(
@@ -365,7 +433,7 @@ class ProjectDao
                     $l = 0;
                     foreach ($apiList as $api) {
                         $dumpJson['apiGroupList'][$i]['apiGroupChildList'][$k]['apiList'][$l] = json_decode($api['apiJson'], TRUE);
-                        //$dumpJson['apiGroupList'][$i]['apiGroupChildList'][$k]['apiList'][$l]['baseInfo']['starred'] = $api['starred'];
+                        // $dumpJson['apiGroupList'][$i]['apiGroupChildList'][$k]['apiList'][$l]['baseInfo']['starred'] = $api['starred'];
                         ++$l;
                     }
                     ++$k;
@@ -426,7 +494,9 @@ class ProjectDao
 
     /**
      * 获取api数量
-     * @param $projectID int 项目ID
+     *
+     * @param $projectID int
+     *            项目ID
      * @return bool|array
      */
     public function getApiNum(&$projectID)
