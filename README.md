@@ -32,6 +32,13 @@
 
 10. 拥有最全面的产品线，eoLinker除了拥有线上版本之外，还提供了免费开源版本、浏览器插件、PC端桌面程序等，可以满足企业所有的API管理需求。
 
+## 图片介绍
+
+![](http://data.eolinker.com/course/UKqa58Lb051cf1085b22bf4d1e24c52022c981dc32166bd)
+![](http://data.eolinker.com/course/nNmSD28e4ef5c7339c5449cb4f8c5904be7f025d0d6ae72)
+![](http://data.eolinker.com/course/Rgz8DcQ4f21471cb1172573fdb595a1c165148f6bcfdb22)
+![](http://data.eolinker.com/course/JPGkitw9d6f38f7fc541d9202850c3dffe82d1e575c2a6c)
+
 ## 部署要求
 
 * PHP 5.5+
@@ -67,13 +74,6 @@
 > Blog：http://blog.eolinker.com
 
 > 视频教程：http://blog.eolinker.com/#/course/
-
-## 图片介绍
-
-![](http://data.eolinker.com/course/UKqa58Lb051cf1085b22bf4d1e24c52022c981dc32166bd)
-![](http://data.eolinker.com/course/nNmSD28e4ef5c7339c5449cb4f8c5904be7f025d0d6ae72)
-![](http://data.eolinker.com/course/Rgz8DcQ4f21471cb1172573fdb595a1c165148f6bcfdb22)
-![](http://data.eolinker.com/course/JPGkitw9d6f38f7fc541d9202850c3dffe82d1e575c2a6c)
 
 ## 更新日志
 
