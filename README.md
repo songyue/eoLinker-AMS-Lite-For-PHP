@@ -1,14 +1,16 @@
-#eoLinker API接口管理系统开源版
+# eoLinker API接口管理系统开源版
+
 ![](http://data.eolinker.com/course/QPW3uZ9b6f87bfa7a61f53e3a9120a32027e55cbd642f27)
 
-##简介
+## 简介
+
 **eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。**
 
 目前eoLinker为Google、IBM、中国联通、海尔、神州优车、国美等数千家企业提供快速、专业、稳定的API管理服务。
 
 同时eoLinker还是Google谷歌开发者联盟的合作产品与企业，不定期举办线下交流分享活动促进国内API管理领域的发展。
 
-##特性
+## 特性
 
 1. 免费且开源，eoLinker拥有强大的免费产品，在过去的一年里面eoLinker已迭代超过300个版本，优化近千功能点，同时秉承开源精神，提供国际化的开源产品（支持中文简体、繁体以及英语），为广大的开发、测试以及管理人员提供专业的产品。
 
@@ -31,30 +33,41 @@
 10. 拥有最全面的产品线，eoLinker除了拥有线上版本之外，还提供了免费开源版本、浏览器插件、PC端桌面程序等，可以满足企业所有的API管理需求。
 
 ## 部署要求
+
 * PHP 5.5+
 * mysql  5.5+
 * Apache / Nginx
 
 ## 快速入门
+
  [安装指南](https://www.eolinker.com/#/os/guide?point=require#require)
  [视屏试用指南](http://blog.eolinker.com/#/course/)
  QQ群：284421832
 
-##注意事项
+## 注意事项
+
 1. 3.x版本与2.x版本并不兼容，因此无法直接由2.x升级到3.x，也无法通过覆盖代码的方式进行升级，切勿随意尝试以防数据丢失。
 2. 如果需要进行数据的迁移，可以使用eoLinker接口管理系统中的【导出项目】功能：将项目导出为eoLinker专用格式（.export），然后在3.x版本中导入。
 3. 为了防止数据丢失，请在执行任何关键操作之前妥善备份数据库。
 
-##相关链接
+## 相关链接
+
 > 中文官网：www.eolinker.com
+
 > 开源支持：https://www.eolinker.com/#/os/download
+
 > Github：https://github.com/eolinker
+
 > 码云：https://gitee.com/eoLinker-API-Management
+
 > Coding：https://coding.net/u/eolinker/project
+
 > Blog：http://blog.eolinker.com
+
 > 视频教程：http://blog.eolinker.com/#/course/
 
-##图片介绍
+## 图片介绍
+
 ![](http://data.eolinker.com/course/UKqa58Lb051cf1085b22bf4d1e24c52022c981dc32166bd)
 ![](http://data.eolinker.com/course/nNmSD28e4ef5c7339c5449cb4f8c5904be7f025d0d6ae72)
 ![](http://data.eolinker.com/course/Rgz8DcQ4f21471cb1172573fdb595a1c165148f6bcfdb22)
