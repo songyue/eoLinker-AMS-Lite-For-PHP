@@ -48,6 +48,8 @@
                     administrators: $filter('translate')('0101017'),
                     kick: $filter('translate')('01010111'),
                     quit: $filter('translate')('01010112'),
+                    read: $filter('translate')('01010126'),
+                    readAndWrite: $filter('translate')('01010127'),
                 }
             },
             interaction: {
@@ -88,7 +90,6 @@
          * @function [设置备注名] [Hide the search box]
          */
         vm.data.fun.setNickName = function(arg) {
-            console.log(arg)
             arg.item.groupName = arg.item.partnerNickName;
             arg.item.required = true;
             $rootScope.GroupModal($filter('translate')('01010114'), arg.item, $filter('translate')('01010115'), null, function(callback) {
@@ -230,7 +231,7 @@
         }
 
         /**
-         * @function [r搜索用户] [searchUse]
+         * @function [搜索用户] [searchUse]
          */
         vm.data.fun.search = function() {
             var template = {
@@ -335,7 +336,6 @@
                                 switch (vm.data.interaction.response.query[i].userType - 0) { /*0 项目管理员；1 协助管理员；2 普通成员[读写]；3 普通成员[只读]*/
                                     case 0:
                                         {
-                                            console.log(vm.data.interaction.response.query[i])
                                             vm.data.interaction.response.adminQuery.push(vm.data.interaction.response.query[i]);
                                             if (vm.data.interaction.response.query[i].isNow == 1) {
                                                 vm.data.info.power = 0;
@@ -346,7 +346,6 @@
                                         }
                                     case 1:
                                         {
-                                            console.log(vm.data.interaction.response.query[i])
                                             vm.data.interaction.response.adminQuery.push(vm.data.interaction.response.query[i]);
                                             if (vm.data.interaction.response.query[i].isNow == 1) {
                                                 vm.data.info.power = 1;

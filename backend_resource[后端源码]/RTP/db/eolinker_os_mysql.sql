@@ -73,6 +73,14 @@ CREATE TABLE `eo_api_env_param` (
   `paramValue` text NOT NULL,
   PRIMARY KEY (`paramID`,`envID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `eo_api_env_param_additional`;
+CREATE TABLE `eo_api_env_param_additional` (
+  `paramID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `envID` int(10) unsigned NOT NULL,
+  `paramKey` varchar(255) NOT NULL,
+  `paramValue` text NOT NULL,
+  PRIMARY KEY (`paramID`,`envID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_group`;
 CREATE TABLE `eo_api_group` (
   `groupID` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -326,7 +334,7 @@ CREATE TABLE `eo_project_test_case_group` (
   `groupName` varchar(100) NOT NULL COMMENT '组名',
   `projectID` int(11) NOT NULL COMMENT '项目ID',
   `parentGroupID` int(11) NOT NULL DEFAULT '0' COMMENT '父分组',
-  `isChild` tinyint(3) NOT NULL COMMENT '是否子分组',
+  `isChild` tinyint(3) NOT NULL DEFAULT '0' COMMENT '是否子分组',
   PRIMARY KEY (`groupID`,`projectID`,`parentGroupID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_test_case_group_order`;

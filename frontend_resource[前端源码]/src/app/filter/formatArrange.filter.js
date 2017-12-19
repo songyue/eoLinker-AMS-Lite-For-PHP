@@ -153,10 +153,10 @@
                 for (var key in object) {
                     if (object[key] == 'author-riverLethe-double-slash-note') {
                         if (template.count == 0) {
-                            template.note = key || '';
+                            template.note = (key || '').replace('author-riverLethe-double-slash-note','');
                         } else {
                             template.$index = template.array.length - 1;
-                            template.array[template.array.length - 1] = template.array[template.array.length - 1] + ',<span class="json_note">\/\/' + key + '</span end-note>';
+                            template.array[template.array.length - 1] = template.array[template.array.length - 1] + ',<span class="json_note">\/\/' + key.replace('author-riverLethe-double-slash-note','') + '</span end-note>';
                         }
                     } else {
                         template.array.push(data.fun.textIndent(indent_count) + '<span class="json_key">"' + key + '"</span>:' + data.fun.format.loop(object[key], indent_count + 1));
@@ -212,18 +212,18 @@
             }
             return function(input) {
                 var template = {
-                    origin: input.replace(/\/\/((?!").)*\n/g, ',"author-lethe":"author-riverLethe-double-slash-note",').replace(/(\s)*,(\s)*,/g, ',').replace(/(\s)*,(\s)*}/g, '}').replace(/(\s)*,(\s)*\]/g, ']').replace(/(\s)*\[(\s)*,"author-lethe":"author-riverLethe-double-slash-note"/g, '[{"author-lethe":"author-riverLethe-double-slash-note"}').replace(/(\s)*{(\s)*,/g, '{'),
+                    origin: input.replace(/\/\/((?!").)*(\r|)\n/g, ',"author-lethe":"author-riverLethe-double-slash-note",').replace(/(\s)*,(\s)*,/g, ',').replace(/(\s)*,(\s)*}/g, '}').replace(/(\s)*,(\s)*\]/g, ']').replace(/(\s)*\[(\s)*,"author-lethe":"author-riverLethe-double-slash-note"/g, '[{"author-lethe":"author-riverLethe-double-slash-note"}').replace(/(\s)*{(\s)*,/g, '{'),
                     matchList: [],
                     splitList: [],
                     result: ''
                 }
-                template.matchList = input.match(/\/\/((?!").)*\n/g);
+                template.matchList = input.match(/\/\/((?!").)*(\r|)\n/g);
                 template.splitList = template.origin.split('author-lethe');
                 angular.forEach(template.splitList, function(val, key) {
                     if (key == 0) {
                         template.result = val;
                     } else {
-                        template.result = template.result + template.matchList[key - 1].replace(/\n/g, '').replace(/\/\//g, '') + val;
+                        template.result = template.result +'author-riverLethe-double-slash-note' +template.matchList[key - 1].replace(/(\r|)\n/g, '').replace(/\/\//g, '') + val;
                     }
                 })
                 data.fun.loadCss(

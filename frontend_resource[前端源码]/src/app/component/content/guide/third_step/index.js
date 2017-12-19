@@ -3,10 +3,12 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [安装引导页step three] [Installation step three page]
-     * @version  3.0.2
+     * @version  3.1.7
+     * @service  $scope [注入作用域服务] [inject scope service]
      * @service  $state [注入路由服务] [inject state service]
      * @service  $window [注入window服务] [inject window service]
      * @service  CommonResource [注入通用接口服务] [inject common API service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
      * @constant CODE [注入状态码常量] [inject status code constant service]
      */
     angular.module('eolinker')
@@ -23,9 +25,9 @@
             controller: thirdCtroller
         })
 
-        thirdCtroller.$inject = ['$state', '$window', 'CommonResource', 'CODE'];
+        thirdCtroller.$inject = ['$scope', '$state', '$window', 'CommonResource', '$filter', 'CODE'];
 
-    function thirdCtroller($state, $window, CommonResource, CODE) {
+    function thirdCtroller($scope, $state, $window, CommonResource, $filter, CODE) {
         var vm = this;
         vm.data = {
             info: {
@@ -33,7 +35,9 @@
                 check: {
                     fileWrite: '',
                     curl: '',
-                    db: ''
+                    db: '',
+                    mbString: '',
+                    sessionPath: ''
                 },
             },
             interaction: {
@@ -54,6 +58,7 @@
          * @function [初始化功能函数，检测是否已安装，若已安装则跳转首页] [Initialize, check whether it is installed, if it is installed, jump home page]
          */
         vm.data.fun.init = function() {
+            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('00410'),$filter('translate')('00212')] });
             CommonResource.Install.Config().$promise.then(function(data) {
                 if (data.statusCode == CODE.COMMON.SUCCESS) {
                     $state.go('index');
@@ -99,6 +104,16 @@
                         vm.data.info.check.db = 'ok';
                     } else {
                         vm.data.info.check.db = 'error';
+                    }
+                    if (data.envStatus.mbString == 1) {
+                        vm.data.info.check.mbString = 'ok';
+                    } else {
+                        vm.data.info.check.mbString = 'error';
+                    }
+                    if (data.envStatus.sessionPath == 1) {
+                        vm.data.info.check.sessionPath = 'ok';
+                    } else {
+                        vm.data.info.check.sessionPath = 'error';
                     }
                 }
             });

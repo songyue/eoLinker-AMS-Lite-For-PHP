@@ -4,9 +4,11 @@
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [安装引导失败页] [Installation failed page]
      * @version  3.0.2
+     * @service  $scope [注入作用域服务] [inject scope service]
      * @service  CommonResource [注入通用接口服务] [inject common API service]
      * @service  $state [注入路由服务] [inject $state service]
      * @service  $window [注入window服务] [inject window service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
      * @constant CODE [注入状态码常量] [inject status code constant service]
      */
     angular.module('eolinker')
@@ -23,9 +25,9 @@
             controller: errorCtroller
         })
 
-        errorCtroller.$inject = ['CommonResource', '$state', '$window', 'CODE'];
+        errorCtroller.$inject = ['$scope', 'CommonResource', '$state', '$window', 'CODE', '$filter'];
 
-    function errorCtroller(CommonResource, $state, $window, CODE) {
+    function errorCtroller($scope, CommonResource, $state, $window, CODE, $filter) {
         var vm = this;
         vm.data = {
             info: {},
@@ -38,6 +40,7 @@
          * @function [初始化功能函数，检测是否已安装，若已安装则跳转首页] [Initialize, check whether it is installed, if it is installed, jump home page]
          */
         vm.data.fun.init = function() {
+            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('00010'),$filter('translate')('00212')] });
             if (window.localStorage['INSTALLINFO']) {
                 try {
                     var info = JSON.parse(window.localStorage['INSTALLINFO']);

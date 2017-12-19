@@ -14,6 +14,14 @@
             MODULES: [
                 // options {serie: true,insertBefore: '#load_styles_before'}
                 {
+                    name: 'CLIPBOARD',
+                    files: ['vendor/clipboard/dist/clipboard.min.js']
+                }, {
+                    name: 'JQUERY',
+                    files: [
+                        "vendor/wangEditor/dist/js/lib/jquery-2.2.1.js"
+                    ]
+                }, {
                     name: 'PARTICLES',
                     files: ['vendor/particles.js/particles.min.js']
                 }, {
@@ -60,8 +68,32 @@
                     files: [
                         "libs/imgCrop/ng-img-crop.js"
                     ]
+                }, {
+                    name: 'ACE_EDITOR',
+                    files: [
+                        "libs/ace-builds/src/ace.js"
+                    ]
                 }
             ]
-        });
+        })
+
+        /**
+         * [html 懒加载]
+         * @type {constant}
+         */
+        .constant('HTML_LAZYLOAD', [{
+            name: 'PAGINATION',
+            files: [
+                "libs/pagination/pagination.js"
+            ]
+        }, {
+            name: 'LAZY_EDITOR',
+            files: [
+                "libs/editor.md/plugins/link-dialog/link-dialog.js ",
+                "libs/editor.md/plugins/table-dialog/table-dialog.js ",
+                "libs/editor.md/plugins/image-dialog/image-dialog.js",
+                "libs/editor.md/lib/**"
+            ]
+        }]);
 
 })();

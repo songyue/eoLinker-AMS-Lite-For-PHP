@@ -4,6 +4,7 @@
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [安装引导成功页] [Installation successfully page]
      * @version  3.0.2
+     * @service  $scope [注入作用域服务] [inject scope service]
      * @service  $window [注入window服务] [inject window service]
      * @service  $filter [注入过滤器服务] [inject filter service]
      */
@@ -21,9 +22,9 @@
             controller: finishCtroller
         })
 
-        finishCtroller.$inject = ['$window', '$filter'];
+        finishCtroller.$inject = ['$scope', '$window', '$filter'];
 
-    function finishCtroller($window, $filter) {
+    function finishCtroller($scope, $window, $filter) {
         var vm = this;
         vm.data = {
             info: {
@@ -38,6 +39,7 @@
          * @function [初始化功能函数，设置网页title] [Initialize,  set the page title]
          */
         vm.data.fun.init = function() {
+            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('0016'),$filter('translate')('00212')] });
             if (window.localStorage['INSTALLINFO']) {
                 try {
                     vm.data.info.pageTitle = JSON.parse(window.localStorage['INSTALLINFO']).pageTitle;

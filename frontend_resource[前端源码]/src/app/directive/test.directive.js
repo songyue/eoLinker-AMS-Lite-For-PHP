@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [测试指令js] [Test instructions js]
-     * @version  3.0.2
+     * @version  3.1.5
      * @service  $filter [注入过滤器服务] [Inject filter service]
      * @service  $timeout [注入$timeout服务] [Inject filter service]
      * @service  $rootScope [注入根作用域服务] [Inject rootScope service]
@@ -40,7 +40,8 @@
                     testForm: '=', 
                     info: '=', 
                     isPlug: '=', 
-                    envParam: '=' 
+                    envParam: '=' ,
+                    addHistory:'&'
                 },
                 link: function($scope, elem, attrs, ctrl) {
                     var countdown = null;
@@ -172,6 +173,7 @@
                             } else {
                                 $scope.format.message = template.img.html || result;
                             }
+                            $scope.addHistory({arg:{history:testHistory}});
                         } else {
                             $scope.result = {
                                 httpCodeType: 5

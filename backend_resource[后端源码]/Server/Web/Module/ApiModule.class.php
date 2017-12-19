@@ -1038,6 +1038,22 @@ class ApiModule
             return FALSE;
         }
     }
+
+    /**
+     * 批量修改接口分组
+     * @param $api_ids
+     * @param $group_id
+     * @return bool
+     */
+    public function changeApiGroup(&$api_ids, &$group_id)
+    {
+        $group_dao = new GroupDao();
+        if (!($project_id = $group_dao->checkGroupPermission($group_id, $_SESSION['userID']))) {
+            return FALSE;
+        }
+        $dao = new ApiDao();
+        return $dao->changeApiGroup($api_ids, $project_id, $group_id);
+    }
 }
 
 ?>

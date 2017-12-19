@@ -6,11 +6,11 @@
      * @version  3.0.2
      */
     angular.module('eolinker')
-        .factory('HomeProject_Service', index);
+        .factory('HomeProject_Common_Service', index);
 
-    index.$inject = []
+    index.$inject = ['$rootScope']
 
-    function index() {
+    function index($rootScope) {
         var data = {
             apiTestObject: {
                 testInfo: null,
@@ -29,6 +29,11 @@
                 fun: {
                     resetObject: null, 
                     clear: null, 
+                }
+            },
+            overviewObject:{//项目概况页相关类
+                fun:{
+                    autoGeneration:null
                 }
             }
         }
@@ -69,6 +74,23 @@
          */
         data.envObject.fun.clear = function() {
             data.envObject.query = null;
+        }
+        /**
+         * @description 自动生成文档
+         * @param arg {[object]} {传参对象}
+         * @param arg.projectID {[string]} {项目标识}
+         * 
+         */
+        data.overviewObject.fun.autoGeneration=function(arg){
+            console.log(arg)
+            var template={
+                modal:{
+                    projectID:arg.projectID,
+                    importURL:arg.importURL
+                }
+            }
+            console.log(template.modal)
+            $rootScope.ApiManagement_AutoGenerationModal(template.modal);
         }
         return data;
     }

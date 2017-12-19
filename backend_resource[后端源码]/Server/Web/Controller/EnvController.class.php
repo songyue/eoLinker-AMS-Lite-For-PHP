@@ -72,6 +72,8 @@ class EnvController
         $headers = json_decode(quickInput('headers'), TRUE);
         //全局变量
         $params = json_decode(quickInput('params'), TRUE);
+        //额外参数
+        $additional_params = json_decode(quickInput('additionalParams'), TRUE);
         $projectID = securelyInput('projectID');
         $apply_protocol = -1;
         if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
@@ -82,7 +84,7 @@ class EnvController
             $this->returnJson['statusCode'] = '170001';
         } else {
             $service = new EnvModule;
-            $result = $service->addEnv($projectID, $env_name, $front_uri, $headers, $params, $apply_protocol);
+            $result = $service->addEnv($projectID, $env_name, $front_uri, $headers, $params, $apply_protocol, $additional_params);
             //验证结果是否成功
             if ($result) {
                 $this->returnJson['statusCode'] = '000000';
@@ -133,6 +135,8 @@ class EnvController
         $headers = json_decode(quickInput('headers'), TRUE);
         //全局变量
         $params = json_decode(quickInput('params'), TRUE);
+        //额外参数
+        $additional_params = json_decode(quickInput('additionalParams'), TRUE);
         $apply_protocol = -1;
         if ($name_length < 1 || $name_length > 32) {
             //环境名称格式非法
@@ -142,7 +146,7 @@ class EnvController
             $this->returnJson['statusCode'] = '170002';
         } else {
             $service = new EnvModule();
-            if ($service->editEnv($env_id, $env_name, $front_uri, $headers, $params, $apply_protocol)) {
+            if ($service->editEnv($env_id, $env_name, $front_uri, $headers, $params, $apply_protocol, $additional_params)) {
                 $this->returnJson['statusCode'] = '000000';
             } else {
                 //修改失败

@@ -359,228 +359,258 @@ class ImportModule
         $user_id = $_SESSION['userID'];
         $swagger = json_decode($content, TRUE);
         $project_info = $swagger['info'];
-        //项目类型默认web
+        // 项目类型默认web
         $project_type = '0';
-        //新建一个默认的状态码分组
-        $group_name = '默认分组';
-        $request_type = array('POST' => '0', 'GET' => '1', 'PUT' => '2', 'DELETE' => '3', 'HEAD' => '4', 'OPTIONS' => '5', 'PATCH' => '6');
-        //请求协议数组
-        $protocol = array('HTTP' => '0', 'HTTPS' => '1');
-        //请求参数类型数组
-        $param_type = array('text' => '0', 'file' => '1', 'json' => '2', 'int' => '3', 'float' => '4', 'double' => '5', 'date' => '6', 'datetime' => '7', 'boolean' => '8', 'byte' => '9', 'short' => '10', 'long' => '11', 'array' => '12', 'object' => '13');
-        //获取请求协议
+        // 新建一个默认的状态码分组
+        $group_info_list[] = array('groupName' => '默认分组');
+        $request_type = array(
+            'POST' => '0',
+            'GET' => '1',
+            'PUT' => '2',
+            'DELETE' => '3',
+            'HEAD' => '4',
+            'OPTIONS' => '5',
+            'PATCH' => '6'
+        );
+        // 请求协议数组
+        $protocol = array(
+            'HTTP' => 0,
+            'HTTPS' => 1
+        );
+        // 请求参数类型数组
+        $param_type = array(
+            'string' => '0',
+            'file' => '1',
+            'json' => '2',
+            'int' => '3',
+            'float' => '4',
+            'double' => '5',
+            'date' => '6',
+            'datetime' => '7',
+            'boolean' => '8',
+            'byte' => '9',
+            'short' => '10',
+            'long' => '11',
+            'array' => '12',
+            'object' => '13',
+            'number' => '14'
+        );
+        // 获取请求协议
         $api_protocol = $protocol[strtoupper($swagger['schemes'][0])];
         if (empty($api_protocol)) {
-            $api_protocol = '0';
+            $api_protocol = 1;
         }
-        //如果项目描述为空，默认为title
+        // 如果项目描述为空，默认为title
         if (empty($project_info['description'])) {
             $project_info['description'] = $project_info['title'];
         }
-        //项目信息
-        $project_info = array('projectName' => $project_info['title'], 'projectType' => $project_type, 'projectVersion' => $project_info['version'], 'projectDesc' => $project_info['description']);
-        $host_path = $swagger['host'] . $swagger['basePath'];
+        // 项目信息
+        $project_info = array(
+            'projectName' => $project_info['title'],
+            'projectType' => $project_type,
+            'projectVersion' => $project_info['version'],
+            'projectDesc' => $project_info['description']
+        );
         $apiList = $swagger['paths'];
         $api_list = array();
-        $apiList = array();
-        $j = 0;
-        //拆分多条api接口信息
-        foreach ($apiList as $api_uri => $api_info_list) {
-            //拆分详细api接口信息
-            foreach ($api_info_list as $api_request_type => $api_info) {
-                if (empty($api_info['summary'])) {
-                    //如果接口名不存在跳过
-                    $api_info['summary'] = $api_info['operationId'];
-                }
-                //获取接口名称
-                $api_list[$j]['api_name'] = $api_info['summary'];
-                $api_list[$j]['group_name'] = $api_info['tags'][0];
-                //获取请求路径
-// 	            if(strpos($uri, '{'))
-// 	            {
-// 	                $api_uri = preg_replace('/\{.*\}/', $api_info['operationId'], $uri);
-// 	            }
-// 	            else
-// 	            {
-// 	                $api_uri = $uri;
-// 	            }
-                //获取路径
-                $api_list[$j]['api_uri'] = $host_path . $api_uri;
-                //接口状态默认启用
-                $api_list[$j]['api_status'] = '0';
-                //接口请求参数的类型
-                $api_list[$j]['api_request_param_type'] = '0';
-                //星标状态
-                $api_list[$j]['starred'] = '0';
-                //接口备注的类型
-                $api_list[$j]['api_note_type'] = '0';
-                //获取请求方式
-                $api_list[$j]['api_request_type'] = $request_type[strtoupper($api_request_type)];
-                //请求头部
-                $api_list[$j]['api_header'] = array();
-                if ($api_info['consumes']) {
-                    for ($i = 0; $i < count($api_info['consumes']); $i++) {
-                        $api_list[$j]['api_header'][$i] = array('headerName' => 'Content-Type', 'headerValue' => $api_info['consumes'][$i]);
-                    }
-                }
-                if ($api_info['produces']) {
-                    for ($i = 0; $i < count($api_info['produces']); $i++) {
-                        $api_list[$j]['api_header'][] = array('headerName' => 'Accept', 'headerValue' => $api_info['produces'][$i]);
-                    }
-                }
-                //获取请求参数
-                $api_request_param = array();
-                if ($api_info['parameters']) {
-                    $i = 0;
-                    foreach ($api_info['parameters'] as $param) {
+        if (is_array($group_info_list)) {
+            foreach ($group_info_list as &$group_info) {
+                if (is_array($apiList)) {
+                    // 拆分多条api接口信息
+                    foreach ($apiList as $api_uri => $api_info_list) {
+                        // 拆分详细api接口信息
+                        foreach ($api_info_list as $api_request_type => $api_info) {
+                            if (empty($api_info['summary'])) {
+                                // 如果接口名不存在跳过
+                                $api_info['summary'] = $api_info['operationId'];
+                            }
+                            // 获取接口名称
+                            $apiInfo['baseInfo']['apiName'] = $api_info['summary'];
+                            // 获取请求路径
+                            // if(strpos($uri, '{'))
+                            // {
+                            // $api_uri = preg_replace('/\{.*\}/', $api_info['operationId'], $uri);
+                            // }
+                            // else
+                            // {
+                            // $api_uri = $uri;
+                            // }
+                            // 获取路径
+                            $apiInfo['baseInfo']['apiURI'] = $api_uri;
+                            // 接口状态默认启用
+                            $apiInfo['baseInfo']['apiStatus'] = 0;
+                            // 接口请求参数的类型
+                            $apiInfo['baseInfo']['apiRequestParamType'] = 0;
+                            // 星标状态
+                            $apiInfo['baseInfo']['starred'] = 0;
+                            // 接口备注的类型
+                            $apiInfo['baseInfo']['apiNoteType'] = 0;
+                            // 获取请求方式
+                            $apiInfo['baseInfo']['apiRequestType'] = $request_type[strtoupper($api_request_type)];
+                            // 请求头部
+                            $apiInfo['headerInfo'] = array();
+                            if ($api_info['consumes']) {
+                                for ($i = 0; $i < count($api_info['consumes']); $i++) {
+                                    $apiInfo['headerInfo'][$i] = array(
+                                        'headerName' => 'Content-Type',
+                                        'headerValue' => $api_info['consumes'][$i]
+                                    );
+                                }
+                            }
+                            if ($api_info['produces']) {
+                                for ($i = 0; $i < count($api_info['produces']); $i++) {
+                                    $apiInfo['headerInfo'][] = array(
+                                        'headerName' => 'Accept',
+                                        'headerValue' => $api_info['produces'][$i]
+                                    );
+                                }
+                            }
+                            // 获取请求参数
+                            $apiInfo['requestInfo'] = array();
+                            if ($api_info['parameters']) {
+                                $i = 0;
+                                foreach ($api_info['parameters'] as $param) {
+                                    // 获取请求参数名称
+                                    $apiInfo['requestInfo'][$i]['paramKey'] = $param['name'];
+                                    // 获取请求参数类型
+                                    switch ($param['type']) {
+                                        case "integer" :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['int'];
+                                            break;
+                                        case "string" :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['string'];
+                                            break;
+                                        case 'long' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['long'];
+                                            break;
+                                        case 'float' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['float'];
+                                            break;
+                                        case 'double' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['double'];
+                                            break;
+                                        case 'byte' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['byte'];
+                                            break;
+                                        case 'file' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['file'];
+                                            break;
+                                        case 'date' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['date'];
+                                            break;
+                                        case 'dateTime' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['dateTime'];
+                                            break;
+                                        case 'boolean' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['boolean'];
+                                            break;
+                                        case 'array' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['array'];
+                                            break;
+                                        case 'json' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['json'];
+                                            break;
+                                        case 'object' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['object'];
+                                            break;
+                                        case 'number' :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['number'];
+                                            break;
+                                        default :
+                                            $apiInfo['requestInfo'][$i]['paramType'] = $param_type['string'];
+                                    }
+                                    // 获取参数说明
+                                    $apiInfo['requestInfo'][$i]['paramName'] = $param['description'];
+                                    // 获取是否可以为空
+                                    $apiInfo['requestInfo'][$i]['paramNotNull'] = $param['required'] ? 0 : 1;
+                                    // 设置参数值示例
+                                    $apiInfo['requestInfo'][$i]['paramValue'] = '';
+                                    ++$i;
+                                }
+                            }
 
-                        //获取请求参数名称
-                        $api_request_param[$i]['paramKey'] = $param['name'];
-                        //获取请求参数类型
-                        switch ($param['type']) {
-                            case "integer":
-                                $api_request_param[$i]['paramType'] = $param_type['int'];
-                                break;
-                            case "string":
-                                $api_request_param[$i]['paramType'] = $param_type['text'];
-                                break;
-                            case 'long':
-                                $api_request_param[$i]['paramType'] = $param_type['long'];
-                                break;
-                            case 'float':
-                                $api_request_param[$i]['paramType'] = $param_type['float'];
-                                break;
-                            case 'double':
-                                $api_request_param[$i]['paramType'] = $param_type['double'];
-                                break;
-                            case 'byte':
-                                $api_request_param[$i]['paramType'] = $param_type['byte'];
-                                break;
-                            case 'file':
-                                $api_request_param[$i]['paramType'] = $param_type['file'];
-                                break;
-                            case 'date':
-                                $api_request_param[$i]['paramType'] = $param_type['date'];
-                                break;
-                            case 'dateTime':
-                                $api_request_param[$i]['paramType'] = $param_type['dateTime'];
-                                break;
-                            case 'boolean':
-                                $api_request_param[$i]['paramType'] = $param_type['boolean'];
-                                break;
-                            case 'array':
-                                $api_request_param[$i]['paramType'] = $param_type['array'];
-                                break;
-                            case 'json':
-                                $api_request_param[$i]['paramType'] = $param_type['json'];
-                                break;
-                            case 'object':
-                                $api_request_param[$i]['paramType'] = $param_type['object'];
-                                break;
-                            default:
-                                $api_request_param[$i]['paramType'] = $param_type['text'];
+                            // 返回结果
+                            $apiInfo['resultInfo'] = array();
+                            if ($api_info['responses']) {
+                                $k = 0;
+                                foreach ($api_info['responses'] as $paramKey => $respon) {
+                                    $apiInfo['resultInfo'][$k]['paramType'] = '';
+                                    // 获取返回参数类型
+                                    switch ($respon['schema']['type']) {
+                                        case "integer" :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['int'];
+                                            break;
+                                        case "string" :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['string'];
+                                            break;
+                                        case 'long' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['long'];
+                                            break;
+                                        case 'float' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['float'];
+                                            break;
+                                        case 'double' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['double'];
+                                            break;
+                                        case 'byte' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['byte'];
+                                            break;
+                                        case 'file' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['file'];
+                                            break;
+                                        case 'date' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['date'];
+                                            break;
+                                        case 'dateTime' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['dateTime'];
+                                            break;
+                                        case 'boolean' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['boolean'];
+                                            break;
+                                        case 'array' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['array'];
+                                            break;
+                                        case 'json' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['json'];
+                                            break;
+                                        case 'object' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['object'];
+                                            break;
+                                        case 'number' :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['number'];
+                                            break;
+                                        default :
+                                            $apiInfo['resultInfo'][$k]['paramType'] = $param_type['string'];
+                                    }
+                                    // 获取返回参数名
+                                    $apiInfo['resultInfo'][$k]['paramKey'] = $paramKey;
+                                    // 获取返回参数说明
+                                    $apiInfo['resultInfo'][$k]['paramName'] = $respon['description'];
+                                    // 获取返回值
+                                    $apiInfo['resultInfo'][$k]['paramNotNull'] = '0';
+                                    ++$k;
+                                }
+                            }
+                            $apiInfo['baseInfo']['apiSuccessMock'] = '';
+                            $apiInfo['baseInfo']['apiFailureMock'] = '';
+                            $apiInfo['baseInfo']['apiNoteRaw'] = '';
+                            $apiInfo['baseInfo']['apiNote'] = '';
+                            $apiInfo['baseInfo']['apiRequestRaw'] = '';
+                            $apiInfo['baseInfo']['mockRule'] = '';
+                            $apiInfo['baseInfo']['mockResult'] = '';
+                            $apiInfo['baseInfo']['apiProtocol'] = $api_protocol;
+                            $apiInfo['baseInfo']['apiUpdateTime'] = date('Y-m-d H:i:s', time());
 
+                            $api_list[] = $apiInfo;
+                            unset($apiInfo);
                         }
-                        //获取参数说明
-                        $api_request_param[$i]['paramName'] = $param['description'];
-                        //获取是否可以为空
-                        $api_request_param[$i]['paramNotNull'] = $param['required'] ? 0 : 1;
-                        //设置参数值示例
-                        $api_request_param[$i]['paramValue'] = '';
-                        ++$i;
                     }
                 }
-                $api_list[$j]['api_request_param'] = $api_request_param;
-                //返回结果
-                $api_result_param = array();
-                if ($api_info['responses']) {
-                    $k = 0;
-                    foreach ($api_info['responses'] as $paramKey => $respon) {
-                        $api_result_param[$k]['paramType'] = '';
-                        //获取返回参数类型
-                        switch ($respon['schema']['type']) {
-                            case "integer":
-                                $api_result_param[$k]['paramType'] = $param_type['int'];
-                                break;
-                            case "string":
-                                $api_result_param[$k]['paramType'] = $param_type['text'];
-                                break;
-                            case 'long':
-                                $api_result_param[$k]['paramType'] = $param_type['long'];
-                                break;
-                            case 'float':
-                                $api_result_param[$k]['paramType'] = $param_type['float'];
-                                break;
-                            case 'double':
-                                $api_result_param[$k]['paramType'] = $param_type['double'];
-                                break;
-                            case 'byte':
-                                $api_result_param[$k]['paramType'] = $param_type['byte'];
-                                break;
-                            case 'file':
-                                $api_result_param[$k]['paramType'] = $param_type['file'];
-                                break;
-                            case 'date':
-                                $api_result_param[$k]['paramType'] = $param_type['date'];
-                                break;
-                            case 'dateTime':
-                                $api_result_param[$k]['paramType'] = $param_type['dateTime'];
-                                break;
-                            case 'boolean':
-                                $api_result_param[$k]['paramType'] = $param_type['boolean'];
-                                break;
-                            case 'array':
-                                $api_result_param[$k]['paramType'] = $param_type['array'];
-                                break;
-                            case 'json':
-                                $api_result_param[$k]['paramType'] = $param_type['json'];
-                                break;
-                            case 'object':
-                                $api_result_param[$k]['paramType'] = $param_type['object'];
-                                break;
-                            default:
-                                $api_result_param[$k]['paramType'] = $param_type['text'];
-                        }
-                        //获取返回参数名
-                        $api_result_param[$k]['paramKey'] = $paramKey;
-                        //获取返回参数说明
-                        $api_result_param[$k]['paramName'] = $respon['description'];
-                        //获取返回值
-                        $api_result_param[$k]['paramNotNull'] = '0';
-                        ++$k;
-                    }
-                }
-                $api_list[$j]['api_result_param'] = $api_result_param;
-                $api_list[$j]['api_mock_success'] = '';
-                $api_list[$j]['api_mock_failure'] = '';
-                $api_list[$j]['api_note_md'] = '';
-                $api_list[$j]['api_note_rich'] = '';
-                $api_list[$j]['api_request_raw'] = '';
-                //生成缓存数据
-                $api_info = array();
-                $api_info['baseInfo']['apiName'] = $api_list[$j]['api_name'];
-                $api_info['baseInfo']['apiURI'] = $api_list[$j]['api_uri'];
-                $api_info['baseInfo']['apiProtocol'] = intval($api_protocol);
-                $api_info['baseInfo']['apiSuccessMock'] = $api_list[$j]['api_mock_success'];
-                $api_info['baseInfo']['apiFailureMock'] = $api_list[$j]['api_mock_failure'];
-                $api_info['baseInfo']['apiRequestType'] = intval($api_list[$j]['api_request_type']);
-                $api_info['baseInfo']['apiStatus'] = intval($api_list[$j]['api_status']);
-                $api_info['baseInfo']['starred'] = intval($api_list[$j]['starred']);
-                $api_info['baseInfo']['apiNoteType'] = intval($api_list[$j]['api_note_type']);
-                $api_info['baseInfo']['apiNoteRaw'] = $api_list[$j]['api_note_md'];
-                $api_info['baseInfo']['apiNote'] = $api_list[$j]['api_note_rich'];
-                $api_info['baseInfo']['apiRequestParamType'] = intval($api_list[$j]['api_request_param_type']);
-                $api_info['baseInfo']['apiRequestRaw'] = $api_list[$j]['api_request_raw'];
-                $update_time = date("Y-m-d H:i:s", time());
-                $api_info['baseInfo']['apiUpdateTime'] = $update_time;
-                $api_info['headerInfo'] = $api_list[$j]['api_header'];
-                $api_info['requestInfo'] = $api_request_param;
-                $api_info['resultInfo'] = $api_result_param;
-                $apiList[] = $api_info;
-                ++$j;
+                $group_info['apiList'] = $api_list;
+                unset($api_list);
             }
         }
-        $group_info_list[] = array('groupName' => $group_name, 'apiList' => $apiList);
+
         $dao = new ImportDao;
         $result = $dao->importOther($project_info, $group_info_list, $user_id);
         if ($result) {

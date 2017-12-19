@@ -1,83 +1,119 @@
-home-project-api {
-    .common-table-div {
-        padding:0 10px 10px 10px;
-        header {
-            .title-ul {
+home-project-api
+{
+    .common-table-div
+    {
+        padding: 0 10px 10px 10px;
+        header
+        {
+            .title-ul
+            {
                 @extend %COMMON-TITLE-UL;
             }
         }
-        .first-level-article {
+        .first-level-article
+        {
             margin-top: 10px;
+
             border: 1px solid #e5e5e5;
             border-radius: 3px;
-            .product-type-span {
-                width: 40px;
+            .product-type-span
+            {
                 display: inline-block;
-                @include eo-line(20px);
+
+                width: 40px;
+                margin-right: 5px;
+
                 text-align: center;
                 text-indent: 0;
-                margin-right: 5px;
+
+                @include eo-line(20px);
             }
-            table {
-                width: 100%;
-                background: #fff;
+            table
+            {
                 font-size: 14px;
+
+                width: 100%;
+
                 border-spacing: 0;
+
                 text-align: left;
                 text-indent: 15px;
+
                 border-radius: 3px;
-                thead {
+                background: #fff;
+                thead
+                {
                     font-weight: bold;
+
                     @include eo-line(40px);
-                    .first-th {
-                        min-width: 400px
+                    .first-th
+                    {
+                        min-width: 400px;
                     }
-                    .second-th {
-                        min-width: 90px
+                    .second-th
+                    {
+                        min-width: 90px;
                     }
-                    .third-th {
-                        min-width: 170px
+                    .third-th
+                    {
+                        min-width: 170px;
                     }
-                    .forth-th {
-                        min-width: 220px
+                    .forth-th
+                    {
+                        min-width: 220px;
                     }
                 }
-                tbody {
-                    tr {
+                tbody
+                {
+                    tr
+                    {
                         @include eo-line(40px);
                         th,
-                        td {
+                        td
+                        {
                             cursor: pointer;
                         }
-                        th {
+                        th
+                        {
                             font-weight: initial;
                         }
-                        td {
+                        td
+                        {
                             color: #999;
-                            a {
+                            a
+                            {
                                 color: #999;
-                                .iconfont {
+                                .iconfont
+                                {
                                     font-size: 14px;
-                                    color: #999;
+
                                     padding: 5px;
+
+                                    color: #999;
                                 }
-                                &:hover {
+                                &:hover
+                                {
                                     color: #333;
-                                    .iconfont {
+                                    .iconfont
+                                    {
                                         color: #333;
                                     }
                                 }
                             }
-                            .home-function-delete {
+                            .home-function-delete
+                            {
                                 margin-right: 10px;
                             }
                         }
-                        &:hover {
+                        &:hover
+                        {
                             background-color: #efefef;
                         }
-                        &:first-child {
+                        &:first-child
+                        {
                             td,
-                            th {
+                            th
+                            {
                                 border-top: 1px solid #e5e5e5;
                             }
                         }

@@ -33,7 +33,8 @@
                 <p class="title-p"><b>{{'012125'|translate}}</b></p>
                 <div style="display: inline-block;width: 100%;">
                     <ul class="item-ul" ng-mouseover="item.mouseLeave=false" ng-mouseleave="item.mouseLeave=true" ng-repeat="item in $ctrl.data.info.current.headerList track by $index">
-                        <li style="height: 35px;" class="pull-left header-input-li" auto-complete model="item.headerName" array="$ctrl.data.constant.headerArray" add-class="header-icon-input" placeholder="{{'012126'|translate}}" padding=12 input-change-fun="$ctrl.data.fun.change({$last:$last,switch:0})" ng-if="$ctrl.powerObject.readWrite" ng-class="{'eo-had-input-error':!item.headerName&&item.headerValue}">
+                        <li style="height: 35px;" class="pull-left header-input-li" ng-if="$ctrl.powerObject.readWrite" ng-class="{'eo-had-input-error':!item.headerName&&item.headerValue}">
+                            <auto-complete-ams-component model="item.headerName" array="$ctrl.data.constant.headerArray" add-class="header-icon-input" placeholder="{{'012126'|translate}}" input-change-fun="$ctrl.data.fun.change({$last:$last,switch:0})"></auto-complete-ams-component>
                         </li>
                         <li class="pull-left header-input-li">
                             <input class="eo-input header-content-input" type="text" placeholder="{{'012126'|translate}}" data-ng-model="item.headerName" readonly ng-if="!$ctrl.powerObject.readWrite">
@@ -43,6 +44,21 @@
                         </li>
                         <li class="operate-li">
                             <a class="iconfont icon-shanchu number-label" data-ng-click="$ctrl.data.fun.delete.headerList({$index:$index})" ng-hide="$last" ng-if="$ctrl.powerObject.readWrite"></a>
+                            &nbsp;
+                        </li>
+                    </ul>
+                </div>
+                <p class="title-p"><b>{{'0121224'|translate}}</b></p>
+                <div class="item-div" style="display: inline-block;width: 100%;">
+                    <ul class="item-ul" ng-repeat="item in $ctrl.data.info.current.additionalParamList">
+                        <li class="pull-left header-input-li">
+                            <input class="eo-input header-icon-input" type="text" placeholder="变量名" data-ng-model="item.paramKey" ng-change="$ctrl.data.fun.change({$last:$last,switch:2})" ng-readonly="!$ctrl.powerObject.readWrite" ng-class="{'eo-input-error':!item.paramKey&&item.paramValue}">
+                        </li>
+                        <li class="header-content-li pull-left">
+                            <input class="eo-input header-content-input" type="text" placeholder="变量值" data-ng-model="item.paramValue" ng-change="$ctrl.data.fun.change({$last:$last,switch:2})" ng-readonly="!$ctrl.powerObject.readWrite">
+                        </li>
+                        <li class="operate-li">
+                            <a class="iconfont icon-shanchu number-label" data-ng-click="$ctrl.data.fun.delete.additionalParamList({$index:$index})" ng-hide="$last" ng-if="$ctrl.powerObject.readWrite"></a>
                             &nbsp;
                         </li>
                     </ul>

@@ -10,47 +10,11 @@ $HOME-NAVBAR-HEIGHT:51px;
     border: 1px solid $INHERIT-BORDER-COLOR;
     border-radius: 3px;
 }
+
 %BATCH-OPERATION {
     &:nth-child(odd),
     &:nth-child(even) {
         background-color: #ffecb3;
-    }
-}
-%COMMON-ADVERT-STYLE {
-    padding: 0 10px 10px 10px;
-    >div {
-        border: 1px solid #e5e5e5;
-        border-radius: 3px;
-        background: #fff;
-        padding: 10px;
-        .title-p {
-            font-size: 16px;
-            b {
-                color: #4CAF50;
-            }
-        }
-        .common-elem {
-            font-size: 14px;
-        }
-        .detail-p {
-            line-height: 40px;
-        }
-        .btn-a {
-            padding: 5px 10px;
-            color: #4CAF50;
-            display: inline-block;
-            border: 1px solid #4CAF50;
-            border-radius: 3px;
-            &:hover {
-                background-color: #43A047;
-                color: #fff;
-            }
-        }
-        .go-detail-a {
-            margin-left: 10px;
-            font-size: 14px;
-            color: #9E9E9E;
-        }
     }
 }
 
@@ -72,6 +36,14 @@ $HOME-NAVBAR-HEIGHT:51px;
         text-align: left;
         text-indent: 10px;
         table-layout: fixed;
+        .hover-tr {
+            td,
+            th,
+            label,
+            span {
+                cursor: pointer;
+            }
+        }
     }
 }
 
@@ -221,7 +193,7 @@ $HOME-NAVBAR-HEIGHT:51px;
                     }
                 }
             }
-            .sidebar-function {
+            .group-function {
                 background-color: #fff;
                 text-align: center;
                 position: absolute;
@@ -267,9 +239,9 @@ $HOME-NAVBAR-HEIGHT:51px;
         padding-right: 0;
         .group-name {
             text-indent: 33px;
-            color:#333;
+            color: #333;
         }
-        .sidebar-function {
+        .group-function {
             margin-left: -67px;
         }
     }
@@ -392,16 +364,11 @@ home {
             }
         }
     }
-    .shrink-div {
-        .eo-sidebar {
-            @extend %SHRINK-SIDEBAR;
-        }
+    .shrink-div,
+    .shrink-inside-div {
         .home-content {
             .home-div {
-                margin-left: $HOME-SHRINK-SIDEBAR-LEFT;
-                .second-sidebar {
-                    left: $HOME-SHRINK-SIDEBAR-LEFT;
-                }
+                margin-left: 51px;
             }
         }
     }

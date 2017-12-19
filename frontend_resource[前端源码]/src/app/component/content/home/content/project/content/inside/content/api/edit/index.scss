@@ -112,7 +112,7 @@ home-project-inside-api-edit {
             font-size: 14px;
             @include eo-line(30px);
             border: 1px solid #bcdffb;
-            width: 100px;
+            padding: 0 10px;
             background-color: #e3f7ff;
             &:hover {
                 background-color: $buttonInfoFocusBgColor;
@@ -173,6 +173,24 @@ home-project-inside-api-edit {
         }
         .first-level-article {
             padding: 0 10px;
+            .tips-ul {
+                padding: 0 10px;
+                margin-top: 10px;
+                @include eo-line(32px);
+                li {
+                    font-size: 12px;
+                }
+                .title-li {
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+            }
+            .common-ul {
+                @include eo-color(#F1F8E9, #DCEDC8);
+                * {
+                    color: #4caf50;
+                }
+            }
             .eo-input {
                 @include eo-line(28px);
             }

@@ -54,7 +54,7 @@
                 changeView: null 
             }
         }
-
+        
         /**
          * @function [确认是否已登录功能函数] [Confirm if you are logged in]
          */
@@ -62,14 +62,13 @@
             var template = {
                 storage: {
                     loginName: vm.data.interaction.request.loginName,
-                    loginPassword: vm.data.interaction.request.loginPassword
+                    loginPassword: $filter('aesEncryptFilter')(vm.data.interaction.request.loginPassword)
                 },
                 request: {
                     loginName: vm.data.interaction.request.loginName,
                     loginPassword: md5.createHash(vm.data.interaction.request.loginPassword),
                 }
             }
-
             if ($scope.loginForm.$valid) {
                 vm.data.info.submitted = false;
                 $cookies.put("verifyCode", template.request.verifyCode, COOKIE_CONFIG);
@@ -123,7 +122,7 @@
                             if (window.localStorage['LOGININFO']) {
                                 try {
                                     vm.data.interaction.request.loginName = template.interaction.request.loginName;
-                                    vm.data.interaction.request.loginPassword = template.interaction.request.loginPassword;
+                                    vm.data.interaction.request.loginPassword = $filter('aesDecryptFilter')(template.interaction.request.loginPassword);
                                     vm.data.info.isRemember = true;
                                 } catch (e) {
                                     vm.data.info.isRemember = false;

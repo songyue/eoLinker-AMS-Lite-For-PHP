@@ -26,6 +26,21 @@
             },
             fun: {}
         };
+        $rootScope.global = {
+            ajax: {}
+        }
+
+        /**
+         * 跳转页面时取消当前页面ajax请求
+         */
+        data.fun.cancelRequest = function() {
+            for (var key in $rootScope.global.ajax) {
+                var val = $rootScope.global.ajax[key];
+                if (!val) return;
+                val.$cancelRequest();
+            }
+            $rootScope.global.ajax = {};
+        }
 
         /**
          * @function [监听路由改变功能函数] [watch route change]

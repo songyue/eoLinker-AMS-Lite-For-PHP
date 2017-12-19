@@ -6,7 +6,6 @@
     "bower_components/oclazyload/dist/ocLazyLoad.js",
     "bower_components/angular-md5/angular-md5.min.js",
     "bower_components/angular-cookies/angular-cookies.js",
-    "bower_components/wangEditor/dist/js/lib/jquery-2.2.1.js",
     "bower_components/wangEditor/dist/css/wangEditor.css",
     "bower_components/crypto-js/crypto-js.js",
     "bower_components/angular-translate/angular-translate.min.js",

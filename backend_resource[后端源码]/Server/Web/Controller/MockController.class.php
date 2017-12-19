@@ -93,6 +93,10 @@ class MockController
         $module = new MockModule();
         $result = $module->getMockResult($project_id, $api_uri, $request_type);
         if ($result) {
+            $decoded_result = htmlspecialchars_decode($result);
+            if ($decoded_result) {
+                exit($decoded_result);
+            }
             exit($result);
         } else {
             exit('sorry,this api without the mock data.');

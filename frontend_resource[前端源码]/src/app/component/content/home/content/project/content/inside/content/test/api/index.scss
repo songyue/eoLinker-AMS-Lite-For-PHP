@@ -1,0 +1,153 @@
+home-project-inside-test-api {
+    .common-table-div {
+        padding: 0 10px 10px 10px;
+        header {
+            .title-ul {
+                @extend %COMMON-TITLE-UL;
+                .default-btn {
+                    margin: 0;
+                }
+                .eo-button-success{
+                    &:nth-child(n+2){
+                        margin-left:5px;
+                    }
+                }
+                .batch-test-btn {
+                    margin-left: 5px;
+                    @include eo-line(32px, 30px);
+                    width: 90px;
+                    &:disabled {
+                        background-color: rgb(195, 195, 195);
+                        cursor: not-allowed;
+                        span {
+                            cursor: not-allowed;
+                        }
+                    }
+                }
+            }
+        }
+        .first-level-article {
+            margin-top: 10px;
+            .tips-ul {
+                padding: 0 10px;
+                @include eo-line(32px);
+                margin-bottom: 10px;
+                li {
+                    font-size: 12px;
+                }
+                .title-li {
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+            }
+            .warning-ul {
+                @include eo-color(#fffbf5, #e3d6c5);
+                li,
+                a {
+                    color: #eaa244;
+                }
+                a:hover {
+                    font-weight: bold;
+                }
+            }
+            .common-ul {
+                @include eo-color(#F1F8E9, #DCEDC8);
+                * {
+                    color: #4caf50;
+                }
+            }
+            table {
+                border: 1px solid #e5e5e5;
+                border-radius: 3px;
+                width: 100%;
+                background: #fff;
+                font-size: 14px;
+                border-spacing: 0;
+                text-align: left;
+                text-indent: 15px;
+                border-radius: 3px;
+                table-layout: fixed;
+                thead {
+                    font-weight: bold;
+                    @include eo-line(40px);
+                    .first-th {
+                        width: 50px;
+                    }
+                    .second-th {
+                        width: 20%;
+                    }
+                    .third-th {
+                        min-width: 170px
+                    }
+                    .forth-th {
+                        width: 220px
+                    }
+                    .response-td {
+                        width: 200px;
+                    }
+                }
+                tbody {
+                    tr {
+                        @include eo-line(40px);
+                        td {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            .get-label {
+                                border-radius: 3px;
+                                margin-right: 8px;
+                                font-size: 12px;
+                                display: inline-block;
+                                width: 55px;
+                                @include eo-line(20px);
+                                text-align: center;
+                                text-indent: 0;
+                            }
+                        }
+                        .un-test-td {
+                            color: #999;
+                        }
+                        .icon-loading1 {
+                            @include eo-animation(load 1.7s infinite ease);
+                            display: inline-block;
+                            text-indent: 0;
+                        }
+                        .operate-td {
+                            button {
+                                color: #666;
+                                background: none;
+                                border: none;
+                                margin-right: 5px;
+                                .iconfont {
+                                    font-size: 14px;
+                                    color: #666;
+                                    padding: 5px;
+                                }
+                                &:hover {
+                                    color: #999;
+                                    .iconfont {
+                                        color: #999;
+                                    }
+                                }
+                                &:disabled {
+                                    color: #999;
+                                    cursor: not-allowed;
+                                    .iconfont {
+                                        color: #999;
+                                        cursor: not-allowed;
+                                    }
+                                }
+                            }
+                        }
+                        &:first-child {
+                            td,
+                            th {
+                                border-top: 1px solid #e5e5e5;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

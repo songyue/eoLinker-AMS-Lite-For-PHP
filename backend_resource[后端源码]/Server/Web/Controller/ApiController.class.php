@@ -690,6 +690,44 @@ class ApiController
         }
         exitOutput($this->returnJson);
     }
+
+    /**
+     * 批量修改接口分组
+     */
+    public function changeApiGroup()
+    {
+        //接口ID
+        $ids = securelyInput('apiID');
+        $group_id = securelyInput('groupID');
+        //检查操作权限
+        $module = new GroupModule();
+        $userType = $module->getUserType($group_id);
+        if ($userType < 0 || $userType > 2) {
+            $this->returnJson['statusCode'] = '120007';
+            exitOutput($this->returnJson);
+        }
+        $arr = json_decode($ids);
+        $arr = preg_grep('/^[0-9]{1,11}$/', $arr);//去掉数组中不是数字的ID
+        //判断接口ID是否为空
+        if (empty($arr)) {
+            $this->returnJson['statusCode'] = '160001';
+        } elseif (!preg_match('/^[0-9]{1,11}$/', $group_id)) {
+            $this->returnJson['statusCode'] = '160002';
+        } else {
+            $api_ids = implode(',', $arr);
+            $api_module = new ApiModule;
+            $result = $api_module->changeApiGroup($api_ids, $group_id);
+            //验证结果是否成功
+            if ($result) {
+                //删除api成功
+                $this->returnJson['statusCode'] = '000000';
+            } else {
+                //删除api失败
+                $this->returnJson['statusCode'] = '160000';
+            }
+        }
+        exitOutput($this->returnJson);
+    }
 }
 
 ?>

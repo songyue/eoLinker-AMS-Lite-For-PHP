@@ -13,6 +13,9 @@
                 <a class="pull-left" ng-class="{'elem-active':$ctrl.data.info.menu==1}" ng-click="$ctrl.data.fun.menu({switch:1})">
                             {{'01210013'|translate}}
                     </a>
+                <a class="pull-left" ng-class="{'elem-active':$ctrl.data.info.menu==2}" ng-click="$ctrl.data.fun.menu({switch:2})">
+                            {{'012100147'|translate}}
+                    </a>
             </li>
             <li class="btn-group-li pull-right">
                 <button class="eo-button-success common-btn " button-set-disable-directive="$ctrl.data.fun.requestProcessing({status:0})"  ng-if="!$ctrl.data.interaction.response.apiInfo.apiID">
@@ -21,8 +24,8 @@
                 <button class="eo-button-success common-btn last-btn " ng-hide="!$ctrl.data.interaction.response.apiInfo.apiID||$ctrl.data.info.reset.type==2" button-set-disable-directive="$ctrl.data.fun.requestProcessing({status:1})">
                     {{'01210015'|translate}}
                 </button>
-                <button class="eo-button-success common-btn last-btn " ng-show="!$ctrl.data.interaction.response.apiInfo.apiID||$ctrl.data.info.reset.type==2" button-set-disable-directive="$ctrl.data.fun.requestProcessing({status:2})">
-                    {{'01210015'|translate}}
+                <button class="eo-button-success common-btn last-btn" ng-click="$ctrl.data.fun.requestProcessing({status:2})">
+                    {{'01210016'|translate}}
                 </button>
             </li>
         </ul>
@@ -119,7 +122,8 @@
                         <tbody>
                             <td class="label-td request-header-label">
                                 <ul class="request-header-icon-form">
-                                    <li auto-complete model="item.headerName" array="$ctrl.data.constant.requestHeader" ng-class="{'eo-had-input-error':(item.headerValue&&!item.headerName)}" input-change-fun="$ctrl.data.fun.last.header({$last:$last})" placeholder="{{'012100119'|translate}}" padding=2>
+                                    <li ng-class="{'eo-had-input-error':(item.headerValue&&!item.headerName)}">
+                                        <auto-complete-ams-component model="item.headerName" array="$ctrl.data.constant.requestHeader" input-change-fun="$ctrl.data.fun.last.header({$last:$last})" placeholder="{{'012100119'|translate}}"></auto-complete-ams-component>
                                     </li>
                                 </ul>
                             </td>
@@ -291,10 +295,10 @@
                                 <label for="response-body-{{$index}}" class="radio-input iconfont " ng-class="{'icon-check':item.paramNotNull}">{{item.paramNotNull?'':'&nbsp;'}}</label>
                             </td>
                             <td class="name-td">
-                                <input class="eo-input" type="text" name="" ng-model="item.paramKey" ng-class="{'eo-input-error':(!item.paramKey&&item.paramName)}" maxlength="255" placeholder="参数名" ng-change="$ctrl.data.fun.last.response({$last:$last})" required>
+                                <input class="eo-input" type="text" name="" ng-model="item.paramKey" ng-class="{'eo-input-error':(!item.paramKey&&item.paramName)}" maxlength="255" placeholder="{{'012100017'|translate}}" ng-change="$ctrl.data.fun.last.response({$last:$last})" required>
                             </td>
                             <td>
-                                <input class="eo-input" type="text" name="" ng-model="item.paramName" maxlength="255" placeholder="参数说明" ng-change="$ctrl.data.fun.last.response({$last:$last})">
+                                <input class="eo-input" type="text" name="" ng-model="item.paramName" maxlength="255" placeholder="{{'012100130'|translate}}" ng-change="$ctrl.data.fun.last.response({$last:$last})">
                             </td>
                             <td class="type-td">
                                 <select class="eo-input request-type-select" ng-model="item.paramType" ng-change="$ctrl.data.fun.last.response({$last:$last})">
@@ -336,14 +340,7 @@
                 </ul>
             </header>
             <article>
-                <div ng-class="{'hidden':$ctrl.data.info.mock.isFailure}">
-                    <textarea class="back-result-content" ng-model="$ctrl.data.interaction.response.apiInfo.apiSuccessMock" maxlength="65530">
-                    </textarea>
-                </div>
-                <div ng-class="{'hidden':!$ctrl.data.info.mock.isFailure}">
-                    <textarea class="back-result-content" ng-model="$ctrl.data.interaction.response.apiInfo.apiFailureMock" maxlength="65530">
-                    </textarea>
-                </div>
+                <ace-editor-ams-directive id="response-success-js" set-model='$ctrl.data.interaction.response.apiInfo' set-variable="$ctrl.data.info.mock.isFailure?'apiFailureMock':'apiSuccessMock'" ng-model="$ctrl.data.info.mock.isFailure"></ace-editor-ams-directive>
             </article>
         </div>
     </article>
@@ -368,8 +365,89 @@
             </footer>
         </div>
     </article>
+    <article class="first-level-article" ng-show="$ctrl.data.info.menu==2">
+        <ul class="tips-ul common-ul">
+            <li class="title-li pull-left">{{'012100148'|translate}}</li>
+            <li>{{'012100149'|translate}} <a href="http://mockjs.com/examples.html" target="_blank"><b>{{'012100150'|translate}}</b></a>！</li>
+        </ul>
+        <div class="item-part mock-part">
+            <p class="title-p"><b>{{'012100151'|translate}}</b></p>
+            <table>
+                <thead>
+                    <tr>
+                        <td class="name-td">{{'012100152'|translate}}</td>
+                        <td class="type-td">{{'012100153'|translate}}</td>
+                        <td>{{'012100154'|translate}}</td>
+                        <td class="value-td">{{'012100155'|translate}}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="eo-status-error" style="font-size: 12px;">*{{'012100156'|translate}}</th>
+                        <td class="type-td">
+                            <select class="eo-input request-type-select" ng-model="$ctrl.data.interaction.response.apiInfo.mockConfig.type">
+                                <option value="array">[array]</option>
+                                <option value="object">[object]</option>
+                            </select>
+                        </td>
+                        <td class="rule-td">
+                            <input class="eo-input" type="text" placeholder="{{'012100157'|translate}}" ng-model="$ctrl.data.interaction.response.apiInfo.mockConfig.rule">
+                        </td>
+                        <td class="eo-status-error" style="font-size: 12px;">{{'012100158'|translate}}</td>
+                    </tr>
+                    <tr ng-repeat="item in $ctrl.data.interaction.response.apiInfo.mockRule | filter:$ctrl.data.fun.filterMock track by $index">
+                        <th class="name-td">
+                            <label>{{item.paramKey}}</label>
+                        </th>
+                        <td class="type-td">
+                            <select class="eo-input request-type-select" ng-model="item.paramType">
+                                <option value="0">[string]</option>
+                                <option value="1">[file]</option>
+                                <option value="2">[json]</option>
+                                <option value="3">[int]</option>
+                                <option value="4">[float]</option>
+                                <option value="5">[double]</option>
+                                <option value="6">[date]</option>
+                                <option value="7">[datetime]</option>
+                                <option value="8">[boolean]</option>
+                                <option value="9">[byte]</option>
+                                <option value="10">[short]</option>
+                                <option value="11">[long]</option>
+                                <option value="12">[array]</option>
+                                <option value="13">[object]</option>
+                                <option value="14">[number]</option>
+                            </select>
+                        </td>
+                        <td class="rule-td">
+                            <input class="eo-input" type="text" name="" placeholder="{{'012100159'|translate}}" ng-model="item.rule">
+                        </td>
+                        <td class="value-td">
+                            <input class="eo-input" type="text" name="" placeholder="{{'012100160'|translate}}ng-model="item.value">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="item-part mock-data-part">
+            <p class="title-p"><b>{{'012100161'|translate}}</b></p>
+            <header>
+                <ul>
+                    <li>
+                        <button class="eo-button-info change-type-btn send-format" ng-click="$ctrl.data.fun.refresh()">{{'012100162'|translate}}</button>
+                    </li>
+                </ul>
+            </header>
+            <article>
+                <div arrange-format="mock-result-js" interaction="{request:{onlyOneTime:true}}" ng-model="$ctrl.data.interaction.response.apiInfo.mockResult">
+                    <pre class="back-result-content " id="mock-result-js">
+                    </pre>
+                </div>
+            </article>
+        </div>
+    </article>
     <footer>
         <div load-directive="$ctrl.data.fun.load(arg)" interaction="{request:{delay:true}}">
         </div>
     </footer>
 </div>
+<!-- <div oc-lazy-load="$ctrl.data.constant.lazyload"></div> -->

@@ -4,8 +4,10 @@
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [安装引导页step one] [Installation step one page]
      * @version  3.0.2
+     * @service  $scope [注入作用域服务] [inject scope service]
      * @service  CommonResource [注入通用接口服务] [inject common API service]
      * @service  $state [注入路由服务] [inject $state service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
      * @constant CODE [注入状态码常量] [inject status code constant service]
      */
     angular.module('eolinker')
@@ -21,9 +23,9 @@
             templateUrl: 'app/component/content/guide/first_step/index.html',
             controller: firstCtroller
         })
-    firstCtroller.$inject = ['CommonResource', '$state', 'CODE'];
+    firstCtroller.$inject = ['$scope', 'CommonResource', '$state', '$filter', 'CODE'];
     
-    function firstCtroller(CommonResource, $state, CODE) {
+    function firstCtroller($scope, CommonResource, $state, $filter, CODE) {
         var vm = this;
         vm.data = {
             fun: {
@@ -34,6 +36,7 @@
          * @function [初始化功能函数，检测是否已安装，若已安装则跳转首页] [Initialize, check whether it is installed, if it is installed, jump home page]
          */
         vm.data.fun.init = function() {
+            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('00211'),$filter('translate')('00212')] });
             CommonResource.Install.Config().$promise.then(function(data) {
                 if (data.statusCode == CODE.COMMON.SUCCESS) {
                     $state.go('index');

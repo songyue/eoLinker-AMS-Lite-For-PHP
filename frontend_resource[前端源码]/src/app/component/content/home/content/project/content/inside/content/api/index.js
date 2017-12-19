@@ -6,7 +6,7 @@
      * @version  3.0.2
      * @service  $scope [注入作用域服务] [Injection scope service]
      * @service  $state [注入路由服务] [Injection state service]
-     * @service  HomeProject_Service [注入HomeProject_Service服务] [Injection HomeProject_Service service]
+     * @service  HomeProject_Common_Service [注入HomeProject_Service服务] [Injection HomeProject_Common_Service service]
      */
     angular.module('eolinker')
         .config(['$stateProvider', 'RouteHelpersProvider', function($stateProvider, helper) {
@@ -24,13 +24,13 @@
             controller: homeProjectInsideApiController
         })
 
-    homeProjectInsideApiController.$inject = ['$scope', '$state', 'HomeProject_Service'];
+    homeProjectInsideApiController.$inject = ['$scope', '$state', 'HomeProject_Common_Service'];
 
-    function homeProjectInsideApiController($scope, $state, HomeProject_Service) {
+    function homeProjectInsideApiController($scope, $state, HomeProject_Common_Service) {
         var vm = this;
         vm.data = {
             service:{
-                home:HomeProject_Service,
+                home:HomeProject_Common_Service,
             },
             info: {
                 status:0

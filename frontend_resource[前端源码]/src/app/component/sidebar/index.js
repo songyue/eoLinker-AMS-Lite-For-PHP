@@ -2,7 +2,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [全局sidebar指令相关js] [Global sidebar instruction related js]
-     * @version  3.0.2
+     * @version  3.1.5
      * @service  $scope [注入作用域服务] [inject scope service]
      * @service  $state [注入路由服务] [inject state service]
      * @service  NavbarService [注入NavbarService服务] [inject NavbarService service]
@@ -54,11 +54,16 @@
                         isShow: -1,
                         status: 1
                     }, {
-                        name: $filter('translate')('22013'),
+                        name: $filter('translate')('2101'),
                         href: 'https://www.eolinker.com/#/',
                         icon: 'icon-ONLINEkaifa',
                         isShow: -1,
-                        divide: 1 //是否有分割线 Whether there is a dividing line 0：默认无 Default none，1：有 yes
+                        divide: 1
+                    }, {
+                        name: $filter('translate')('2105'),
+                        href: 'http://shang.qq.com/wpa/qunwpa?idkey=208b23b73761039b9994d71378ccbf7c84c872d5577d557e45168b37fd290c12',
+                        icon: 'icon-qq',
+                        isShow: -1,
                     }
                 ]
             },

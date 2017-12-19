@@ -28,10 +28,14 @@
             },
             info: {
                 menu: [
-                    { href: '/api/',name: $filter('translate')('012130'), sref: 'home.project.inside.api', icon: 'icon-api', childSref: 'home.project.inside.api.list', key: 0 },
-                    { href: '/code',name: $filter('translate')('012131'), sref: 'home.project.inside.code', childSref: 'home.project.inside.code.list', icon: 'icon-icocode', key: 1 },
-                    {href: '/env', name: $filter('translate')('012132'), sref: 'home.project.inside.env', icon: 'icon-waibuhuanjing',params:{envID:null}, key: 2 },
-                    { href: '/team',name: $filter('translate')('012133'), sref: 'home.project.inside.team', icon: 'icon-renyuanguanli', key: 4 },
+                    { href: '/overview',name: $filter('translate')('012134'), sref: 'home.project.inside.overview', icon: 'icon-tongjibaobiao'},
+                    { href: '/api/',name: $filter('translate')('012130'), sref: 'home.project.inside.api', icon: 'icon-api', childSref: 'home.project.inside.api.list'},
+                    { base: '/test', name: $filter('translate')('012136'), sref: 'home.project.inside.test', childSref: 'home.project.inside.test.default', icon: 'icon-shandian'},
+                    { href: '/code',name: $filter('translate')('012131'), sref: 'home.project.inside.code', childSref: 'home.project.inside.code.list', icon: 'icon-icocode'},
+                    { href: '/doc', name: $filter('translate')('0121427'), sref: 'home.project.inside.doc', childSref: 'home.project.inside.doc.list', icon: 'icon-renwuguanli'},
+                    { href: '/env', name: $filter('translate')('012132'), sref: 'home.project.inside.env', icon: 'icon-waibuhuanjing',params:{envID:null}},
+                    { href: '/team',name: $filter('translate')('012133'), sref: 'home.project.inside.team', icon: 'icon-renyuanguanli'},
+                    { href: '/log',name: $filter('translate')('012135'), sref: 'home.project.inside.log', icon: 'icon-gongzuojihua'},
                 ]
             },
             fun: {

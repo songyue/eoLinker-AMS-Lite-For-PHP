@@ -34,6 +34,7 @@ class EnvDao
                 $env['frontURIList'] = $db->prepareExecuteAll("SELECT eo_api_env_front_uri.applyProtocol,eo_api_env_front_uri.uri,eo_api_env_front_uri.uriID FROM eo_api_env_front_uri WHERE eo_api_env_front_uri.envID = ?;", array($env['envID']));
                 $env['headerList'] = $db->prepareExecuteAll("SELECT eo_api_env_header.applyProtocol,eo_api_env_header.headerName,eo_api_env_header.headerValue,eo_api_env_header.headerID FROM eo_api_env_header WHERE eo_api_env_header.envID = ?;", array($env['envID']));
                 $env['paramList'] = $db->prepareExecuteAll("SELECT eo_api_env_param.paramKey,eo_api_env_param.paramValue,eo_api_env_param.paramID FROM eo_api_env_param WHERE eo_api_env_param.envID = ?;", array($env['envID']));
+                $env['additionalParamList'] = $db->prepareExecuteAll('SELECT eo_api_env_param_additional.paramKey,eo_api_env_param_additional.paramValue,eo_api_env_param_additional.paramID FROM eo_api_env_param_additional WHERE eo_api_env_param_additional.envID = ?;', array($env['envID']));
             }
 
         }
@@ -52,9 +53,10 @@ class EnvDao
      * @param array $headers 请求头部
      * @param array $params 全局变量
      * @param int $apply_protocol 应用的请求类型,[-1]=>[所有请求类型]
+     * @param array $additional_params 额外参数
      * @return bool|int
      */
-    public function addEnv(&$projectID, &$envName, &$front_uri, &$headers, &$params, $apply_protocol)
+    public function addEnv(&$projectID, &$envName, &$front_uri, &$headers, &$params, $apply_protocol, &$additional_params)
     {
         $db = getDatabase();
         try {
@@ -100,6 +102,18 @@ class EnvDao
                     ));
                     if ($db->getAffectRow() < 1)
                         throw new \PDOException('addParam Error');
+                }
+            }
+            if (!empty($additional_params)) {
+                foreach ($additional_params as $k => $v) {
+                    //新建额外参数
+                    $db->prepareExecute("INSERT INTO eo_api_env_param_additional(eo_api_env_param_additional.envID,eo_api_env_param_additional.paramKey,eo_api_env_param_additional.paramValue) VALUES (?,?,?);", array(
+                        $env_id,
+                        $k,
+                        $v
+                    ));
+                    if ($db->getAffectRow() < 1)
+                        throw new \PDOException('addAdditionalParam Error');
                 }
             }
             $db->commit();
@@ -160,6 +174,19 @@ class EnvDao
                 return FALSE;
             }
         }
+        $result = $db->prepareExecute('SELECT * FROM eo_api_env_param_additional WHERE eo_api_env_param_addtional.envID = ?;', array(
+            $env_id
+        ));
+        if (!empty($result)) {
+            //删除额外参数
+            $db->prepareExecuteAll('DELETE FROM eo_api_env_param_additional WHERE eo_api_env_param_additional.envID = ?;', array(
+                $env_id
+            ));
+            if ($db->getAffectRow() < 1) {
+                $db->rollback();
+                return FALSE;
+            }
+        }
         //删除环境
         $db->prepareExecute("DELETE FROM eo_api_env WHERE eo_api_env.envID = ? AND eo_api_env.projectID = ?;", array(
             $env_id,
@@ -183,9 +210,10 @@ class EnvDao
      * @param $headers array 请求头部
      * @param $params array 全局变量
      * @param $apply_protocol int 请求协议
+     * @param $additional_params array 额外参数
      * @return bool
      */
-    public function editEnv(&$env_id, &$envName, &$front_uri, &$headers, &$params, $apply_protocol)
+    public function editEnv(&$env_id, &$envName, &$front_uri, &$headers, &$params, $apply_protocol, &$additional_params)
     {
         $db = getDatabase();
         try {
@@ -206,6 +234,11 @@ class EnvDao
 
             //删除旧的全局变量
             $db->prepareExecute("DELETE FROM eo_api_env_param WHERE eo_api_env_param.envID = ?;", array(
+                $env_id
+            ));
+
+            //删除旧的额外参数
+            $db->prepareExecuteAll('DELETE FROM eo_api_env_param_additional WHERE eo_api_env_param_additional.envID = ?;', array(
                 $env_id
             ));
 
@@ -244,6 +277,18 @@ class EnvDao
                         throw new \PDOException('addParam Error');
                 }
             }
+            if (!empty($additional_params)) {
+                foreach ($additional_params as $k => $v) {
+                    //新建额外参数
+                    $db->prepareExecute("INSERT INTO eo_api_env_param_additional(eo_api_env_param_additional.envID,eo_api_env_param_additional.paramKey,eo_api_env_param_additional.paramValue) VALUES (?,?,?);", array(
+                        $env_id,
+                        $k,
+                        $v
+                    ));
+                    if ($db->getAffectRow() < 1)
+                        throw new \PDOException('addAdditionalParam Error');
+                }
+            }
             $db->commit();
             return TRUE;
         } catch (\PDOException $e) {
@@ -264,6 +309,7 @@ class EnvDao
         $env['frontURIList'] = $db->prepareExecute("SELECT eo_api_env_front_uri.applyProtocol,eo_api_env_front_uri.uri FROM eo_api_env_front_uri WHERE eo_api_env_front_uri.envID = ?;", array($env_id));
         $env['headerList'] = $db->prepareExecuteAll("SELECT eo_api_env_header.applyProtocol,eo_api_env_header.headerName,eo_api_env_header.headerValue FROM eo_api_env_header WHERE eo_api_env_header.envID = ?;", array($env_id));
         $env['paramList'] = $db->prepareExecuteAll("SELECT eo_api_env_param.paramKey,eo_api_env_param.paramValue FROM eo_api_env_param WHERE eo_api_env_param.envID = ?;", array($env_id));
+        $env['additionalParamList'] = $db->prepareExecuteAll('SELECT eo_api_env_param_additional.paramKey,eo_api_env_param_additional.paramValue FROM eo_api_env_param_additional WHERE eo_api_env_param_additional.envID = ?;', array($env_id));
         if ($env)
             return $env;
         else

@@ -36,6 +36,12 @@ $buttonWarningBorderColor:#FFA000;
 $buttonWarningFocusBgColor:#D84A4A;
 $buttonWarningFocusColor:#fff;
 $buttonWarningFocusBorderColor:#D32F2F;
+$buttonPrimaryBgColor:#008dc5;
+$buttonPrimaryColor:#fff;
+$buttonPrimaryBorderColor:#009dd8;
+$buttonPrimaryFocusBgColor:#009dd8;
+$buttonPrimaryFocusColor:#fff;
+$buttonPrimaryFocusBorderColor:#008dc5;
 * {
     font-family: $defaultFontFamily;
     margin: 0;
@@ -360,6 +366,18 @@ select {
         @include eo-button($buttonDangerFocusBgColor, $buttonDangerFocusColor, $buttonDangerFocusBorderColor);
     }
 }
+.eo-button-primary {
+    @include eo-button($buttonPrimaryBgColor,
+    $buttonPrimaryColor,
+    $buttonPrimaryBorderColor);
+    &:hover,
+    &:focus,
+    &:active {
+        @include eo-button($buttonPrimaryFocusBgColor,
+        $buttonPrimaryFocusColor,
+        $buttonPrimaryFocusBorderColor);
+    }
+}
 
 @mixin eo-color ($color, $borderColor) {
     color: #fff;
@@ -603,6 +621,11 @@ select {
                 @include eo-animation(load 1.7s infinite ease);
                 display: inline-block;
                 margin-right: 10px;
+                span {
+                    display: inline-block;
+                    width: 15px;
+                    height: 15px;
+                }
             }
         }
     }

@@ -487,16 +487,18 @@ class ImportDao
 
                                     $paramID = $db->getLastInsertID();
 
-                                    foreach ($param['paramValueList'] as $value) {
-                                        $db->prepareExecute('INSERT INTO eo_api_request_value (eo_api_request_value.paramID,eo_api_request_value.`value`,eo_api_request_value.valueDescription) VALUES (?,?,?);;', array(
-                                            $paramID,
-                                            $value['value'],
-                                            $value['valueDescription']
-                                        ));
+                                    if (is_array($param['paramValueList'])) {
+                                        foreach ($param['paramValueList'] as $value) {
+                                            $db->prepareExecute('INSERT INTO eo_api_request_value (eo_api_request_value.paramID,eo_api_request_value.`value`,eo_api_request_value.valueDescription) VALUES (?,?,?);;', array(
+                                                $paramID,
+                                                $value['value'],
+                                                $value['valueDescription']
+                                            ));
 
-                                        if ($db->getAffectRow() < 1)
-                                            throw new \PDOException("addApi error");
-                                    };
+                                            if ($db->getAffectRow() < 1)
+                                                throw new \PDOException("addRequestParamValue error");
+                                        };
+                                    }
                                 };
                             }
 
@@ -524,7 +526,7 @@ class ImportDao
                                             ));
 
                                             if ($db->getAffectRow() < 1)
-                                                throw new \PDOException("addApi error");
+                                                throw new \PDOException("addResultParamValue error");
                                         };
                                     }
                                 };
@@ -547,6 +549,7 @@ class ImportDao
                 }
             }
         } catch (\PDOException $e) {
+            var_dump($e->getMessage());
             $db->rollBack();
             return FALSE;
         }

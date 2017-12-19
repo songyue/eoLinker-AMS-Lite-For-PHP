@@ -18,12 +18,6 @@
  */
 class UpdateDao
 {
-    public function __destruct()
-    {
-        session_start();
-        session_destroy();
-    }
-
     /**
      * 获取所有项目表
      */

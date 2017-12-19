@@ -7,7 +7,7 @@
      * @service  $rootScope [注入根作用域服务] [Injection rootscope service]
      * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
      * @service  $state [注入路由服务] [Injection state service]
-     * @service  HomeProject_Service [注入HomeProject_Service服务] [Injection HomeProject_Service service]
+     * @service  HomeProject_Common_Service [注入HomeProject_Service服务] [Injection HomeProject_Common_Service service]
      * @service  $filter [注入过滤器服务] [Injection filter service]
      * @constant CODE [注入状态码常量] [inject status code constant service]
      * @constant HTTP_CONSTANT [注入HTTP相关常量集] [inject HTTP related constant service]
@@ -29,14 +29,14 @@
             controller: homeProjectInsideEnv
         })
 
-    homeProjectInsideEnv.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'HomeProject_Service', '$filter', 'CODE', 'HTTP_CONSTANT'];
+    homeProjectInsideEnv.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'HomeProject_Common_Service', '$filter', 'CODE', 'HTTP_CONSTANT'];
 
-    function homeProjectInsideEnv($scope, $rootScope, ApiManagementResource, $state, HomeProject_Service, $filter, CODE, HTTP_CONSTANT) {
+    function homeProjectInsideEnv($scope, $rootScope, ApiManagementResource, $state, HomeProject_Common_Service, $filter, CODE, HTTP_CONSTANT) {
 
         var vm = this;
         vm.data = {
             service: {
-                container: HomeProject_Service
+                container: HomeProject_Common_Service
             },
             constant: {
                 headerArray: HTTP_CONSTANT.REQUEST_HEADER
@@ -55,6 +55,10 @@
                     paramList: [{
                         paramKey: '',
                         paramValue: ''
+                    }],
+                    additionalParamList: [{
+                        paramKey: '',
+                        paramValue: ''
                     }]
                 },
                 reset: {
@@ -68,6 +72,10 @@
                         headerValue: ''
                     }],
                     paramList: [{
+                        paramKey: '',
+                        paramValue: ''
+                    }],
+                    additionalParamList: [{
                         paramKey: '',
                         paramValue: ''
                     }]
@@ -90,18 +98,18 @@
                 }
             },
             fun: {
-                cancle: null, 
-                init: null, 
-                click: null, 
-                add: null, 
-                confirm: null, 
-                change: null, 
+                cancle: null,
+                init: null,
+                click: null,
+                add: null,
+                confirm: null,
+                change: null,
                 initQuery: null,
-                delete:{
+                delete: {
                     sidebar: null,
-                    headerList:null,
-                    paramList:null
-                }, 
+                    headerList: null,
+                    paramList: null
+                },
             }
         }
 
@@ -109,10 +117,12 @@
          * @function [菜单单击功能函数] [Menu click]
          */
         vm.data.fun.click = function(arg) {
-            if ((arg.item.envID == vm.data.interaction.request.envID)&&vm.data.info.current.envID==-1) {
-                vm.data.info.current = vm.data.info.pre||arg.item;
+            if ((arg.item.envID == vm.data.interaction.request.envID) && vm.data.info.current.envID == -1) {
+                vm.data.info.current = vm.data.info.pre || arg.item;
             } else {
-                $state.go('home.project.inside.env', { envID: arg.item.envID })
+                $state.go('home.project.inside.env', {
+                    envID: arg.item.envID
+                })
             }
 
         }
@@ -120,15 +130,19 @@
         /**
          * @function [删除头部列表功能函数] [Delete the header list]
          */
-        vm.data.fun.delete.headerList=function(arg){
-            vm.data.info.current.headerList.splice(arg.$index,1);
+        vm.data.fun.delete.headerList = function(arg) {
+            vm.data.info.current.headerList.splice(arg.$index, 1);
+        }
+
+        vm.data.fun.delete.additionalParamList = function(arg) {
+            vm.data.info.current.additionalParamList.splice(arg.$index, 1);
         }
 
         /**
          * @function [删除参数列表功能函数] [Delete the parameter list]
          */
-        vm.data.fun.delete.paramList=function(arg){
-            vm.data.info.current.paramList.splice(arg.$index,1);
+        vm.data.fun.delete.paramList = function(arg) {
+            vm.data.info.current.paramList.splice(arg.$index, 1);
         }
 
         /**
@@ -144,7 +158,10 @@
             }
             $rootScope.EnsureModal(template.modal.title, false, template.modal.message, {}, function(callback) {
                 if (callback) {
-                    ApiManagementResource.Env.Delete({ projectID: vm.data.interaction.request.projectID, envID: arg.item.envID }).$promise.then(function(response) {
+                    ApiManagementResource.Env.Delete({
+                        projectID: vm.data.interaction.request.projectID,
+                        envID: arg.item.envID
+                    }).$promise.then(function(response) {
                         switch (response.statusCode) {
                             case CODE.COMMON.SUCCESS:
                                 {
@@ -152,10 +169,14 @@
                                     $rootScope.InfoModal($filter('translate')('0121216'), 'success');
                                     if (vm.data.interaction.request.envID == arg.item.envID) {
                                         if (vm.data.interaction.response.query.length > 0) {
-                                            vm.data.fun.click({ item: vm.data.interaction.response.query[0] });
+                                            vm.data.fun.click({
+                                                item: vm.data.interaction.response.query[0]
+                                            });
                                         } else {
                                             vm.data.interaction.request.envID = null;
-                                            $state.go('home.project.inside.env', { 'envID': null });
+                                            $state.go('home.project.inside.env', {
+                                                'envID': null
+                                            });
                                         }
                                     }
 
@@ -192,12 +213,18 @@
                             arg.item.paramList.push(template.reset.paramList[0]);
                             break;
                         }
+                    case 2:
+                        {
+                            arg.item.additionalParamList.push(template.reset.additionalParamList[0]);
+                            break;
+                        }
                     default:
                         {
-                            if(!vm.powerObject.readWrite) return;
+                            if (!vm.powerObject.readWrite) return;
                             if ((!arg.item.headerList[template.length.header]) || arg.item.headerList[template.length.header].headerName || arg.item.headerList[template.length.header].headerValue) {
                                 arg.item.headerList.push(template.reset.headerList[0]);
                                 arg.item.paramList.push(template.reset.paramList[0]);
+                                arg.item.additionalParamList.push(template.reset.additionalParamList[0]);
                             }
                             break;
                         }
@@ -236,8 +263,11 @@
         vm.data.fun.initQuery = function(arg) {
             if (vm.data.interaction.request.envID == arg.item.envID) {
                 arg.item.$index = arg.$index;
-                angular.copy(arg.item,vm.data.info.current);
-                vm.data.fun.change({ switch: -1, $last: 1 });
+                angular.copy(arg.item, vm.data.info.current);
+                vm.data.fun.change({
+                    switch: -1,
+                    $last: 1
+                });
             }
         }
 
@@ -245,7 +275,8 @@
          * @function [确认功能函数] [Confirm]
          */
         vm.data.fun.confirm = function() {
-            if ($scope.ConfirmForm.$invalid) return;
+            if ($scope.ConfirmForm.$invalid) 
+                return;
             var template = {
                 request: {
                     projectID: vm.data.interaction.request.projectID,
@@ -253,6 +284,7 @@
                     frontURI: vm.data.info.current.frontURIList[0] ? vm.data.info.current.frontURIList[0].uri : '',
                     headers: {},
                     params: {},
+                    additionalParams:{},
                     envID: vm.data.info.current.envID > -1 ? vm.data.info.current.envID : null,
                 },
                 object: {},
@@ -270,8 +302,15 @@
                     template.request.params[val.paramKey] = val.paramValue;
                 } else if (!val.paramKey && val.paramValue) return;
             }
+            for (var key = 0; key < vm.data.info.current.additionalParamList.length; key++) {
+                var val = vm.data.info.current.additionalParamList[key];
+                if (val.paramKey) {
+                    template.request.additionalParams[val.paramKey] = val.paramValue;
+                } else if (!val.paramKey && val.paramValue) return;
+            }
             template.request.headers = JSON.stringify(template.request.headers);
             template.request.params = JSON.stringify(template.request.params);
+            template.request.additionalParams = JSON.stringify(template.request.additionalParams);
             if (template.request.envID) {
                 template.promise = ApiManagementResource.Env.Edit(template.request).$promise;
                 template.promise.then(function(response) {
@@ -327,7 +366,9 @@
                     projectID: vm.data.interaction.request.projectID
                 }
             }
-            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('0121222'), $state.params.projectName, $filter('translate')('0121223')] });
+            $scope.$emit('$WindowTitleSet', {
+                list: [$filter('translate')('0121222'), $state.params.projectName, $filter('translate')('0121223')]
+            });
             if (template.cache) {
                 vm.data.interaction.response.query = template.cache;
             } else {

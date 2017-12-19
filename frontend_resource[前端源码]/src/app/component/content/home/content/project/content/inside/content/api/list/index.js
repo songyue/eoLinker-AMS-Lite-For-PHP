@@ -9,7 +9,7 @@
      * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
      * @service  $state [注入路由服务] [Injection state service]
      * @service  GroupService [注入GroupService服务] [Injection GroupService service]
-     * @service  HomeProject_Service [注入HomeProject_Service服务] [Injection HomeProject_Service service]
+     * @service  HomeProject_Common_Service [注入HomeProject_Service服务] [Injection HomeProject_Common_Service service]
      * @service  $filter [注入过滤器服务] [Injection filter service]
      * @constant CODE [注入状态码常量] [inject status code constant service]
      */
@@ -29,22 +29,38 @@
             controller: homeProjectInsideApiListController
         })
 
-    homeProjectInsideApiListController.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'GroupService', 'HomeProject_Service', '$filter', 'CODE'];
+    homeProjectInsideApiListController.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'GroupService', 'HomeProject_Common_Service', '$filter', 'CODE'];
 
-    function homeProjectInsideApiListController($scope, $rootScope, ApiManagementResource, $state, GroupService, HomeProject_Service, $filter, CODE) {
+    function homeProjectInsideApiListController($scope, $rootScope, ApiManagementResource, $state, GroupService, HomeProject_Common_Service, $filter, CODE) {
         var vm = this;
         vm.data = {
-            service:{
-                home:HomeProject_Service,
+            service: {
+                home: HomeProject_Common_Service,
             },
             info: {
-                more:parseInt(window.localStorage['PROJECT_MORETYPE'])||1,
+                more: parseInt(window.localStorage['PROJECT_MORETYPE']) || 1,
                 template: {
                     envModel: []
                 },
                 sort: {
-                    query:[{name:$filter('translate')('012100224'),asc:0,orderBy:3},{name:$filter('translate')('012100225'),asc:0,orderBy:1},{name:$filter('translate')('012100226'),asc:0,orderBy:0},{name:$filter('translate')('012100227'),asc:0,orderBy:2}],
-                    current:JSON.parse(window.localStorage['PROJECT_SORTTYPE']||'{"orderBy":3,"asc":0}')
+                    query: [{
+                        name: $filter('translate')('012100224'),
+                        asc: 0,
+                        orderBy: 3
+                    }, {
+                        name: $filter('translate')('012100225'),
+                        asc: 0,
+                        orderBy: 1
+                    }, {
+                        name: $filter('translate')('012100226'),
+                        asc: 0,
+                        orderBy: 0
+                    }, {
+                        name: $filter('translate')('012100227'),
+                        asc: 0,
+                        orderBy: 2
+                    }],
+                    current: JSON.parse(window.localStorage['PROJECT_SORTTYPE'] || '{"orderBy":3,"asc":0}')
                 },
                 batch: {
                     address: [],
@@ -69,31 +85,31 @@
                 }
             },
             fun: {
-                init: null, 
-                search: null, 
-                sort: null, 
-                import: null, 
-                setMore: null, 
-                recover: null, 
-                clean: null, 
-                enter: null, 
+                init: null,
+                search: null,
+                sort: null,
+                import: null,
+                setMore: null,
+                recover: null,
+                clean: null,
+                enter: null,
                 batch: {
-                    sort: null, 
-                    delete: null, 
-                    remove: null, 
-                    recover: null, 
-                    default: null, 
+                    sort: null,
+                    delete: null,
+                    remove: null,
+                    recover: null,
+                    default: null,
                 }
             },
             assistantFun: {
-                init: null 
+                init: null
             }
         }
         /**
          * @function [切换缩略和详细功能函数] [Toggle thumbnails and details]
          */
-        vm.data.fun.setMore=function(arg){
-            vm.data.info.more=arg.switch;
+        vm.data.fun.setMore = function(arg) {
+            vm.data.info.more = arg.switch;
             window.localStorage.setItem('PROJECT_MORETYPE', arg.switch);
         }
 
@@ -123,7 +139,9 @@
          */
         vm.data.fun.search = function() {
             if ($scope.searchForm.$valid) {
-                $state.go('home.project.inside.api.list', { search: vm.data.interaction.request.tips });
+                $state.go('home.project.inside.api.list', {
+                    search: vm.data.interaction.request.tips
+                });
             }
         }
 
@@ -142,9 +160,16 @@
                 $rootScope.InfoModal($filter('translate')('012100229'), 'error');
             } else {
                 if (!arg.item) {
-                    $state.go('home.project.inside.api.edit', { groupID: vm.data.interaction.request.groupID, childGroupID: vm.data.interaction.request.childGroupID });
+                    $state.go('home.project.inside.api.edit', {
+                        groupID: vm.data.interaction.request.groupID,
+                        childGroupID: vm.data.interaction.request.childGroupID
+                    });
                 } else {
-                    $state.go('home.project.inside.api.edit', { groupID: vm.data.interaction.request.groupID, childGroupID: vm.data.interaction.request.childGroupID, apiID: arg.item.apiID })
+                    $state.go('home.project.inside.api.edit', {
+                        groupID: vm.data.interaction.request.groupID,
+                        childGroupID: vm.data.interaction.request.childGroupID,
+                        apiID: arg.item.apiID
+                    })
                 }
             }
         }
@@ -153,10 +178,12 @@
          * @function [排序功能函数] [sort]
          */
         vm.data.fun.sort = function(arg) {
-            arg.item.asc=arg.item.asc==0?1:0;
-            vm.data.info.sort.current=arg.item;
+            arg.item.asc = arg.item.asc == 0 ? 1 : 0;
+            vm.data.info.sort.current = arg.item;
             window.localStorage.setItem('PROJECT_SORTTYPE', angular.toJson(arg.item));
-            $scope.$broadcast('$LoadingInit', { boolean: true });
+            $scope.$broadcast('$LoadingInit', {
+                boolean: true
+            });
         }
 
         /**
@@ -319,7 +346,9 @@
          */
         vm.data.fun.clean = function() {
             var template = {
-                request: { projectID: vm.data.interaction.request.projectID }
+                request: {
+                    projectID: vm.data.interaction.request.projectID
+                }
             }
             $rootScope.EnsureModal($filter('translate')('012100240'), false, $filter('translate')('012100241'), {}, function(callback) {
                 if (callback) {
@@ -377,17 +406,69 @@
         vm.data.fun.batch.default = function() {
             if (vm.data.service.home.envObject.object.model && vm.data.service.home.envObject.object.model.length > 0) {
                 vm.data.info.batch.disable = true;
-                angular.forEach(vm.data.info.batch.address,function(val,key){
-                    vm.data.service.home.envObject.object.model[val].isClick=false;
+                angular.forEach(vm.data.info.batch.address, function(val, key) {
+                    vm.data.service.home.envObject.object.model[val].isClick = false;
                 })
-                vm.data.info.batch.address=[];
-                vm.data.interaction.request.apiID=[];
-                $rootScope.InfoModal($filter('translate')('012100243'),'success');
-            }else{
-                $rootScope.InfoModal($filter('translate')('012100244'),'error');
+                vm.data.info.batch.address = [];
+                vm.data.interaction.request.apiID = [];
+                $rootScope.InfoModal($filter('translate')('012100243'), 'success');
+            } else {
+                $rootScope.InfoModal($filter('translate')('012100244'), 'error');
             }
         }
 
+        /**
+         * @function [批量修改分组函数] [Batch modify grouping function]
+         */
+        vm.data.fun.batch.moveGroup = function() {
+            var template = {
+                modal: {
+                    group: {
+                        parent: GroupService.get(),
+                        title: $filter('translate')('012100253')
+                    },
+                },
+                request: {
+                    // projectID: vm.data.interaction.request.projectID,
+                    apiID: JSON.stringify(vm.data.interaction.request.apiID),
+                    groupID: ''
+                },
+                loop: {
+                    num: 0
+                }
+            }
+            if (!template.modal.group.parent) {
+                $rootScope.InfoModal($filter('translate')('012100254'), 'error');
+                return;
+            }
+            $rootScope.ApiRecoverModal(template.modal, function(callback) {
+                if (callback) {
+                    template.request.groupID = callback.groupID;
+                    ApiManagementResource.Api.Move(template.request).$promise
+                        .then(function(response) {
+                            switch (response.statusCode) {
+                                case CODE.COMMON.SUCCESS:
+                                    {
+                                        angular.forEach(vm.data.info.batch.address.sort(vm.data.fun.batch.sort), function(val, key) {
+                                            val = val - template.loop.num++;
+                                            vm.data.service.home.envObject.object.model.splice(val, 1);
+                                        })
+                                        vm.data.info.batch.disable = false;
+                                        vm.data.interaction.request.apiID = [];
+                                        vm.data.info.batch.address = [];
+                                        $rootScope.InfoModal($filter('translate')('012100255'), 'success');
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        $rootScope.InfoModal($filter('translate')('012100256'), 'error');
+                                        break;
+                                    }
+                            }
+                        })
+                }
+            });
+        }
         /**
          * @function [批量删除功能函数] [batch deletion]
          */
@@ -533,61 +614,65 @@
                     tips: vm.data.interaction.request.tips
                 }
             }
-            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('012100247'), $state.params.projectName, $filter('translate')('012100248')] });
+            $scope.$emit('$WindowTitleSet', {
+                list: [$filter('translate')('012100247'), $state.params.projectName, $filter('translate')('012100248')]
+            });
             if (vm.data.interaction.request.groupID == -2) {
-                $scope.$emit('$tabChange', { apiName: $filter('translate')('012100249'), type: 1 });
+                $scope.$emit('$tabChange', {
+                    apiName: $filter('translate')('012100249'),
+                    type: 1
+                });
                 template.promise = ApiManagementResource.Trash.Query(template.request).$promise;
                 template.promise.then(function(response) {
-                    switch (response.statusCode) {
-                        case CODE.COMMON.SUCCESS:
-                            {
-                                vm.data.service.home.envObject.object.model = response.apiList;
-                                break;
-                            }
-                    }
+                    vm.data.service.home.envObject.object.model = response.apiList || [];
                     vm.data.info.template.envModel = vm.data.service.home.envObject.object.model;
-                    $scope.$emit('$translateferStation', { state: '$EnvInitReady', data: { status: 0 } });
+                    $scope.$emit('$translateferStation', {
+                        state: '$EnvInitReady',
+                        data: {
+                            status: 0
+                        }
+                    });
                 })
             } else {
-                $scope.$emit('$tabChange', { apiName: $filter('translate')('012100250'), type: 0 });
+                $scope.$emit('$tabChange', {
+                    apiName: $filter('translate')('012100250'),
+                    type: 0
+                });
                 if (vm.data.interaction.request.tips) {
                     template.promise = ApiManagementResource.Api.Search(template.request).$promise;
                     template.promise.then(function(response) {
-                        switch (response.statusCode) {
-                            case CODE.COMMON.SUCCESS:
-                                {
-                                    vm.data.service.home.envObject.object.model = response.apiList;
-                                    break;
-                                }
-                        }
+                        vm.data.service.home.envObject.object.model = response.apiList || [];
                         vm.data.info.template.envModel = vm.data.service.home.envObject.object.model;
-                        $scope.$emit('$translateferStation', { state: '$EnvInitReady', data: { status: 0 } });
+                        $scope.$emit('$translateferStation', {
+                            state: '$EnvInitReady',
+                            data: {
+                                status: 0
+                            }
+                        });
                     })
                 } else if (vm.data.interaction.request.groupID == -1) {
                     template.promise = ApiManagementResource.Api.All(template.request).$promise;
                     template.promise.then(function(response) {
-                        switch (response.statusCode) {
-                            case CODE.COMMON.SUCCESS:
-                                {
-                                    vm.data.service.home.envObject.object.model = response.apiList;
-                                    break;
-                                }
-                        }
+                        vm.data.service.home.envObject.object.model = response.apiList || [];
                         vm.data.info.template.envModel = vm.data.service.home.envObject.object.model;
-                        $scope.$emit('$translateferStation', { state: '$EnvInitReady', data: { status: 0 } });
+                        $scope.$emit('$translateferStation', {
+                            state: '$EnvInitReady',
+                            data: {
+                                status: 0
+                            }
+                        });
                     })
                 } else {
                     template.promise = ApiManagementResource.Api.Query(template.request).$promise;
                     template.promise.then(function(response) {
-                        switch (response.statusCode) {
-                            case CODE.COMMON.SUCCESS:
-                                {
-                                    vm.data.service.home.envObject.object.model = response.apiList;
-                                    break;
-                                }
-                        }
+                        vm.data.service.home.envObject.object.model = response.apiList || [];
                         vm.data.info.template.envModel = vm.data.service.home.envObject.object.model;
-                        $scope.$emit('$translateferStation', { state: '$EnvInitReady', data: { status: 0 } });
+                        $scope.$emit('$translateferStation', {
+                            state: '$EnvInitReady',
+                            data: {
+                                status: 0
+                            }
+                        });
                     })
                 }
             }

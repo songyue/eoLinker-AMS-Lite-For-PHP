@@ -4,6 +4,7 @@
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [语言选择页] [Language selection page]
      * @version  3.0.2
+     * @service  $scope [注入作用域服务] [inject scope service]
      * @service  CommonResource [注入通用接口服务] [inject common API service]
      * @service  $state [注入路由服务] [inject $state service]
      * @constant CODE [注入状态码常量] [inject status code constant service]
@@ -21,9 +22,9 @@
             templateUrl: 'app/component/content/guide/lang/index.html',
             controller: langCtroller
         })
-    langCtroller.$inject = ['CommonResource', '$state', '$translate' ,'CODE'];
+    langCtroller.$inject = ['$scope', 'CommonResource', '$state', '$translate' ,'CODE'];
     
-    function langCtroller(CommonResource, $state, $translate ,CODE) {
+    function langCtroller($scope, CommonResource, $state, $translate ,CODE) {
         var vm = this;
         vm.data = {
             fun: {
@@ -35,6 +36,7 @@
          * @function [初始化功能函数，检测是否已安装，若已安装则跳转首页] [Initialize, check whether it is installed, if it is installed, jump home page]
          */
         vm.data.fun.init = function() {
+            $scope.$emit('$WindowTitleSet', { list: ['Select Language','eoLinker开源版安装指引'] });
             CommonResource.Install.Config().$promise.then(function(data) {
                 if (data.statusCode == CODE.COMMON.SUCCESS) {
                     $state.go('index');
@@ -49,7 +51,7 @@
         vm.data.fun.lang = function(arg) {
            $translate.use(arg.lang);
            window.localStorage.lang = arg.lang;
-           window.location.reload();
+           // window.location.reload();
            $state.go('guide.first_step');
         }
     }

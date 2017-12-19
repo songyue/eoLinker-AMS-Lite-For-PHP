@@ -15,6 +15,9 @@
                 <a class="common-btn default-btn" data-ng-click="$ctrl.data.info.batch.disable=false" ng-if="$ctrl.data.info.batch.disable">
                     <span class="iconfont icon-close"></span><span class="btn-name">{{'01210023'|translate}}</span>
                 </a>
+                <a class="common-btn default-btn" ng-click="$ctrl.data.fun.batch.moveGroup()" ng-if="$ctrl.data.info.batch.disable" ng-switch-when=false>
+                    <span class="iconfont icon-bianji"></span><span class="btn-name">{{'012100252'|translate}}</span>
+                </a>
                 <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.batch.remove()" ng-if="$ctrl.data.info.batch.disable" ng-switch-when=false>
                     <span class="iconfont icon-shanchu"></span><span class="btn-name">{{'01210024'|translate}}</span>
                 </a>
@@ -72,7 +75,7 @@
                         <label class="iconfont icon-favorfill"></label>
                     </th>
                     <th class="api-name second-th" >
-                        {{'012100212'|translate}}
+                        {{'012100212'|translate}}&nbsp;{{$ctrl.data.service.home.envObject.object.model?'['+$ctrl.data.service.home.envObject.object.model.length+']':''}}
                     </th>
                     <th class="third-th">{{'012100213'|translate}}</th>
                     <th class="forth-th" ng-show="$ctrl.data.info.more==1">

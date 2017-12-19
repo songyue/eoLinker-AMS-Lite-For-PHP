@@ -116,7 +116,8 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="limit-td" auto-complete model="data.input.item.paramLimit" array="data.input.constant" placeholder="{{'410'|translate}}" padding=12>
+                                <td class="limit-td">
+                                    <auto-complete-ams-component model="data.input.item.paramLimit" array="data.input.constant" placeholder="{{'410'|translate}}"></auto-complete-ams-component>
                                 </td>
                             </tr>
                         </tbody>
@@ -258,7 +259,7 @@
                                 </th>
                                 <td>{{data.input.item.paramName}}</td>
                                 <td>{{data.input.item.paramNotNull?data.info.yes:''}}</td>
-                                <td>{{data.input.item.paramType==0?"[string]":data.input.item.paramType==1?"[file]":data.input.item.paramType==2?"[json]":data.input.item.paramType==3?"[int]":data.input.item.paramType==4?"[float]":data.input.item.paramType==5?"[double]":data.input.item.paramType==6?"[date]":data.input.item.paramType==7?"[datetime]":data.input.item.paramType==8?"[boolean]":data.input.item.paramType==9?"[byte]":data.input.item.paramType==10?"[short]":data.input.item.paramType==11?"[long]":"[array]"}}</td>
+                                <td>{{data.input.item.paramType==0?"[string]":data.input.item.paramType==1?"[file]":data.input.item.paramType==2?"[json]":data.input.item.paramType==3?"[int]":data.input.item.paramType==4?"[float]":data.input.item.paramType==5?"[double]":data.input.item.paramType==6?"[date]":data.input.item.paramType==7?"[datetime]":data.input.item.paramType==8?"[boolean]":data.input.item.paramType==9?"[byte]":data.input.item.paramType==10?"[short]":data.input.item.paramType==11?"[long]":data.input.item.paramType==12?"[array]":"[object]"}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -615,7 +616,8 @@
                                 <li class="field-type pull-left">
                                     <ul>
                                         <li>{{'404'|translate}}：</li>
-                                        <li class="input-li" auto-complete model="info.fieldType" array="typeList" data-ng-class="{'eo-had-input-error':(submited&&!isType)}">
+                                        <li class="input-li" ng-class="{'eo-had-input-error':(submited&&!info.fieldType)}">
+                                            <auto-complete-ams-component model="info.fieldType" array="typeList" placeholder="{{'404'|translate}}"></auto-complete-ams-component>
                                         </li>
                                     </ul>
                                 </li>
@@ -788,7 +790,7 @@
         <div class="modal-group eo-modal">
             <header>
                 <ul>
-                    <li data-ng-bind="::data.input.title"></li>
+                    <li data-ng-bind="::data.input.group.title"></li>
                 </ul>
             </header>
             <article>
@@ -850,7 +852,7 @@
                         </li>
                         <li class="btn-group">
                             <button class="eo-button-success " ng-click="ok()">{{'414'|translate}}</button>
-                            <a class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</a>
+                            <button class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</button>
                         </li>
                     </ul>
                 </form>
@@ -880,7 +882,7 @@
                         </li>
                         <li>
                             <ul class="table-description">
-                                <li>表描述：</li>
+                                <li>{{'497'|translate}}：</li>
                                 <li>
                                     <textarea name="description" data-ng-model="info.tableDescription" maxlength="250"></textarea>
                                 </li>
@@ -939,6 +941,102 @@
                             <button class="eo-button-success " ng-click="ok()">{{'414'|translate}}</button>
                             <a class="eo-button-info" ng-if="info.isAdd" ng-click="keep()">{{'4611'|translate}}</a>
                             <a class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</a>
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+    <!-- 更新弹窗 -->
+    <script type="text/ng-template" id="UpdateModal">
+        <div class="modal-update eo-modal">
+            <header>
+                <ul>
+                    <li class="pull-left header-title">{{'500'|translate}}</li>
+                    <li class="btn-group pull-right" ng-class="{'hidden':info.updating}">
+                        <button class="eo-button-default " ng-click="cancel()">{{'430'|translate}}</button>
+                    </li>
+                </ul>
+            </header>
+            <article>
+                <form name="updateForm">
+                    <ul>
+                        <div ng-class="{'hidden':info.updating||info.updateFail||info.hasNewVersion}" class="content-wrap">
+                            <div>{{'507'|translate}}</div>
+                            <div class="current-version">
+                            {{'5016'|translate}}{{info.latestVersion}}，{{'5017'|translate}}{{info.updateTime}}
+                            </div>
+                            <div><b>{{'501'|translate}}</b>{{'502'|translate}}</div>
+                            <div><b>{{'503'|translate}}</b>{{'504'|translate}}</div>
+                            <div>
+                                {{'505'|translate}}</div>
+                            <li class="btn-group">
+                                <button class="eo-button-success " ng-click="online()">{{'501'|translate}}</button>
+                                <button class="eo-button-primary " ng-click="manual()">{{'503'|translate}}</button>
+                                <button class="eo-button-default " ng-click="cancel()">{{'415'|translate}}</button>
+                            </li>
+                        </div>
+                        <div ng-class="{'hidden':!info.updating}">
+                            <div class="updating-wrap">
+                                <div class="icon-wrap">
+                                    <span class="iconfont icon-loading1"></span>
+                                </div>
+                                <p>{{'506'|translate}}...</p>
+                            </div>
+                        </div>
+                        <div ng-class="{'hidden':!info.updateFail}">
+                            <div>{{info.tips}}</div>
+                            <li class="btn-group">
+                                <button class="eo-button-success " ng-click="ok()">{{info.ok}}</button>
+                                <button class="eo-button-default " ng-click="cancel()">{{info.cancel}}</button>
+                            </li>
+                        </div>
+                        <div ng-class="{'hidden':!info.autoUpdateBtn}">
+                            <div>{{info.updateTips}}</div>
+                            <div class="tips">{{info.tips}}</div>
+                            <li class="btn-group">
+                                <button class="eo-button-success" ng-click="autoUpdate()">{{info.ok}}</button>
+                                <button class="eo-button-default " ng-click="cancel()">{{info.cancel}}</button>
+                            </li>
+                        </div>
+                        <div ng-class="{'hidden':!info.manualUpdateBtn}">
+                            <div>{{info.updateTips}}</div>
+                            <div class="tips">{{info.tips}}</div>
+                            <li class="btn-group">
+                                <button class="eo-button-success" ng-click="manualUpdate()">{{info.ok}}</button>
+                                <button class="eo-button-default " ng-click="cancel()">{{info.cancel}}</button>
+                            </li>
+                        </div>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+
+    <!-- 通用单输入弹窗 -->
+    <script type="text/ng-template" id="CommonSingleInputModal">
+        <div class="modal-sure eo-modal">
+            <header>
+                <ul>
+                    <li ng-bind="::title"></li>
+                </ul>
+            </header>
+            <article>
+                <form name="sureForm">
+                    <ul>
+                        <li ng-bind="::data.input.content" ng-if="data.input.content" ng-style="data.input.contentStyle"></li>
+                        <li ng-bind="::info.message" ng-if="info.message"></li>
+                        <li>
+                            <textarea type="text" name="description" ng-model="info.desc" placeholder="{{data.input.placeholder||info.placeholder}}" class="eo-input desc-textarea" ng-class="{'eo-input-error':(submited&&sureForm.description.$invalid)}" maxlength="150" ng-required="data.input.required">
+                            </textarea>
+                        </li>
+                        <li class="btn-group">
+                            <button ng-class="{'eo-button-success':info.btnType==2,'eo-button-warning':info.btnType==1,'eo-button-info':info.btnType==0}" ng-click="ok()">{{info.btnMessage}}</button>
+                            <input type="button" class="eo-button-default " value="{{'415'|translate}}" ng-click="cancel()">
                         </li>
                     </ul>
                 </form>

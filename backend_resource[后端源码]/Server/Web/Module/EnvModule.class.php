@@ -43,19 +43,20 @@ class EnvModule
      * @param $project_id int 项目的数字ID
      * @param $env_name string 环境名称
      * @param $front_uri string 前置URI
-     * @param $headers string 请求头部
-     * @param $params string 全局变量
+     * @param $headers array 请求头部
+     * @param $params array 全局变量
      * @param $apply_protocol int 应用的请求类型,[-1]=>[所有请求类型]
+     * @param $additional_params array 额外参数
      * @return bool|int
      */
-    public function addEnv(&$project_id, &$env_name, &$front_uri, &$headers, &$params, $apply_protocol)
+    public function addEnv(&$project_id, &$env_name, &$front_uri, &$headers, &$params, $apply_protocol, &$additional_params)
     {
         $env_dao = new EnvDao;
         $projectDao = new ProjectDao;
         if (!$projectDao->checkProjectPermission($project_id, $_SESSION['userID'])) {
             return FALSE;
         }
-        $env_id = $env_dao->addEnv($project_id, $env_name, $front_uri, $headers, $params, $apply_protocol);
+        $env_id = $env_dao->addEnv($project_id, $env_name, $front_uri, $headers, $params, $apply_protocol, $additional_params);
         if ($env_id) {
             //将操作写入日志
             $log_dao = new ProjectLogDao();
@@ -100,18 +101,19 @@ class EnvModule
      * @param $env_id int 环境的数字ID
      * @param $env_name string 环境名称
      * @param $front_uri string 前置URI
-     * @param $headers string 请求头部
-     * @param $params string 全局变量
+     * @param $headers array 请求头部
+     * @param $params array 全局变量
      * @param $apply_protocol int 应用的请求类型,[-1]=>[所有请求类型]
+     * @param $additional_params array 额外参数
      * @return bool
      */
-    public function editEnv(&$env_id, &$env_name, &$front_uri, &$headers, &$params, $apply_protocol)
+    public function editEnv(&$env_id, &$env_name, &$front_uri, &$headers, &$params, $apply_protocol, &$additional_params)
     {
         $env_dao = new EnvDao;
         if (!($project_id = $env_dao->checkEnvPermission($env_id, $_SESSION['userID']))) {
             return FALSE;
         }
-        if ($env_dao->editEnv($env_id, $env_name, $front_uri, $headers, $params, $apply_protocol)) {
+        if ($env_dao->editEnv($env_id, $env_name, $front_uri, $headers, $params, $apply_protocol, $additional_params)) {
             //将操作写入日志
             $log_dao = new ProjectLogDao();
             $log_dao->addOperationLog($project_id, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_ENVIRONMENT, $project_id, ProjectLogDao::$OP_TYPE_UPDATE, "修改环境:'{$env_name}'", date("Y-m-d H:i:s", time()));

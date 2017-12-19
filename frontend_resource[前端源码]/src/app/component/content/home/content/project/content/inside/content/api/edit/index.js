@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [api修改模块相关js] [api modify module related js]
-     * @version  3.0.2
+     * @version  3.1.5
      * @service  $scope [注入作用域服务] [Injection scope service]
      * @service  $rootScope [注入根作用域服务] [Injection rootscope service]
      * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
@@ -19,7 +19,7 @@
                 .state('home.project.inside.api.edit', {
                     url: '/edit?groupID?childGroupID?apiID?type',
                     template: '<home-project-inside-api-edit></home-project-inside-api-edit>',
-                    resolve: helper.resolveFor('WANG_EDITOR', 'MARKDOWN')
+                    resolve: helper.resolveFor('JQUERY', 'WANG_EDITOR', 'MARKDOWN', 'MOCK', 'ACE_EDITOR')
                 });
         }])
         .component('homeProjectInsideApiEdit', {
@@ -27,20 +27,24 @@
             controller: homeProjectInsideApiEditController
         })
 
-    homeProjectInsideApiEditController.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'GroupService', '$filter', 'CODE', 'HTTP_CONSTANT'];
+    homeProjectInsideApiEditController.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'GroupService', '$filter', 'CODE', 'HTTP_CONSTANT', 'HTML_LAZYLOAD'];
 
-    function homeProjectInsideApiEditController($scope, $rootScope, ApiManagementResource, $state, GroupService, $filter, CODE, HTTP_CONSTANT) {
+    function homeProjectInsideApiEditController($scope, $rootScope, ApiManagementResource, $state, GroupService, $filter, CODE, HTTP_CONSTANT, HTML_LAZYLOAD) {
         var vm = this;
         vm.data = {
             constant: {
                 requestHeader: HTTP_CONSTANT.REQUEST_HEADER,
-                requestParamLimit: HTTP_CONSTANT.REQUEST_PARAM
+                requestParamLimit: HTTP_CONSTANT.REQUEST_PARAM,
+                lazyload: HTML_LAZYLOAD[2]
             },
             info: {
                 input: {
                     submited: false
                 },
                 menu: 0, //0：基础信息、1：详细说明、2：高级mock 0: basic information, 1: detailed description, 2: advanced mock
+                mock: {
+                    isFailure: false
+                },
                 timer: {
                     fun: null
                 },
@@ -126,7 +130,11 @@
                         apiHeader: [],
                         apiRequestParam: [],
                         apiResultParam: [],
-                        starred: 0
+                        starred: 0,
+                        mockConfig: {
+                            rule: '',
+                            type: 'object'
+                        }
                     }
                 }
             },
@@ -135,6 +143,8 @@
                 load: null, 
                 requestProcessing: null, 
                 menu: null, 
+                filterMock: null, 
+                refresh: null, 
                 change: {
                     group: null, 
                     noteType: null, 
@@ -190,6 +200,17 @@
             vm.data.info.menu = arg.switch;
             if (vm.data.interaction.response.apiInfo.apiNoteType == '1' && arg.switch == 1) {
                 $scope.$broadcast('$changeNoteType');
+            }
+        }
+
+        /**
+         * @function [过滤mock函数] [Filter mock function]
+         */
+        vm.data.fun.filterMock = function(arg) {
+            if (arg.paramKey == '') {
+                return false;
+            } else {
+                return true;
             }
         }
 
@@ -404,7 +425,7 @@
                         delete: vm.data.fun.resultParamList.delete
                     }
                 }
-            }
+            }            
             arg.item.paramValueList = arg.item.paramValueList || [];
             if (arg.item.paramValueList.length == 0 || arg.item.paramValueList[arg.item.paramValueList.length - 1].value) {
                 vm.data.fun.resultParamList.add({ item: arg.item });
@@ -476,6 +497,37 @@
         }
 
         /**
+         * @function [监听mock] [Monitor mock]
+         */
+        vm.data.fun.mockWatch = function() {
+            vm.data.interaction.response.apiInfo.mockRule = vm.data.interaction.response.apiInfo.apiResultParam;
+            if (vm.data.info.timer.fun) {
+                clearInterval(vm.data.info.timer.fun);
+                vm.data.info.timer.fun = setTimeout(function() {
+                    if (vm.data.interaction.response.apiInfo.mockRule && vm.data.interaction.response.apiInfo.mockRule.length > 0) {
+                        vm.data.interaction.response.apiInfo.mockResult = $filter('mockFilter')(vm.data.interaction.response.apiInfo.mockRule, vm.data.interaction.response.apiInfo.mockConfig);
+                    }
+                    $scope.$digest();
+                }, 500);
+            } else {
+                vm.data.info.timer.fun = setTimeout(function() {
+                    if (vm.data.interaction.response.apiInfo.mockRule && vm.data.interaction.response.apiInfo.mockRule.length > 0) {
+                        vm.data.interaction.response.apiInfo.mockResult = $filter('mockFilter')(vm.data.interaction.response.apiInfo.mockRule, vm.data.interaction.response.apiInfo.mockConfig)
+                    }
+                    $scope.$digest();
+                }, 500);
+            }
+        }
+        $scope.$watch('$ctrl.data.interaction.response.apiInfo.mockConfig', vm.data.fun.mockWatch, true);
+        $scope.$watch('$ctrl.data.interaction.response.apiInfo.apiResultParam', vm.data.fun.mockWatch, true);
+
+        /**
+         * @function [刷新mock函数] [Refresh mock function]
+         */
+        vm.data.fun.refresh = function() {
+            vm.data.interaction.response.apiInfo.mockResult = $filter('mockFilter')(vm.data.interaction.response.apiInfo.mockRule, vm.data.interaction.response.apiInfo.mockConfig);
+        }
+        /**
          * @function [辅助确认功能函数] [Auxiliary confirmation]
          */
         vm.data.assistantFun.confirm = function() {
@@ -500,7 +552,8 @@
                 apiRequestParamType: vm.data.interaction.response.apiInfo.apiRequestParamType,
                 apiRequestRaw: vm.data.interaction.response.apiInfo.apiRequestRaw,
                 mockRule: vm.data.interaction.response.apiInfo.mockRule,
-                mockResult: vm.data.interaction.response.apiInfo.mockResult
+                mockResult: vm.data.interaction.response.apiInfo.mockResult,
+                mockConfig: JSON.stringify(vm.data.interaction.response.apiInfo.mockConfig)
             }
             var template = {
                 apiRequestParam: [],
@@ -646,7 +699,6 @@
                 switch (response.statusCode) {
                     case CODE.COMMON.SUCCESS:
                         {
-
                             $rootScope.InfoModal($filter('translate')('012100143'), 'success');
                             vm.data.interaction.response.apiInfo = {
                                 projectID: vm.data.info.reset.projectID,
@@ -678,6 +730,10 @@
                             } else {
                                 vm.data.interaction.response.apiInfo.childGroupID = -1;
                             }
+                            vm.data.interaction.response.apiInfo.mockConfig = {
+                                type: 'object',
+                                rule: ''
+                            };
                             vm.data.interaction.response.apiInfo.apiStatus = '0';
                             vm.data.interaction.response.apiInfo.apiProtocol = '0';
                             vm.data.interaction.response.apiInfo.apiRequestType = '0';
@@ -749,29 +805,59 @@
             var template = {
                 promise: null
             }
-            template.promise = ApiManagementResource.Api.Add(arg.request).$promise;
-            template.promise.then(function(response) {
-                switch (response.statusCode) {
-                    case CODE.COMMON.SUCCESS:
-                    {
-                        $state.go('home.project.inside.api.detail', {
-                            'groupID': vm.data.info.reset.groupID,
-                            'childGroupID': vm.data.info.reset.childGroupID,
-                            'apiID': response.apiID
-                        });
-                        $rootScope.InfoModal($filter('translate')('012100143'), 'success');
-                        break;
+            if (vm.data.info.reset.apiID && $state.params.type != 2) {
+                $rootScope.CommonSingleInputModal($filter('translate')('012100062'), '', '', {}, function(data) {
+                    if (data.check) {
+                        arg.request.updateDesc = data.desc;
+                        ApiManagementResource.Api.Update(arg.request).$promise.then(function(response) {
+                            switch (response.statusCode) {
+                                case CODE.COMMON.SUCCESS:
+                                    {
+                                        $state.go('home.project.inside.api.detail', {
+                                            'groupID': vm.data.info.reset.groupID,
+                                            'childGroupID': vm.data.info.reset.childGroupID,
+                                            'apiID': vm.data.info.reset.apiID
+                                        });
+                                        $rootScope.InfoModal($filter('translate')('012100145'), 'success');
+                                        break;
+                                    }
+                                case CODE.PROJECT_API.EXIST:
+                                    {
+                                        try {
+                                            $scope.editForm.uri.$invalid = true;
+                                        } catch (e) {}
+                                        vm.data.info.input.submited = true;
+                                        $rootScope.InfoModal($filter('translate')('012100144'), 'error');
+                                    }
+                            }
+                        })
                     }
-                    case CODE.PROJECT_API.EXIST:
-                    {
-                        try {
-                            $scope.editForm.uri.$invalid = true;
-                        } catch (e) {}
-                        vm.data.info.input.submited = true;
-                        $rootScope.InfoModal($filter('translate')('012100144'), 'error');
+                });
+            } else {
+                template.promise = ApiManagementResource.Api.Add(arg.request).$promise;
+                template.promise.then(function(response) {
+                    switch (response.statusCode) {
+                        case CODE.COMMON.SUCCESS:
+                        {
+                            $state.go('home.project.inside.api.detail', {
+                                'groupID': vm.data.info.reset.groupID,
+                                'childGroupID': vm.data.info.reset.childGroupID,
+                                'apiID': response.apiID
+                            });
+                            $rootScope.InfoModal($filter('translate')('012100143'), 'success');
+                            break;
+                        }
+                        case CODE.PROJECT_API.EXIST:
+                        {
+                            try {
+                                $scope.editForm.uri.$invalid = true;
+                            } catch (e) {}
+                            vm.data.info.input.submited = true;
+                            $rootScope.InfoModal($filter('translate')('012100144'), 'error');
+                        }
                     }
-                }
-            })
+                })
+            }
             return template.promise;
         }
 
@@ -843,6 +929,7 @@
                             case CODE.COMMON.SUCCESS:
                                 {
                                     vm.data.interaction.response.apiInfo = response.apiInfo.baseInfo;
+                                    vm.data.interaction.response.apiInfo.mockConfig = response.apiInfo.mockInfo ? (response.apiInfo.mockInfo.mockConfig||{ type: 'object', rule: '' }) : { type: 'object', rule: '' };
                                     vm.data.interaction.response.apiInfo.apiHeader = response.apiInfo.headerInfo;
                                     vm.data.interaction.response.apiInfo.apiRequestParam = response.apiInfo.requestInfo;
                                     vm.data.interaction.response.apiInfo.apiResultParam = response.apiInfo.resultInfo;
@@ -854,8 +941,7 @@
                                     vm.data.interaction.response.apiInfo.apiRichNote = vm.data.interaction.response.apiInfo.apiNoteType == '0' ? vm.data.interaction.response.apiInfo.apiNote : '';
                                     vm.data.interaction.response.apiInfo.apiMarkdownNote = vm.data.interaction.response.apiInfo.apiNoteType == '1' ? vm.data.interaction.response.apiInfo.apiNote : '';
                                     vm.data.interaction.response.apiInfo.mockRule = response.apiInfo.mockInfo ? response.apiInfo.mockInfo.rule : [];
-
-                                    $scope.$emit('$WindowTitleSet', { list: [((vm.data.info.reset.type == 2 ? '[另存为]' : '[修改]') + vm.data.interaction.response.apiInfo.apiName), 'API接口', $state.params.projectName, '接口管理'] });
+                                    $scope.$emit('$WindowTitleSet', { list: [((vm.data.info.reset.type == 2 ? $filter('translate')('012100170') : $filter('translate')('012100171')) + vm.data.interaction.response.apiInfo.apiName), $filter('translate')('012100164'), $state.params.projectName, $filter('translate')('012100165')] });
                                     if (!!vm.data.interaction.response.apiInfo.parentGroupID) {
                                         vm.data.interaction.response.apiInfo.childGroupID = response.apiInfo.baseInfo.groupID;
                                         vm.data.interaction.response.apiInfo.groupID = vm.data.interaction.response.apiInfo.parentGroupID;

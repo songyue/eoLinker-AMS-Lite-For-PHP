@@ -2,33 +2,41 @@
     <header>
         <ul class="title-ul">
             <li class="btn-group-li pull-left">
-                <a class="common-btn default-btn" ui-sref="home.project.inside.api.list({groupID: $ctrl.data.interaction.request.groupID,childGroupID:$ctrl.data.interaction.request.childGroupID })">
+                <a class="common-btn default-btn" ng-click="$ctrl.data.service.default.navbar.menu('list',$ctrl.data.interaction.request)">
                     <span class="iconfont icon-xiangzuo"></span>{{'01210000'|translate}}
                 </a>
             </li>
             <li class="menu-li pull-left">
                 <a class="pull-left elem-active">{{'01210001'|translate}}
                     </a>
-                <a class="pull-left" data-ng-click="$ctrl.data.fun.test()">{{'01210002'|translate}}
+                <a class="pull-left" data-ng-click="$ctrl.data.service.default.navbar.menu('test',$ctrl.data.interaction.request,$ctrl.data.info.template.envModel)">{{'01210002'|translate}}
+                    </a>
+                <a class="pull-left" ng-click="$ctrl.data.service.default.navbar.menu('mock',$ctrl.data.interaction.request)">mock
+                    </a>
+                <a class="pull-left" ng-click="$ctrl.data.service.default.navbar.menu('history',$ctrl.data.interaction.request)">{{'012100058'|translate}}
+                    </a>
+            </li>
+            <li class="divide-li pull-left" ng-if="$ctrl.powerObject.readWrite"><span></span></li>
+            <li class="menu-li pull-left" style="margin-left: 5px;" ng-if="$ctrl.powerObject.readWrite&&$ctrl.data.interaction.request.groupID!=-2">
+                <a class="pull-left" ng-click="$ctrl.data.service.default.navbar.menu('edit',$ctrl.data.interaction.request)">{{'01210004'|translate}}
                     </a>
             </li>
             <li class="btn-li common-btn default-btn" ng-if="$ctrl.powerObject.readWrite">
                 <span class="iconfont icon-caidan"></span> {{'01210003'|translate}}
                 <div class="list-function-wrap">
                     <ul class="nav-function" ng-if="$ctrl.data.interaction.request.groupID!=-2">
-                        <li ui-sref="home.project.inside.api.edit($ctrl.data.interaction.request)"><span class="iconfont icon-bianji"></span>{{'01210004'|translate}}</li>
-                        <li ui-sref="home.project.inside.api.edit({groupID:$ctrl.data.interaction.request.groupID, childGroupID:$ctrl.data.interaction.request.childGroupID,apiID:$ctrl.data.interaction.request.apiID, type: 2 })">
+                        <li ng-click="$ctrl.data.service.default.navbar.menu('copy',$ctrl.data.interaction.request)">
                             <span class="iconfont icon-renwuguanli"></span>{{'01210005'|translate}}
                         </li>
-                        <li data-ng-click="$ctrl.data.fun.delete()">
+                        <li ng-click="$ctrl.data.service.default.navbar.delete($ctrl.data.interaction.request)">
                             <span class="iconfont icon-shanchu"></span>{{'01210006'|translate}}
                         </li>
                     </ul>
                     <ul class="nav-function" ng-if="$ctrl.data.interaction.request.groupID==-2">
-                        <li data-ng-click="$ctrl.data.fun.recover()">
+                        <li ng-click="$ctrl.data.service.default.navbar.recover($ctrl.data.interaction.request)">
                             <span class="iconfont icon-shuaxin"></span>{{'01210007'|translate}}
                         </li>
-                        <li data-ng-click="$ctrl.data.fun.deleteCompletely()">
+                        <li ng-click="$ctrl.data.service.default.navbar.deleteCompletely($ctrl.data.interaction.request)">
                             <span class="iconfont icon-shanchu"></span>{{'01210008'|translate}}
                         </li>
                     </ul>
@@ -143,7 +151,7 @@
         </div>
         <div class="item-part response-param-part" ng-if="$ctrl.data.service.home.envObject.object.model.resultInfo.length>0">
             <p class="title-p"><b>{{'012100024'|translate}}</b>
-                <tip-directive input="<p>点击具体参数可以查看参数的详情</p>"></tip-directive>
+                <tip-directive input="<p>{{'012100016'|translate}}</p>"></tip-directive>
                 <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.response=!$ctrl.data.info.spreed.response"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.response,'icon-xiangshang':$ctrl.data.info.spreed.response}"></span>{{$ctrl.data.info.spreed.response?$ctrl.data.info.filter.shrink:$ctrl.data.info.filter.open}}</a>
             </p>
             <table ng-show="$ctrl.data.info.spreed.response">
@@ -202,6 +210,12 @@
                 </ul>
             </header>
             <article ng-show="$ctrl.data.info.spreed.example">
+                <div class="copy-url-box" ng-switch-when=false>
+                    <ul>
+                        <li copy-directive copy-model="$ctrl.data.service.home.envObject.object.model.baseInfo.successMockCode">
+                        </li>
+                    </ul>
+                </div>
                 <div ng-hide='$ctrl.data.info.mock.isFailure'>
                     <pre class="back-result-content " id="apiResult_js">
                     <span class="null-tip-span">No Response</span>

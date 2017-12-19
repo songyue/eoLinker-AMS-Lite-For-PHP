@@ -48,6 +48,9 @@
                     td,
                     th {
                         border-top: 1px solid #e5e5e5;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow:hidden;
                     }
                 }
             }
@@ -189,6 +192,7 @@
             }
         }
         .modal-project,
+        .modal-update,
         .modal-sure,
         .modal-group,
         .modal-bind,
@@ -248,19 +252,62 @@
                     margin: 20px -20px;
                     text-align: left;
                     margin-bottom: 0;
-                    a,
-                    button {
+                    input[type=button],
+                    button,
+                    a {
                         display: inline-block;
-                        width: 60px;
                         text-align: center;
-                    }
-                    button {
-                        // @include eo-line(35px, 30px);
+                        padding: 0 10px;
+                        width:auto;
                     }
                 }
             }
         } // 开放平台
-       
+        .modal-update {
+            .content-wrap {
+                div {
+                    margin-bottom: 10px;
+                }
+                .current-version {
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid #ededed;
+                    color: $buttonSuccessBgColor;
+                }
+                .eo-button-success,
+                .eo-button-primary {
+                    padding: 0 10px;
+                    width: 80px;
+                }
+            }
+            .updating-wrap {
+                width: 100px;
+                margin: -10px auto 0;
+                padding-bottom: 20px;
+            }
+            .icon-wrap {
+                width: 50px;
+                @include eo-line(50px,51px);
+                margin-left: 14px;
+                animation: load 1.7s infinite ease;
+                -webkit-animation: load 1.7s infinite ease;
+                -moz-animation: load 1.7s infinite ease;
+                -o-animation: load 1.7s infinite ease;
+                span {
+                    display: block;
+                    font-size: 50px;
+                    color: #555;
+                    @include eo-line(50px,54px);
+                }
+            }
+            p {
+                font-size: 16px;
+                width: 70px;
+                margin: 0 auto;
+            }
+            .tips {
+                color: #c6533b;
+            }
+        }
         .modal-request-param-detail {
             width: 60%;
             top: 50px;
@@ -910,23 +957,6 @@
                 }
             }
         }
-        .modal-sure {
-            article {
-                li {
-                    input {
-                        width: 100%;
-                        margin-top: 10px;
-                    }
-                    .desc-textarea {
-                        width: 99%;
-                        margin-top: 10px;
-                        height: 80px;
-                        text-indent: 0;
-                        padding: 1%;
-                    }
-                }
-            }
-        }
         .modal-json-to-param {
             article {
                 padding-top: 0;
@@ -1068,7 +1098,6 @@
                 .btn-group {
                     .eo-button-info {
                         margin-top: (61px - 35px)/2;
-                        width: 100px;
                     }
                 }
             }
@@ -1194,7 +1223,23 @@
                 .btn-group {
                     .eo-button-info {
                         margin-top: (61px - 35px)/2;
-                        width: 100px;
+                    }
+                }
+            }
+        }
+        .modal-sure {
+            article {
+                li {
+                    input[type=text] {
+                        width: 100%;
+                        margin-top: 10px;
+                    }
+                    .desc-textarea {
+                        width: 99%;
+                        margin-top: 10px;
+                        height: 80px;
+                        text-indent: 0;
+                        padding: 1%;
                     }
                 }
             }

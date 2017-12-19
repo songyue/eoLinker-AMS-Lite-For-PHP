@@ -1,42 +1,47 @@
 (function() {
-    'use strict';
     /**
      * @Author   广州银云信息科技有限公司 eolinker
-     * @function [api sidebar模块相关js] [sidebar module related js]
-     * @version  3.0.2
+     * @function [api侧边栏相关js] [api sidebar related js]
+     * @version  3.1.6
      * @service  $scope [注入作用域服务] [Injection scope service]
      * @service  $rootScope [注入根作用域服务] [Injection rootscope service]
      * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
      * @service  $state [注入路由服务] [Injection state service]
+     * @service  $state [注入路由服务] [Injection state service]
+     * @service  Sidebar_AmsCommonService [注入Sidebar_AmsCommonService服务] [Injection Sidebar_AmsCommonService service]
      * @service  GroupService [注入GroupService服务] [Injection GroupService service]
-     * @service  HomeProjectSidebarService [注入HomeProjectSidebarService服务] [Injection HomeProjectSidebarService service]
-     * @service  $filter [注入过滤器服务] [Injection filter service]
      * @constant CODE [注入状态码常量] [inject status code constant service]
      */
-     angular.module('eolinker')
-     .component('homeProjectInsideApiSidebar', {
-        templateUrl: 'app/component/content/home/content/project/content/inside/sidebar/api/index.html',
-        bindings: {
-            powerObject: '<'
-        },
-        controller: homeProjectInsideApiSidebarController
-    })
+    angular.module('eolinker')
+        .component('homeProjectInsideApiSidebar', {
+            templateUrl: 'app/component/content/home/content/project/content/inside/sidebar/api/index.html',
+            bindings: {
+                powerObject: '<'
+            },
+            controller: indexController
+        })
 
-     homeProjectInsideApiSidebarController.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'GroupService', 'HomeProjectSidebarService', '$filter', 'CODE'];
+    indexController.$inject = ['$scope', 'ApiManagementResource', '$state', 'CODE', '$rootScope', 'GroupService', 'Sidebar_AmsCommonService', '$filter'];
 
-     function homeProjectInsideApiSidebarController($scope, $rootScope, ApiManagementResource, $state, GroupService, HomeProjectSidebarService, $filter, CODE) {
+    function indexController($scope, ApiManagementResource, $state, CODE, $rootScope, GroupService, Sidebar_AmsCommonService, $filter) {
         var vm = this;
         vm.data = {
-            service:HomeProjectSidebarService,
+            service: {
+                defaultCommon: Sidebar_AmsCommonService
+            },
             static: {
-                query: [{ groupID: -1, groupName: $filter('translate')('0121408') }, { groupID: -2, groupName: $filter('translate')('0121409') }]
+                query: [{ groupID: -1, groupName: $filter('translate')('0121408'), icon: 'sort' }, { groupID: -2, groupName: $filter('translate')('0121409'), icon: 'shanchu' }]
+            },
+            component: {
+                groupCommonObject: {}
             },
             info: {
                 sidebarShow: null,
                 sort: {
                     isDisable: false,
+                    sortable: true,
                     originQuery: [],
-                    groupForm: {
+                    sortForm: {
                         containment: '.group-form-ul',
                         child: {
                             containment: '.child-group-form-ul'
@@ -58,8 +63,6 @@
             },
             fun: {
                 init: null, 
-                more: null, 
-                spreed:null,
                 sort: {
                     copy: null, 
                     confirm: null, 
@@ -79,11 +82,10 @@
                 }
             }
         }
-
         /**
-         * @function [初始化功能函数]
+         * @function [初始化功能函数] [initialization]
          */
-         vm.data.fun.init = function() {
+        vm.data.fun.init = function() {
             var template = {
                 request: {
                     projectID: vm.data.interaction.request.projectID,
@@ -93,17 +95,10 @@
                 },
                 query: [],
                 sort: {
-                    _default: [],
-                    array: [],
-                    childArray: []
-                },
-                loop: {
-                    parent: 0,
-                    child: 0
+                    array: []
                 }
             }
-            vm.data.service.fun.clear();
-            angular.copy(vm.data.static.query, vm.data.interaction.response.query);
+            vm.data.service.defaultCommon.fun.clear();
             if ($state.current.name.indexOf('edit') > -1) {
                 vm.data.info.sidebarShow = false;
             } else {
@@ -112,159 +107,94 @@
             ApiManagementResource.ApiGroup.Query(template.request).$promise.then(function(response) {
                 switch (response.statusCode) {
                     case CODE.COMMON.SUCCESS:
-                    {
-                        try {
-                            template.sort._default = JSON.parse(response.groupOrder);
-                            angular.forEach(response.groupList, function(val, key) {
-                                template.sort.childArray = [];
-                                angular.forEach(val.childGroupList, function(childVal, childKey) {
-                                    childVal.$order = template.sort._default[childVal.groupID];
-                                    template.loop.child = childVal.$order > (template.sort.childArray.length - 1) ? (template.sort.childArray.length - 1) : childVal.$order;
-                                    if (template.loop.child >= 0) {
-                                        for (; template.loop.child >= 0; template.loop.child--) {
-                                            if (template.sort.childArray[template.loop.child].$order <= childVal.$order) {
-                                                break;
-                                            }
-                                        }
-                                        template.sort.childArray.splice(template.loop.child + 1, 0, childVal);
-                                    } else {
-                                        template.sort.childArray.push(childVal);
-                                    }
-                                })
-                                val.isSpreed=true;
-                                val.childGroupList = template.sort.childArray;
-                                val.$order = template.sort._default[val.groupID];
-                                template.loop.parent = val.$order > (template.sort.array.length - 1) ? (template.sort.array.length - 1) : val.$order;
-                                if (template.loop.parent >= 0) {
-                                    for (; template.loop.parent >= 0; template.loop.parent--) {
-                                        if (template.sort.array[template.loop.parent].$order <= val.$order) {
-                                            break;
-                                        }
-                                    }
-                                    template.sort.array.splice(template.loop.parent + 1, 0, val);
-                                } else {
-                                    template.sort.array.push(val);
-                                }
-                            })
-                        } catch (e) {
-                            template.sort.array = response.groupList;
-                        } finally {
+                        {
+                            template.sort.array = vm.data.service.defaultCommon.sort.init(response);
                             vm.data.interaction.response.groupOrder = response.groupOrder;
-                            vm.data.interaction.response.query = vm.data.interaction.response.query.concat(template.sort.array);
+                            vm.data.interaction.response.query = template.sort.array || [];
                             if ($state.current.name.indexOf('edit') > -1) {
                                 GroupService.set(template.sort.array, true);
                             } else {
                                 GroupService.set(template.sort.array);
                             }
+                            break;
                         }
-                    }
                 }
             })
         }
         vm.data.fun.init();
-
         /**
-         * @function [更多功能函数]
+         * @function [复制相应原数组功能函数] [Copy the corresponding original array function]
          */
-         vm.data.fun.more = function(arg) {
-            arg.$event.stopPropagation();
-            arg.item.listIsClick = true;
-        }
-
-        /**
-         * @function [展开收缩功能函数]
-         */
-         vm.data.fun.spreed=function(arg){
-            if (arg.$event) {
-                arg.$event.stopPropagation();
-            }
-            arg.item.isSpreed=!arg.item.isSpreed;
-        }
-
-        /**
-         * @function [复制相应原数组功能函数]
-         */
-         vm.data.fun.sort.copy = function() {
-            angular.copy(vm.data.interaction.response.query.slice(2), vm.data.info.sort.originQuery);
-            if(vm.data.info.sort.originQuery.length>0){
+        vm.data.fun.sort.copy = function() {
+            vm.data.info.sort.originQuery = [];
+            angular.copy(vm.data.interaction.response.query, vm.data.info.sort.originQuery);
+            if (vm.data.info.sort.originQuery.length > 0) {
                 vm.data.info.sort.isDisable = true;
             }
         }
-
         /**
-         * @function [取消排序功能函数]
+         * @function [取消排序功能函数] [Cancel sorting function]
          */
-         vm.data.fun.sort.cancle = function() {
+        vm.data.fun.sort.cancle = function() {
             vm.data.info.sort.isDisable = false;
         }
-
         /**
-         * @function [排序确认功能函数]
+         * @function [排序确认功能函数] [Sort confirmation function]
          */
-         vm.data.fun.sort.confirm = function() {
+        vm.data.fun.sort.confirm = function() {
             var template = {
-                request: {
-                    projectID: vm.data.interaction.request.projectID,
-                    orderList: {}
+                input: {
+                    baseRequest: {
+                        projectID: vm.data.interaction.request.projectID,
+                        orderList: {}
+                    },
+                    originQuery: vm.data.info.sort.originQuery,
+                    resource: ApiManagementResource.ApiGroup.Sort,
+                    callback: null
                 }
             }
-            angular.forEach(vm.data.info.sort.originQuery, function(val, key) {
-                template.request.orderList[val.groupID] = key;
-                angular.forEach(val.childGroupList, function(childVal, childKey) {
-                    template.request.orderList[childVal.groupID] = childKey;
-                })
-
-            })
-            template.request.orderList = JSON.stringify(template.request.orderList);
-            ApiManagementResource.ApiGroup.Sort(template.request).$promise
-            .then(function(response) {
+            template.input.callback = function(response) {
                 switch (response.statusCode) {
                     case CODE.COMMON.SUCCESS:
-                    {
-                        $rootScope.InfoModal($filter('translate')('01214010'), 'success');
-                        vm.data.interaction.response.query.splice(2);
-                        vm.data.interaction.response.query = vm.data.interaction.response.query.concat(vm.data.info.sort.originQuery)
-                        vm.data.info.sort.isDisable = false;
-                        GroupService.set(vm.data.info.sort.originQuery);
-                        break;
-                    }
-                    default:
-                    {
-                        $rootScope.InfoModal($filter('translate')('01214011'), 'error');
-                        break;
-                    }
+                        {
+                            vm.data.interaction.response.query = vm.data.info.sort.originQuery;
+                            vm.data.info.sort.isDisable = false;
+                            break;
+                        }
                 }
-            })
+            }
+            vm.data.service.defaultCommon.sort.operate('confirm', template.input);
         }
-
         /**
-         * @function [子分组单击事件]
+         * @function [子分组单击事件] [Sub-group click event]
          */
-         vm.data.fun.click.child = function(arg) {
+        vm.data.fun.click.child = function(arg) {
             vm.data.interaction.request.childGroupID = arg.item.groupID;
             $state.go('home.project.inside.api.list', { groupID: vm.data.interaction.request.groupID, childGroupID: arg.item.groupID, apiID: null, search: null });
         }
-
         /**
-         * @function [父分组单击事件]
+         * @function [父分组单击事件] [Parent group click event]
          */
-         vm.data.fun.click.parent = function(arg) {
+        vm.data.fun.click.parent = function(arg) {
             vm.data.interaction.request.groupID = arg.item.groupID || -1;
             vm.data.interaction.request.childGroupID = null;
-            arg.item.isSpreed=true;
-            $state.go('home.project.inside.api.list', { 'groupID': arg.item.groupID, childGroupID: null, search: null });
+            arg.item.isSpreed = true;
+            if (arg.item.groupID == -3) {
+                $state.go('home.project.inside.api.test', { 'groupID': arg.item.groupID, childGroupID: null, apiID: null, search: null });
+            } else {
+                $state.go('home.project.inside.api.list', { 'groupID': arg.item.groupID, childGroupID: null, search: null });
+            }
         }
-
         /**
-         * @function [父分组编辑事件]
+         * @function [父分组编辑事件] [Parent group edit event]
          */
-         vm.data.fun.edit.parent = function(arg) {
+        vm.data.fun.edit.parent = function(arg) {
             arg = arg || {};
             var template = {
                 modal: {
                     title: arg.item ? $filter('translate')('01214012') : $filter('translate')('01214013'),
                     secondTitle: $filter('translate')('01214014'),
-                    group: arg.item ? null : vm.data.interaction.response.query.slice(2)
+                    group: arg.item ? null : vm.data.interaction.response.query
                 },
                 $index: null
             }
@@ -276,52 +206,50 @@
                         ApiManagementResource.ApiGroup.Update(callback).$promise.then(function(response) {
                             switch (response.statusCode) {
                                 case CODE.COMMON.SUCCESS:
-                                {
-                                    $rootScope.InfoModal(template.modal.title + $filter('translate')('01214015'), 'success');
-                                    vm.data.fun.init();
-                                    break;
-                                }
+                                    {
+                                        $rootScope.InfoModal(template.modal.title + $filter('translate')('01214015'), 'success');
+                                        vm.data.fun.init();
+                                        break;
+                                    }
                             }
                         });
                     } else {
                         if (template.$index > -1) {
-                            callback.parentGroupID = vm.data.interaction.response.query[template.$index + 2].groupID;
+                            callback.parentGroupID = vm.data.interaction.response.query[template.$index].groupID;
                         }
                         ApiManagementResource.ApiGroup.Add({ projectID: callback.projectID, groupName: callback.groupName, parentGroupID: callback.parentGroupID }).$promise.then(function(response) {
                             switch (response.statusCode) {
                                 case CODE.COMMON.SUCCESS:
-                                {
-                                    $rootScope.InfoModal(template.modal.title + $filter('translate')('01214015'), 'success');
-                                    vm.data.fun.init();
-                                    break;
-                                }
+                                    {
+                                        $rootScope.InfoModal(template.modal.title + $filter('translate')('01214015'), 'success');
+                                        vm.data.fun.init();
+                                        break;
+                                    }
                             }
                         });
                     }
                 }
             });
-}
-
+        }
         /**
-         * @function [子分组编辑事件]
+         * @function [子分组编辑事件] [Sub-group edit event]
          */
-         vm.data.fun.edit.child = function(arg) {
-            arg.item = arg.item || {};
+        vm.data.fun.edit.child = function(arg) {
+            arg.childItem = arg.childItem || {};
             var template = {
                 modal: {
                     title: arg.isEdit ? $filter('translate')('01214016') : $filter('translate')('01214017'),
-                    group: vm.data.interaction.response.query.slice(2)
+                    group: vm.data.interaction.response.query
                 },
                 $index: null
             }
-            arg.item.$index = arg.$outerIndex - 1;
-            console.log(arg.$outerIndex)
-            $rootScope.GroupModal(template.modal.title, arg.item, $filter('translate')('01214014'), template.modal.group, function(callback) {
+            arg.childItem.$index = arg.$outerIndex + 1;
+            $rootScope.GroupModal(template.modal.title, arg.childItem, $filter('translate')('01214014'), template.modal.group, function(callback) {
                 if (callback) {
                     callback.projectID = vm.data.interaction.request.projectID;
                     template.$index = parseInt(callback.$index) - 1;
                     if (template.$index > -1) {
-                        callback.parentGroupID = vm.data.interaction.response.query[template.$index + 2].groupID;
+                        callback.parentGroupID = vm.data.interaction.response.query[template.$index].groupID;
                     } else {
                         callback.parentGroupID = 0;
                     }
@@ -329,33 +257,32 @@
                         ApiManagementResource.ApiGroup.Update(callback).$promise.then(function(response) {
                             switch (response.statusCode) {
                                 case CODE.COMMON.SUCCESS:
-                                {
-                                    $rootScope.InfoModal(template.modal.title + $filter('translate')('01214015'), 'success');
-                                    vm.data.fun.init();
-                                    break;
-                                }
+                                    {
+                                        $rootScope.InfoModal(template.modal.title + $filter('translate')('01214015'), 'success');
+                                        vm.data.fun.init();
+                                        break;
+                                    }
                             }
                         });
                     } else {
                         ApiManagementResource.ApiGroup.Add({ parentGroupID: callback.parentGroupID, projectID: vm.data.interaction.request.projectID, groupName: callback.groupName }).$promise.then(function(response) {
                             switch (response.statusCode) {
                                 case CODE.COMMON.SUCCESS:
-                                {
-                                    $rootScope.InfoModal(template.modal.title + $filter('translate')('01214015'), 'success');
-                                    vm.data.fun.init();
-                                    break;
-                                }
+                                    {
+                                        $rootScope.InfoModal(template.modal.title + $filter('translate')('01214015'), 'success');
+                                        vm.data.fun.init();
+                                        break;
+                                    }
                             }
                         });
                     }
                 }
             });
-}
-
+        }
         /**
-         * @function [子分组删除事件]
+         * @function [子分组删除事件] [Sub-group delete event]
          */
-         vm.data.fun.delete.child = function(arg) {
+        vm.data.fun.delete.child = function(arg) {
             arg = arg || {};
             var template = {
                 modal: {
@@ -368,24 +295,23 @@
                     ApiManagementResource.ApiGroup.Delete({ projectID: vm.data.interaction.request.projectID, groupID: arg.childItem.groupID }).$promise.then(function(response) {
                         switch (response.statusCode) {
                             case CODE.COMMON.SUCCESS:
-                            {
-                                arg.item.childGroupList.splice(arg.$index, 1);
-                                $rootScope.InfoModal($filter('translate')('01214020'), 'success');
-                                if (vm.data.interaction.request.childGroupID == arg.childItem.groupID) {
-                                    vm.data.fun.click.parent({ item: arg.item });
+                                {
+                                    arg.item.childGroupList.splice(arg.$index, 1);
+                                    $rootScope.InfoModal($filter('translate')('01214020'), 'success');
+                                    if (vm.data.interaction.request.childGroupID == arg.childItem.groupID) {
+                                        vm.data.fun.click.parent({ item: arg.item });
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
                         }
                     })
                 }
             });
         }
-
         /**
-         * @function [父分组删除事件]
+         * @function [父分组删除事件] [Parent group delete event]
          */
-         vm.data.fun.delete.parent = function(arg) {
+        vm.data.fun.delete.parent = function(arg) {
             arg = arg || {};
             var template = {
                 modal: {
@@ -398,64 +324,128 @@
                     ApiManagementResource.ApiGroup.Delete({ projectID: vm.data.interaction.request.projectID, groupID: arg.item.groupID }).$promise.then(function(response) {
                         switch (response.statusCode) {
                             case CODE.COMMON.SUCCESS:
-                            {
-                                vm.data.interaction.response.query.splice(arg.$index, 1);
-                                $rootScope.InfoModal($filter('translate')('01214020'), 'success');
-                                if (vm.data.interaction.response.query.length > 2) {
-                                    GroupService.set(vm.data.interaction.response.query.slice(2));
-                                } else {
-                                    GroupService.set(null);
+                                {
+                                    vm.data.interaction.response.query.splice(arg.$index, 1);
+                                    $rootScope.InfoModal($filter('translate')('01214020'), 'success');
+                                    if (vm.data.interaction.response.query.length > 0) {
+                                        GroupService.set(vm.data.interaction.response.query);
+                                    } else {
+                                        GroupService.set(null);
+                                    }
+                                    if ($state.params.groupID == -1) {
+                                        vm.data.fun.click.parent({ item: {} });
+                                    } else if (vm.data.interaction.request.groupID == arg.item.groupID) {
+                                        vm.data.fun.click.parent({ item: vm.data.static.query[1] });
+                                    } else if ($state.params.groupID == -2) {
+                                        vm.data.fun.click.child({ item: { groupID: -1 } })
+                                    }
+                                    break;
                                 }
-                                if ($state.params.groupID == -1) {
-                                    vm.data.fun.click.parent({ item: {} });
-                                } else if (vm.data.interaction.request.groupID == arg.item.groupID) {
-                                    vm.data.fun.click.parent({ item: vm.data.interaction.response.query[0] });
-                                } else if ($state.params.groupID == -2) {
-                                    vm.data.fun.click.child({ item: { groupID: -1 } })
-                                }
-                                break;
-                            }
                         }
                     })
-}
-});
-}
-
+                }
+            });
+        }
         /**
-         * @function [路由更改函数]
+         * @function [路由更改函数] [Routing change function]
          */
-         $scope.$on('$stateChangeSuccess', function() { 
+        $scope.$on('$stateChangeSuccess', function() { 
+            vm.data.interaction.request.groupID=$state.params.groupID||-1;
+            vm.data.interaction.request.childGroupID=vm.data.interaction.request.childGroupID;
             if ($state.current.name.indexOf('edit') > -1) {
                 vm.data.info.sidebarShow = false;
             } else {
                 vm.data.info.sidebarShow = true;
             }
         })
-
-        /**
-         * @function [inside tab 转换时更改group选中状态]
-         */
-         $scope.$on('$changeSidebar', function(data, attr) { 
-            angular.forEach(vm.data.interaction.response.query, function(val, key) {
-                if (val.groupID == attr.groupID) {
-                    if (attr.childGroupID && attr.groupID > 0) {
-                        for (var i = 0; i < val.childGroupList.length; i++) {
-                            if (val.childGroupList[i].groupID == attr.childGroupID) {
-                                val.childGroupList[i].isClick = true;
-                                if (attr.isList) {
-                                    $scope.$emit('$windowTitle', { groupName: val.childGroupList[i].groupName });
-                                }
-                                break;
-                            }
-                        }
-                    } else {
-                        if (attr.isList) {
-                            $scope.$emit('$windowTitle', { groupName: val.groupName });
+        vm.$onInit = function() {
+            vm.data.component.groupCommonObject = {
+                sortObject: vm.data.info.sort,
+                funObject: {
+                    showObject: vm.data.info.sort,
+                    showVar: 'isDisable',
+                    btnGroupList: {
+                        edit: {
+                            key: $filter('translate')('0121400'),
+                            class: 'eo-button-success',
+                            icon: 'tianjia',
+                            showable: false,
+                            fun: vm.data.fun.edit.parent
+                        },
+                        sortDefault: {
+                            key: $filter('translate')('0121401'),
+                            class: 'default-btn',
+                            icon: 'paixu',
+                            tips: true,
+                            showable: false,
+                            fun: vm.data.fun.sort.copy
+                        },
+                        sortConfirm: {
+                            key: $filter('translate')('0121402'),
+                            class: 'default-btn',
+                            icon: 'check',
+                            tips: true,
+                            showable: true,
+                            fun: vm.data.fun.sort.confirm
+                        },
+                        sortCancel: {
+                            key: $filter('translate')('0121403'),
+                            class: 'default-btn',
+                            icon: 'close',
+                            tips: true,
+                            showable: true,
+                            fun: vm.data.fun.sort.cancle
                         }
                     }
+                },
+                mainObject: {
+                    level: 2,
+                    baseInfo: {
+                        name: 'groupName',
+                        id: 'groupID',
+                        childID: 'childGroupID',
+                        child: 'childGroupList',
+                        interaction: vm.data.interaction.request
+                    },
+                    staticQuery: vm.data.static.query,
+                    parentFun: {
+                        addChild: {
+                            fun: vm.data.fun.edit.child,
+                            key: $filter('translate')('0121405'),
+                            params: { $outerIndex: null, isEdit: false },
+                            class: 'add-child-btn'
+                        },
+                        edit: {
+                            fun: vm.data.fun.edit.parent,
+                            key: $filter('translate')('0121406'),
+                            params: { item: null }
+                        },
+                        delete: {
+                            fun: vm.data.fun.delete.parent,
+                            key: $filter('translate')('0121407'),
+                            params: { item: null, $index: null }
+                        }
+                    },
+                    childFun: {
+                        edit: {
+                            fun: vm.data.fun.edit.child,
+                            key: $filter('translate')('0121406'),
+                            params: { childItem: null, $outerIndex: null, isEdit: true }
+                        },
+                        delete: {
+                            fun: vm.data.fun.delete.child,
+                            key: $filter('translate')('0121407'),
+                            params: { item: null, childItem: null, $index: null }
+                        }
+                    },
+                    baseFun: {
+                        parentClick: vm.data.fun.click.parent,
+                        childClick: vm.data.fun.click.child,
+                        spreed: vm.data.service.defaultCommon.fun.spreed
+                    }
                 }
-            })
-        });
-}
+            }
+        }
+    }
 
 })();

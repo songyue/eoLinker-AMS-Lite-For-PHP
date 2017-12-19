@@ -22,21 +22,6 @@ class UpdateController
     private $returnJson = array('type' => 'update');
 
     /**
-     * Checkout login status
-     * 验证登录状态
-     */
-    public function __construct()
-    {
-        // identity authentication
-        // 身份验证
-        $server = new GuestModule;
-        if (!$server->checkLogin()) {
-            $this->returnJson['statusCode'] = '120005';
-            exitOutput($this->returnJson);
-        }
-    }
-
-    /**
      * 检查是否有更新
      */
     public function checkUpdate()
@@ -79,9 +64,6 @@ class UpdateController
                         $updateServer = new UpdateModule;
                         if ($updateServer->autoUpdate($result['updateUrl'])) {
                             $this->returnJson['statusCode'] = '000000';
-                            //清除session退出登录
-                            @session_start();
-                            @session_destroy();
                         } else {
                             //更新失败
                             $this->returnJson['statusCode'] = '320003';
@@ -117,9 +99,6 @@ class UpdateController
                 $updateServer = new UpdateModule;
                 if ($updateServer->manualUpdate()) {
                     $this->returnJson['statusCode'] = '000000';
-                    //清除session退出登录
-                    @session_start();
-                    @session_destroy();
                 } else {
                     //更新失败
                     $this->returnJson['statusCode'] = '320003';

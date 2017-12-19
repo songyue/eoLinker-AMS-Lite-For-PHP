@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [公用弹窗controller js] [Public bucket controller js]
-     * @version  3.1.1
+     * @version  3.1.5
      */
     angular.module('eolinker.modal')
 
@@ -56,6 +56,9 @@
 
     .controller('ResponseParamEditModalCtrl', ResponseParamEditModalCtrl)
 
+    .controller('UpdateModalCtrl', UpdateModalCtrl)
+
+    .controller('CommonSingleInputModalCtrl', CommonSingleInputModalCtrl)
 
     RequestParamDetailModalCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'input'];
     /**
@@ -728,7 +731,7 @@
         $scope.data = {
             input: input,
             fun: {
-                dumpDirective: null //
+                dumpDirective: null 
             }
         }
         var data = {
@@ -1344,7 +1347,7 @@
      * @service  $scope [注入作用域服务] [Injection scope service]
      * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
      * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
-     * @service  ApiManagementResource [注入数据库管理接口服务] [inject ApiManagement API service]
+     * @service  ApiManagementResource [注入API管理接口服务] [inject ApiManagement API service]
      * @service  $filter [注入过滤器服务] [inject filter service]
      * @service  GroupService [注入GroupService服务] [inject GroupService service]
      * @constant CODE [注入状态码常量] [inject status code constant service]
@@ -1503,6 +1506,203 @@
             //$uibModalInstance.dismiss(false);
             $uibModalInstance.close(false);
         };
+    }
+
+    UpdateModalCtrl.$inject = ['$scope', '$rootScope','$uibModalInstance', 'ApiManagementResource', '$filter', '$state', '$http', 'CODE'];
+    /**
+     * @function [更新开源版本弹窗] [Update the open source version]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  ApiManagementResource [注入API管理接口服务] [inject ApiManagement API service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @service  $state [注入过滤器服务] [inject state service]
+     * @service  $http [注入过滤器服务] [inject http service]
+     * @constant CODE [注入状态码常量] [inject status code constant service]
+     */
+    function UpdateModalCtrl($scope, $rootScope, $uibModalInstance, ApiManagementResource, $filter, $state, $http, CODE) {
+        $scope.info = {
+            hasNewVersion: false,
+            updating: false,
+            updateFail: false,
+            latestVersion: null,
+            updateTime: null,
+            tips: '',
+            updateTips: '',
+            ok: $filter('translate')('414'),
+            cancel: $filter('translate')('415'),
+            autoUpdateBtn: false,
+            manualUpdateBtn: false
+        }
+        var request = { 
+            method: 'GET',
+            url: 'https://api.eolinker.com/openSource/Update/checkout',
+        };
+        $http(request).then(function (response) { 
+            $scope.info.latestVersion = response.data.version;
+            $scope.info.updateTime = response.data.updateTime;
+        });
+
+        $scope.online = function() { // 选择在线更新，检测更新情况
+            ApiManagementResource.Update.Check().$promise.then(function(data) {
+                if (data.statusCode == 320002) {
+                    $uibModalInstance.close(true);
+                    $rootScope.InfoModal($filter('translate')('508'), 'success');
+                    $scope.info.hasNewVersion = false
+                } else if (data.statusCode == CODE.COMMON.SUCCESS) {
+                    $scope.info = {
+                        hasNewVersion: true,
+                        autoUpdateBtn: true,
+                        manualUpdateBtn: false,
+                        updateTips: $filter('translate')('509'),
+                        tips: $filter('translate')('505'),
+                        ok: $filter('translate')('414'),
+                        cancel: $filter('translate')('415')
+                    }
+                } else if (data.statusCode == 320004) {
+                    $uibModalInstance.close(true);
+                    $rootScope.InfoModal($filter('translate')('5010'), 'error');
+                } else if (data.statusCode == 320001) {
+                    $scope.info = {
+                        updating: false,
+                        updateFail: true,
+                        tips: $filter('translate')('5011'),
+                        ok: $filter('translate')('5012'),
+                        cancel: $filter('translate')('415')
+                    }
+                }
+            })
+        };
+
+        $scope.manual = function() { // 选择手动更新
+            $scope.info = {
+                hasNewVersion: true,
+                autoUpdateBtn: false,
+                manualUpdateBtn: true,
+                updateTips: $filter('translate')('5013'),
+                tips: $filter('translate')('505'),
+                ok: $filter('translate')('414'),
+                cancel: $filter('translate')('415')
+            }
+        };
+
+        $scope.autoUpdate = function() { // 开始在线更新
+            $scope.info = {
+                updating: true,
+                manualUpdateBtn: false,
+                autoUpdateBtn: false,
+            }
+            ApiManagementResource.Update.autoUpdate().$promise.then(function(data) {
+                if (data.statusCode == CODE.COMMON.SUCCESS) {
+                    window.localStorage.removeItem('USER');
+                    $uibModalInstance.close(true);
+                    $rootScope.InfoModal($filter('translate')('5014'), 'success');
+                    setTimeout(function() {
+                        $state.go('index');
+                    }, 3000)
+                } else if (data.statusCode == 320003) {
+                    $scope.info = {
+                        updating: false,
+                        updateFail: true,
+                        tips: $filter('translate')('5015'),
+                        ok: $filter('translate')('414'),
+                        cancel: $filter('translate')('415')
+                    }
+                } else if (data.statusCode == 320001) {
+                    $scope.info = {
+                        updating: false,
+                        updateFail: true,
+                        tips: $filter('translate')('5011'),
+                        ok: $filter('translate')('414'),
+                        cancel: $filter('translate')('415')
+                    }
+                } else if (data.statusCode == 320004) {
+                    $uibModalInstance.close(true);
+                    $rootScope.InfoModal($filter('translate')('5010'), 'error');
+                }
+            })
+        }
+
+        $scope.manualUpdate = function() { // 开始手动更新
+            $scope.info = {
+                updating: true,
+                manualUpdateBtn: false,
+                autoUpdateBtn: false,
+            }
+            ApiManagementResource.Update.manualUpdate().$promise.then(function(data) {
+                if (data.statusCode == CODE.COMMON.SUCCESS) {
+                    window.localStorage.removeItem('USER');
+                    $uibModalInstance.close(true);
+                    $rootScope.InfoModal($filter('translate')('5014'), 'success');
+                    setTimeout(function() {
+                        $state.go('index');
+                    }, 3000)
+                } else if (data.statusCode == 320003) {
+                    $scope.info = {
+                        updating: false,
+                        updateFail: true,
+                        tips: $filter('translate')('5015'),
+                        ok: $filter('translate')('414'),
+                        cancel: $filter('translate')('415')
+                    }
+                } else if (data.statusCode == 320001) {
+                    $scope.info = {
+                        updating: false,
+                        updateFail: true,
+                       tips: $filter('translate')('5011'),
+                        ok: $filter('translate')('414'),
+                        cancel: $filter('translate')('415')
+                    }
+                } else if (data.statusCode == 320004) {
+                    $uibModalInstance.close(true);
+                    $rootScope.InfoModal($filter('translate')('5010'), 'error');
+                }
+            })
+        }
+        $scope.cancel = function() {
+            // $uibModalInstance.dismiss(false);
+            $uibModalInstance.close(false);
+        };
+    }
+
+    CommonSingleInputModalCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'title', 'desc', 'info', 'input'];
+    /**
+     * @function [单一输入框弹窗] [Single input box]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $filter [注入过滤器服务] [inject filter service]
+     * @param    {[string]}   title [弹窗标题 Pop-up title]
+     * @param    {[obj]}   desc [描述信息 description information]
+     * @param    {[obj]}   info [接口信息 API information]
+     * @param    {[string]}   input [按钮类型 Button type]
+     */
+    function CommonSingleInputModalCtrl($scope, $uibModalInstance, $filter, title, desc, info, input) {
+        $scope.title = title;
+        $scope.info = {
+            desc: desc,
+            message: info,
+            btnType: input.btnType || 0, //0：warning 1：info,
+            btnMessage: input.btnMessage || $filter('translate')('511'),
+            placeholder: $filter('translate')('510'),
+        }
+        $scope.data={
+            input:input
+        }
+        $scope.ok = function() {
+            if ($scope.sureForm.$valid) {
+                $uibModalInstance.close({
+                    check: true,
+                    desc: $scope.info.desc
+                });
+            } else {
+                $scope.submited = true;
+            }
+        };
+
+        $scope.cancel = function() {
+            $uibModalInstance.close(false);
+        };
+
     }
 
 

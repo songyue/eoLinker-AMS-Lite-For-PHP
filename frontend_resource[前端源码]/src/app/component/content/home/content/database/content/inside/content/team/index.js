@@ -48,6 +48,8 @@
                     administrators: $filter('translate')('0101017'),
                     kick: $filter('translate')('01010111'),
                     quit: $filter('translate')('01010112'),
+                    read: $filter('translate')('01010126'),
+                    readAndWrite: $filter('translate')('01010127'),
                 }
             },
             interaction: {

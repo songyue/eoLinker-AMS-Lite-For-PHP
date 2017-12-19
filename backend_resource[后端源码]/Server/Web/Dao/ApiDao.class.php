@@ -1327,6 +1327,37 @@ class ApiDao
             return TRUE;
         }
     }
+
+    /**
+     * 批量修改接口分组
+     * @param $api_ids
+     * @param $project_id
+     * @param $group_id
+     * @return bool
+     */
+    public function changeApiGroup(&$api_ids, &$project_id, &$group_id)
+    {
+        $db = getDatabase();
+        $db->beginTransaction();
+        $db->prepareExecuteAll("UPDATE eo_api_cache SET eo_api_cache.groupID = ? WHERE eo_api_cache.apiID IN ($api_ids) AND eo_api_cache.projectID = ?;", array(
+            $group_id,
+            $project_id
+        ));
+        if ($db->getAffectRow() < 1) {
+            $db->rollback();
+            return FALSE;
+        }
+        $db->prepareExecuteAll("UPDATE eo_api SET eo_api.groupID = ? WHERE eo_api.apiID IN ($api_ids) AND eo_api.projectID = ?;", array(
+            $group_id,
+            $project_id
+        ));
+        if ($db->getAffectRow() < 1) {
+            $db->rollback();
+            return FALSE;
+        }
+        $db->commit();
+        return TRUE;
+    }
 }
 
 ?>

@@ -3,14 +3,12 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [api测试模块相关js] [api test module related js]
-     * @version  3.0.2
+     * @version  3.1.5
      * @service  $scope [注入作用域服务] [Injection scope service]
      * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
      * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
      * @service  $state [注入路由服务] [Injection state service]
-     * @service  ApiDetailService [注入ApiDetailService服务] [Injection ApiDetailService service]
-     * @service  GroupService [注入GroupService服务] [Injection GroupService service]
-     * @service  HomeProject_Service [注入HomeProject_Service服务] [Injection HomeProject_Service service]
+     * @service  HomeProject_Common_Service [注入HomeProject_Service服务] [Injection HomeProject_Common_Service service]
      * @service  $filter [注入过滤器服务] [Injection filter service]
      * @constant CODE [注入状态码常量] [inject status code constant service]
      * @constant HTTP_CONSTANT [注入HTTP相关常量集] [inject HTTP related constant service]
@@ -31,13 +29,14 @@
             controller: homeProjectInsideApiTestController
         })
 
-    homeProjectInsideApiTestController.$inject = ['$window', '$scope', '$rootScope', 'ApiManagementResource', '$state', 'ApiDetailService', 'GroupService', 'HomeProject_Service', '$filter', 'CODE', 'HTTP_CONSTANT'];
+    homeProjectInsideApiTestController.$inject = ['$window', '$scope', '$rootScope', 'ApiManagementResource', '$state', 'Cache_CommonService', 'HomeProject_Common_Service', 'HomeProjectDefaultApi_Service', '$filter', 'CODE', 'HTTP_CONSTANT'];
 
-    function homeProjectInsideApiTestController($window, $scope, $rootScope, ApiManagementResource, $state, ApiDetailService, GroupService, HomeProject_Service, $filter, CODE, HTTP_CONSTANT) {
+    function homeProjectInsideApiTestController($window, $scope, $rootScope, ApiManagementResource, $state, Cache_CommonService, HomeProject_Common_Service, HomeProjectDefaultApi_Service, $filter, CODE, HTTP_CONSTANT) {
         var vm = this;
         vm.data = {
             service: {
-                home: HomeProject_Service,
+                home: HomeProject_Common_Service,
+                default: HomeProjectDefaultApi_Service,
                 $window: $window
             },
             constant: {
@@ -96,6 +95,7 @@
                 }
             },
             fun: {
+                addHistory: null,
                 blurInput: null,
                 expressionBuilder: null, 
                 uriBlur: null, 
@@ -129,6 +129,24 @@
                 init: null 
             }
         }
+        /**
+         * @function [添加测试历史] [Add test history]
+         */
+        vm.data.fun.addHistory = function(arg) {
+            var template = {
+                request: {
+                    // projectID: vm.data.interaction.request.projectID,
+                    requestInfo: JSON.stringify(arg.history.requestInfo),
+                    resultInfo: JSON.stringify(arg.history.resultInfo),
+                    // testTime: arg.history.testTime,
+                    apiID:vm.data.interaction.request.apiID
+                }
+            }
+            ApiManagementResource.Test.AddHistory(template.request).$promise.then(function(response) {
+                arg.history.testID = response.testID;
+            })
+        }
+        
         /**
          * @function [构造器失焦状态检测] [Constructor out of focus state detection]
          */
@@ -194,116 +212,6 @@
          */
         vm.data.fun.requestList.delete = function(arg) {
             vm.data.service.home.envObject.object.model.params.splice(arg.$index, 1);
-        }
-
-        /**
-         * @function [移入回收站功能函数] [Move into the Recycle Bin]
-         */
-        vm.data.fun.delete = function() {
-            var template = {
-                request: {
-                    projectID: vm.data.interaction.request.projectID,
-                    apiID: '[' + vm.data.interaction.request.apiID + ']'
-                },
-                uri: {
-                    groupID: vm.data.interaction.request.groupID,
-                    childGroupID: vm.data.interaction.request.childGroupID
-                }
-            }
-            $rootScope.EnsureModal($filter('translate')('012100041'), false, $filter('translate')('012100042'), {}, function(callback) {
-                if (callback) {
-                    ApiManagementResource.Api.Delete(template.request).$promise
-                        .then(function(response) {
-                            switch (response.statusCode) {
-                                case CODE.COMMON.SUCCESS:
-                                    {
-                                        $state.go('home.project.inside.api.list', template.uri);
-                                        $rootScope.InfoModal($filter('translate')('012100043'), 'success');
-                                        break;
-                                    }
-                            }
-                        })
-                }
-            });
-        }
-
-        /**
-         * @function [恢复功能函数] [recover]
-         */
-        vm.data.fun.recover = function() {
-            var template = {
-                modal: {
-                    group: {
-                        parent: GroupService.get(),
-                        title: $filter('translate')('012100044')
-                    }
-                },
-                request: {
-                    projectID: vm.data.interaction.request.projectID,
-                    apiID: '[' + vm.data.interaction.request.apiID + ']',
-                    groupID: ''
-                },
-                uri: {
-                    groupID: vm.data.interaction.request.groupID,
-                    childGroupID: vm.data.interaction.request.childGroupID
-                }
-            }
-            if (!template.modal.group.parent) {
-                $rootScope.InfoModal($filter('translate')('012100045'), 'error');
-                return;
-            }
-            $rootScope.ApiRecoverModal(template.modal, function(callback) {
-                if (callback) {
-                    template.request.groupID = callback.groupID;
-                    ApiManagementResource.Trash.Recover(template.request).$promise
-                        .then(function(response) {
-                            switch (response.statusCode) {
-                                case CODE.COMMON.SUCCESS:
-                                    {
-                                        $rootScope.InfoModal($filter('translate')('012100046'), 'success');
-                                        $state.go('home.project.inside.api.list', template.uri);
-                                        break;
-                                    }
-                            }
-                        })
-                }
-            });
-        }
-
-        /**
-         * @function [彻底删除功能函数] [Remove completely]
-         */
-        vm.data.fun.deleteCompletely = function() {
-            var template = {
-                request: {
-                    projectID: vm.data.interaction.request.projectID,
-                    apiID: '[' + vm.data.interaction.request.apiID + ']'
-                },
-                uri: {
-                    groupID: vm.data.interaction.request.groupID,
-                    childGroupID: vm.data.interaction.request.childGroupID
-                }
-            }
-            $rootScope.EnsureModal($filter('translate')('012100047'), false, $filter('translate')('012100048'), {}, function(callback) {
-                if (callback) {
-                    ApiManagementResource.Trash.Delete(template.request).$promise
-                        .then(function(response) {
-                            switch (response.statusCode) {
-                                case CODE.COMMON.SUCCESS:
-                                    {
-                                        $state.go('home.project.inside.api.list', template.uri);
-                                        $rootScope.InfoModal($filter('translate')('012100049'), 'success');
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        $rootScope.InfoModal($filter('translate')('012100050'), 'error');
-                                        break;
-                                    }
-                            }
-                        })
-                }
-            });
         }
 
         /**
@@ -567,7 +475,7 @@
          * @function [辅助初始化功能函数] [Auxiliary initialization]
          */
         vm.data.assistantFun.init = function() {
-            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('012100055') + vm.data.interaction.response.apiInfo.baseInfo.apiName, 'API接口', $state.params.projectName, '接口管理'] });
+            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('012100055') + vm.data.interaction.response.apiInfo.baseInfo.apiName, $filter('translate')('012100164'), $state.params.projectName, $filter('translate')('012100165')] });
             vm.data.interaction.response.apiInfo.testHistory = vm.data.interaction.response.apiInfo.testHistory || [];
             angular.forEach(vm.data.interaction.response.apiInfo.testHistory, function(val, key) {
                 try {
@@ -594,6 +502,7 @@
                     console.log($filter('translate')('012100057'));
                 }
             })
+            console.log(vm.data.service.home.envObject)
             vm.data.service.home.envObject.object.model.URL = vm.data.interaction.response.apiInfo.baseInfo.apiURI;
             vm.data.service.home.envObject.object.model.params = vm.data.interaction.response.apiInfo.requestInfo || [];
             vm.data.service.home.envObject.object.model.httpHeader = '' + vm.data.interaction.response.apiInfo.baseInfo.apiProtocol;
@@ -624,7 +533,7 @@
             vm.data.info.template.envModel = vm.data.service.home.envObject.object.model;
             vm.data.fun.headerList.add();
             vm.data.fun.requestList.add();
-            $scope.$emit('$translateferStation', { state: '$EnvInitReady', data: { status: 2, param: angular.toJson(vm.data.service.home.envObject.object.model), header: 'headers', uri: 'URL' } });
+            $scope.$emit('$translateferStation', { state: '$EnvInitReady', data: { status: 2, param: angular.toJson(vm.data.service.home.envObject.object.model), header: 'headers',additionalParams:'params', uri: 'URL' } });
         }
 
         /**
@@ -633,7 +542,7 @@
         vm.data.fun.init = function() {
             var template = {
                 cache: {
-                    apiInfo: ApiDetailService.get(),
+                    apiInfo: Cache_CommonService.get(),
                     testInfo: vm.data.service.home.apiTestObject.testInfo
                 },
                 request: {
@@ -683,7 +592,7 @@
             $scope.$on('$stateChangeStart', function() {
                 vm.data.info.template.envModel.params = vm.data.service.home.envObject.object.model.params;
                 vm.data.service.home.apiTestObject.fun.set({ object: { reset: vm.data.info.template.envModel, apiInfo: vm.data.interaction.response.apiInfo, message: vm.data.service.home.envObject.object.model, result: vm.data.info.response, format: vm.data.info.format } });
-                ApiDetailService.set(null);
+                Cache_CommonService.set(null);
             });
         }
 

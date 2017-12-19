@@ -11,13 +11,56 @@
     .directive('eoModal', [function() {
         return {
             restrict: 'AE',
-            templateUrl: 'app/modal/index.html',
+            template: '<eo-common-modal></eo-common-modal>' +
+                    '<eo-api-management-modal></eo-api-management-modal>',
             controller: eoModalController
         }
     }])
     eoModalController.$inject = ['$scope', '$uibModal', '$rootScope']
 
     function eoModalController($scope, $uibModal, $rootScope) {
+         /**
+         * @description 接口管理公用模块定义
+         */
+        $rootScope.ApiManagement_AutomatedTest_QiuckAddSingalModal = function openModel(input, callback) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'ApiManagement_AutomatedTest_QiuckAddSingalModal',
+                controller: 'ApiManagement_AutomatedTest_QiuckAddSingalModalCtrl',
+                resolve: {
+                    input: function() {
+                        return input;
+                    }
+                }
+            });
+            modalInstance.result.then(callback);
+        }
+        $rootScope.ApiManagement_AutomatedTest_EditCaseModal = function openModel(input, callback) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'ApiManagement_AutomatedTest_EditCaseModal',
+                controller: 'ApiManagement_AutomatedTest_EditCaseModalCtrl',
+                resolve: {
+                    input: function() {
+                        return input;
+                    }
+                }
+            });
+            modalInstance.result.then(callback);
+        }
+        $rootScope.ApiManagement_AutomatedTest_BindModal = function openModel(input, callback) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'ApiManagement_AutomatedTest_BindModal',
+                controller: 'ApiManagement_AutomatedTest_BindModalCtrl',
+                resolve: {
+                    input: function() {
+                        return input;
+                    }
+                }
+            });
+            modalInstance.result.then(callback);
+        }
         $rootScope.RequestParamDetailModal = function openModal(input, callback) {
             var modalInstance = $uibModal.open({
                 animation: true,
@@ -319,6 +362,70 @@
                     },
                     info: function() {
                         return info;
+                    }
+                }
+            });
+            modalInstance.result.then(callback);
+        }
+        $rootScope.UpdateModal = function openModel(title, info, callback) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'UpdateModal',
+                controller: 'UpdateModalCtrl',
+                resolve: {
+                    title: function() {
+                        return title;
+                    },
+                    info: function() {
+                        return info;
+                    }
+                }
+            });
+            modalInstance.result.then(callback);
+        }
+        $rootScope.CommonSingleInputModal = function openModel(title, desc, info, input, callback) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'CommonSingleInputModal',
+                controller: 'CommonSingleInputModalCtrl',
+                resolve: {
+                    title: function() {
+                        return title;
+                    },
+                    desc: function() {
+                        return desc;
+                    },
+                    info: function() {
+                        return info;
+                    },
+                    input: function() {
+                        return input;
+                    }
+                }
+            });
+            modalInstance.result.then(callback);
+        }
+        $rootScope.ApiManagement_AutoGenerationModal = function(input, callback) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'ApiManagement_AutoGenerationModal',
+                controller: 'ApiManagement_AutoGenerationModalCtrl',
+                resolve: {
+                    input: function() {
+                        return input;
+                    }
+                }
+            });
+            modalInstance.result.then(callback);
+        }
+        $rootScope.ApiManagement_BackupsModal = function(input, callback) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'ApiManagement_BackupsModal',
+                controller: 'ApiManagement_BackupsModalCtrl',
+                resolve: {
+                    input: function() {
+                        return input;
                     }
                 }
             });

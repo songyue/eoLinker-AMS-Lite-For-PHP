@@ -94,7 +94,7 @@
                                     <span class="iconfont " ng-class="{'icon-huangguan':item.userType==0}"></span>
                                 </p>
                                 <p class="userName-p" title="{{item.partnerNickName}}">
-                                    {{(!!item.partnerNickName)?item.partnerNickName:(item.inviteCall?item.inviteCall: $ctrl.data.info.filter.unknown)}}
+                                    [{{item.userType=='2'?$ctrl.data.info.filter.readAndWrite:$ctrl.data.info.filter.read}}]{{(!!item.partnerNickName)?item.partnerNickName:(item.inviteCall?item.inviteCall: $ctrl.data.info.filter.unknown)}}
                                 </p>
                             </li>
                             <li class="pull-right list-li" ng-class="{'hidden':($ctrl.data.info.power==2)&&item.isNow==0}" data-ng-click="item.listIsClick=true;" data-ng-mouseleave="item.listIsClick=false">

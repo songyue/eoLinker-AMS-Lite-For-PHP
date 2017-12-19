@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [加载提示指令js] [Load the prompt command js]
-     * @version  3.0.2
+     * @version  3.1.5
      */
     angular.module('eolinker.directive')
 
@@ -16,7 +16,7 @@
                 '<div class="loading" >' +
                 '<ul>' +
                 '<li>' +
-                '<div ><span class="iconfont  icon-loading"></span></div>{{\'320\'|translate}}' +
+                '<div ><span class="iconfont  icon-loading1"></span></div>{{\'320\'|translate}}' +
                 '</li>' +
                 '</ul>' +
                 '</div>' +

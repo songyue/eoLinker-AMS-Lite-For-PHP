@@ -40,7 +40,7 @@ class UpdateModule
             //备份数据库
             $backupDao = new BackupDao();
             $sql = $backupDao->getDatabaseBackupSql();
-            $file_name = "eoLinker_backup_database_" . $_SESSION['userName'] . '_' . time() . '.sql';
+            $file_name = "eoLinker_backup_database_" . time() . '.sql';
             if (!file_put_contents(realpath('./dump') . DIRECTORY_SEPARATOR . $file_name, $sql)) {
                 return FALSE;
             }
@@ -70,7 +70,7 @@ class UpdateModule
             //备份数据库
             $backupDao = new BackupDao();
             $sql = $backupDao->getDatabaseBackupSql();
-            $file_name = "eoLinker_backup_database_" . $_SESSION['userName'] . '_' . time() . '.sql';
+            $file_name = "eoLinker_backup_database_" . time() . '.sql';
             if (!file_put_contents(realpath('./dump') . DIRECTORY_SEPARATOR . $file_name, $sql)) {
                 return FALSE;
             }

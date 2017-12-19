@@ -5,7 +5,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [接口管理接口服务定义js] [API management interface service definition js]
-     * @version  3.0.2
+     * @version  3.1.5
      * @service  $resource [注入$resource服务] [Inject the $resource service]
      * @constant serverUrl [注入前缀URL] [Inject the prefix URL]
      */
@@ -72,6 +72,10 @@
                 Dump: {
                     params: { operate: 'dumpProject' },
                     method: data.info.method
+                },
+                GetProjectLogList: {
+                    params: { operate: 'getProjectLogList' },
+                    method: data.info.method,
                 }
             }
 
@@ -107,12 +111,123 @@
                 Detail: {
                     params: { operate: 'getApi' },
                     method: data.info.method
+                },
+                HistoryList: {
+                    params: { operate: 'getApiHistoryList' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                DeleteHistory: {
+                    params: { operate: 'deleteApiHistory' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                toggleHistory: {
+                    params: { operate: 'toggleApiHistory' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Mock: {
+                    params: { operate: 'getApiMockData' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                RefreshMock: {
+                    params: { operate: 'editApiMockData' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Check: {
+                    params: { operate: 'checkApiExist' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Import: {
+                    params: { operate: 'importApi' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Move:{
+                    params: { operate: 'changeApiGroup' },
+                    method: data.info.method,
+                    cancellable:true
                 }
             }
 
         );
 
+        data.info.api['Doc'] = $resource(serverUrl + '?g=Web&c=Document&o=:operate', {
 
+            }, {
+                Query: {
+                    params: { operate: 'getDocumentList' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                All: {
+                    params: { operate: 'getAllDocumentList' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Add: {
+                    params: { operate: 'addDocument' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Delete: {
+                    params: { operate: 'deleteDocuments' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Update: {
+                    params: { operate: 'editDocument' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Detail: {
+                    params: { operate: 'getDocument' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Search: {
+                    params: { operate: 'searchDocument' },
+                    method: data.info.method,
+                    cancellable:true
+                }
+            }
+
+        );
+        data.info.api['DocGroup'] = $resource(serverUrl + '?g=Web&c=DocumentGroup&o=:operate', {
+
+            }, {
+                Query: {
+                    params: { operate: 'getGroupList' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Add: {
+                    params: { operate: 'addGroup' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Delete: {
+                    params: { operate: 'deleteGroup' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Update: {
+                    params: { operate: 'editGroup' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                Sort: {
+                    params: { operate: 'sortDocumentGroup' },
+                    method: data.info.method,
+                    cancellable:true
+                }
+            }
+
+        );
 
         data.info.api['Trash'] = $resource(serverUrl + '?g=Web&c=Api&o=:operate', {
 
@@ -175,6 +290,16 @@
                 DeleteAllHistory: {
                     params: { operate: 'deleteAllTestHistory' },
                     method: data.info.method
+                },
+                TestHistoryList: {
+                    params: { operate: 'getTestHistoryList' },
+                    method: data.info.method,
+                    cancellable:true
+                },
+                AddHistory:{
+                    params:{operate:'addTestHistory'},
+                    method: data.info.method,
+                    cancellable:true
                 }
             }
 
@@ -336,6 +461,125 @@
             }
 
         );
+
+        data.info.api['Update'] = $resource(serverUrl + '?g=Web&c=Update&o=:operate', {
+
+            }, {
+                autoUpdate: {
+                    params: { operate: 'autoUpdate' },
+                    method: data.info.method
+                },
+                manualUpdate: {
+                    params: { operate: 'manualUpdate' },
+                    method: data.info.method
+                },
+                Check: {
+                    params: { operate: 'checkUpdate' },
+                    method: data.info.method
+                }
+            }
+
+        );
+
+        data.info.api['Backup'] = $resource(serverUrl + '?g=Web&c=Backup&o=:operate', {
+
+            }, {
+                backupProject: {
+                    params: { operate: 'backupProject' },
+                    method: data.info.method
+                }
+            }
+
+        );
+
+        data.info.api['AutomatedTestCase'] = $resource(serverUrl + '?g=Web&c=AutomatedTestCase&o=:operate', {
+
+        }, {
+            Query: {
+                params: { operate: 'getTestCaseList' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Add: {
+                params: { operate: 'addTestCase' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Delete: {
+                params: { operate: 'deleteTestCase' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Edit: {
+                params: { operate: 'editTestCase' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Search: {
+                params: { operate: 'searchCase' },
+                method: data.info.method,
+                cancellable: true
+            }
+        });
+        data.info.api['AutomatedTestGroup'] = $resource(serverUrl + '?g=Web&c=AutomatedTestCaseGroup&o=:operate', {
+
+        }, {
+            Query: {
+                params: { operate: 'getGroupList' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Add: {
+                params: { operate: 'addGroup' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Delete: {
+                params: { operate: 'deleteGroup' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Edit: {
+                params: { operate: 'editGroup' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Sort: {
+                params: { operate: 'sortGroup' },
+                method: data.info.method,
+                cancellable: true
+            }
+        });
+
+        data.info.api['AutomatedTestCaseSingle'] = $resource(serverUrl + '?g=Web&c=AutomatedTestCaseSingle&o=:operate', {
+
+        }, {
+            Query: {
+                params: { operate: 'getSingleTestCaseList' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Add: {
+                params: { operate: 'addSingleTestCase' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Delete: {
+                params: { operate: 'deleteSingleTestCase' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Edit: {
+                params: { operate: 'editSingleTestCase' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Info:{
+                params: { operate: 'getSingleTestCaseInfo' },
+                method: data.info.method,
+                cancellable: true
+            }
+        });
 
         return data.info.api;
     }

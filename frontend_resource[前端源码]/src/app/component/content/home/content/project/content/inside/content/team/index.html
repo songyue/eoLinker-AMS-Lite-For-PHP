@@ -27,7 +27,7 @@
                                         {{$ctrl.data.interaction.response.userInfo.userName}}
                                     </p>
                                 </li>
-                                <li class="pull-right">{{'0101015'|translate}}
+                                <li class="pull-right">
                                     <span class="check-status">{{$ctrl.data.interaction.response.userInfo.isInvited==1? $ctrl.data.info.filter.haveJoined: $ctrl.data.info.filter.add}}</span>
                                 </li>
                             </ul>
@@ -94,7 +94,7 @@
                                     <span class="iconfont " ng-class="{'icon-huangguan':item.userType==0}"></span>
                                 </p>
                                 <p class="userName-p" title="{{item.partnerNickName}}">
-                                    {{(!!item.partnerNickName)?item.partnerNickName:(item.userName?item.userName: $ctrl.data.info.filter.unknown)}}
+                                    [{{item.userType=='2'?$ctrl.data.info.filter.readAndWrite:$ctrl.data.info.filter.read}}]{{(!!item.partnerNickName)?item.partnerNickName:(item.userName?item.userName: $ctrl.data.info.filter.unknown)}}
                                 </p>
                             </li>
                             <li class="pull-right list-li" ng-hide="($ctrl.data.info.power==2)&&item.isNow==0" data-ng-click="item.listIsClick=true;" data-ng-mouseleave="item.listIsClick=false">

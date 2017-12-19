@@ -31,7 +31,6 @@
                 $router: null 
             }
         }
-
         /**
          * @function [退出登录功能函数] [Exit the login function function]
          */

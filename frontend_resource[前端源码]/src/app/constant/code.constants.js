@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [状态码常量集] [State code constant]
-     * @version  3.0.2
+     * @version  3.1.5
      */
     angular
         .module('eolinker.constant')

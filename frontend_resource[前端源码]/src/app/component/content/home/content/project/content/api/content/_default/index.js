@@ -43,12 +43,12 @@
                 }
             },
             fun: {
-                import: null, 
-                dump: null, 
-                edit: null, 
-                delete: null, 
-                enter: null, 
-                init: null 
+                import: null,
+                dump: null,
+                edit: null,
+                delete: null,
+                enter: null,
+                init: null
             }
         }
 
@@ -63,7 +63,9 @@
                 }
             }
             vm.data.storage = JSON.parse(window.localStorage['ENV_DIRECTIVE_TABLE'] || '{}');
-            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('012013')] });
+            $scope.$emit('$WindowTitleSet', {
+                list: [$filter('translate')('012013')]
+            });
             template.promise = ApiManagementResource.Project.Query(template.request).$promise;
             template.promise.then(function(response) {
                 vm.data.interaction.response.query = response.projectList || [];
@@ -85,23 +87,6 @@
                     $scope.$broadcast('$LoadingInit');
                 }
             });
-        }
-
-        /**
-         * @function [导出项目] [Export the project]
-         */
-        vm.data.fun.dump = function(arg) {
-            arg = arg || {};
-            if (arg.$event) {
-                arg.$event.stopPropagation();
-            }
-            var template = {
-                modal: {
-                    title: $filter('translate')('012014'),
-                    projectID: arg.item.projectID
-                }
-            }
-            $rootScope.ExportModal(template.modal, function(callback) {});
         }
 
         /**
@@ -186,9 +171,8 @@
                     projectID: arg.item.projectID
                 }
             }
-            $state.go('home.project.inside.api.list', template.uri);
+            $state.go('home.project.inside.overview', template.uri);
         }
-        vm.$onInit = function() {
-        }
+        vm.$onInit = function() {}
     }
 })();
