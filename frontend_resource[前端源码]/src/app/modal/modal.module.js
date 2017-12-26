@@ -431,6 +431,19 @@
             });
             modalInstance.result.then(callback);
         }
+        $rootScope.Common_UploadFile = function openModel(input, callback) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'Common_UploadFile',
+                controller: 'Common_UploadFileCtrl',
+                resolve: {
+                    input: function() {
+                        return input;
+                    }
+                }
+            });
+            modalInstance.result.then(callback);
+        }
     }
 
 })();

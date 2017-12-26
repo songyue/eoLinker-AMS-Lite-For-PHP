@@ -29,7 +29,7 @@ CREATE TABLE `eo_api` (
   KEY `groupID` (`groupID`),
   KEY `apiID` (`apiID`),
   KEY `projectID` (`projectID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 DROP TABLE IF EXISTS `eo_api_cache`;
 CREATE TABLE `eo_api_cache` (
   `cacheID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -40,14 +40,14 @@ CREATE TABLE `eo_api_cache` (
   `starred` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `updateUserID` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`cacheID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_env`;
 CREATE TABLE `eo_api_env` (
   `envID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `envName` varchar(255) NOT NULL,
   `projectID` int(10) unsigned NOT NULL,
   PRIMARY KEY (`envID`,`projectID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_env_front_uri`;
 CREATE TABLE `eo_api_env_front_uri` (
   `envID` int(10) unsigned NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE `eo_api_env_front_uri` (
   `uriID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `applyProtocol` varchar(4) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`uriID`,`envID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_env_header`;
 CREATE TABLE `eo_api_env_header` (
   `headerID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -64,7 +64,7 @@ CREATE TABLE `eo_api_env_header` (
   `headerName` varchar(255) NOT NULL,
   `headerValue` text NOT NULL,
   PRIMARY KEY (`headerID`,`envID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_env_param`;
 CREATE TABLE `eo_api_env_param` (
   `paramID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -72,7 +72,7 @@ CREATE TABLE `eo_api_env_param` (
   `paramKey` varchar(255) NOT NULL,
   `paramValue` text NOT NULL,
   PRIMARY KEY (`paramID`,`envID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_env_param_additional`;
 CREATE TABLE `eo_api_env_param_additional` (
   `paramID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -80,7 +80,7 @@ CREATE TABLE `eo_api_env_param_additional` (
   `paramKey` varchar(255) NOT NULL,
   `paramValue` text NOT NULL,
   PRIMARY KEY (`paramID`,`envID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_group`;
 CREATE TABLE `eo_api_group` (
   `groupID` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -91,7 +91,7 @@ CREATE TABLE `eo_api_group` (
   PRIMARY KEY (`groupID`,`projectID`),
   KEY `groupID` (`groupID`),
   KEY `projectID` (`projectID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 DROP TABLE IF EXISTS `eo_api_group_order`;
 CREATE TABLE `eo_api_group_order` (
   `orderID` int(11) NOT NULL AUTO_INCREMENT,
@@ -99,15 +99,15 @@ CREATE TABLE `eo_api_group_order` (
   `orderList` text,
   PRIMARY KEY (`orderID`,`projectID`),
   UNIQUE KEY `projectID` (`projectID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_header`;
 CREATE TABLE `eo_api_header` (
   `headerID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `headerName` varchar(255) NOT NULL,
-  `headerValue` tinytext NOT NULL,
+  `headerValue` text NOT NULL,
   `apiID` int(10) unsigned NOT NULL,
   PRIMARY KEY (`headerID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_request_param`;
 CREATE TABLE `eo_api_request_param` (
   `paramID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -120,16 +120,16 @@ CREATE TABLE `eo_api_request_param` (
   `paramNotNull` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`paramID`),
   KEY `apiID` (`apiID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 DROP TABLE IF EXISTS `eo_api_request_value`;
 CREATE TABLE `eo_api_request_value` (
   `valueID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `value` varchar(255) DEFAULT NULL,
+  `value` text DEFAULT NULL,
   `valueDescription` varchar(255) DEFAULT NULL,
   `paramID` int(10) unsigned NOT NULL,
   PRIMARY KEY (`valueID`),
   KEY `paramID` (`paramID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_result_param`;
 CREATE TABLE `eo_api_result_param` (
   `paramID` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -139,7 +139,7 @@ CREATE TABLE `eo_api_result_param` (
   `paramNotNull` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`paramID`),
   KEY `apiID` (`apiID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 DROP TABLE IF EXISTS `eo_api_result_value`;
 CREATE TABLE `eo_api_result_value` (
   `valueID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -148,7 +148,7 @@ CREATE TABLE `eo_api_result_value` (
   `paramID` int(10) unsigned NOT NULL,
   PRIMARY KEY (`valueID`),
   KEY `resultParamID` (`paramID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 DROP TABLE IF EXISTS `eo_api_status_code_group_order`;
 CREATE TABLE `eo_api_status_code_group_order` (
   `orderID` int(11) NOT NULL AUTO_INCREMENT,
@@ -156,7 +156,7 @@ CREATE TABLE `eo_api_status_code_group_order` (
   `orderList` text NOT NULL,
   PRIMARY KEY (`orderID`,`projectID`),
   UNIQUE KEY `projectID` (`projectID`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_test_history`;
 CREATE TABLE `eo_api_test_history` (
   `testID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -166,7 +166,7 @@ CREATE TABLE `eo_api_test_history` (
   `testTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `projectID` int(10) unsigned NOT NULL,
   PRIMARY KEY (`testID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_conn_database`;
 CREATE TABLE `eo_conn_database` (
   `connID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -176,7 +176,7 @@ CREATE TABLE `eo_conn_database` (
   `inviteUserID` int(10) DEFAULT NULL,
   `partnerNickName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`connID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_conn_project`;
 CREATE TABLE `eo_conn_project` (
   `connID` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -188,7 +188,7 @@ CREATE TABLE `eo_conn_project` (
   PRIMARY KEY (`connID`,`projectID`,`userID`),
   KEY `projectID` (`projectID`),
   KEY `eo_conn_ibfk_2` (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 DROP TABLE IF EXISTS `eo_database`;
 CREATE TABLE `eo_database` (
   `dbID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -196,7 +196,7 @@ CREATE TABLE `eo_database` (
   `dbVersion` float unsigned NOT NULL,
   `dbUpdateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`dbID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_database_table`;
 CREATE TABLE `eo_database_table` (
   `dbID` int(10) unsigned NOT NULL,
@@ -204,7 +204,7 @@ CREATE TABLE `eo_database_table` (
   `tableName` varchar(255) NOT NULL,
   `tableDescription` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`tableID`,`dbID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_database_table_field`;
 CREATE TABLE `eo_database_table_field` (
   `fieldID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -217,7 +217,7 @@ CREATE TABLE `eo_database_table_field` (
   `tableID` int(10) unsigned NOT NULL,
   `defaultValue` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`fieldID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_message`;
 CREATE TABLE `eo_message` (
   `msgID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -230,16 +230,23 @@ CREATE TABLE `eo_message` (
   `isRead` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `otherMsg` text,
   PRIMARY KEY (`msgID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project`;
 CREATE TABLE `eo_project` (
   `projectID` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `projectType` tinyint(1) unsigned NOT NULL,
-  `projectName` varchar(30) COLLATE utf8_bin NOT NULL,
+  `projectName` varchar(255) COLLATE utf8_bin NOT NULL,
   `projectUpdateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `projectVersion` varchar(6) COLLATE utf8_bin NOT NULL DEFAULT '1.0',
   PRIMARY KEY (`projectID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+DROP TABLE IF EXISTS `eo_project_invite`;
+CREATE TABLE `eo_project_invite` (
+  `projectID` int(11) unsigned NOT NULL,
+  `inviteCode` varchar(6) NOT NULL,
+  `updateTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`projectID`)
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_environment`;
 CREATE TABLE `eo_project_environment` (
   `envID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -247,7 +254,7 @@ CREATE TABLE `eo_project_environment` (
   `envURI` varchar(255) NOT NULL,
   `projectID` int(10) unsigned NOT NULL,
   PRIMARY KEY (`envID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_status_code`;
 CREATE TABLE `eo_project_status_code` (
   `codeID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -255,7 +262,7 @@ CREATE TABLE `eo_project_status_code` (
   `codeDescription` varchar(255) NOT NULL,
   `groupID` int(10) unsigned NOT NULL,
   PRIMARY KEY (`codeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_status_code_group`;
 CREATE TABLE `eo_project_status_code_group` (
   `groupID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -264,7 +271,7 @@ CREATE TABLE `eo_project_status_code_group` (
   `parentGroupID` int(10) unsigned NOT NULL DEFAULT '0',
   `isChild` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`groupID`,`projectID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_user`;
 CREATE TABLE `eo_user` (
   `userID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -272,7 +279,7 @@ CREATE TABLE `eo_user` (
   `userPassword` varchar(60) NOT NULL,
   `userNickName` varchar(16) NOT NULL DEFAULT '',
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_log_project_operation`;
 CREATE TABLE `eo_log_project_operation` (
   `opID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -284,7 +291,7 @@ CREATE TABLE `eo_log_project_operation` (
   `opTarget` tinyint(3) unsigned NOT NULL,
   `opTargetID` int(10) unsigned NOT NULL,
   PRIMARY KEY (`opID`,`opTargetID`,`opProjectID`,`opUserID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_api_history`;
 CREATE TABLE `eo_api_history` (
   `historyID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -292,12 +299,12 @@ CREATE TABLE `eo_api_history` (
   `groupID` int(10) unsigned NOT NULL,
   `apiID` int(10) unsigned NOT NULL,
   `historyJson` longtext NOT NULL,
-  `updateDesc` varchar(150) NOT NULL,
+  `updateDesc` varchar(255) NOT NULL,
   `updateUserID` int(10) unsigned NOT NULL,
-  `updateTime` datetime NOT NULL,
+  `updateTime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `isNow` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`historyID`,`apiID`,`updateTime`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_document_group_order`;
 CREATE TABLE `eo_project_document_group_order` (
   `orderID` int(11) NOT NULL AUTO_INCREMENT,
@@ -305,7 +312,7 @@ CREATE TABLE `eo_project_document_group_order` (
   `orderList` text NOT NULL,
   PRIMARY KEY (`orderID`,`projectID`),
   UNIQUE KEY `projectID` (`projectID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_document_group`;
 CREATE TABLE `eo_project_document_group` (
   `groupID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -314,7 +321,7 @@ CREATE TABLE `eo_project_document_group` (
   `parentGroupID` int(10) unsigned NOT NULL DEFAULT '0',
   `isChild` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`groupID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_document`;
 CREATE TABLE `eo_project_document` (
   `documentID` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -327,7 +334,7 @@ CREATE TABLE `eo_project_document` (
   `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `userID` int(10) unsigned NOT NULL,
   PRIMARY KEY (`documentID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_test_case_group`;
 CREATE TABLE `eo_project_test_case_group` (
   `groupID` int(11) NOT NULL AUTO_INCREMENT COMMENT '分组ID',
@@ -336,14 +343,14 @@ CREATE TABLE `eo_project_test_case_group` (
   `parentGroupID` int(11) NOT NULL DEFAULT '0' COMMENT '父分组',
   `isChild` tinyint(3) NOT NULL DEFAULT '0' COMMENT '是否子分组',
   PRIMARY KEY (`groupID`,`projectID`,`parentGroupID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_test_case_group_order`;
 CREATE TABLE `eo_project_test_case_group_order` (
   `orderID` int(11) NOT NULL AUTO_INCREMENT,
   `projectID` int(11) NOT NULL,
   `orderList` text NOT NULL,
   PRIMARY KEY (`orderID`,`projectID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_test_case_history`;
 CREATE TABLE `eo_project_test_case_history` (
   `testID` int(11) NOT NULL AUTO_INCREMENT COMMENT '测试ID',
@@ -352,7 +359,7 @@ CREATE TABLE `eo_project_test_case_history` (
   `testTime` datetime DEFAULT NULL COMMENT '测试时间',
   `status` tinyint(4) DEFAULT NULL COMMENT '0表示失败，1表示通过',
   PRIMARY KEY (`testID`,`caseID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_test_case_single`;
 CREATE TABLE `eo_project_test_case_single` (
   `connID` int(11) NOT NULL AUTO_INCREMENT COMMENT '关联ID',
@@ -366,7 +373,7 @@ CREATE TABLE `eo_project_test_case_single` (
   `apiURI` varchar(255) NOT NULL COMMENT '接口路径',
   `apiRequestType` tinyint(4) DEFAULT '0' COMMENT '请求参数类型',
   PRIMARY KEY (`connID`,`caseID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_test_case`;
 CREATE TABLE `eo_project_test_case` (
   `caseID` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
@@ -380,4 +387,4 @@ CREATE TABLE `eo_project_test_case` (
   `caseType` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0表示简单，1表示高级',
   `caseCode` longtext,
   PRIMARY KEY (`caseID`,`projectID`,`userID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;

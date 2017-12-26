@@ -43,7 +43,7 @@ $buttonPrimaryFocusBgColor:#009dd8;
 $buttonPrimaryFocusColor:#fff;
 $buttonPrimaryFocusBorderColor:#008dc5;
 * {
-    font-family: $defaultFontFamily;
+    font-family: inherit;
     margin: 0;
     padding: 0;
     outline: none;

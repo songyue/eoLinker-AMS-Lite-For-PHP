@@ -2,7 +2,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [code侧边栏相关js] [code sidebar related js]
-     * @version  3.1.6
+     * @version  3.2.0
      * @service  $scope [注入作用域服务] [Injection scope service]
      * @service  $rootScope [注入根作用域服务] [Injection rootscope service]
      * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
@@ -331,6 +331,46 @@
                 }
             });
         }
+
+        vm.data.fun.export = function(arg) {
+            var template = {
+                modal: {
+                    status: 'group',
+                    title: $filter('translate')('01214026'),
+                    request: {
+                        groupID: arg.status == 'parent' ? arg.item.groupID : arg.childItem.groupID
+                    },
+                    resource:ApiManagementResource.CodeGroup
+                }
+            }
+            $rootScope.ExportModal(template.modal, function(callback) {});
+        }
+        vm.data.fun.import = function() {
+            var template = {
+                modal: {
+                    title: $filter('translate')('01214027'),
+                    status: 1,
+                    request: {
+                        projectID: vm.data.interaction.request.projectID
+                    },
+                    resource:ApiManagementResource.CodeGroup
+                }
+            }
+
+            $rootScope.ImportModal(template.modal, function(callback) {
+                if (callback) {
+                    vm.data.fun.init();
+                    switch (vm.data.interaction.request.groupID) {
+                        case -1:
+                        case '-1':
+                            {
+                                $state.go('home.project.inside.code.list', { groupID: $state.params.groupID ? (null):-1  });
+                                break;
+                            }
+                    }
+                }
+            });
+        }
         /**
          * @function [路由更改函数] [Routing change function]
          */
@@ -347,6 +387,14 @@
                             icon: 'tianjia',
                             showable: false,
                             fun: vm.data.fun.edit.parent
+                        },
+                        export: {
+                            key: $filter('translate')('01214027'),
+                            class: 'default-btn',
+                            icon: 'shangchuan',
+                            tips: true,
+                            showable: false,
+                            fun: vm.data.fun.import
                         },
                         sortDefault: {
                             key: $filter('translate')('0121401'),
@@ -391,6 +439,11 @@
                             params: { $outerIndex: null, isEdit: false },
                             class: 'add-child-btn'
                         },
+                        export: {
+                            fun: vm.data.fun.export,
+                            key: $filter('translate')('01214026'),
+                            params: { item: null, status: 'parent' }
+                        },
                         edit: {
                             fun: vm.data.fun.edit.parent,
                             key: $filter('translate')('0121406'),
@@ -403,6 +456,11 @@
                         }
                     },
                     childFun: {
+                        export: {
+                            fun: vm.data.fun.export,
+                            key: $filter('translate')('01214026'),
+                            params: { childItem: null, status: 'child' }
+                        },
                         edit: {
                             fun: vm.data.fun.edit.child,
                             key: $filter('translate')('0121406'),
@@ -417,7 +475,7 @@
                     baseFun: {
                         parentClick: vm.data.fun.click.parent,
                         childClick: vm.data.fun.click.child,
-                        spreed: vm.data.service.defaultCommon.fun.spreed,
+                        spreed: vm.data.service.defaultCommon.fun.spreed
                     }
                 }
             }

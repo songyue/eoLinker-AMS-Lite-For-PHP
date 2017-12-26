@@ -207,6 +207,118 @@ class StatusCodeGroupDao
             return $result['groupName'];
         }
     }
+
+    /**
+     * 获取分组数据
+     * @param $project_id
+     * @param $group_id
+     * @return array|bool
+     */
+    public function getGroupData(&$project_id, &$group_id)
+    {
+        $db = getDatabase();
+        $result = array();
+        $group = $db->prepareExecute('SELECT eo_project_status_code_group.groupName,eo_project_status_code_group.isChild FROM eo_project_status_code_group WHERE eo_project_status_code_group.projectID = ? AND eo_project_status_code_group.groupID = ?;', array(
+            $project_id,
+            $group_id
+        ));
+        $result['statusCodeList'] = $db->prepareExecuteAll("SELECT eo_project_status_code.codeID,eo_project_status_code.code,eo_project_status_code.codeDescription FROM eo_project_status_code WHERE eo_project_status_code.groupID = ?", array(
+            $group_id
+        ));
+        $result['groupName'] = $group['groupName'];
+        if ($group['isChild'] == 0) {
+            $child_group_list = $db->prepareExecuteAll('SELECT eo_project_status_code_group.groupID,eo_project_status_code_group.groupName FROM eo_project_status_code_group WHERE eo_project_status_code_group.parentGroupID = ? AND eo_project_status_code_group.projectID = ?', array(
+                $group_id,
+                $project_id
+            ));
+            if ($child_group_list) {
+                $i = 0;
+                foreach ($child_group_list as $group) {
+                    $result['childGroupList'][$i]['groupName'] = $group['groupName'];
+                    $result['childGroupList'][$i]['statusCodeList'] = $db->prepareExecuteAll("SELECT eo_project_status_code.codeID,eo_project_status_code.code,eo_project_status_code.codeDescription FROM eo_project_status_code WHERE eo_project_status_code.groupID = ?", array(
+                        $group['groupID']
+                    ));
+                    $i++;
+                }
+            }
+        }
+        if ($result)
+            return $result;
+        else
+            return FALSE;
+    }
+
+    /**
+     * 导入状态码分组
+     * @param $project_id
+     * @param $data
+     * @return bool
+     */
+    public function importGroup(&$project_id, &$data)
+    {
+        $db = getDatabase();
+        try {
+            $db->beginTransaction();
+            // 插入分组
+            $db->prepareExecute('INSERT INTO eo_project_status_code_group (eo_project_status_code_group.projectID,eo_project_status_code_group.groupName) VALUES (?,?);', array(
+                $project_id,
+                $data['groupName']
+            ));
+
+            if ($db->getAffectRow() < 1)
+                throw new \PDOException("add statusCodeGroup error");
+            $group_id = $db->getLastInsertID();
+            if ($data['statusCodeList']) {
+                // 插入状态码
+                foreach ($data['statusCodeList'] as $status_code) {
+                    $db->prepareExecute('INSERT INTO eo_project_status_code (eo_project_status_code.groupID,eo_project_status_code.code,eo_project_status_code.codeDescription) VALUES (?,?,?);', array(
+                        $group_id,
+                        $status_code['code'],
+                        $status_code['codeDescription']
+                    ));
+
+                    if ($db->getAffectRow() < 1)
+                        throw new \PDOException("add statusCode error");
+                }
+            }
+            if ($data['childGroupList']) {
+                $group_id_parent = $group_id;
+                foreach ($data['childGroupList'] as $child_group) {
+                    // 插入分组
+                    $db->prepareExecute('INSERT INTO eo_project_status_code_group (eo_project_status_code_group.projectID,eo_project_status_code_group.groupName,eo_project_status_code_group.parentGroupID,eo_project_status_code_group.isChild) VALUES (?,?,?,?);', array(
+                        $project_id,
+                        $child_group['groupName'],
+                        $group_id_parent,
+                        1
+                    ));
+                    if ($db->getAffectRow() < 1) {
+                        throw new \PDOException("add statusCodeGroup error");
+                    }
+
+                    $group_id = $db->getLastInsertID();
+                    if ($child_group['statusCodeList']) {
+                        // 插入状态码
+                        foreach ($child_group['statusCodeList'] as $status_code) {
+                            $db->prepareExecute('INSERT INTO eo_project_status_code (eo_project_status_code.groupID,eo_project_status_code.code,eo_project_status_code.codeDescription) VALUES (?,?,?);', array(
+                                $group_id,
+                                $status_code['code'],
+                                $status_code['codeDescription']
+                            ));
+
+                            if ($db->getAffectRow() < 1) {
+                                throw new \PDOException("add statusCode error");
+                            }
+                        }
+                    }
+                }
+            }
+            $db->commit();
+            return TRUE;
+        } catch (\PDOException $e) {
+            $db->rollback();
+            return FALSE;
+        }
+    }
 }
 
 ?>

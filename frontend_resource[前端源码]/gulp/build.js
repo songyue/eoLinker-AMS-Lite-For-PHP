@@ -133,7 +133,7 @@ gulp.task('fonts', function() {
         })
         .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
         .pipe($.flatten())
-        .pipe(gulp.dest(path.join(config.paths.dist, '/fonts/')));
+        .pipe(gulp.dest(path.join(config.paths.dist, '/font/')));
 });
 /**
  * [复制文件] 前端依赖库以及静态文件

@@ -489,8 +489,7 @@ class ApiController
         $projectID = securelyInput('projectID');
         if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
             $this->returnJson['statusCode'] = '160003';
-        }
-        if ($tipsLen > 255 || $tipsLen == 0) {
+        } else if ($tipsLen > 255 || $tipsLen == 0) {
             $this->returnJson['statusCode'] = '160004';
         } else {
             $service = new ApiModule;
@@ -724,6 +723,79 @@ class ApiController
             } else {
                 //删除api失败
                 $this->returnJson['statusCode'] = '160000';
+            }
+        }
+        exitOutput($this->returnJson);
+    }
+
+    /**
+     * 批量导出接口
+     */
+    public function exportApi()
+    {
+        $project_id = securelyInput('projectID');
+        // 接口ID
+        $ids = securelyInput('apiID');
+        $arr = json_decode($ids);
+        $arr = preg_grep('/^[0-9]{1,11}$/', $arr); // 去掉数组中不是数字的ID
+
+        if (!preg_match('/^[0-9]{1,11}$/', $project_id)) {
+            $this->returnJson['statusCode'] = '160003';
+        }// 判断ID数组是否为空
+        elseif (empty($arr)) {
+            // apiID格式不合法
+            $this->returnJson['statusCode'] = '160001';
+        } else {
+            $project_module = new ProjectModule();
+            $user_type = $project_module->getUserType($project_id);
+            if ($user_type < 0 || $user_type > 2) {
+                $this->returnJson['statusCode'] = '120007';
+            } else {
+                $api_ids = implode(',', $arr);
+                $api_module = new ApiModule();
+                $result = $api_module->exportApi($project_id, $api_ids);
+                // 判断结果是否成功
+                if ($result) {
+                    $this->returnJson['statusCode'] = '000000';
+                    $this->returnJson['fileName'] = $result;
+                } else {
+                    $this->returnJson['statusCode'] = '160000';
+                }
+            }
+        }
+        exitOutput($this->returnJson);
+    }
+
+    /**
+     * 批量导入接口
+     */
+    public function importApi()
+    {
+        $json = quickInput('data');
+        $data = json_decode($json, TRUE);
+        $group_id = securelyInput('groupID');
+        // 判断分组ID是否合法
+        if (!preg_match('/^[0-9]{1,11}$/', $group_id)) {
+            // 分组ID格式不合法
+            $this->returnJson['statusCode'] = '160005';
+        } //判断导入数据是否为空
+        elseif (empty($data)) {
+            $this->returnJson['statusCode'] = '160006';
+            exitOutput($this->returnJson);
+        } else {
+            $group_module = new GroupModule();
+            $user_type = $group_module->getUserType($group_id);
+            if ($user_type < 0 || $user_type > 2) {
+                $this->returnJson['statusCode'] = '120007';
+            } else {
+                $server = new ApiModule();
+                $result = $server->importApi($group_id, $data);
+                //验证结果
+                if ($result) {
+                    $this->returnJson['statusCode'] = '000000';
+                } else {
+                    $this->returnJson['statusCode'] = '160000';
+                }
             }
         }
         exitOutput($this->returnJson);

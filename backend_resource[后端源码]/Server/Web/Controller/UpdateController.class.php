@@ -33,6 +33,12 @@ class UpdateController
             if ($result) {
                 if (OS_VERSION_CODE < $result['versionCode']) {
                     $this->returnJson['statusCode'] = '000000';
+                    if (!is_session_started()) {
+                        session_start();
+                    }
+                    if (is_session_started()) {
+                        session_destroy();
+                    }
                 } else {
                     $this->returnJson['statusCode'] = '320002';
                 }
@@ -64,6 +70,12 @@ class UpdateController
                         $updateServer = new UpdateModule;
                         if ($updateServer->autoUpdate($result['updateUrl'])) {
                             $this->returnJson['statusCode'] = '000000';
+                            if (!is_session_started()) {
+                                session_start();
+                            }
+                            if (is_session_started()) {
+                                session_destroy();
+                            }
                         } else {
                             //更新失败
                             $this->returnJson['statusCode'] = '320003';
@@ -99,6 +111,12 @@ class UpdateController
                 $updateServer = new UpdateModule;
                 if ($updateServer->manualUpdate()) {
                     $this->returnJson['statusCode'] = '000000';
+                    if (!is_session_started()) {
+                        session_start();
+                    }
+                    if (is_session_started()) {
+                        session_destroy();
+                    }
                 } else {
                     //更新失败
                     $this->returnJson['statusCode'] = '320003';

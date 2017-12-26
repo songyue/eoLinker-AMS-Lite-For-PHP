@@ -155,6 +155,7 @@
                     // 默认白名单 Default white list
                     function getDefaultWhiteList() {
                         return {
+                            strike:[],
                             a: ['target', 'href', 'title'],
                             abbr: ['title'],
                             address: [],

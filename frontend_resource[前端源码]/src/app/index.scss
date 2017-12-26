@@ -14,13 +14,13 @@
 
 @import "component/ams/import.scss";
 
-@import "component/footer/index.scss";
-
 @import "component/content/index.scss";
 
 @import "component/navbar/index.scss";
 
 @import "component/sidebar/index.scss";
+
+@import "component/footer/index.scss";
 
 @import "directive/expressionBuilder/index.scss";
 
@@ -28,19 +28,19 @@
 
 @import "component/ams/autoComplete/index.scss";
 
-@import "component/ams/env/index.scss";
-
 @import "component/ams/report/index.scss";
 
-@import "component/common/group/index.scss";
-
-@import "component/common/sidebar/index.scss";
-
 @import "component/content/guide/index.scss";
+
+@import "component/ams/env/index.scss";
 
 @import "component/content/home/index.scss";
 
 @import "component/content/index/index.scss";
+
+@import "component/common/group/index.scss";
+
+@import "component/common/sidebar/index.scss";
 
 @import "component/navbar/nav1/index.scss";
 
@@ -50,15 +50,15 @@
 
 @import "directive/ams/aceEditor/index.scss";
 
-@import "modal/branch/apiManagement/index.scss";
-
 @import "modal/branch/common/index.scss";
+
+@import "modal/branch/apiManagement/index.scss";
 
 @import "component/content/guide/error/index.scss";
 
-@import "component/content/guide/finish/index.scss";
-
 @import "component/content/guide/first_step/index.scss";
+
+@import "component/content/guide/finish/index.scss";
 
 @import "component/content/guide/second_step/index.scss";
 
@@ -74,9 +74,9 @@
 
 @import "component/content/home/content/user/basic/index.scss";
 
-@import "component/content/home/content/database/content/default/index.scss";
-
 @import "component/content/home/content/database/content/inside/index.scss";
+
+@import "component/content/home/content/database/content/default/index.scss";
 
 @import "component/content/home/content/project/content/api/import.scss";
 
@@ -96,11 +96,11 @@
 
 @import "component/content/home/content/project/content/inside/content/api/index.scss";
 
-@import "component/content/home/content/project/content/inside/content/env/index.scss";
-
 @import "component/content/home/content/project/content/inside/content/doc/index.scss";
 
 @import "component/content/home/content/project/content/inside/content/log/index.scss";
+
+@import "component/content/home/content/project/content/inside/content/env/index.scss";
 
 @import "component/content/home/content/project/content/inside/content/overview/index.scss";
 

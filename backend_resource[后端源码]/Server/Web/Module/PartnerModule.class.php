@@ -210,6 +210,15 @@ class PartnerModule
         }
     }
 
+    public function getProjectInviteCode(&$project_id)
+    {
+
+    }
+
+    public function joinProjectByInviteCode()
+    {
+
+    }
 }
 
 ?>

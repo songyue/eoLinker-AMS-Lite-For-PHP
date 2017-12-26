@@ -632,7 +632,7 @@ class ApiDao
     public function getApi(&$apiID)
     {
         $db = getDatabase();
-        $apiInfo = $db->prepareExecute('SELECT eo_api_cache.*,eo_api_group.parentGroupID FROM eo_api_cache INNER JOIN eo_api_group ON eo_api_cache.groupID = eo_api_group.groupID WHERE eo_api_cache.apiID = ?;', array(
+        $apiInfo = $db->prepareExecute('SELECT eo_api_cache.*,eo_api_group.parentGroupID FROM eo_api_cache LEFT JOIN eo_api_group ON eo_api_cache.groupID = eo_api_group.groupID WHERE eo_api_cache.apiID = ?;', array(
             $apiID
         ));
 
@@ -923,7 +923,7 @@ class ApiDao
     public function checkApiPermission(&$apiID, &$userID)
     {
         $db = getDatabase();
-        $result = $db->prepareExecute('SELECT eo_conn_project.projectID FROM eo_api INNER JOIN eo_api_group INNER JOIN eo_conn_project ON eo_conn_project.projectID = eo_api_group.projectID AND eo_api.groupID = eo_api_group.groupID WHERE eo_conn_project.userID = ? AND eo_api.apiID = ?;', array(
+        $result = $db->prepareExecute('SELECT eo_conn_project.projectID FROM eo_api LEFT JOIN eo_api_group ON eo_api.groupID = eo_api_group.groupID LEFT JOIN eo_conn_project ON eo_conn_project.projectID = eo_api.projectID WHERE eo_conn_project.userID = ? AND eo_api.apiID = ?;', array(
             $userID,
             $apiID
         ));
@@ -945,8 +945,8 @@ class ApiDao
     public function addStar(&$apiID)
     {
         $db = getDatabase();
-        $db->execute("UPDATE eo_api SET eo_api.starred = 1 WHERE eo_api.apiID = $apiID");
-        $db->execute("UPDATE eo_api_cache SET eo_api_cache.starred = 1 WHERE eo_api_cache.apiID = $apiID");
+        $db->prepareExecute("UPDATE eo_api SET eo_api.starred = 1 WHERE eo_api.apiID = ?", array($apiID));
+        $db->prepareExecute("UPDATE eo_api_cache SET eo_api_cache.starred = 1 WHERE eo_api_cache.apiID = ?;", array($apiID));
 
         if ($db->getAffectRow() > 0)
             return TRUE;
@@ -965,8 +965,8 @@ class ApiDao
     public function removeStar(&$apiID)
     {
         $db = getDatabase();
-        $db->execute("UPDATE eo_api SET eo_api.starred = 0 WHERE eo_api.apiID = $apiID");
-        $db->execute("UPDATE eo_api_cache SET eo_api_cache.starred = 0 WHERE eo_api_cache.apiID = $apiID");
+        $db->prepareExecute("UPDATE eo_api SET eo_api.starred = 0 WHERE eo_api.apiID = ?", array($apiID));
+        $db->prepareExecute("UPDATE eo_api_cache SET eo_api_cache.starred = 0 WHERE eo_api_cache.apiID = ?", array($apiID));
 
         if ($db->getAffectRow() > 0)
             return TRUE;
@@ -1357,6 +1357,161 @@ class ApiDao
         }
         $db->commit();
         return TRUE;
+    }
+
+    /**
+     * 批量获取接口数据
+     * @param $project_id
+     * @param $api_ids
+     * @return array|bool
+     */
+    public function getApiData(&$project_id, &$api_ids)
+    {
+        $db = getDatabase();
+        $result = $db->prepareExecuteAll("SELECT eo_api_cache.apiID,eo_api_cache.apiJson,eo_api_cache.starred FROM eo_api_cache WHERE eo_api_cache.projectID = ? AND eo_api_cache.apiID in ($api_ids);", array(
+            $project_id
+        ));
+        $api_list = array();
+        $i = 0;
+        foreach ($result as $api) {
+            $api_list[$i] = json_decode($api['apiJson'], TRUE);
+            $api_list[$i]['baseInfo']['starred'] = $api['starred'];
+            ++$i;
+        }
+        if ($api_list)
+            return $api_list;
+        else
+            return FALSE;
+    }
+
+    /**
+     * 批量导入接口
+     * @param $group_id
+     * @param $project_id
+     * @param $data
+     * @param $user_id
+     * @return bool
+     */
+    public function importApi(&$group_id, &$project_id, &$data, &$user_id)
+    {
+        $db = getDatabase();
+        try {
+            $db->beginTransaction();
+            if (is_array($data)) {
+                foreach ($data as $api) {
+                    // 插入api基本信息
+                    $db->prepareExecute('INSERT INTO eo_api (eo_api.apiName,eo_api.apiURI,eo_api.apiProtocol,eo_api.apiSuccessMock,eo_api.apiFailureMock,eo_api.apiRequestType,eo_api.apiStatus,eo_api.groupID,eo_api.projectID,eo_api.starred,eo_api.apiNoteType,eo_api.apiNoteRaw,eo_api.apiNote,eo_api.apiRequestParamType,eo_api.apiRequestRaw,eo_api.apiUpdateTime,eo_api.updateUserID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);', array(
+                        $api['baseInfo']['apiName'],
+                        $api['baseInfo']['apiURI'],
+                        $api['baseInfo']['apiProtocol'],
+                        $api['baseInfo']['apiSuccessMock'],
+                        $api['baseInfo']['apiFailureMock'],
+                        $api['baseInfo']['apiRequestType'],
+                        $api['baseInfo']['apiStatus'],
+                        $group_id,
+                        $project_id,
+                        $api['baseInfo']['starred'],
+                        $api['baseInfo']['apiNoteType'],
+                        $api['baseInfo']['apiNoteRaw'],
+                        $api['baseInfo']['apiNote'],
+                        $api['baseInfo']['apiRequestParamType'],
+                        $api['baseInfo']['apiRequestRaw'],
+                        $api['baseInfo']['apiUpdateTime'],
+                        $user_id
+                    ));
+
+                    if ($db->getAffectRow() < 1)
+                        throw new \PDOException("addApi error");
+
+                    $api_id = $db->getLastInsertID();
+
+                    // 插入header信息
+                    foreach ($api['headerInfo'] as $header) {
+                        $db->prepareExecute('INSERT INTO eo_api_header (eo_api_header.headerName,eo_api_header.headerValue,eo_api_header.apiID) VALUES (?,?,?);', array(
+                            $header['headerName'],
+                            $header['headerValue'],
+                            $api_id
+                        ));
+
+                        if ($db->getAffectRow() < 1)
+                            throw new \PDOException("addHeader error");
+                    }
+
+                    // 插入api请求值信息
+                    foreach ($api['requestInfo'] as $request) {
+                        $db->prepareExecute('INSERT INTO eo_api_request_param (eo_api_request_param.apiID,eo_api_request_param.paramName,eo_api_request_param.paramKey,eo_api_request_param.paramValue,eo_api_request_param.paramLimit,eo_api_request_param.paramNotNull,eo_api_request_param.paramType) VALUES (?,?,?,?,?,?,?);', array(
+                            $api_id,
+                            $request['paramName'],
+                            $request['paramKey'],
+                            $request['paramValue'],
+                            $request['paramLimit'],
+                            $request['paramNotNull'],
+                            $request['paramType']
+                        ));
+
+                        if ($db->getAffectRow() < 1)
+                            throw new \PDOException("addRequestParam error");
+
+                        $param_id = $db->getLastInsertID();
+
+                        foreach ($request['paramValueList'] as $value) {
+                            $db->prepareExecute('INSERT INTO eo_api_request_value (eo_api_request_value.paramID,eo_api_request_value.`value`,eo_api_request_value.valueDescription) VALUES (?,?,?);', array(
+                                $param_id,
+                                $value['value'],
+                                $value['valueDescription']
+                            ));
+
+                            if ($db->getAffectRow() < 1)
+                                throw new \PDOException("addApi error");
+                        };
+                    };
+
+                    // 插入api返回值信息
+                    foreach ($api['resultInfo'] as $result) {
+                        $db->prepareExecute('INSERT INTO eo_api_result_param (eo_api_result_param.apiID,eo_api_result_param.paramName,eo_api_result_param.paramKey,eo_api_result_param.paramNotNull) VALUES (?,?,?,?);', array(
+                            $api_id,
+                            $result['paramName'],
+                            $result['paramKey'],
+                            $result['paramNotNull']
+                        ));
+
+                        if ($db->getAffectRow() < 1)
+                            throw new \PDOException("addResultParam error");
+
+                        $param_id = $db->getLastInsertID();
+
+                        foreach ($result['paramValueList'] as $value) {
+                            $db->prepareExecute('INSERT INTO eo_api_result_value (eo_api_result_value.paramID,eo_api_result_value.`value`,eo_api_result_value.valueDescription) VALUES (?,?,?);;', array(
+                                $param_id,
+                                $value['value'],
+                                $value['valueDescription']
+                            ));
+
+                            if ($db->getAffectRow() < 1)
+                                throw new \PDOException("addApi error");
+                        };
+                    };
+
+                    // 插入api缓存数据用于导出
+                    $db->prepareExecute("INSERT INTO eo_api_cache (eo_api_cache.projectID,eo_api_cache.groupID,eo_api_cache.apiID,eo_api_cache.apiJson,eo_api_cache.starred) VALUES (?,?,?,?,?);", array(
+                        $project_id,
+                        $group_id,
+                        $api_id,
+                        json_encode($api),
+                        $api['baseInfo']['starred']
+                    ));
+
+                    if ($db->getAffectRow() < 1) {
+                        throw new \PDOException("addApiCache error");
+                    }
+                }
+            }
+            $db->commit();
+            return TRUE;
+        } catch (\Exception $e) {
+            $db->rollback();
+            return FALSE;
+        }
     }
 }
 

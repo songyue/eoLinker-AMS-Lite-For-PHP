@@ -147,6 +147,11 @@
                     method: data.info.method,
                     cancellable:true
                 },
+                Export: {
+                    params: { operate: 'exportApi' },
+                    method: data.info.method,
+                    cancellable: true
+                },
                 Move:{
                     params: { operate: 'changeApiGroup' },
                     method: data.info.method,
@@ -224,6 +229,16 @@
                     params: { operate: 'sortDocumentGroup' },
                     method: data.info.method,
                     cancellable:true
+                },
+                Import: {
+                    params: { operate: 'importGroup' },
+                    method: data.info.method,
+                    cancellable: true
+                },
+                Export: {
+                    params: { operate: 'exportGroup' },
+                    method: data.info.method,
+                    cancellable: true
                 }
             }
 
@@ -430,6 +445,16 @@
                 Sort: {
                     params: { operate: 'sortGroup' },
                     method: data.info.method
+                },
+                Import: {
+                    params: { operate: 'importGroup' },
+                    method: data.info.method,
+                    cancellable: true
+                },
+                Export: {
+                    params: { operate: 'exportGroup' },
+                    method: data.info.method,
+                    cancellable: true
                 }
             }
 
@@ -457,6 +482,16 @@
                 Sort: {
                     params: { operate: 'sortGroup' },
                     method: data.info.method
+                },
+                Import: {
+                    params: { operate: 'importGroup' },
+                    method: data.info.method,
+                    cancellable: true
+                },
+                Export: {
+                    params: { operate: 'exportGroup' },
+                    method: data.info.method,
+                    cancellable: true
                 }
             }
 

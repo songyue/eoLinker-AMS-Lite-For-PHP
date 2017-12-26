@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [按需加载文件存放常量集] [Loading files on demand to store const sets]
-     * @version  3.0.2
+     * @version  3.2.0
      */
     angular
         .module('eolinker.constant')

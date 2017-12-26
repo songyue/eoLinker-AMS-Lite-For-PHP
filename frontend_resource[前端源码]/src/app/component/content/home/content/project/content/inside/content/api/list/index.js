@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [api列表模块相关js] [api list module related js]
-     * @version  3.0.2
+     * @version  3.2.0
      * @service  $scope [注入作用域服务] [Injection scope service]
      * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
      * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
@@ -114,24 +114,96 @@
         }
 
         /**
+         * 导出接口
+         */
+        vm.data.fun.export = function() {
+            var template = {
+                modal: {
+                    status: 'api',
+                    title: $filter('translate')('012100258'),
+                    request: {
+                        projectID: vm.data.interaction.request.projectID,
+                        apiID: JSON.stringify(vm.data.interaction.request.apiID),
+                    }
+                }
+            }
+            $rootScope.ExportModal(template.modal, function(callback) {
+                if (callback) {
+                    vm.data.info.batch.disable = false;
+                    vm.data.interaction.request.apiID = [];
+                }
+            });
+        }
+
+        /**
          * @function [导入文档] [Import the document]
          */
         vm.data.fun.import = function() {
             var template = {
+                request: {
+                    projectID: vm.data.interaction.request.projectID
+                },
+                reader: null,
                 modal: {
-                    title: $filter('translate')('012100228'),
-                    status: 1,
-                    request: {
-                        projectID: vm.data.interaction.request.projectID,
-                        groupID: vm.data.interaction.request.childGroupID || vm.data.interaction.request.groupID
-                    }
+                    title: $filter('translate')('012100259'),
+                    group: {
+                        parent: GroupService.get(),
+                        groupID:parseInt(vm.data.interaction.request.groupID),
+                        childGroupID:parseInt(vm.data.interaction.request.childGroupID)
+                    },
+                    inputObject: {
+                        type: 'file'
+                    },
+                    secondTitle: $filter('translate')('012100260')
                 }
             }
-            $rootScope.ImportModal(template.modal, function(callback) {
+            if ((!template.modal.group.parent) || (template.modal.group.parent == 0)) {
+                $rootScope.InfoModal($filter('translate')('012100229'), 'error');
+                return;
+            }
+            $rootScope.Common_UploadFile(template.modal, function(callback) {
                 if (callback) {
-                    $scope.$broadcast('$LoadingInit');
+                    template.request.groupID = callback.groupID;
+                    template.reader = new FileReader();
+                    template.reader.readAsText(callback.file);
+                    template.reader.onloadend = function(evt) {
+                        template.request.data = this.result;
+                        $scope.$broadcast('$LoadingInit', { status: 'import', request: template.request });
+                    }
+
                 }
             });
+        }
+
+        /**
+         * 加载状态，发送请求
+         * @param  {object} arg 请求
+         * @return {promise}     请求promise
+         */
+        vm.data.fun.load = function(arg) {
+            var template = {
+                promise: null,
+                request: arg.request
+            }
+            template.promise = ApiManagementResource.Api.Import(template.request).$promise.then(function(response) {
+                switch (response.statusCode) {
+                    case CODE.COMMON.SUCCESS:
+                        {
+                            vm.data.assistantFun.init();
+                        }
+                    case '510000':
+                        {
+                            $rootScope.InfoModal($filter('translate')('012100261'), 'success');
+                            break;
+                        }
+                    default:
+                        {
+                            $rootScope.InfoModal($filter('translate')('012100262'), 'error');
+                            break;
+                        }
+                }
+            })
+            return template.promise;
         }
 
         /**
@@ -605,7 +677,6 @@
          */
         vm.data.assistantFun.init = function() {
             var template = {
-                promise: null,
                 request: {
                     projectID: vm.data.interaction.request.projectID,
                     groupID: vm.data.interaction.request.childGroupID || vm.data.interaction.request.groupID,
@@ -614,69 +685,39 @@
                     tips: vm.data.interaction.request.tips
                 }
             }
-            $scope.$emit('$WindowTitleSet', {
-                list: [$filter('translate')('012100247'), $state.params.projectName, $filter('translate')('012100248')]
-            });
+
             if (vm.data.interaction.request.groupID == -2) {
-                $scope.$emit('$tabChange', {
-                    apiName: $filter('translate')('012100249'),
-                    type: 1
-                });
-                template.promise = ApiManagementResource.Trash.Query(template.request).$promise;
-                template.promise.then(function(response) {
+                $rootScope.global.ajax.Query_Api = ApiManagementResource.Trash.Query(template.request);
+                $rootScope.global.ajax.Query_Api.$promise.then(function(response) {
                     vm.data.service.home.envObject.object.model = response.apiList || [];
                     vm.data.info.template.envModel = vm.data.service.home.envObject.object.model;
-                    $scope.$emit('$translateferStation', {
-                        state: '$EnvInitReady',
-                        data: {
-                            status: 0
-                        }
-                    });
+                    $scope.$emit('$translateferStation', { state: '$EnvInitReady', data: { status: 0 } });
                 })
             } else {
-                $scope.$emit('$tabChange', {
-                    apiName: $filter('translate')('012100250'),
-                    type: 0
-                });
                 if (vm.data.interaction.request.tips) {
-                    template.promise = ApiManagementResource.Api.Search(template.request).$promise;
-                    template.promise.then(function(response) {
+                    $rootScope.global.ajax.Query_Api = ApiManagementResource.Api.Search(template.request);
+                    $rootScope.global.ajax.Query_Api.$promise.then(function(response) {
                         vm.data.service.home.envObject.object.model = response.apiList || [];
                         vm.data.info.template.envModel = vm.data.service.home.envObject.object.model;
-                        $scope.$emit('$translateferStation', {
-                            state: '$EnvInitReady',
-                            data: {
-                                status: 0
-                            }
-                        });
+                        $scope.$emit('$translateferStation', { state: '$EnvInitReady', data: { status: 0 } });
                     })
                 } else if (vm.data.interaction.request.groupID == -1) {
-                    template.promise = ApiManagementResource.Api.All(template.request).$promise;
-                    template.promise.then(function(response) {
+                    $rootScope.global.ajax.Query_Api = ApiManagementResource.Api.All(template.request);
+                    $rootScope.global.ajax.Query_Api.$promise.then(function(response) {
                         vm.data.service.home.envObject.object.model = response.apiList || [];
                         vm.data.info.template.envModel = vm.data.service.home.envObject.object.model;
-                        $scope.$emit('$translateferStation', {
-                            state: '$EnvInitReady',
-                            data: {
-                                status: 0
-                            }
-                        });
+                        $scope.$emit('$translateferStation', { state: '$EnvInitReady', data: { status: 0 } });
                     })
                 } else {
-                    template.promise = ApiManagementResource.Api.Query(template.request).$promise;
-                    template.promise.then(function(response) {
+                    $rootScope.global.ajax.Query_Api = ApiManagementResource.Api.Query(template.request);
+                    $rootScope.global.ajax.Query_Api.$promise.then(function(response) {
                         vm.data.service.home.envObject.object.model = response.apiList || [];
                         vm.data.info.template.envModel = vm.data.service.home.envObject.object.model;
-                        $scope.$emit('$translateferStation', {
-                            state: '$EnvInitReady',
-                            data: {
-                                status: 0
-                            }
-                        });
+                        $scope.$emit('$translateferStation', { state: '$EnvInitReady', data: { status: 0 } });
                     })
                 }
             }
-            return template.promise;
+            return $rootScope.global.ajax.Query_Api.$promise;
         }
 
         /**
@@ -684,15 +725,22 @@
          */
         vm.data.fun.init = function(arg) {
             arg = arg || {};
-            var template = {
-                promise: null
+            switch (arg.status) {
+                case 'import':
+                    {
+                        return vm.data.fun.load(arg)
+                        break;
+                    }
+                default:
+                    {
+                        return vm.data.assistantFun.init();
+                        break;
+                    }
             }
-            if (arg.boolean) {
-                template.promise = vm.data.assistantFun.init();
-            } else {
-                template.promise = vm.data.assistantFun.init();
-            }
-            return template.promise;
+        }
+
+        vm.$onInit = function() {
+            $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('012100247'), $state.params.projectName, $filter('translate')('012100248')] });
         }
     }
 })();

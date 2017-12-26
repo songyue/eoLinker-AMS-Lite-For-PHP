@@ -83,14 +83,16 @@ class DatabaseModule
 			$option = array(
 				\PDO::MYSQL_ATTR_INIT_COMMAND => "set names 'utf8'",
 				\PDO::ATTR_PERSISTENT => TRUE,
-				\PDO::ATTR_EMULATE_PREPARES => FALSE
+				\PDO::ATTR_EMULATE_PREPARES => FALSE,
+                \PDO::ATTR_STRINGIFY_FETCHES => FALSE
 			);
 		}
 		else
 		{
 			$option = array(
 				\PDO::MYSQL_ATTR_INIT_COMMAND => "set names 'utf8'",
-				\PDO::ATTR_EMULATE_PREPARES => FALSE
+				\PDO::ATTR_EMULATE_PREPARES => FALSE,
+                \PDO::ATTR_STRINGIFY_FETCHES => FALSE
 			);
 		}
 

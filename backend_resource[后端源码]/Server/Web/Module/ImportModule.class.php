@@ -156,13 +156,24 @@ class ImportModule
         try {
             $projectInfo = array('projectName' => $data['name'], 'projectType' => 0, 'projectVersion' => 1.0);
 
-            $groupInfoList[] = array('groupName' => 'PostMan导入');
+            $groupInfoList[] = array('groupName' => '默认分组', 'folderID' => 'default');
+            if (is_array($data['folders'])) {
+                foreach ($data['folders'] as $folder) {
+                    $groupInfoList[] = array('groupName' => $folder['name'], 'folderID' => $folder['id']);
+                }
+            }
 
-            $apiList = array();
             if (is_array($groupInfoList)) {
                 foreach ($groupInfoList as &$groupInfo) {
+                    $apiList = array();
                     if (is_array($data['requests'])) {
                         foreach ($data['requests'] as $request) {
+                            if (empty($request['folder'])) {
+                                $request['folder'] = 'default';
+                            }
+                            if ($request['folder'] != $groupInfo['folderID']) {
+                                continue;
+                            }
                             $apiInfo['baseInfo']['apiName'] = $request['name'];
                             $apiInfo['baseInfo']['apiURI'] = $request['url'];
                             $apiInfo['baseInfo']['apiProtocol'] = (strpos($request['url'], 'https') !== 0) ? 0 : 1;
@@ -244,6 +255,7 @@ class ImportModule
             $dao = new ImportDao;
             return $dao->importOther($projectInfo, $groupInfoList, $_SESSION['userID']);
         } catch (\PDOException $e) {
+            var_dump($e->getMessage());
             return FALSE;
         }
     }
@@ -256,94 +268,224 @@ class ImportModule
     public function importPostmanV2(&$data)
     {
         try {
-            $projectInfo = array('projectName' => $data['info']['name'], 'projectType' => 0, 'projectVersion' => 1.0);
+            $project_info = array(
+                'projectName' => $data['info']['name'],
+                'projectType' => 0,
+                'projectVersion' => 1.0
+            );
+            $groups = array();
+            $groups[0]['groupName'] = '默认分组';
+            $groups[0]['apiList'] = array();
 
-            $groupInfoList[] = array('groupName' => 'PostMan导入');
+            $group_count = 1;
+            foreach ($data['item'] as $item) {
+                $api_info = array();
+                if (empty($item['item'])) {
+                    $api_info['baseInfo']['apiName'] = $item['name'];
+                    if (!empty($item['request']['url']['raw'])) {
+                        $api_info['baseInfo']['apiURI'] = explode('?', $item['request']['url']['raw'])[0];
+                    } else {
+                        $api_info['baseInfo']['apiURI'] = $item['request']['url'];
+                    }
+                    if (is_array($item['request']['url'])) {
+                        $api_info['baseInfo']['apiProtocol'] = (strpos($item['request']['url']['raw'], 'https') !== 0) ? 0 : 1;
+                    } else {
+                        $api_info['baseInfo']['apiProtocol'] = (strpos($item['request']['url'], 'https') !== 0) ? 0 : 1;
+                    }
+                    $api_info['baseInfo']['apiStatus'] = 0;
+                    $api_info['baseInfo']['starred'] = 0;
+                    $api_info['baseInfo']['apiRequestRaw'] = $item['request']['body']['raw'];
+                    $api_info['baseInfo']['apiSuccessMock'] = '';
+                    $api_info['baseInfo']['apiFailureMock'] = '';
+                    $api_info['baseInfo']['apiNoteType'] = 0;
+                    $api_info['baseInfo']['apiNote'] = '';
+                    $api_info['baseInfo']['apiNoteRaw'] = '';
+                    $api_info['baseInfo']['apiUpdateTime'] = date("Y-m-d H:i:s", time());
 
-            $apiList = array();
+                    // 判断请求参数的类型
+                    if ($item['request']['body']['mode'] == 'raw') {
+                        $api_info['baseInfo']['apiRequestParamType'] = 1;
+                    } else {
+                        $api_info['baseInfo']['apiRequestParamType'] = 0;
+                    }
 
-            if (is_array($groupInfoList)) {
-                foreach ($groupInfoList as &$groupInfo) {
-                    if (is_array($data['item'])) {
-                        foreach ($data['item'] as $item) {
-                            $apiInfo['baseInfo']['apiName'] = $item['name'];
-                            $apiInfo['baseInfo']['apiURI'] = $item['request']['url'];
-                            $apiInfo['baseInfo']['apiProtocol'] = (strpos($item['request']['url'], 'https') !== 0) ? 0 : 1;
-                            $apiInfo['baseInfo']['apiStatus'] = 0;
-                            $apiInfo['baseInfo']['starred'] = 0;
-                            $apiInfo['baseInfo']['apiSuccessMock'] = '';
-                            $apiInfo['baseInfo']['apiFailureMock'] = '';
-                            $apiInfo['baseInfo']['apiRequestParamType'] = 0;
-                            $apiInfo['baseInfo']['apiRequestRaw'] = '';
-                            $apiInfo['baseInfo']['apiNoteType'] = 0;
-                            $apiInfo['baseInfo']['apiNote'] = '';
-                            $apiInfo['baseInfo']['apiNoteRaw'] = '';
-                            $apiInfo['baseInfo']['apiUpdateTime'] = date("Y-m-d H:i:s", time());
-                            switch ($item['request']['method']) {
-                                case 'POST' :
-                                    $apiInfo['baseInfo']['apiRequestType'] = 0;
-                                    break;
-                                case 'GET' :
-                                    $apiInfo['baseInfo']['apiRequestType'] = 1;
-                                    break;
-                                case 'PUT' :
-                                    $apiInfo['baseInfo']['apiRequestType'] = 2;
-                                    break;
-                                case 'DELETE' :
-                                    $apiInfo['baseInfo']['apiRequestType'] = 3;
-                                    break;
-                                case 'HEAD' :
-                                    $apiInfo['baseInfo']['apiRequestType'] = 4;
-                                    break;
-                                case 'OPTIONS' :
-                                    $apiInfo['baseInfo']['apiRequestType'] = 5;
-                                    break;
-                                case 'PATCH' :
-                                    $apiInfo['baseInfo']['apiRequestType'] = 6;
-                                    break;
-                            }
+                    switch ($item['request']['method']) {
+                        case 'POST' :
+                            $api_info['baseInfo']['apiRequestType'] = 0;
+                            break;
+                        case 'GET' :
+                            $api_info['baseInfo']['apiRequestType'] = 1;
+                            break;
+                        case 'PUT' :
+                            $api_info['baseInfo']['apiRequestType'] = 2;
+                            break;
+                        case 'DELETE' :
+                            $api_info['baseInfo']['apiRequestType'] = 3;
+                            break;
+                        case 'HEAD' :
+                            $api_info['baseInfo']['apiRequestType'] = 4;
+                            break;
+                        case 'OPTIONS' :
+                            $api_info['baseInfo']['apiRequestType'] = 5;
+                            break;
+                        case 'PATCH' :
+                            $api_info['baseInfo']['apiRequestType'] = 6;
+                            break;
+                    }
 
-                            $headerInfo = array();
-                            if (is_array($item['request']['header'])) {
-                                foreach ($item['request']['header'] as $header) {
-                                    $headerInfo[] = array('headerName' => $header['key'], 'headerValue' => $header['value']);
-                                }
-                            }
-                            $apiInfo['headerInfo'] = $headerInfo;
-                            unset($headerInfo);
+                    $headerInfo = array();
+                    foreach ($item['request']['header'] as $header) {
+                        $headerInfo[] = array(
+                            'headerName' => $header['key'],
+                            'headerValue' => $header['value']
+                        );
+                    }
+                    $api_info['headerInfo'] = $headerInfo;
+                    unset($headerInfo);
 
-                            $apiRequestParam = array();
-                            if ($item['request']['body']['mode'] == 'formdata') {
-                                $parameters = $item['request']['body']['formdata'];
-                                if (is_array($parameters)) {
-                                    foreach ($parameters as $parameter) {
-                                        $param['paramKey'] = $parameter['key'];
-                                        $param['paramValue'] = $parameter['value'];
-                                        $param['paramType'] = ($parameter['type'] == 'text') ? 0 : 1;
-                                        $param['paramNotNull'] = $parameter['enabled'] ? 0 : 1;
-                                        $param['paramName'] = '';
-                                        $param['paramLimit'] = '';
-                                        $param['paramValueList'] = array();
-                                        $apiRequestParam[] = $param;
-                                        unset($param);
-                                    }
-                                }
-                            }
-                            $apiInfo['requestInfo'] = $apiRequestParam;
-                            unset($apiRequestParam);
-
-                            $apiInfo['resultInfo'] = array();
-
-                            $apiList[] = $apiInfo;
-                            unset($apiInfo);
+                    $api_info_request_param = array();
+                    if ($item['request']['body']['mode'] == 'formdata') {
+                        $parameters = $item['request']['body']['formdata'];
+                        foreach ($parameters as $parameter) {
+                            $param = array();
+                            $param['paramKey'] = $parameter['key'];
+                            $param['paramValue'] = $parameter['value'];
+                            $param['paramType'] = ($parameter['type'] == 'text') ? 0 : 1;
+                            $param['paramNotNull'] = $parameter['enabled'] ? 0 : 1;
+                            $param['paramName'] = '';
+                            $param['paramLimit'] = '';
+                            $param['paramValueList'] = array();
+                            $api_info_request_param[] = $param;
+                            unset($param);
                         }
                     }
-                    $groupInfo['apiList'] = $apiList;
-                    unset($apiList);
+                    if ($item['request']['method'] == 'GET' && !empty($item['request']['url']['raw'])) {
+                        $parameters = $item['request']['url']['query'];
+                        foreach ($parameters as $parameter) {
+                            $param = array();
+                            $param['paramKey'] = $parameter['key'];
+                            $param['paramValue'] = $parameter['value'];
+                            $param['paramType'] = 0;
+                            $param['paramNotNull'] = $parameter['equals'] ? 0 : 1;
+                            $param['paramName'] = '';
+                            $param['paramLimit'] = '';
+                            $param['paramValueList'] = array();
+                            $api_info_request_param[] = $param;
+                            unset($param);
+                        }
+                    }
+                    $api_info['requestInfo'] = $api_info_request_param;
+                    unset($api_info_request_param);
+
+                    $api_info['resultInfo'] = array();
+
+                    $groups[0]['apiList'][] = $api_info;
+
+                    unset($api_info);
+                } else {
+                    $groups[$group_count]['groupName'] = $item['name'];
+                    $groups[$group_count]['apiList'] = array();
+
+                    foreach ($item['item'] as $api) {
+                        $api_info = array();
+                        $api_info['baseInfo']['apiName'] = $api['name'];
+                        if (empty($api_info['baseInfo']['apiName'])) {
+                            $api_info['baseInfo']['apiName'] = 'empty_name';
+                        }
+                        if (!empty($api['request']['url']['raw'])) {
+                            $api_info['baseInfo']['apiURI'] = explode('?', $api['request']['url']['raw'])[0];
+                        } else {
+                            $api_info['baseInfo']['apiURI'] = $api['request']['url'];
+                        }
+                        if (empty($api_info['baseInfo']['apiURI'])) {
+                            $api_info['baseInfo']['apiURI'] = 'empty_uri';
+                        }
+                        if (is_array($api['request']['url'])) {
+                            $api_info['baseInfo']['apiProtocol'] = (strpos($api['request']['url']['raw'], 'https') !== 0) ? 0 : 1;
+                        } else {
+                            $api_info['baseInfo']['apiProtocol'] = (strpos($api['request']['url'], 'https') !== 0) ? 0 : 1;
+                        }
+                        $api_info['baseInfo']['apiStatus'] = 0;
+                        $api_info['baseInfo']['starred'] = 0;
+                        $api_info['baseInfo']['apiRequestRaw'] = $api['request']['body']['raw'];
+                        $api_info['baseInfo']['apiSuccessMock'] = '';
+                        $api_info['baseInfo']['apiFailureMock'] = '';
+                        $api_info['baseInfo']['apiNoteType'] = 0;
+                        $api_info['baseInfo']['apiNote'] = '';
+                        $api_info['baseInfo']['apiNoteRaw'] = '';
+                        $api_info['baseInfo']['apiUpdateTime'] = date("Y-m-d H:i:s", time());
+
+                        // 判断请求参数的类型
+                        if ($api['request']['body']['mode'] == 'raw') {
+                            $api_info['baseInfo']['apiRequestParamType'] = 1;
+                        } else {
+                            $api_info['baseInfo']['apiRequestParamType'] = 0;
+                        }
+
+                        switch ($api['request']['method']) {
+                            case 'POST' :
+                                $api_info['baseInfo']['apiRequestType'] = 0;
+                                break;
+                            case 'GET' :
+                                $api_info['baseInfo']['apiRequestType'] = 1;
+                                break;
+                            case 'PUT' :
+                                $api_info['baseInfo']['apiRequestType'] = 2;
+                                break;
+                            case 'DELETE' :
+                                $api_info['baseInfo']['apiRequestType'] = 3;
+                                break;
+                            case 'HEAD' :
+                                $api_info['baseInfo']['apiRequestType'] = 4;
+                                break;
+                            case 'OPTIONS' :
+                                $api_info['baseInfo']['apiRequestType'] = 5;
+                                break;
+                            case 'PATCH' :
+                                $api_info['baseInfo']['apiRequestType'] = 6;
+                                break;
+                        }
+
+                        $headerInfo = array();
+                        foreach ($api['request']['header'] as $header) {
+                            $headerInfo[] = array(
+                                'headerName' => $header['key'],
+                                'headerValue' => $header['value']
+                            );
+                        }
+                        $api_info['headerInfo'] = $headerInfo;
+                        unset($headerInfo);
+
+                        $api_info_request_param = array();
+                        if ($api['request']['body']['mode'] == 'formdata') {
+                            $parameters = $api['request']['body']['formdata'];
+                            foreach ($parameters as $parameter) {
+                                $param['paramKey'] = $parameter['key'];
+                                $param['paramValue'] = $parameter['value'];
+                                $param['paramType'] = ($parameter['type'] == 'text') ? 0 : 1;
+                                $param['paramNotNull'] = $parameter['enabled'] ? 0 : 1;
+                                $param['paramName'] = '';
+                                $param['paramLimit'] = '';
+                                $param['paramValueList'] = array();
+                                $api_info_request_param[] = $param;
+                                unset($param);
+                            }
+                        }
+                        $api_info['requestInfo'] = $api_info_request_param;
+                        unset($api_info_request_param);
+
+                        $api_info['resultInfo'] = array();
+
+                        $groups[$group_count]['apiList'][] = $api_info;
+
+                        unset($api_info);
+                    }
+                    $group_count++;
                 }
             }
-            $dao = new ImportDao;
-            return $dao->importOther($projectInfo, $groupInfoList, $_SESSION['userID']);
+
+            $dao = new ImportDao();
+            return $dao->importOther($project_info, $groups, $_SESSION['userID']);
         } catch (\PDOException $e) {
             return FALSE;
         }
@@ -413,6 +555,18 @@ class ImportModule
         );
         $apiList = $swagger['paths'];
         $api_list = array();
+        $group_name_list = array();
+        foreach ($apiList as $api_uri => $api_info_list) {
+            // 拆分详细api接口信息
+            foreach ($api_info_list as $api_request_type => $api_info) {
+                $group_name = $api_info['tags'][0];
+                if (in_array($group_name, $group_name_list)) {
+                    continue;
+                }
+                $group_info_list[] = array('groupName' => $group_name);
+                $group_name_list[] = $group_name;
+            }
+        }
         if (is_array($group_info_list)) {
             foreach ($group_info_list as &$group_info) {
                 if (is_array($apiList)) {
@@ -420,6 +574,9 @@ class ImportModule
                     foreach ($apiList as $api_uri => $api_info_list) {
                         // 拆分详细api接口信息
                         foreach ($api_info_list as $api_request_type => $api_info) {
+                            if ($api_info['tags'][0] != $group_info['groupName']) {
+                                continue;
+                            }
                             if (empty($api_info['summary'])) {
                                 // 如果接口名不存在跳过
                                 $api_info['summary'] = $api_info['operationId'];

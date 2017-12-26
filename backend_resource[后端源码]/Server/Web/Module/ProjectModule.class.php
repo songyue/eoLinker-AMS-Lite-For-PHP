@@ -258,7 +258,7 @@ class ProjectModule
         $dao = new ProjectDao();
         if ($dao->checkProjectPermission($projectID, $_SESSION['userID'])) {
             $dumpJson = json_encode($dao->dumpProject($projectID));
-            $fileName = 'eoLinker_dump_' . $_SESSION['userName'] . '_' . time() . '.json';
+            $fileName = 'eoLinker_dump_' . $_SESSION['userName'] . '_' . time() . '.export';
             if (file_put_contents(realpath('./dump') . DIRECTORY_SEPARATOR . $fileName, $dumpJson)) {
                 //将操作写入日志
                 $log_dao = new ProjectLogDao();

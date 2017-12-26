@@ -1,4 +1,51 @@
 <div class="modal">
+    <!-- 上传文件输入弹窗 -->
+    <script type="text/ng-template" id="Common_UploadFile">
+        <div class="common-modal common-modal-upload-file eo-modal">
+            <header>
+                <ul>
+                    <li ng-bind="::data.input.title"></li>
+                </ul>
+            </header>
+            <article>
+                <form name="editForm">
+                    <ul>
+                        <li class="container-li">
+                            <ul class="group-inherit  group-ul">
+                                <li upload-file-directive="data.fun.import(arg)" input-id="import-input-js"></li>
+                                <li ng-if="data.input.secondTitle">{{data.input.secondTitle}}：</li>
+                                <li>
+                                    <label for="import-input-js" class="eo-input" ng-class="{'eo-input-error':!data.output.file.name&&data.info.submitted}">{{data.output.file.name||data.info.clickSelectFile}}</label>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="container-li">
+                            <ul class="group-select group-ul pull-left">
+                                <li>{{'490'|translate}}：</li>
+                                <li>
+                                    <select class="eo-input " ng-model="data.output.groupID" ng-options="group.groupID as group.groupName for group in data.input.group.parent" ng-change="data.fun.change()">
+                                    </select>
+                                </li>
+                            </ul>
+                            <ul class="group-name  group-ul">
+                                <li>{{'491'|translate}}：</li>
+                                <li>
+                                    <select class="eo-input" ng-model="data.output.childGroupID" ng-options="group.groupID as group.groupName for group in data.input.group.child">
+                                    </select>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="btn-group">
+                            <button class="eo-button-success " ng-click="data.fun.confirm()">{{'414'|translate}}</button>
+                            <input type="button" class="eo-button-default " value="{{'415'|translate}}" ng-click="data.fun.cancel()">
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
     <!-- 请求参数详情弹窗 -->
     <script type="text/ng-template" id="RequestParamDetailModal">
         <div class="modal-request-param-detail eo-modal" style="{{info.background}}">
@@ -494,7 +541,13 @@
             <article>
                 <form name="Form">
                     <ul>
-                        <li class="modal-export-info">
+                        <li class="modal-export-info" ng-if="data.input.status">
+                            <ul class="modal-btn-group-ul">
+                                <li class="pull-left first-li" dump-directive='data.fun.dumpDirective(arg)' interaction='{request:{text:"eolinker",switch:"export-"+data.input.status}}'>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="modal-export-info" ng-if="!data.input.status">
                             <ul class="modal-btn-group-ul">
                                 <li class="pull-left first-li" dump-directive='data.fun.dumpDirective(arg)' interaction='{request:{text:"eolinker",switch:"0"}}'>
                                 </li>

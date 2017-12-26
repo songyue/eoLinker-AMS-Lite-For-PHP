@@ -1054,6 +1054,63 @@ class ApiModule
         $dao = new ApiDao();
         return $dao->changeApiGroup($api_ids, $project_id, $group_id);
     }
+
+    /**
+     * 批量导出接口数据
+     * @param $project_id
+     * @param $api_ids
+     * @return bool|string
+     */
+    public function exportApi(&$project_id, &$api_ids)
+    {
+        $dao = new ApiDao();
+        $project_dao = new ProjectDao();
+        if (!$project_dao->checkProjectPermission($project_id, $_SESSION['userID'])) {
+            return FALSE;
+        }
+        $result = $dao->getApiData($project_id, $api_ids);
+        if ($result) {
+            $fileName = 'eoLinker_api_export_' . $_SESSION['userName'] . '_' . time() . '.export';
+            if (file_put_contents(realpath('./dump') . DIRECTORY_SEPARATOR . $fileName, json_encode($result))) {
+                $api_name = $dao->getApiName($api_ids);
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($project_id, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_API, $project_id, ProjectLogDao::$OP_TYPE_OTHERS, "批量导出接口：$api_name", date("Y-m-d H:i:s", time()));
+                return $fileName;
+            }
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * 批量导入接口
+     * @param $group_id
+     * @param $data
+     * @return bool
+     */
+    public function importApi(&$group_id, &$data)
+    {
+        $group_dao = new GroupDao();
+        if (!($project_id = $group_dao->checkGroupPermission($group_id, $_SESSION['userID']))) {
+            return FALSE;
+        }
+        $dao = new ApiDao();
+        $result = $dao->importApi($group_id, $project_id, $data, $_SESSION['userID']);
+        if ($result) {
+            $names = array();
+            foreach ($data as $api) {
+                $names[] = $api['baseInfo']['apiName'];
+            }
+            $api_name = implode(",", $names);
+            //将操作写入日志
+            $log_dao = new ProjectLogDao();
+            $log_dao->addOperationLog($project_id, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_API, $group_id, ProjectLogDao::$OP_TYPE_OTHERS, "批量导入接口：$api_name", date("Y-m-d H:i:s", time()));
+            return $result;
+        } else {
+            return FALSE;
+        }
+    }
 }
 
 ?>

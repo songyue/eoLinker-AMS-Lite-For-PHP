@@ -190,6 +190,66 @@ class GroupController
         }
         exitOutput($this->returnJson);
     }
+
+    /**
+     * 导出接口分组
+     */
+    public function exportGroup()
+    {
+        //分组ID
+        $group_id = securelyInput('groupID');
+        if (!preg_match('/^[0-9]{1,11}$/', $group_id)) {
+            // 分组ID格式不合法
+            $this->returnJson['statusCode'] = '150003';
+        } else {
+            $service = new GroupModule();
+            $user_type = $service->getUserType($group_id);
+            if ($user_type < 0 || $user_type > 2) {
+                $this->returnJson['statusCode'] = '120007';
+            } else {
+                $result = $service->exportGroup($group_id);
+                if ($result) {
+                    $this->returnJson['statusCode'] = '000000';
+                    $this->returnJson['fileName'] = $result;
+                } else {
+                    $this->returnJson['statusCode'] = '150000';
+                }
+            }
+        }
+        exitOutput($this->returnJson);
+    }
+
+    /**
+     * 导入接口分组
+     */
+    public function importGroup()
+    {
+        $project_id = securelyInput('projectID');
+        $json = quickInput('data');
+        $data = json_decode($json, TRUE);
+        if (!preg_match('/^[0-9]{1,11}$/', $project_id)) {
+            $this->returnJson['statusCode'] = '150007';
+        } //判断导入数据是否为空
+        elseif (empty($data)) {
+            $this->returnJson['statusCode'] = '150005';
+            exitOutput($this->returnJson);
+        } else {
+            $service = new ProjectModule();
+            $user_type = $service->getUserType($project_id);
+            if ($user_type < 0 || $user_type > 2) {
+                $this->returnJson['statusCode'] = '120007';
+            }
+            $server = new GroupModule();
+            $result = $server->importGroup($project_id, $data);
+            //验证结果
+            if ($result) {
+                $this->returnJson['statusCode'] = '000000';
+            } else {
+                $this->returnJson['statusCode'] = '150000';
+            }
+        }
+        exitOutput($this->returnJson);
+    }
 }
 
 ?>

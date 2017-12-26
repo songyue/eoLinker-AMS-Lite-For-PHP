@@ -3,62 +3,65 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [公用弹窗controller js] [Public bucket controller js]
-     * @version  3.1.5
+     * @version  3.2.0
      */
     angular.module('eolinker.modal')
 
-    .directive('eoCommonModal', [function() {
-        return {
-            restrict: 'AE',
-            templateUrl: 'app/modal/branch/common/index.html'
-        }
-    }])
+        .directive('eoCommonModal', [function() {
+            return {
+                restrict: 'AE',
+                templateUrl: 'app/modal/branch/common/index.html'
+            }
+        }])
 
-    .controller('ExpressionBuilderModalCtrl', ExpressionBuilderModalCtrl)
+        .controller('ExpressionBuilderModalCtrl', ExpressionBuilderModalCtrl)
 
-    .controller('InfoModalCtrl', InfoModalCtrl)
+        .controller('InfoModalCtrl', InfoModalCtrl)
 
-    .controller('TipsModalCtrl', TipsModalCtrl)
+        .controller('TipsModalCtrl', TipsModalCtrl)
 
-    .controller('MessageModalCtrl', MessageModalCtrl)
+        .controller('MessageModalCtrl', MessageModalCtrl)
 
-    .controller('ImportModalCtrl', ImportModalCtrl)
+        .controller('ImportModalCtrl', ImportModalCtrl)
 
-    .controller('ImportDatabaseModalCtrl', ImportDatabaseModalCtrl)
+        .controller('ImportDatabaseModalCtrl', ImportDatabaseModalCtrl)
 
-    .controller('ExportModalCtrl', ExportModalCtrl)
+        .controller('ExportModalCtrl', ExportModalCtrl)
 
-    .controller('ExportDatabaseModalCtrl', ExportDatabaseModalCtrl)
+        .controller('ExportDatabaseModalCtrl', ExportDatabaseModalCtrl)
 
-    .controller('EnsureModalCtrl', EnsureModalCtrl)
+        .controller('EnsureModalCtrl', EnsureModalCtrl)
 
-    .controller('JsonToParamInputModalCtrl', JsonToParamInputModalCtrl)
+        .controller('JsonToParamInputModalCtrl', JsonToParamInputModalCtrl)
 
-    .controller('FieldModalCtrl', FieldModalCtrl)
+        .controller('FieldModalCtrl', FieldModalCtrl)
 
-    .controller('ProjectModalCtrl', ProjectModalCtrl)
+        .controller('ProjectModalCtrl', ProjectModalCtrl)
 
-    .controller('DatabaseModalCtrl', DatabaseModalCtrl)
+        .controller('DatabaseModalCtrl', DatabaseModalCtrl)
 
-    .controller('GroupModalCtrl', GroupModalCtrl)
+        .controller('GroupModalCtrl', GroupModalCtrl)
 
-    .controller('ApiRecoverModalCtrl', ApiRecoverModalCtrl)
+        .controller('ApiRecoverModalCtrl', ApiRecoverModalCtrl)
 
-    .controller('TableModalCtrl', TableModalCtrl)
+        .controller('TableModalCtrl', TableModalCtrl)
 
-    .controller('CodeModalCtrl', CodeModalCtrl)
+        .controller('CodeModalCtrl', CodeModalCtrl)
 
-    .controller('RequestParamDetailModalCtrl', RequestParamDetailModalCtrl)
+        .controller('RequestParamDetailModalCtrl', RequestParamDetailModalCtrl)
 
-    .controller('RequestParamEditModalCtrl', RequestParamEditModalCtrl)
+        .controller('RequestParamEditModalCtrl', RequestParamEditModalCtrl)
 
-    .controller('ResponseParamDetailModalCtrl', ResponseParamDetailModalCtrl)
+        .controller('ResponseParamDetailModalCtrl', ResponseParamDetailModalCtrl)
 
-    .controller('ResponseParamEditModalCtrl', ResponseParamEditModalCtrl)
+        .controller('ResponseParamEditModalCtrl', ResponseParamEditModalCtrl)
 
-    .controller('UpdateModalCtrl', UpdateModalCtrl)
+        .controller('UpdateModalCtrl', UpdateModalCtrl)
 
-    .controller('CommonSingleInputModalCtrl', CommonSingleInputModalCtrl)
+        .controller('CommonSingleInputModalCtrl', CommonSingleInputModalCtrl)
+
+        .controller('Common_UploadFileCtrl', Common_UploadFileCtrl)
+
 
     RequestParamDetailModalCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'input'];
     /**
@@ -75,12 +78,12 @@
             },
             input: {},
             fun: {
-                close: null, 
+                close: null,
             }
         }
         var data = {
             fun: {
-                init: null, 
+                init: null,
             }
         }
         data.fun.init = (function() {
@@ -106,13 +109,13 @@
             },
             input: {},
             fun: {
-                close: null, 
-                ok: null, 
+                close: null,
+                ok: null,
             }
         }
         var data = {
             fun: {
-                init: null, 
+                init: null,
             }
         }
         data.fun.init = (function() {
@@ -151,7 +154,7 @@
     }
 
     ResponseParamDetailModalCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'input'];
-     /**
+    /**
      * @function [请求参数编辑弹窗] [Request parameters to edit pop]
      * @service  $scope [注入作用域服务] [Injection scope service]
      * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
@@ -165,12 +168,12 @@
             },
             input: {},
             fun: {
-                close: null, 
+                close: null,
             }
         }
         var data = {
             fun: {
-                init: null, 
+                init: null,
             }
         }
         data.fun.init = (function() {
@@ -197,13 +200,13 @@
             },
             input: {},
             fun: {
-                close: null, 
-                ok: null, 
+                close: null,
+                ok: null,
             }
         }
         var data = {
             fun: {
-                init: null, 
+                init: null,
             }
         }
         data.fun.init = (function() {
@@ -259,8 +262,8 @@
                 }
             },
             fun: {
-                init: null, 
-                callback: null 
+                init: null,
+                callback: null
             }
         }
         $scope.data.fun.init = function(callback) {
@@ -319,8 +322,8 @@
      * @param    {[obj]}   input [参数详情 Parameter details]
      */
     function JsonToParamInputModalCtrl($scope, $uibModalInstance, input) {
-        $scope.data={
-            input:input
+        $scope.data = {
+            input: input
         }
         $scope.ok = function(which) {
             if ($scope.sureForm.$valid) {
@@ -393,7 +396,7 @@
         $scope.data = {
             input: input,
             fun: {
-                import: null 
+                import: null
             }
         }
         $scope.importFile = function(arg) {
@@ -405,7 +408,6 @@
                         reader.readAsText(file);
                         reader.onloadend = function(evt) {
                             $scope.$broadcast('$LoadingInit', {
-                                companyID: input.companyID,
                                 status: arg.status,
                                 result: this.result
                             });
@@ -419,7 +421,6 @@
                             reader.readAsText(file);
                             reader.onloadend = function(evt) {
                                 $scope.$broadcast('$LoadingInit', {
-                                    companyID: input.companyID,
                                     status: arg.status,
                                     result: this.result
                                 });
@@ -576,9 +577,8 @@
                     }
                 case 6:
                     {
-                        template.promise = ApiManagementResource.Api.Import({
-                            projectID: $scope.data.input.request.projectID,
-                            groupID: $scope.data.input.request.groupID,
+                        template.promise = input.resource.Import({
+                            projectID: input.request.projectID,
                             data: arg.result
                         }).$promise;
                         template.promise.then(function(response) {
@@ -588,14 +588,14 @@
                                         $uibModalInstance.close(true);
                                         break;
                                     }
-                                case '160006':
+                                case CODE.IMPORT_EXPORT.ILLEGAL_IMPORT:
                                     {
-                                        $rootScope.InfoModal($filter('translate')('398'), 'error');
+                                        $rootScope.InfoModal('数据格式错误', 'error');
                                         break;
                                     }
                                 default:
                                     {
-                                        $rootScope.InfoModal($filter('translate')('394'), 'error');
+                                        $rootScope.InfoModal('导入失败', 'error');
                                         break;
                                     }
                             }
@@ -716,7 +716,7 @@
         };
     }
 
-    ExportModalCtrl.$inject = ['$scope', '$uibModalInstance', 'ApiManagementResource', '$filter', 'CODE', '$rootScope', 'input'];
+    ExportModalCtrl.$inject = ['$scope', '$uibModalInstance', 'ApiManagementResource', '$filter', '$state', 'CODE', '$rootScope', 'input'];
     /**
      * @function [导出项目弹窗] [Export the project]
      * @service  $scope [注入作用域服务] [Injection scope service]
@@ -727,11 +727,14 @@
      * @constant CODE [注入状态码常量] [inject status code constant service]
      * @param    {[obj]}   input [参数详情 Parameter details]
      */
-    function ExportModalCtrl($scope, $uibModalInstance, ApiManagementResource, $filter, CODE, $rootScope, input) {
+    function ExportModalCtrl($scope, $uibModalInstance, ApiManagementResource, $filter, $state ,CODE, $rootScope, input) {
+        $scope.info = {
+            projectID: $state.params.projectID
+        }
         $scope.data = {
             input: input,
             fun: {
-                dumpDirective: null 
+                dumpDirective: null
             }
         }
         var data = {
@@ -744,10 +747,17 @@
                 case CODE.COMMON.SUCCESS:
                     {
                         $scope.$broadcast('$DumpDirective_Click_' + arg.switch, {
-                            response: arg.response
+                            response: arg.response,
+                            fileName: $scope.data.input.fileName
                         });
-                        $rootScope.InfoModal($filter('translate')('3910'), 'success');
-                        $uibModalInstance.close(false);
+                        switch (arg.switch) {
+                            case 'export-group':
+                            case 'export-api':
+                                {
+                                    $uibModalInstance.close(true);
+                                    break;
+                                }
+                        }
                         break;
                     }
                 default:
@@ -761,10 +771,28 @@
             var template = {
                 promise: null,
                 request: {
-                    projectID: $scope.data.input.projectID
+                    projectID: $scope.info.projectID
                 }
             }
-            template.promise = ApiManagementResource.Project.Dump(template.request).$promise;
+            switch (arg.switch) {
+                case 'export-group':
+                    {
+                        template.request.groupID = $scope.data.input.request.groupID;
+                        template.promise = input.resource.Export(template.request).$promise;
+                        break;
+                    }
+                case 'export-api':
+                    {
+                        template.request.apiID = $scope.data.input.request.apiID;
+                        template.promise = ApiManagementResource.Api.Export(template.request).$promise;
+                        break;
+                    }
+                case "0":
+                    {
+                        template.promise = ApiManagementResource.Project.Dump(template.request).$promise;
+                        break;
+                    }
+            }
             template.promise.then(function(response) {
                 data.assistantFun.response({
                     response: response,
@@ -798,7 +826,7 @@
         }
         $scope.data = {
             fun: {
-                dumpDirective: null 
+                dumpDirective: null
             }
         }
         var data = {
@@ -909,7 +937,7 @@
             isAdd: true
         }
         $scope.template = {
-            isKeep: false 
+            isKeep: false
         }
         $scope.isDisable = false;
         $scope.query = [];
@@ -1112,7 +1140,7 @@
             $uibModalInstance.close(false);
         };
     }
-    
+
     DatabaseModalCtrl.$inject = ['$scope', '$uibModalInstance', 'DatabaseResource', 'CODE', 'input'];
     /**
      * @function [编辑数据库弹窗] [Edit database]
@@ -1133,6 +1161,7 @@
             dbVersion: '1.0',
             isAdd: true
         }
+
         function init() {
             if (input.interaction.request) {
                 $scope.info = {
@@ -1251,7 +1280,7 @@
                 childGroupID: ''
             },
             fun: {
-                change: null, 
+                change: null,
             }
         }
         var data = {
@@ -1361,7 +1390,7 @@
         $scope.title = title;
         var data = {
             interaction: {
-                version: info.version || 0 
+                version: info.version || 0
             }
         }
         $scope.info = {
@@ -1508,7 +1537,7 @@
         };
     }
 
-    UpdateModalCtrl.$inject = ['$scope', '$rootScope','$uibModalInstance', 'ApiManagementResource', '$filter', '$state', '$http', 'CODE'];
+    UpdateModalCtrl.$inject = ['$scope', '$rootScope', '$uibModalInstance', 'ApiManagementResource', '$filter', '$state', '$http', 'CODE'];
     /**
      * @function [更新开源版本弹窗] [Update the open source version]
      * @service  $scope [注入作用域服务] [Injection scope service]
@@ -1534,11 +1563,11 @@
             autoUpdateBtn: false,
             manualUpdateBtn: false
         }
-        var request = { 
+        var request = {
             method: 'GET',
             url: 'https://api.eolinker.com/openSource/Update/checkout',
         };
-        $http(request).then(function (response) { 
+        $http(request).then(function(response) {
             $scope.info.latestVersion = response.data.version;
             $scope.info.updateTime = response.data.updateTime;
         });
@@ -1649,7 +1678,7 @@
                     $scope.info = {
                         updating: false,
                         updateFail: true,
-                       tips: $filter('translate')('5011'),
+                        tips: $filter('translate')('5011'),
                         ok: $filter('translate')('414'),
                         cancel: $filter('translate')('415')
                     }
@@ -1685,8 +1714,8 @@
             btnMessage: input.btnMessage || $filter('translate')('511'),
             placeholder: $filter('translate')('510'),
         }
-        $scope.data={
-            input:input
+        $scope.data = {
+            input: input
         }
         $scope.ok = function() {
             if ($scope.sureForm.$valid) {
@@ -1702,6 +1731,96 @@
         $scope.cancel = function() {
             $uibModalInstance.close(false);
         };
+
+    }
+
+    Common_UploadFileCtrl.$inject = ['$scope', '$uibModalInstance', '$filter', 'input'];
+    /**
+     * @function [上传文件弹窗] [Upload file pop-up]
+     * @service  $scope [注入作用域服务] [Injection scope service]
+     * @service  $uibModalInstance [注入$uibModalInstance服务] [Injection $uibModalInstance service]
+     * @service  $filter [注入过滤器服务] [Injection filter service]
+     * @param    {[obj]}   input [参数详情 Parameter details]
+     */
+    function Common_UploadFileCtrl($scope, $uibModalInstance, $filter, input) {
+        $scope.data = {
+            info: {
+                submitted: false,
+                clickSelectFile: $filter('translate')('498')
+            },
+            input: {},
+            output: {
+                file: null,
+                groupID: '',
+                childGroupID: ''
+            },
+            fun: {
+                change: null, //切换父分组功能函数
+                cancel: null,
+                confirm: null
+            }
+        }
+        var data = {
+            fun: {
+                init: null
+            }
+        }
+        $scope.data.fun.import = function(arg) {
+            $scope.data.output.file = arg.$files[0];
+        };
+        $scope.data.fun.change = function() {
+            for (var i = 0; i < $scope.data.input.group.parent.length; i++) {
+                var val = $scope.data.input.group.parent[i];
+                if (val.groupID == $scope.data.output.groupID) {
+                    $scope.data.input.group.child = [{
+                        groupID: -1,
+                        groupName: $filter('translate')('012100085')
+                    }].concat(val.childGroupList);
+                    $scope.data.output.childGroupID = -1;
+                    break;
+                }
+            }
+        }
+        $scope.data.fun.confirm = function(arg) {
+            var template = {
+                callback: {
+                    groupID: $scope.data.output.childGroupID == -1 ? $scope.data.output.groupID : $scope.data.output.childGroupID,
+                    file: $scope.data.output.file
+                }
+            }
+            if ($scope.data.output.file) {
+                $uibModalInstance.close(template.callback);
+            } else {
+                $scope.data.info.submitted = true;
+            }
+        };
+        $scope.data.fun.cancel = function() {
+            $uibModalInstance.close(false);
+        };
+        data.fun.init = (function() {
+            angular.copy(input, $scope.data.input);
+            if (!input.group.groupID || input.group.groupID == -1) {
+                $scope.data.output.groupID = $scope.data.input.group.parent[0].groupID;
+                $scope.data.input.group.child = [{
+                    groupID: -1,
+                    groupName: $filter('translate')('012100085')
+                }].concat($scope.data.input.group.parent[0].childGroupList);
+                $scope.data.output.childGroupID = -1;
+            } else {
+                $scope.data.output.groupID = input.group.groupID || -1;
+                $scope.data.output.childGroupID = input.group.childGroupID || -1;
+                for (var i = 0; i < $scope.data.input.group.parent.length; i++) {
+                    var val = $scope.data.input.group.parent[i];
+                    if (val.groupID == $scope.data.output.groupID) {
+                        $scope.data.input.group.child = [{
+                            groupID: -1,
+                            groupName: $filter('translate')('012100085')
+                        }].concat(val.childGroupList);
+                        break;
+                    }
+                }
+            }
+        })()
 
     }
 

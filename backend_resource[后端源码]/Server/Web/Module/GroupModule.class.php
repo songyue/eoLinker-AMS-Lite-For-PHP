@@ -197,6 +197,56 @@ class GroupModule
             return FALSE;
         }
     }
+
+    /**
+     * 导出接口分组
+     * @param $group_id
+     * @return bool|string
+     */
+    public function exportGroup(&$group_id)
+    {
+        $group_dao = new GroupDao();
+        if (!($projectID = $group_dao->checkGroupPermission($group_id, $_SESSION['userID']))) {
+            return FALSE;
+        }
+        $data = $group_dao->getGroupData($group_id);
+        if ($data) {
+            $fileName = 'eoLinker_api_group_export_' . $_SESSION['userName'] . '_' . time() . '.export';
+            if (file_put_contents(realpath('./dump') . DIRECTORY_SEPARATOR . $fileName, json_encode($data))) {
+                $group_name = $group_dao->getGroupName($group_id);
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_API_GROUP, $group_id, ProjectLogDao::$OP_TYPE_OTHERS, "导出接口分组：$group_name", date("Y-m-d H:i:s", time()));
+                return $fileName;
+            }
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * 导入接口分组
+     * @param $project_id
+     * @param $data
+     * @return bool
+     */
+    public function importGroup(&$project_id, &$data)
+    {
+        $group_dao = new GroupDao();
+        $project_dao = new ProjectDao();
+        if (!$project_dao->checkProjectPermission($project_id, $_SESSION['userID'])) {
+            return FALSE;
+        }
+        $result = $group_dao->importGroup($project_id, $_SESSION['userID'], $data);
+        if ($result) {
+            //将操作写入日志
+            $log_dao = new ProjectLogDao();
+            $log_dao->addOperationLog($project_id, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_API_GROUP, $project_id, ProjectLogDao::$OP_TYPE_OTHERS, "导入接口分组：{$data['groupName']}", date("Y-m-d H:i:s", time()));
+            return $result;
+        } else {
+            return FALSE;
+        }
+    }
 }
 
 ?>

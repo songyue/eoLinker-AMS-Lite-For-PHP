@@ -9,6 +9,9 @@
                 <a class="eo-button-warning common-btn" data-ng-click="$ctrl.data.fun.clean()" ng-switch-when=true>
                     <span class="iconfont icon-shanchu"></span><span class="btn-name">{{'01210021'|translate}}</span>
                 </a>
+                <a class="common-btn default-btn" ng-click="$ctrl.data.fun.import()" ng-show="!$ctrl.data.info.batch.disable" ng-switch-when=false>
+                    {{'012100257'|translate}}
+                </a>
                 <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.batch.default()" ng-if="!$ctrl.data.info.batch.disable">
                     {{'01210022'|translate}}
                 </a>
@@ -17,6 +20,9 @@
                 </a>
                 <a class="common-btn default-btn" ng-click="$ctrl.data.fun.batch.moveGroup()" ng-if="$ctrl.data.info.batch.disable" ng-switch-when=false>
                     <span class="iconfont icon-bianji"></span><span class="btn-name">{{'012100252'|translate}}</span>
+                </a>
+                <a class="common-btn default-btn" ng-click="$ctrl.data.fun.export()" ng-show="$ctrl.data.info.batch.disable" ng-switch-when=false>
+                    <span class="iconfont icon-xiazai"></span><span class="btn-name">{{'012100258'|translate}}</span>
                 </a>
                 <a class="common-btn default-btn" data-ng-click="$ctrl.data.fun.batch.remove()" ng-if="$ctrl.data.info.batch.disable" ng-switch-when=false>
                     <span class="iconfont icon-shanchu"></span><span class="btn-name">{{'01210024'|translate}}</span>
@@ -75,7 +81,7 @@
                         <label class="iconfont icon-favorfill"></label>
                     </th>
                     <th class="api-name second-th" >
-                        {{'012100212'|translate}}&nbsp;{{$ctrl.data.service.home.envObject.object.model?'['+$ctrl.data.service.home.envObject.object.model.length+']':''}}
+                        {{'012100212'|translate}}&nbsp;<span class="count-span">{{$ctrl.data.service.home.envObject.object.model?'['+$ctrl.data.service.home.envObject.object.model.length+']':''}}</span>
                     </th>
                     <th class="third-th">{{'012100213'|translate}}</th>
                     <th class="forth-th" ng-show="$ctrl.data.info.more==1">

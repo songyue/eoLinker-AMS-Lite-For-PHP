@@ -190,6 +190,30 @@ class PartnerDao
             return $result['userName'];
         }
     }
+
+    public function getProjectInviteCode(&$project_id)
+    {
+        $db = getDatabase();
+        // 尝试次数,超过3次则认为是服务器出错
+        $count = 0;
+        do {
+            $count++;
+            // 获取随机6位字符串
+            $invite_code = '';
+            $strPool = 'NMqlzxcvdfghjQXCER67ty5HuasJKLZYTWmPASDFGk12iBpn34UIb9werV8';
+            for ($i = 0; $i <= 5; $i++) {
+                $invite_code .= $strPool[rand(0, 58)];
+            }
+
+            // 查重
+            $result = $db->prepareExecute('SELECT eo_project_invite.projectID FROM eo_project_invite WHERE eo_project_invite.projectInviteCode = ?;', array(
+                $invite_code
+            ));
+        } while (!empty($result) && $count < 3);
+        if (!empty($result)) {
+            return FALSE;
+        }
+    }
 }
 
 ?>

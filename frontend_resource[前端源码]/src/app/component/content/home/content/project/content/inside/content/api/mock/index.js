@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [mock模块相关js] [mock module related js]
-     * @version  3.1.5
+     * @version  3.2.0
      * @service  $scope [注入作用域服务] [Injection scope service]
      * @service  $rootScope [注入根作用域服务] [Injection rootScope service]
      * @service  $sce [注入$sce服务] [Injection $sce service]
@@ -60,7 +60,7 @@
                 }
             },
             fun: {
-                init: null, //
+                init: null, 
                 filterMock: null, 
             }
         }

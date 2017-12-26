@@ -224,4 +224,13 @@ function err_handler($error_level, $error_str)
     throw new Exception("[$error_level] $error_str", 100001);
 }
 
+/**
+ * 判断session是否已开启
+ * @return bool
+ */
+function is_session_started()
+{
+    return function_exists('session_status') ? (PHP_SESSION_ACTIVE == session_status()) : (!empty (session_id()));
+}
+
 ?>

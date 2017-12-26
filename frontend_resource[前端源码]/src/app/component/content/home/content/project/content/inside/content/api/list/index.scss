@@ -90,6 +90,11 @@ home-project-inside-api-list {
                     }
                     .second-th {
                         min-width: 200px;
+                        .count-span {
+                            color: #999;
+                            font-weight: initial;
+                            font-size: 12px;
+                        }
                     }
                     .third-th {
                         min-width: 220px;

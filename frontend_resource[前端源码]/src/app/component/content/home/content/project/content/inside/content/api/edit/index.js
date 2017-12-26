@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [api修改模块相关js] [api modify module related js]
-     * @version  3.1.5
+     * @version  3.2.0
      * @service  $scope [注入作用域服务] [Injection scope service]
      * @service  $rootScope [注入根作用域服务] [Injection rootscope service]
      * @service  ApiManagementResource [注入接口管理接口服务] [inject ApiManagement API service]
@@ -43,7 +43,6 @@
                 },
                 menu: 0, //0：基础信息、1：详细说明、2：高级mock 0: basic information, 1: detailed description, 2: advanced mock
                 mock: {
-                    isFailure: false
                 },
                 timer: {
                     fun: null
@@ -139,57 +138,57 @@
                 }
             },
             fun: {
-                init: null, 
-                load: null, 
-                requestProcessing: null, 
-                menu: null, 
-                filterMock: null, 
-                refresh: null, 
+                init: null,
+                load: null,
+                requestProcessing: null,
+                menu: null,
+                filterMock: null,
+                refresh: null,
                 change: {
-                    group: null, 
-                    noteType: null, 
-                    requestType: null, 
+                    group: null,
+                    noteType: null,
+                    requestType: null,
                 },
-                storage: null, 
+                storage: null,
                 headerList: {
-                    add: null, 
-                    delete: null, 
+                    add: null,
+                    delete: null,
                 },
                 requestList: {
-                    add: null, 
-                    delete: null, 
+                    add: null,
+                    delete: null,
                 },
                 requestParamList: {
-                    add: null, 
-                    delete: null, 
+                    add: null,
+                    delete: null,
                 },
                 resultList: {
-                    add: null, 
-                    delete: null, 
+                    add: null,
+                    delete: null,
                 },
                 resultParamList: {
-                    add: null, 
-                    delete: null, 
+                    add: null,
+                    delete: null,
                 },
                 last: {
-                    header: null,  
-                    request: null,  
-                    response: null,  
-                    requestParam: null,  
-                    responseParam: null,  
+                    header: null,
+                    request: null,
+                    response: null,
+                    requestParam: null,
+                    responseParam: null,
                 },
-                back: null, 
+                back: null,
                 more: {
-                    request: null, 
-                    response: null, 
+                    request: null,
+                    response: null,
                 }
             },
             assistantFun: {
-                init: null, 
-                confirm: null, 
-                keep: null, 
-                quickEdit: null, 
-                edit: null 
+                init: null,
+                confirm: null,
+                keep: null,
+                quickEdit: null,
+                edit: null
             }
         }
 
@@ -299,7 +298,9 @@
             var template = {
                 modal: {
                     item: arg.item,
-                    sort: { requestParamForm: vm.data.info.sort.requestParamForm.child },
+                    sort: {
+                        requestParamForm: vm.data.info.sort.requestParamForm.child
+                    },
                     constant: vm.data.constant.requestParamLimit,
                     fun: {
                         paramAdd: vm.data.fun.last.requestParam,
@@ -309,7 +310,9 @@
             }
             arg.item.paramValueList = arg.item.paramValueList || [];
             if (arg.item.paramValueList.length == 0 || arg.item.paramValueList[arg.item.paramValueList.length - 1].value) {
-                vm.data.fun.requestParamList.add({ item: arg.item });
+                vm.data.fun.requestParamList.add({
+                    item: arg.item
+                });
             }
             $rootScope.RequestParamEditModal(template.modal, function(callback) {
                 if (callback) {
@@ -351,7 +354,9 @@
          */
         vm.data.fun.last.requestParam = function(arg) {
             if (arg.$last) {
-                vm.data.fun.requestParamList.add({ item: arg.item });
+                vm.data.fun.requestParamList.add({
+                    item: arg.item
+                });
             }
         }
 
@@ -419,16 +424,20 @@
             var template = {
                 modal: {
                     item: arg.item,
-                    sort: { responseParamForm: vm.data.info.sort.responseParamForm.child },
+                    sort: {
+                        responseParamForm: vm.data.info.sort.responseParamForm.child
+                    },
                     fun: {
                         paramAdd: vm.data.fun.last.responseParam,
                         delete: vm.data.fun.resultParamList.delete
                     }
                 }
-            }            
+            }
             arg.item.paramValueList = arg.item.paramValueList || [];
             if (arg.item.paramValueList.length == 0 || arg.item.paramValueList[arg.item.paramValueList.length - 1].value) {
-                vm.data.fun.resultParamList.add({ item: arg.item });
+                vm.data.fun.resultParamList.add({
+                    item: arg.item
+                });
             }
             $rootScope.ResponseParamEditModal(template.modal, function(callback) {
                 if (callback) {
@@ -443,7 +452,9 @@
          */
         vm.data.fun.last.responseParam = function(arg) {
             if (arg.$last) {
-                vm.data.fun.resultParamList.add({ item: arg.item });
+                vm.data.fun.resultParamList.add({
+                    item: arg.item
+                });
             }
         }
 
@@ -682,7 +693,9 @@
             }
             $scope.$emit('$translateferStation', {
                 state: '$LoadingInit',
-                data: {promise:template.promise}
+                data: {
+                    promise: template.promise
+                }
             });
             return template.promise;
         }
@@ -746,6 +759,11 @@
                             vm.data.info.input.submited = false;
                             window.scrollTo(0, 0);
                             vm.data.info.menu = 0;
+                            if(vm.data.info.mock.isFailure===false){
+                                $scope.$broadcast('$ResetAceEditor_AmsEditor');
+                            }else{
+                                vm.data.info.mock.isFailure=false;
+                            }
                             vm.data.fun.headerList.add();
                             vm.data.fun.requestList.add();
                             vm.data.fun.resultList.add();
@@ -838,23 +856,23 @@
                 template.promise.then(function(response) {
                     switch (response.statusCode) {
                         case CODE.COMMON.SUCCESS:
-                        {
-                            $state.go('home.project.inside.api.detail', {
-                                'groupID': vm.data.info.reset.groupID,
-                                'childGroupID': vm.data.info.reset.childGroupID,
-                                'apiID': response.apiID
-                            });
-                            $rootScope.InfoModal($filter('translate')('012100143'), 'success');
-                            break;
-                        }
+                            {
+                                $state.go('home.project.inside.api.detail', {
+                                    'groupID': vm.data.info.reset.groupID,
+                                    'childGroupID': vm.data.info.reset.childGroupID,
+                                    'apiID': response.apiID
+                                });
+                                $rootScope.InfoModal($filter('translate')('012100143'), 'success');
+                                break;
+                            }
                         case CODE.PROJECT_API.EXIST:
-                        {
-                            try {
-                                $scope.editForm.uri.$invalid = true;
-                            } catch (e) {}
-                            vm.data.info.input.submited = true;
-                            $rootScope.InfoModal($filter('translate')('012100144'), 'error');
-                        }
+                            {
+                                try {
+                                    $scope.editForm.uri.$invalid = true;
+                                } catch (e) {}
+                                vm.data.info.input.submited = true;
+                                $rootScope.InfoModal($filter('translate')('012100144'), 'error');
+                            }
                     }
                 })
             }
@@ -876,6 +894,7 @@
         vm.data.assistantFun.init = function() {
             var apiGroup = GroupService.get();
             vm.data.info.group.parent = apiGroup;
+            vm.data.info.mock.isFailure=false;
             if (vm.data.interaction.response.apiInfo.groupID > 0) {
                 for (var i = 0; i < vm.data.info.group.parent.length; i++) {
                     var val = vm.data.info.group.parent[i];
@@ -929,7 +948,13 @@
                             case CODE.COMMON.SUCCESS:
                                 {
                                     vm.data.interaction.response.apiInfo = response.apiInfo.baseInfo;
-                                    vm.data.interaction.response.apiInfo.mockConfig = response.apiInfo.mockInfo ? (response.apiInfo.mockInfo.mockConfig||{ type: 'object', rule: '' }) : { type: 'object', rule: '' };
+                                    vm.data.interaction.response.apiInfo.mockConfig = response.apiInfo.mockInfo ? (response.apiInfo.mockInfo.mockConfig || {
+                                        type: 'object',
+                                        rule: ''
+                                    }) : {
+                                        type: 'object',
+                                        rule: ''
+                                    };
                                     vm.data.interaction.response.apiInfo.apiHeader = response.apiInfo.headerInfo;
                                     vm.data.interaction.response.apiInfo.apiRequestParam = response.apiInfo.requestInfo;
                                     vm.data.interaction.response.apiInfo.apiResultParam = response.apiInfo.resultInfo;
@@ -941,14 +966,16 @@
                                     vm.data.interaction.response.apiInfo.apiRichNote = vm.data.interaction.response.apiInfo.apiNoteType == '0' ? vm.data.interaction.response.apiInfo.apiNote : '';
                                     vm.data.interaction.response.apiInfo.apiMarkdownNote = vm.data.interaction.response.apiInfo.apiNoteType == '1' ? vm.data.interaction.response.apiInfo.apiNote : '';
                                     vm.data.interaction.response.apiInfo.mockRule = response.apiInfo.mockInfo ? response.apiInfo.mockInfo.rule : [];
-                                    $scope.$emit('$WindowTitleSet', { list: [((vm.data.info.reset.type == 2 ? $filter('translate')('012100170') : $filter('translate')('012100171')) + vm.data.interaction.response.apiInfo.apiName), $filter('translate')('012100164'), $state.params.projectName, $filter('translate')('012100165')] });
-                                    if (!!vm.data.interaction.response.apiInfo.parentGroupID) {
+                                    $scope.$emit('$WindowTitleSet', {
+                                        list: [((vm.data.info.reset.type == 2 ? $filter('translate')('012100170') : $filter('translate')('012100171')) + vm.data.interaction.response.apiInfo.apiName), $filter('translate')('012100164'), $state.params.projectName, $filter('translate')('012100165')]
+                                    });
+                                    if (!!(vm.data.interaction.response.apiInfo.parentGroupID - 0)) {
                                         vm.data.interaction.response.apiInfo.childGroupID = response.apiInfo.baseInfo.groupID;
                                         vm.data.interaction.response.apiInfo.groupID = vm.data.interaction.response.apiInfo.parentGroupID;
                                     } else {
                                         vm.data.interaction.response.apiInfo.childGroupID = -1;
                                     }
-
+                                    $scope.$broadcast('$InitAceEditor_AmsEditor');
                                     angular.forEach(vm.data.interaction.response.apiInfo.apiRequestParam, function(val, key) {
                                         switch (val.paramNotNull) {
                                             case '0':
@@ -1013,6 +1040,7 @@
                     vm.data.interaction.response.apiInfo.mockRule = vm.data.interaction.response.apiInfo.apiResultParam;
                 }
             }
+
         }
         vm.data.fun.init();
     }

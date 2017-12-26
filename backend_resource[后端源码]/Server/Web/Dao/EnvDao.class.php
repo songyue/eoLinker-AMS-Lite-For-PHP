@@ -174,7 +174,7 @@ class EnvDao
                 return FALSE;
             }
         }
-        $result = $db->prepareExecute('SELECT * FROM eo_api_env_param_additional WHERE eo_api_env_param_addtional.envID = ?;', array(
+        $result = $db->prepareExecute('SELECT * FROM eo_api_env_param_additional WHERE eo_api_env_param_additional.envID = ?;', array(
             $env_id
         ));
         if (!empty($result)) {

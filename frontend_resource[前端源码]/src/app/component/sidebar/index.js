@@ -61,7 +61,7 @@
                         divide: 1
                     }, {
                         name: $filter('translate')('2105'),
-                        href: 'http://shang.qq.com/wpa/qunwpa?idkey=208b23b73761039b9994d71378ccbf7c84c872d5577d557e45168b37fd290c12',
+                        href: 'https://jq.qq.com/?_wv=1027&k=5QQoExE',
                         icon: 'icon-qq',
                         isShow: -1,
                     }

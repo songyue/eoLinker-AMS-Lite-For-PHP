@@ -43,12 +43,13 @@ class ProjectController
         $projectName = securelyInput('projectName');
         $projectType = securelyInput('projectType');
         $projectVersion = quickInput('projectVersion');
+        $version_len = mb_strlen(quickInput('projectVersion'));
 
         // 验证项目名和项目类型格式
         if (!($nameLen >= 1 && $nameLen <= 32 && preg_match('/^[0-3]{1}$/', $projectType))) {
             // 项目名或项目类型不合法
             $this->returnJson['statusCode'] = '140002';
-        } elseif (!(is_float(floatval($projectVersion)) && intval($projectVersion))) {
+        } elseif ($version_len < 1 || $version_len > 10) {
             // 项目版本不合法
             $this->returnJson['statusCode'] = '140017';
         } else {
@@ -144,12 +145,13 @@ class ProjectController
         $projectType = securelyInput('projectType');
         $projectName = securelyInput('projectName');
         $projectVersion = quickInput('projectVersion');
+        $version_len = mb_strlen(quickInput('projectVersion'));
 
         // 判断项目参数格式是否合法
         if (!(preg_match('/^[0-9]{1,11}$/', $projectID) && $nameLen >= 1 && $nameLen <= 32 && preg_match('/^[0-3]{1}$/', $projectType))) {
             // 项目参数格式不合法
             $this->returnJson['statusCode'] = '140007';
-        } elseif (!(is_float(floatval($projectVersion)) && intval($projectVersion))) {
+        } elseif ($version_len < 1 || $version_len > 10) {
             // 项目版本不合法
             $this->returnJson['statusCode'] = '140017';
         } else {

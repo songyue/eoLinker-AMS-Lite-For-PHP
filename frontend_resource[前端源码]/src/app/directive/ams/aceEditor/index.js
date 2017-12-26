@@ -82,18 +82,20 @@
 
                 })()
 
-                $scope.$on('$InsertText_AceEditorAms', function(_default, input) {
-                    data.editor.insert(input);
-                })
-
                 $scope.$on('$ResetAceEditor_AmsEditor', function() {
                     data.editor.session.setValue('');
                 })
-                $scope.$on('$Maunal_AceEditorAms', function(_default, input) {
-                    data.editor.session.setValue(input);
-                })
+                
                 $scope.$on('$stateChangeStart', function() {
                     if (data.editor) data.editor.destroy();
+                })
+
+                $scope.$on('$InitAceEditor_AmsEditor', function() {
+                    if ($scope.setVariable) {
+                        data.editor.session.setValue($scope.setModel[$scope.setVariable] || '');
+                    } else {
+                        data.editor.session.setValue($scope.setModel || '');
+                    }
                 })
             }
         }

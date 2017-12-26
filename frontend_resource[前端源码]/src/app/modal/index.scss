@@ -164,6 +164,63 @@
             width: 100%;
             z-index: 12;
         }
+        .common-modal {
+            width: 600px;
+            top: 150px;
+            @include eo-left(50%, 320px);
+            text-align: left;
+            border-radius: 5px;
+            @include eo-animation(fade .3s);
+            box-shadow: 0px 10px 29px #a3a3a3;
+            padding: 0 20px;
+            header,
+            article,
+            .btn-group {
+                padding: 0 20px;
+                margin-left: -20px;
+                font-size: 14px;
+                width: 100%;
+                border-radius: 0 0 3px 3px;
+            }
+            header {
+                border-radius: 3px 3px 0 0;
+                font-weight: bold;
+                .btn-group {
+                    padding: 0;
+                    margin: 0;
+                    width: auto;
+                    a,
+                    button {
+                        display: inline-block;
+                        width: 60px;
+                        text-align: center;
+                        font-weight: initial;
+                    }
+                }
+            }
+            header,
+            .btn-group {
+                background: #fff;
+                @include eo-line(61px);
+            }
+            article {
+                background: #fff;
+                select {
+                    @include eo-line(35px);
+                }
+                .btn-group {
+                    margin: 20px -20px;
+                    text-align: left;
+                    margin-bottom: 0;
+                    input[type=button],
+                    button {
+                        display: inline-block;
+                        width: 60px;
+                        text-align: center;
+                    }
+                }
+            }
+        }
         .modal-info {
             z-index: 100;
             min-width: 350px;

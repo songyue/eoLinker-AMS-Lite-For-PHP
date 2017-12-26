@@ -330,7 +330,7 @@
                     apiInfo: data.service.cache.get('apiInfo'),
                 },
                 request: {
-                    projectHashKey: vm.data.interaction.request.projectHashKey,
+                    projectID: vm.data.interaction.request.projectID,
                     caseID: vm.data.interaction.request.caseID,
                     connID: vm.data.interaction.request.connID
                 }

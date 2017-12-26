@@ -78,7 +78,7 @@ class DocumentGroupDao
         $db->prepareExecute('DELETE FROM eo_project_document_group WHERE eo_project_document_group.groupID = ?;', array($group_id));
         $result = $db->getAffectRow();
         $db->prepareExecute('DELETE FROM eo_project_document_group WHERE eo_project_document_group.parentGroupID = ?;', array($group_id));
-        $db->prepareExecute('DELETE FROM eo_api WHERE eo_api.groupID = ?;', array($group_id));
+        $db->prepareExecute('DELETE FROM eo_project_document WHERE eo_project_document.groupID = ?;', array($group_id));
 
         if ($result > 0)
             return TRUE;
@@ -204,5 +204,130 @@ class DocumentGroupDao
             return TRUE;
         else
             return FALSE;
+    }
+
+    /**
+     * 获取分组数据
+     * @param $project_id
+     * @param $group_id
+     * @return array|bool
+     */
+    public function getGroupData(&$project_id, &$group_id)
+    {
+        $db = getDatabase();
+        $result = array();
+        $group = $db->prepareExecute('SELECT eo_project_document_group.groupName,eo_project_document_group.isChild FROM eo_project_document_group WHERE eo_project_document_group.projectID = ? AND eo_project_document_group.groupID = ?;', array(
+            $project_id,
+            $group_id
+        ));
+        $result['pageList'] = $db->prepareExecuteAll("SELECT eo_project_document.contentType,eo_project_document.contentRaw,eo_project_document.content,eo_project_document.title FROM eo_project_document WHERE eo_project_document.groupID = ? AND eo_project_document.projectID = ?", array(
+            $group_id,
+            $project_id
+        ));
+        $result['groupName'] = $group['groupName'];
+        if ($group['isChild'] == 0) {
+            $child_group_list = $db->prepareExecuteAll('SELECT eo_project_document_group.groupID,eo_project_document_group.groupName FROM eo_project_document_group WHERE eo_project_document_group.parentGroupID = ? AND eo_project_document_group.projectID = ?', array(
+                $group_id,
+                $project_id
+            ));
+            if ($child_group_list) {
+                $i = 0;
+                foreach ($child_group_list as $group) {
+                    $result['childGroupList'][$i]['groupName'] = $group['groupName'];
+                    $result['childGroupList'][$i]['pageList'] = $db->prepareExecuteAll("SELECT eo_project_document.contentType,eo_project_document.contentRaw,eo_project_document.content,eo_project_document.title FROM eo_project_document WHERE eo_project_document.groupID = ? AND eo_project_document.projectID = ?", array(
+                        $group['groupID'],
+                        $project_id
+                    ));
+                    $i++;
+                }
+            }
+        }
+        if ($result)
+            return $result;
+        else
+            return FALSE;
+    }
+
+    /**
+     * 导入文档分组
+     * @param $project_id
+     * @param $user_id
+     * @param $data
+     * @return bool
+     */
+    public function importGroup(&$project_id, &$user_id, &$data)
+    {
+        $db = getDatabase();
+        try {
+            $db->beginTransaction();
+            // 插入分组
+            $db->prepareExecute('INSERT INTO eo_project_document_group (eo_project_document_group.projectID,eo_project_document_group.groupName) VALUES (?,?);', array(
+                $project_id,
+                $data['groupName']
+            ));
+
+            if ($db->getAffectRow() < 1)
+                throw new \PDOException("addPageGroup error");
+            $group_id = $db->getLastInsertID();
+            if ($data['pageList']) {
+                // 插入状态码
+                foreach ($data['pageList'] as $page) {
+                    $db->prepareExecute('INSERT INTO eo_project_document (eo_project_document.groupID,eo_project_document.projectID,eo_project_document.contentType,eo_project_document.contentRaw,eo_project_document.content,eo_project_document.title,eo_project_document.updateTime,eo_project_document.userID) VALUES (?,?,?,?,?,?,?,?);', array(
+                        $group_id,
+                        $project_id,
+                        $page['contentType'],
+                        $page['contentRaw'],
+                        $page['content'],
+                        $page['title'],
+                        date('Y-m-d H:i:s'),
+                        $user_id
+                    ));
+
+                    if ($db->getAffectRow() < 1)
+                        throw new \PDOException("addPage error");
+                }
+            }
+            if ($data['childGroupList']) {
+                $group_id_parent = $group_id;
+                foreach ($data['childGroupList'] as $child_group) {
+                    // 插入分组
+                    $db->prepareExecute('INSERT INTO eo_project_document_group (eo_project_document_group.projectID,eo_project_document_group.groupName,eo_project_document_group.parentGroupID,eo_project_document_group.isChild) VALUES (?,?,?,?);', array(
+                        $project_id,
+                        $child_group['groupName'],
+                        $group_id_parent,
+                        1
+                    ));
+                    if ($db->getAffectRow() < 1) {
+                        throw new \PDOException("addPageGroup error");
+                    }
+
+                    $group_id = $db->getLastInsertID();
+                    if ($child_group['pageList']) {
+                        // 插入状态码
+                        foreach ($child_group['pageList'] as $page) {
+                            $db->prepareExecute('INSERT INTO eo_project_document (eo_project_document.groupID,eo_project_document.projectID,eo_project_document.contentType,eo_project_document.contentRaw,eo_project_document.content,eo_project_document.title,eo_project_document.updateTime,eo_project_document.userID) VALUES (?,?,?,?,?,?,?,?);', array(
+                                $group_id,
+                                $project_id,
+                                $page['contentType'],
+                                $page['contentRaw'],
+                                $page['content'],
+                                $page['title'],
+                                date('Y-m-d H:i:s'),
+                                $user_id
+                            ));
+
+                            if ($db->getAffectRow() < 1)
+
+                                throw new \PDOException("addPage error");
+                        }
+                    }
+                }
+            }
+            $db->commit();
+            return TRUE;
+        } catch (\PDOException $e) {
+            $db->rollback();
+            return FALSE;
+        }
     }
 }

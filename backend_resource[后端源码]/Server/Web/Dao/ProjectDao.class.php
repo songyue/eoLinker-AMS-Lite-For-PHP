@@ -383,11 +383,11 @@ class ProjectDao
     /**
      * 导出项目
      *
-     * @param $projectID int
+     * @param $project_id int
      *            项目ID
      * @return bool|array
      */
-    public function dumpProject(&$projectID)
+    public function dumpProject(&$project_id)
     {
         $db = getDatabase();
 
@@ -397,8 +397,6 @@ class ProjectDao
         $dumpJson['projectInfo'] = $db->prepareExecute("SELECT * FROM eo_project WHERE eo_project.projectID = ?;", array(
             $project_id
         ));
-        $backup_time = date('Y/m/d H:i', time());
-        $dumpJson['projectInfo']['projectName'] = "开源备份-{$dumpJson['projectInfo']['projectName']}-{$backup_time}";
 
         $dumpJson['apiGroupList'] = array();
         // 获取接口父分组信息

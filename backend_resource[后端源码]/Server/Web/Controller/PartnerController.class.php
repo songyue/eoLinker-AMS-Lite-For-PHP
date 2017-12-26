@@ -238,6 +238,16 @@ class PartnerController
         }
         exitOutput($this->returnJson);
     }
+
+    public function getProjectInviteCode()
+    {
+        $projectID = securelyInput('projectID');
+    }
+
+    public function joinProjectByInviteCode()
+    {
+        $projectID = securelyInput('projectID');
+    }
 }
 
 ?>
