@@ -34,6 +34,10 @@ report-ams-component {
             }
             .item-li {
                 line-height: 30px;
+                display:block;
+                white-space:nowrap; 
+                overflow:hidden; 
+                text-overflow:ellipsis;
                 .tips-p {
                     color: #999;
                 }

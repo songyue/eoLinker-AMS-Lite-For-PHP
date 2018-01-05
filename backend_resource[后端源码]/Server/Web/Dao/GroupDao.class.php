@@ -104,7 +104,7 @@ class GroupDao
                     $projectID,
                     $parentGroup['groupID']
                 ));
-
+                
                 //判断是否有子分组
                 if (!empty($childGroup))
                     $parentGroup['childGroupList'] = $childGroup;

@@ -78,8 +78,8 @@ class AutomatedTestCaseGroupDao
             $db->prepareExecuteAll('DELETE FROM eo_project_test_case_group WHERE eo_project_test_case_group.groupID = ? AND eo_project_test_case_group.projectID = ?;', array($group_id, $project_id));
             if ($db->getAffectRow() < 1)
                 throw new \PDOException('delete error');
-            $db->prepareExecuteAll('DELETE FROM eo_project_test_case_single WHERE eo_project_test_case_single.caseID IN (SELECT eo_project_test_case.caseID FROM eo_project_test_case WHERE eo_project_test_case.projectID = ?);', array(
-                $project_id
+            $db->prepareExecuteAll('DELETE FROM eo_project_test_case_single WHERE eo_project_test_case_single.caseID IN (SELECT eo_project_test_case.caseID FROM eo_project_test_case WHERE eo_project_test_case.groupID = ?);', array(
+                $group_id
             ));
             $db->prepareExecuteAll("DELETE FROM eo_project_test_case WHERE eo_project_test_case.groupID = ?;", array($group_id));
             $db->prepareExecuteAll('DELETE eo_project_test_case FROM eo_project_test_case INNER JOIN eo_project_test_case_group ON eo_project_test_case.groupID = eo_project_test_case_group.groupID  WHERE eo_project_test_case_group.parentGroupID = ?;', array($group_id));

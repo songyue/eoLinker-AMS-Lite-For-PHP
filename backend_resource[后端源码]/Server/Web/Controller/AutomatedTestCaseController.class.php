@@ -171,7 +171,7 @@ class AutomatedTestCaseController
      */
     public function deleteTestCase()
     {
-        $ids = securelyInput('caseID');
+        $ids = quickInput('caseID');
         $arr = json_decode($ids);
         $arr = preg_grep('/^[0-9]{1,11}$/', $arr); // 去掉数组中不是数字的ID
         $project_id = securelyInput('projectID');

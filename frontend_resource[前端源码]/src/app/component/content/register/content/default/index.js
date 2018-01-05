@@ -105,12 +105,12 @@
         vm.data.fun.confirm = function() {
             var template = {}
             if (!vm.data.info.unavailable) {
-                template.request = {
-                    userName: vm.data.interaction.request.userName,
-                    userPassword: md5.createHash(vm.data.interaction.request.userPassword),
-                    userNickName: vm.data.interaction.request.userNickName,
-                }
                 if ($scope.registerForm.$valid) {
+                    template.request = {
+                        userName: vm.data.interaction.request.userName,
+                        userPassword: md5.createHash(vm.data.interaction.request.userPassword),
+                        userNickName: vm.data.interaction.request.userNickName,
+                    }
                     CommonResource.GuestRegister.Name(template.request).$promise.then(function(response) {
                         switch (response.statusCode) {
                             case CODE.COMMON.SUCCESS:

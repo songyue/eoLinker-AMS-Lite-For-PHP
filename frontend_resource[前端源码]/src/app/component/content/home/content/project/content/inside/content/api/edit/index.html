@@ -38,7 +38,7 @@
                         <ul class="api-message-send">
                             <li class="pull-left first-select-li"><span>{{'01210017'|translate}}</span></li>
                             <li class="pull-left ">
-                                <select class="eo-input " ng-model="$ctrl.data.interaction.response.apiInfo.groupID" ng-options="group.groupID as group.groupName for group in $ctrl.data.info.group.parent" ng-change="$ctrl.data.fun.change.group()">
+                                <select class="eo-input " ng-model="$ctrl.data.interaction.response.apiInfo.groupID" ng-options="group.groupID-0 as group.groupName for group in $ctrl.data.info.group.parent" ng-change="$ctrl.data.fun.change.group()">
                                 </select>
                             </li>
                             <li class="pull-left">

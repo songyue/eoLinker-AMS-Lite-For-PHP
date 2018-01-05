@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [语言转换常量集] [Language transformation constant set]
-     * @version  3.2.0
+     * @version  3.2.1
      */
     angular
         .module('eolinker.constant')
@@ -26,7 +26,7 @@
             "0014": "开始使用",
             "0015": "eoLinker开源版本",
             "0016": "安装完成",
-            "0020": "欢迎使用eolinker开源版本，当前版本为V3.2.0，更新日期为2017年12月25日。如需查看更多有关eolinker开源版本的详情以及了解最新消息，请",
+            "0020": "欢迎使用eolinker开源版本，当前版本为V3.2.1，更新日期为2018年1月5日。如需查看更多有关eolinker开源版本的详情以及了解最新消息，请",
             "0021": "点击这里",
             "0022": "访问。",
             "0023": "首先，为了初始化项目，我们需要您准备好以下步骤：",
@@ -874,7 +874,7 @@
             "504": "：请手动前往eolinker开源版本更新页面下载更新包，并且解压到项目根目录替换所有同名文件，然后点击手动更新按钮，项目将会自动更新数据库。",
             "505": "注意！更新前请保证当前没有编辑任务，否则可能丢失当前的操作数据。",
             "506": "更新中",
-            "507": "当前版本为v3.2.0，更新时间为2017-12-25",
+            "507": "当前版本为v3.2.1，更新时间为2018-01-05",
             "508": "已是最新版本，无需更新",
             "509": "eolinker开源版本有一个新的版本，请问是否开始更新？",
             "5010": "版本更新功能已被禁用，如需启用，请联系网站管理员",
@@ -963,7 +963,7 @@
             "0014": "Quick start",
             "0015": "eoLinker open source version",
             "0016": "The installation is complete",
-            "0020": "Welcome to the open source version of eolinker, the current version is V3.2.0, and the update date is December 25, 2017. For more information about the open source version of eolinker and the latest information, please",
+            "0020": "Welcome to the open source version of eolinker, the current version is V3.2.1, and the update date is December 25, 2017. For more information about the open source version of eolinker and the latest information, please",
             "0021": " click here ",
             "0022": ".",
             "0023": "First, initialize the project, we need you to prepare the following steps：",
@@ -1811,7 +1811,7 @@
             "504": ": Please manually go to the eolinker open source version update page to download the update package, and extract to the root directory of the project to replace all the files of the same name, and then click the manual update button, the project will automatically update the database.",
             "505": "Attention! Please ensure that there is no editing task before updating, otherwise the current operation data may be lost.",
             "506": "Updating",
-            "507": "The current version is v3.2.0, updated on 2017-12-25",
+            "507": "The current version is v3.2.1, updated on 2018-01-05",
             "508": "is the latest version, no update required",
             "509": "There is a new version of the eolinker open source version, would you like to start the update?",
             "5010": "The version update function has been disabled, if you want to enable, please contact the webmaster",
@@ -1900,7 +1900,7 @@
             "0014": "開始使用",
             "0015": "eoLinker開源版本",
             "0016": "安裝完成",
-            "0020": "歡迎使用eolinker開源版本，當前版本為V3.2.0，更新日期為2017年12月25日。如需查看更多有關eolinker開源版本的詳情以及了解最新消息，請",
+            "0020": "歡迎使用eolinker開源版本，當前版本為V3.2.1，更新日期為2018年1月5日。如需查看更多有關eolinker開源版本的詳情以及了解最新消息，請",
             "0021": "點擊這裏",
             "0022": "訪問。",
             "0023": "首先，為了初始化項目，我們需要您準備好以下步驟：",
@@ -2748,7 +2748,7 @@
             "504": "：請手動前往eolinker開源版本更新頁面下載更新包，並且解壓到項目根目錄替換所有同名文件，然後點擊手動更新按鈕，項目將會自動更新數據庫。",
             "505": "注意！更新前請保證當前沒有編輯任務，否則可能丟失當前的操作數據。",
             "506": "更新中",
-            "507": "當前版本為v3.2.0，更新時間為2017-12-25",
+            "507": "當前版本為v3.2.1，更新時間為2018-01-05",
             "508": "已是最新版本，無需更新",
             "509": "eolinker開源版本有一個新的版本，請問是否開始更新？",
             "5010": "版本更新功能已被禁用，如需啟用，請聯繫網站管理員",

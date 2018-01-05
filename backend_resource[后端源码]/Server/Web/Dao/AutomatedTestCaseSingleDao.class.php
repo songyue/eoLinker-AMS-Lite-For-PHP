@@ -116,6 +116,7 @@ class AutomatedTestCaseSingleDao
     {
         $db = getDatabase();
         $result = $db->prepareExecute('SELECT * FROM eo_project_test_case_single INNER JOIN eo_project_test_case ON eo_project_test_case.caseID = eo_project_test_case_single.caseID WHERE eo_project_test_case_single.connID = ? AND eo_project_test_case.projectID = ?;', array($conn_id, $project_id));
+
         if ($result['matchType'] == 2) {
             $result['matchRule'] = json_decode($result['matchRule'], TRUE);
         }
@@ -172,7 +173,7 @@ class AutomatedTestCaseSingleDao
     public function checkSingleTestCasePermission(&$conn_id, &$user_id)
     {
         $db = getDatabase();
-        $result = $db->prepareExecute('SELECT eo_project_test_case.projectID FROM eo_project_test_case_single LEFT JOIN eo_project_test_case ON eo_project_test_case_single.caseID = eo_project_test_case.caseID WHERE eo_project_test_case_single.connID = ? AND eo_project_test_case.userID = ?;', array(
+        $result = $db->prepareExecute('SELECT eo_project_test_case.projectID FROM eo_project_test_case_single LEFT JOIN eo_project_test_case ON eo_project_test_case_single.caseID = eo_project_test_case.caseID LEFT JOIN eo_conn_project ON eo_project_test_case.projectID = eo_conn_project.projectID WHERE eo_project_test_case_single.connID = ? AND eo_conn_project.userID = ?;', array(
             $conn_id,
             $user_id
         ));

@@ -230,7 +230,7 @@ class DocumentController
      */
     public function deleteDocuments()
     {
-        $ids = securelyInput('documentID');
+        $ids = quickInput('documentID');
         $arr = json_decode($ids);
         $arr = preg_grep('/^[0-9]{1,11}$/', $arr);
         $project_id = securelyInput('projectID');

@@ -80,7 +80,7 @@ class StatusCodeController
     public function deleteCode()
     {
         // 状态码ID数组
-        $ids = securelyInput('codeID');
+        $ids = quickInput('codeID');
         $arr = json_decode($ids);
         $arr = preg_grep('/^[0-9]{1,11}$/', $arr);
         if (empty ($arr)) {

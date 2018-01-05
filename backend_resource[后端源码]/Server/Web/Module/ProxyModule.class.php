@@ -39,10 +39,11 @@ class ProxyModule
             case 'GET' :
                 curl_setopt($require, CURLOPT_CUSTOMREQUEST, "GET");
                 break;
-            case 'POST' : {
-                curl_setopt($require, CURLOPT_CUSTOMREQUEST, "POST");
-                break;
-            }
+            case 'POST' :
+                {
+                    curl_setopt($require, CURLOPT_CUSTOMREQUEST, "POST");
+                    break;
+                }
             case 'DELETE' :
                 curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'DELETE');
                 break;
@@ -83,7 +84,7 @@ class ProxyModule
         curl_setopt($require, CURLOPT_RETURNTRANSFER, TRUE);
 
         //重定向
-        curl_setopt($require, CURLOPT_FOLLOWLOCATION, TRUE);
+        //curl_setopt($require, CURLOPT_FOLLOWLOCATION, TRUE);
 
         //把返回头包含再输出中
         curl_setopt($require, CURLOPT_HEADER, TRUE);
@@ -91,7 +92,7 @@ class ProxyModule
         $time = date("Y-m-d H:i:s", time());
 
         //发送请求
-        $response = curl_exec($require);
+        $response = $this->curl_redirect_exec($require);
 
         //获取返回结果状态码
         $httpCode = curl_getinfo($require, CURLINFO_HTTP_CODE);
@@ -101,9 +102,6 @@ class ProxyModule
 
         //获取头部长度
         $headerSize = curl_getinfo($require, CURLINFO_HEADER_SIZE);
-
-        //关闭请求
-        curl_close($require);
 
         if ($response) {
             //返回头部字符串
@@ -131,6 +129,8 @@ class ProxyModule
                 }
             }
 
+            //关闭请求
+            curl_close($require);
             return array(
                 'testTime' => $time,
                 'testDeny' => $deny,
@@ -141,10 +141,67 @@ class ProxyModule
                 )
             );
         } else {
+            if (curl_errno($require)) {
+                //关闭请求
+                curl_close($require);
+                return array(
+                    'testTime' => $time,
+                    'testDeny' => $deny,
+                    'testHttpCode' => 500,
+                    'testResult' => array(
+                        'headers' => array(),
+                        'body' => curl_error($require))
+                );
+            }
+            //关闭请求
+            curl_close($require);
             return NULL;
         }
     }
 
+    /**
+     * 重定向处理
+     * @param $ch
+     * @return bool|mixed
+     */
+    private function curl_redirect_exec($ch)
+    {
+        static $curl_loops = 0;
+        static $curl_max_loops = 20;
+
+        if ($curl_loops++ >= $curl_max_loops) {
+            $curl_loops = 0;
+            return FALSE;
+        }
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        list($header,) = explode("\n\n", $response, 2);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if ($http_code == 301 || $http_code == 302) {
+            $matches = array();
+            preg_match('/Location:(.*?)\n/', $header, $matches);
+            $url = @parse_url(trim(array_pop($matches)));
+            if (!$url) {
+                $curl_loops = 0;
+                return $response;
+            }
+            $new_url = $url['scheme'] . '://' . $url['host'] . $url['path'] . ($url['query'] ? '?' . $url['query'] : '');
+            if ($url['scheme'] == 'https') {
+                //跳过证书检查
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+                //检查证书中是否设置域名
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, TRUE);
+            }
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+            curl_setopt($ch, CURLOPT_URL, $new_url);
+            return $this->curl_redirect_exec($ch);
+        } else {
+            $curl_loops = 0;
+            return $response;
+        }
+    }
 }
 
 ?>

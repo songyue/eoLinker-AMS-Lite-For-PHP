@@ -163,7 +163,7 @@ class ApiController
     public function removeApi()
     {
         //接口ID
-        $ids = securelyInput('apiID');
+        $ids = quickInput('apiID');
         $projectID = securelyInput('projectID');
         //检查操作权限
         $module = new ProjectModule();
@@ -735,7 +735,7 @@ class ApiController
     {
         $project_id = securelyInput('projectID');
         // 接口ID
-        $ids = securelyInput('apiID');
+        $ids = quickInput('apiID');
         $arr = json_decode($ids);
         $arr = preg_grep('/^[0-9]{1,11}$/', $arr); // 去掉数组中不是数字的ID
 

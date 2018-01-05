@@ -766,8 +766,6 @@ class TestController
         if (!preg_match('/^[0-9]{1,11}$/', $api_id)) {
             //apiID格式非法
             $this->returnJson['statusCode'] = '210008';
-        } elseif (empty(json_decode($request_info, TRUE))) {
-            $this->returnJson['statusCode'] = '210014';
         } else {
             $server = new TestHistoryModule();
             $result = $server->addTestHistory($api_id, $request_info, $result_info, $test_time);

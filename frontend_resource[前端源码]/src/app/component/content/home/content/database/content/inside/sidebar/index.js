@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [数据库内页侧边栏模块相关js] [Database inside the page sidebar module related js]
-     * @version  3.0.2
+     * @version  3.2.1
      * @service  $scope [注入作用域服务] [inject scope service]
      * @service  $rootScope [注入根作用域服务] [inject rootScope service]
      * @service  DatabaseResource [注入数据库接口服务] [inject Database API service]
@@ -26,6 +26,9 @@
     function databaseSidebarController($scope, $rootScope, DatabaseResource, $state, GroupService, $filter, CODE) {
         var vm = this;
         vm.data = {
+            component: {
+                groupCommonObject: {}
+            },
             info: {
                 sidebarShow: null
             },
@@ -202,6 +205,58 @@
                 }
             })
         })()
+        vm.$onInit = function() {
+            vm.data.component.groupCommonObject = {
+                funObject: {
+                    unTop:true,
+                    btnGroupList: {
+                        edit: {
+                            key: $filter('translate')('010120'),
+                            class: 'eo-button-success',
+                            icon: 'tianjia',
+                            fun: vm.data.fun.edit
+                        },
+                        import: {
+                            key: $filter('translate')('010121'),
+                            class: 'default-btn',
+                            icon: 'shangchuan',
+                            tips: true,
+                            fun: vm.data.fun.import
+                        },
+                        export: {
+                            key: $filter('translate')('010122'),
+                            class: 'default-btn',
+                            icon: 'xiazai',
+                            tips: true,
+                            fun: vm.data.fun.dump
+                        }
+                    }
+                },
+                mainObject: {
+                    baseInfo: {
+                        title: $filter('translate')('010123'),
+                        name: 'tableName',
+                        id: 'tableID',
+                        interaction: vm.data.interaction.request
+                    },
+                    parentFun: {
+                        edit: {
+                            fun: vm.data.fun.edit,
+                            key: $filter('translate')('010124'),
+                            params: { item: null }
+                        },
+                        delete: {
+                            fun: vm.data.fun.delete,
+                            key: $filter('translate')('010125'),
+                            params: { item: null, $index: null }
+                        }
+                    },
+                    baseFun: {
+                        parentClick: vm.data.fun.click,
+                    }
+                }
+            }
+        }
     }
 
 })();

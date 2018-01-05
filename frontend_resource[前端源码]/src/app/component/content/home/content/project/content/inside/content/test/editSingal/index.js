@@ -380,6 +380,7 @@
                             }
                             switch (vm.data.interaction.response.caseInfo.matchType) {
                                 case 2:
+                                case '2':
                                     {
                                         vm.data.interaction.request.responseJson = vm.data.interaction.response.caseInfo.matchRule || [];
                                         break;
