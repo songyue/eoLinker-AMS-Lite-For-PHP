@@ -3,7 +3,7 @@
      /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [自动化测试编辑单例页面] [Automated test editing singleton page]
-     * @version  3.1.7
+     * @version  3.2.2
      * @service  $scope [注入作用域服务] [inject scope service]
      * @service  $state [注入路由服务] [inject state service]
      * @service  $window [注入window服务] [inject window service]
@@ -335,6 +335,7 @@
                     connID: vm.data.interaction.request.connID
                 }
             }
+            console.log(template.cache.apiInfo)
             if (template.cache.singCaseList) {
                 vm.data.interaction.response.singalQuery = template.cache.singCaseList;
             } else {
@@ -360,6 +361,7 @@
                                 vm.data.interaction.response.caseInfo.caseData.params = response.apiInfo.requestInfo;
                                 vm.data.interaction.response.caseInfo.caseData.headers = response.apiInfo.headerInfo;
                                 try {
+                                    vm.data.interaction.response.caseInfo.matchType=response.apiInfo.resultInfo.length>0?2:3;
                                     vm.data.interaction.request.responseJson = $filter('paramLevelToNestFilter')(response.apiInfo.resultInfo);
                                 } catch (e) {}
                                 vm.data.fun.last('all', { $last: true });

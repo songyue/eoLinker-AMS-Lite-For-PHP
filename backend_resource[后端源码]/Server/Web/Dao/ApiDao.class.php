@@ -318,17 +318,18 @@ class ApiDao
                     throw new \PDOException("addApi error");
 
                 $paramID = $db->getLastInsertID();
+                if(is_array($param['paramValueList'])) {
+                    foreach ($param['paramValueList'] as $value) {
+                        $db->prepareExecute('INSERT INTO eo_api_request_value (eo_api_request_value.paramID,eo_api_request_value.`value`,eo_api_request_value.valueDescription) VALUES (?,?,?);', array(
+                            $paramID,
+                            $value['value'],
+                            $value['valueDescription']
+                        ));
 
-                foreach ($param['paramValueList'] as $value) {
-                    $db->prepareExecute('INSERT INTO eo_api_request_value (eo_api_request_value.paramID,eo_api_request_value.`value`,eo_api_request_value.valueDescription) VALUES (?,?,?);', array(
-                        $paramID,
-                        $value['value'],
-                        $value['valueDescription']
-                    ));
-
-                    if ($db->getAffectRow() < 1)
-                        throw new \PDOException("addApi error");
-                };
+                        if ($db->getAffectRow() < 1)
+                            throw new \PDOException("addApi error");
+                    };
+                }
             };
             // insert api result param info
             // 插入api返回值信息
@@ -344,17 +345,18 @@ class ApiDao
                     throw new \PDOException("addApi error");
 
                 $paramID = $db->getLastInsertID();
+                if(is_array($param['paramValueList'])) {
+                    foreach ($param['paramValueList'] as $value) {
+                        $db->prepareExecute('INSERT INTO eo_api_result_value (eo_api_result_value.paramID,eo_api_result_value.`value`,eo_api_result_value.valueDescription) VALUES (?,?,?);', array(
+                            $paramID,
+                            $value['value'],
+                            $value['valueDescription']
+                        ));
 
-                foreach ($param['paramValueList'] as $value) {
-                    $db->prepareExecute('INSERT INTO eo_api_result_value (eo_api_result_value.paramID,eo_api_result_value.`value`,eo_api_result_value.valueDescription) VALUES (?,?,?);', array(
-                        $paramID,
-                        $value['value'],
-                        $value['valueDescription']
-                    ));
-
-                    if ($db->getAffectRow() < 1)
-                        throw new \PDOException("addApi error");
-                };
+                        if ($db->getAffectRow() < 1)
+                            throw new \PDOException("addApi error");
+                    };
+                }
             };
             // update api cache json
             // 更新api缓存

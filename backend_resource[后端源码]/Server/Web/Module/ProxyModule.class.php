@@ -65,6 +65,13 @@ class ProxyModule
                 return FALSE;
         }
         if ($param) {
+            if (is_array($param)) {
+                $str = '';
+                foreach ($param as $key => $value) {
+                    $str .= $key . '=' . urlencode($value) . '&';
+                }
+                $param = substr($str, 0, -1);
+            }
             curl_setopt($require, CURLOPT_POSTFIELDS, $param);
         }
 
@@ -142,6 +149,7 @@ class ProxyModule
             );
         } else {
             if (curl_errno($require)) {
+                $error = curl_error($require);
                 //关闭请求
                 curl_close($require);
                 return array(
@@ -150,7 +158,7 @@ class ProxyModule
                     'testHttpCode' => 500,
                     'testResult' => array(
                         'headers' => array(),
-                        'body' => curl_error($require))
+                        'body' => $error)
                 );
             }
             //关闭请求

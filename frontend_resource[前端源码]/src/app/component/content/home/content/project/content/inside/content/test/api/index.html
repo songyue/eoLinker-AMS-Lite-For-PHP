@@ -46,8 +46,8 @@
                         {{item.apiRequestType==0?'POST':item.apiRequestType==1?'GET':item.apiRequestType==2?'PUT':item.apiRequestType==3?'DELETE':item.apiRequestType==4?'HEAD':item.apiRequestType==5?'OPTS':'PATCH'}}
                         </span> {{$ctrl.data.service.home.envObject.object.fun(item.apiURI)}}</td>
                     <td ng-switch="$ctrl.data.interaction.batchTestObject.output[$index].responseType">
-                        <a class="eo-status-success" ng-switch-when="success" ng-click="$ctrl.data.fun.detail({item:item,$index:$index})">{{'01216014'|translate}}</a>
-                        <a class="eo-status-error" ng-switch-when="error" ng-click="$ctrl.data.fun.detail({item:item,$index:$index})">{{'01216015'|translate}}</a>
+                        <a class="eo-status-success" ng-switch-when="success" ng-click="$ctrl.data.fun.detail('success',{item:item,$index:$index})">{{'01216014'|translate}}</a>
+                        <a class="eo-status-error" ng-switch-when="error" ng-click="$ctrl.data.fun.detail('error',{item:item,$index:$index})">{{'01216015'|translate}}</a>
                         <p ng-switch-default>
                             <span class="iconfont icon-loading1" ng-show="item.testing||$ctrl.data.info.statusObject.testing"></span>
                             <span ng-show="item.testing||$ctrl.data.info.statusObject.testing">{{'01216016'|translate}}</span>

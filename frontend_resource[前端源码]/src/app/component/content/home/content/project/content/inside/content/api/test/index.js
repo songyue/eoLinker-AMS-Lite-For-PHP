@@ -118,11 +118,7 @@
                 window: null, 
                 changeType: null, 
                 import: null, 
-                last: {
-                    header: null,  
-                    request: null,  
-                    response: null,  
-                },
+                last: null,
                 json: null,  
             },
             assistantFun: {
@@ -155,11 +151,23 @@
         }
 
         /**
-         * @function [最后一个头部 item 输入框内容改变功能函数] [The contents of the last header item are changed]
+         * @function [最后一个item 输入框内容改变功能函数] [The contents of the last header item are changed]
          */
-        vm.data.fun.last.header = function(arg) {
+        vm.data.fun.last = function(status, arg) {
             if (arg.$last) {
-                vm.data.fun.headerList.add();
+                switch (status) {
+                    case 'header':
+                        {
+                            vm.data.fun.headerList.add();
+                            break;
+                        }
+                    case 'request':
+                        {
+                            vm.data.fun.requestList.add();
+                            break;
+                        }
+                }
+
             }
         }
 
@@ -180,15 +188,6 @@
          */
         vm.data.fun.headerList.delete = function(arg) {
             vm.data.service.home.envObject.object.model.headers.splice(arg.$index, 1);
-        }
-
-        /**
-         * @function [最后一个请求参数 item 输入框内容改变功能函数] [The last request parameter item input box contents change]
-         */
-        vm.data.fun.last.request = function(arg) {
-            if (arg.$last) {
-                vm.data.fun.requestList.add();
-            }
         }
 
         /**
@@ -502,7 +501,6 @@
                     console.log($filter('translate')('012100057'));
                 }
             })
-            console.log(vm.data.service.home.envObject)
             vm.data.service.home.envObject.object.model.URL = vm.data.interaction.response.apiInfo.baseInfo.apiURI;
             vm.data.service.home.envObject.object.model.params = vm.data.interaction.response.apiInfo.requestInfo || [];
             vm.data.service.home.envObject.object.model.httpHeader = '' + vm.data.interaction.response.apiInfo.baseInfo.apiProtocol;

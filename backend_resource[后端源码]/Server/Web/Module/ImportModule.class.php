@@ -802,11 +802,18 @@ class ImportModule
                 );
 
                 foreach ($module['pageList'] as $pageList) {
+                    $child_group_info = null;
+                    if ($pageList['name']) {
+                        $child_group_info = array(
+                            'groupName' => $pageList['name'],
+                            'apiList' => array()
+                        );
+                    }
                     $api_list = array();
                     foreach ($pageList['actionList'] as $action) {
                         $api_info = array();
                         $api_info['baseInfo']['apiName'] = $action['name'];
-                        $api_info['baseInfo']['apiURI'] = stripcslashes($action['requestUrl']);
+                        $api_info['baseInfo']['apiURI'] = stripslashes($action['requestUrl']);
                         $api_info['baseInfo']['apiProtocol'] = 1;
                         $api_info['baseInfo']['apiStatus'] = 0;
                         $api_info['baseInfo']['starred'] = 0;
@@ -845,68 +852,99 @@ class ImportModule
 
                         $api_request_param = array();
                         foreach ($action['requestParameterList'] as $parameter) {
-                            $param = array();
                             $param['paramKey'] = $parameter['identifier'];
                             $param['paramValue'] = $parameter['remark'];
-                            //获取请求参数类型
-                            switch ($parameter['dataType']) {
-                                case "integer":
-                                    $param['paramType'] = $param_type['int'];
-                                    break;
-                                case "string":
-                                    $param['paramType'] = $param_type['string'];
-                                    break;
-                                case 'long':
-                                    $param['paramType'] = $param_type['long'];
-                                    break;
-                                case 'float':
-                                    $param['paramType'] = $param_type['float'];
-                                    break;
-                                case 'double':
-                                    $param['paramType'] = $param_type['double'];
-                                    break;
-                                case 'byte':
-                                    $param['paramType'] = $param_type['byte'];
-                                    break;
-                                case 'file':
-                                    $param['paramType'] = $param_type['file'];
-                                    break;
-                                case 'date':
-                                    $param['paramType'] = $param_type['date'];
-                                    break;
-                                case 'dateTime':
-                                    $param['paramType'] = $param_type['dateTime'];
-                                    break;
-                                case 'boolean':
-                                    $param['paramType'] = $param_type['boolean'];
-                                    break;
-                                case 'array':
-                                    $param['paramType'] = $param_type['array'];
-                                    break;
-                                case 'json':
-                                    $param['paramType'] = $param_type['json'];
-                                    break;
-                                case 'object':
-                                    $param['paramType'] = $param_type['object'];
-                                    break;
-                                case 'number':
-                                    $param['paramType'] = $param_type['number'];
-                                    break;
-                                default:
-                                    $param['paramType'] = $param_type['array'];
-
-                            }
                             $param['paramNotNull'] = 0;
                             $param['paramName'] = $parameter['name'];
                             $param['paramLimit'] = $parameter['dataType'];
                             $param['paramValueList'] = array();
-                            foreach ($parameter['parameterList'] as $value) {
-                                $param['paramValueList'][] = array(
-                                    'value' => $value['identifier'],
-                                    'valueDescription' => $value['name']
-                                );
-                            }
+                            //获取请求参数类型
+                            $param['paramType'] = $this->getDataType($parameter['dataType']);
                             $api_request_param[] = $param;
+                            if (!empty($parameter['parameterList'])) {
+                                foreach ($parameter['parameterList'] as $parameter1) {
+                                    $param1['paramKey'] = $param['paramKey'] . '>>' . $parameter1['identifier'];
+                                    $param1['paramValue'] = $parameter1['remark'];
+                                    $param1['paramLimit'] = $parameter1['dataType'];
+                                    $param1['paramNotNull'] = 0;
+                                    $param1['paramName'] = $parameter1['name'];
+                                    $param1['paramValueList'] = array();
+                                    //获取请求参数类型
+                                    $param1['paramType'] = $this->getDataType($parameter1['dataType']);
+                                    $api_request_param[] = $param1;
+                                    if (!empty($parameter1['parameterList'])) {
+                                        foreach ($parameter1['parameterList'] as $parameter2) {
+                                            $param2['paramKey'] = $param1['paramKey'] . '>>' . $parameter2['identifier'];
+                                            $param2['paramValue'] = $parameter2['remark'];
+                                            $param2['paramLimit'] = $parameter2['dataType'];
+                                            $param2['paramNotNull'] = 0;
+                                            $param2['paramName'] = $parameter2['name'];
+                                            $param2['paramValueList'] = array();
+                                            //获取请求参数类型
+                                            $param2['paramType'] = $this->getDataType($parameter2['dataType']);
+                                            $api_request_param[] = $param2;
+                                            if (!empty($parameter2['parameterList'])) {
+                                                foreach ($parameter2['parameterList'] as $parameter3) {
+                                                    $param3['paramKey'] = $param2['paramKey'] . '>>' . $parameter3['identifier'];
+                                                    $param3['paramValue'] = $parameter3['remark'];
+                                                    $param3['paramLimit'] = $parameter3['dataType'];
+                                                    $param3['paramNotNull'] = 0;
+                                                    $param3['paramName'] = $parameter3['name'];
+                                                    $param3['paramValueList'] = array();
+                                                    //获取请求参数类型
+                                                    $param3['paramType'] = $this->getDataType($parameter3['dataType']);
+                                                    $api_request_param[] = $param3;
+                                                    if (!empty($parameter3['parameterList'])) {
+                                                        foreach ($parameter3['parameterList'] as $parameter4) {
+                                                            $param4['paramKey'] = $param3['paramKey'] . '>>' . $parameter4['identifier'];
+                                                            $param4['paramValue'] = $parameter4['remark'];
+                                                            $param4['paramLimit'] = $parameter4['dataType'];
+                                                            $param4['paramNotNull'] = 0;
+                                                            $param4['paramName'] = $parameter4['name'];
+                                                            $param4['paramValueList'] = array();
+                                                            //获取请求参数类型
+                                                            $param4['paramType'] = $this->getDataType($parameter4['dataType']);
+                                                            $api_request_param[] = $param4;
+                                                            if (!empty($parameter4['parameterList'])) {
+                                                                foreach ($parameter4['parameterList'] as $parameter5) {
+                                                                    $param5['paramKey'] = $param4['paramKey'] . '>>' . $parameter5['identifier'];
+                                                                    $param5['paramValue'] = $parameter5['remark'];
+                                                                    $param5['paramLimit'] = $parameter5['dataType'];
+                                                                    $param5['paramNotNull'] = 0;
+                                                                    $param5['paramName'] = $parameter5['name'];
+                                                                    $param5['paramValueList'] = array();
+                                                                    //获取请求参数类型
+                                                                    $param5['paramType'] = $this->getDataType($parameter5['dataType']);
+                                                                    $api_request_param[] = $param5;
+                                                                    if (!empty($parameter5['parameterList'])) {
+                                                                        foreach ($parameter5['parameterList'] as $parameter6) {
+                                                                            $param6['paramKey'] = $param5['paramKey'] . '>>' . $parameter6['identifier'];
+                                                                            $param6['paramValue'] = $parameter6['remark'];
+                                                                            $param6['paramLimit'] = $parameter6['dataType'];
+                                                                            $param6['paramNotNull'] = 0;
+                                                                            $param6['paramName'] = $parameter6['name'];
+                                                                            $param6['paramValueList'] = array();
+                                                                            //获取请求参数类型
+                                                                            $param6['paramType'] = $this->getDataType($parameter6['dataType']);
+                                                                            $api_request_param[] = $param6;
+                                                                            unset($param6);
+                                                                        }
+                                                                    }
+                                                                    unset($param5);
+                                                                }
+                                                            }
+                                                            unset($param4);
+                                                        }
+                                                    }
+                                                    unset($param3);
+                                                }
+                                            }
+                                            unset($param2);
+                                        }
+                                    }
+                                    unset($param1);
+                                }
+                            }
                             unset($param);
                         }
                         $api_info['requestInfo'] = $api_request_param;
@@ -918,61 +956,81 @@ class ImportModule
                             $param['paramNotNull'] = 0;
                             $param['paramName'] = $parameter['name'];
                             $param['paramValueList'] = array();
-                            foreach ($parameter['parameterList'] as $value) {
-                                $param['paramValueList'][] = array(
-                                    'value' => $value['identifier'],
-                                    'valueDescription' => $value['name']
-                                );
-                            }
                             //获取请求参数类型
-                            switch ($parameter['dataType']) {
-                                case "integer":
-                                    $param['paramType'] = $param_type['int'];
-                                    break;
-                                case "string":
-                                    $param['paramType'] = $param_type['string'];
-                                    break;
-                                case 'long':
-                                    $param['paramType'] = $param_type['long'];
-                                    break;
-                                case 'float':
-                                    $param['paramType'] = $param_type['float'];
-                                    break;
-                                case 'double':
-                                    $param['paramType'] = $param_type['double'];
-                                    break;
-                                case 'byte':
-                                    $param['paramType'] = $param_type['byte'];
-                                    break;
-                                case 'file':
-                                    $param['paramType'] = $param_type['file'];
-                                    break;
-                                case 'date':
-                                    $param['paramType'] = $param_type['date'];
-                                    break;
-                                case 'dateTime':
-                                    $param['paramType'] = $param_type['dateTime'];
-                                    break;
-                                case 'boolean':
-                                    $param['paramType'] = $param_type['boolean'];
-                                    break;
-                                case 'array':
-                                    $param['paramType'] = $param_type['array'];
-                                    break;
-                                case 'json':
-                                    $param['paramType'] = $param_type['json'];
-                                    break;
-                                case 'object':
-                                    $param['paramType'] = $param_type['object'];
-                                    break;
-                                case 'number':
-                                    $param['paramType'] = $param_type['number'];
-                                    break;
-                                default:
-                                    $param['paramType'] = $param_type['array'];
-
-                            }
+                            $param['paramType'] = $this->getDataType($parameter['dataType']);
                             $api_result_param[] = $param;
+                            if (!empty($parameter['parameterList'])) {
+                                foreach ($parameter['parameterList'] as $parameter1) {
+                                    $param1['paramKey'] = $param['paramKey'] . '>>' . $parameter1['identifier'];
+                                    $param1['paramNotNull'] = 0;
+                                    $param1['paramName'] = $parameter1['name'];
+                                    $param1['paramValueList'] = array();
+                                    //获取请求参数类型
+                                    $param1['paramType'] = $this->getDataType($parameter1['dataType']);
+                                    $api_result_param[] = $param1;
+                                    if (!empty($parameter1['parameterList'])) {
+                                        foreach ($parameter1['parameterList'] as $parameter2) {
+                                            $param2['paramKey'] = $param1['paramKey'] . '>>' . $parameter2['identifier'];
+                                            $param2['paramNotNull'] = 0;
+                                            $param2['paramName'] = $parameter2['name'];
+                                            $param2['paramValueList'] = array();
+                                            //获取请求参数类型
+                                            $param2['paramType'] = $this->getDataType($parameter2['dataType']);
+                                            $api_result_param[] = $param2;
+                                            if (!empty($parameter2['parameterList'])) {
+                                                foreach ($parameter2['parameterList'] as $parameter3) {
+                                                    $param3['paramKey'] = $param2['paramKey'] . '>>' . $parameter3['identifier'];
+                                                    $param3['paramNotNull'] = 0;
+                                                    $param3['paramName'] = $parameter3['name'];
+                                                    $param3['paramValueList'] = array();
+                                                    //获取请求参数类型
+                                                    $param3['paramType'] = $this->getDataType($parameter3['dataType']);
+                                                    $api_result_param[] = $param3;
+                                                    if (!empty($parameter3['parameterList'])) {
+                                                        foreach ($parameter3['parameterList'] as $parameter4) {
+                                                            $param4['paramKey'] = $param3['paramKey'] . '>>' . $parameter4['identifier'];
+                                                            $param4['paramNotNull'] = 0;
+                                                            $param4['paramName'] = $parameter4['name'];
+                                                            $param4['paramValueList'] = array();
+                                                            //获取请求参数类型
+                                                            $param4['paramType'] = $this->getDataType($parameter4['dataType']);
+                                                            $api_result_param[] = $param4;
+                                                            if (!empty($parameter4['parameterList'])) {
+                                                                foreach ($parameter4['parameterList'] as $parameter5) {
+                                                                    $param5['paramKey'] = $param4['paramKey'] . '>>' . $parameter5['identifier'];
+                                                                    $param5['paramNotNull'] = 0;
+                                                                    $param5['paramName'] = $parameter5['name'];
+                                                                    $param5['paramValueList'] = array();
+                                                                    //获取请求参数类型
+                                                                    $param5['paramType'] = $this->getDataType($parameter5['dataType']);
+                                                                    $api_result_param[] = $param5;
+                                                                    if (!empty($parameter5['parameterList'])) {
+                                                                        foreach ($parameter5['parameterList'] as $parameter6) {
+                                                                            $param6['paramKey'] = $param5['paramKey'] . '>>' . $parameter6['identifier'];
+                                                                            $param6['paramNotNull'] = 0;
+                                                                            $param6['paramName'] = $parameter6['name'];
+                                                                            $param6['paramValueList'] = array();
+                                                                            //获取请求参数类型
+                                                                            $param6['paramType'] = $this->getDataType($parameter6['dataType']);
+                                                                            $api_result_param[] = $param6;
+                                                                            unset($param6);
+                                                                        }
+                                                                    }
+                                                                    unset($param5);
+                                                                }
+                                                            }
+                                                            unset($param4);
+                                                        }
+                                                    }
+                                                    unset($param3);
+                                                }
+                                            }
+                                            unset($param2);
+                                        }
+                                    }
+                                    unset($param1);
+                                }
+                            }
                             unset($param);
                         }
                         $api_info['resultInfo'] = $api_result_param;
@@ -981,7 +1039,12 @@ class ImportModule
                         $api_list[] = $api_info;
                         unset($api_info);
                     }
-                    $group_info['apiList'] = array_merge($group_info['apiList'], $api_list);
+                    if ($child_group_info) {
+                        $child_group_info['apiList'] = $api_list;
+                        $group_info['childGroupList'][] = $child_group_info;
+                    } else {
+                        $group_info['apiList'] = array_merge($group_info['apiList'], $api_list);
+                    }
                     unset($api_list);
                 }
                 $group_info_list[] = $group_info;
@@ -992,6 +1055,65 @@ class ImportModule
         } catch (\PDOException $e) {
             return FALSE;
         }
+    }
+
+    /**
+     * 获取数据类型
+     * @param $data_type
+     * @return mixed|string
+     */
+    private function getDataType(&$data_type)
+    {
+        $param_type = array('string' => '0', 'file' => '1', 'json' => '2', 'int' => '3', 'float' => '4', 'double' => '5', 'date' => '6', 'datetime' => '7', 'boolean' => '8', 'byte' => '9', 'short' => '10', 'long' => '11', 'array' => '12', 'object' => '13', 'number' => '14');
+        $type = 'array';
+        //获取请求参数类型
+        switch ($data_type) {
+            case "integer":
+                $type = $param_type['int'];
+                break;
+            case "string":
+                $type = $param_type['string'];
+                break;
+            case 'long':
+                $type = $param_type['long'];
+                break;
+            case 'float':
+                $type = $param_type['float'];
+                break;
+            case 'double':
+                $type = $param_type['double'];
+                break;
+            case 'byte':
+                $type = $param_type['byte'];
+                break;
+            case 'file':
+                $type = $param_type['file'];
+                break;
+            case 'date':
+                $type = $param_type['date'];
+                break;
+            case 'dateTime':
+                $type = $param_type['dateTime'];
+                break;
+            case 'boolean':
+                $type = $param_type['boolean'];
+                break;
+            case 'array':
+                $type = $param_type['array'];
+                break;
+            case 'json':
+                $type = $param_type['json'];
+                break;
+            case 'object':
+                $type = $param_type['object'];
+                break;
+            case 'number':
+                $type = $param_type['number'];
+                break;
+            default:
+                $type = $param_type['array'];
+        }
+        return $type;
     }
 }
 

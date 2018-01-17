@@ -104,11 +104,23 @@ report-ams-component {
                     }
                 }
             }
+            .content-container {
+                white-space: pre-wrap;
+            }
             .match-response-li {
                 background-color: #f7f7f7;
             }
             .real-response-li {
                 background-color: #fae4e6;
+            }
+            .success-response-li {
+                background-color: #F1F8E9;
+            }
+            .error-response-li {
+                background-color: #fae4e6;
+            }
+            .default-response-li{
+                background-color: rgba(0,0,0,.03);
             }
         }
     }

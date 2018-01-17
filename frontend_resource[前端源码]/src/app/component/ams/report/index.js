@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [生成测试报告组件] [Generate a test report component]
-     * @version  3.1.7
+     * @version  3.2.2
      * @service  $scope [注入作用域服务] [inject scope service]
      * @service  $filter [注入过滤器服务] [inject filter service]
      * @params {object} object [显示体] [Display body]

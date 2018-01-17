@@ -515,9 +515,6 @@ class ImportDao
 
             if (is_array($groupInfoList)) {
                 foreach ($groupInfoList as $groupInfo) {
-                    if (!$groupInfo['apiList'])
-                        continue;
-
                     $db->prepareExecute('INSERT INTO eo_api_group (eo_api_group.groupName,eo_api_group.projectID) VALUES (?,?);', array(
                         $groupInfo['groupName'],
                         $projectID
@@ -527,7 +524,6 @@ class ImportDao
                         throw new \PDOException("addGroup error");
 
                     $groupID = $db->getLastInsertID();
-
                     if (is_array($groupInfo['apiList'])) {
                         foreach ($groupInfo['apiList'] as $api) {
                             // 插入api基本信息
@@ -644,6 +640,142 @@ class ImportDao
 
                             if ($db->getAffectRow() < 1) {
                                 throw new \PDOException("addApiCache error");
+                            }
+                        }
+                    }
+
+                    if (is_array($groupInfo['childGroupList'])) {
+                        foreach ($groupInfo['childGroupList'] as $childGroupInfo) {
+                            $db->prepareExecute('INSERT INTO eo_api_group (eo_api_group.groupName,eo_api_group.projectID,eo_api_group.parentGroupID,eo_api_group.isChild) VALUES (?,?,?,?);', array(
+                                $childGroupInfo['groupName'],
+                                $projectID,
+                                $groupID,
+                                1
+                            ));
+
+                            if ($db->getAffectRow() < 1)
+                                throw new \PDOException("addChildGroup error");
+
+                            $childGroupID = $db->getLastInsertID();
+
+                            if (is_array($childGroupInfo['apiList'])) {
+                                foreach ($childGroupInfo['apiList'] as $api) {
+                                    // 插入api基本信息
+                                    $db->prepareExecute('INSERT INTO eo_api (eo_api.apiName,eo_api.apiURI,eo_api.apiProtocol,eo_api.apiSuccessMock,eo_api.apiFailureMock,eo_api.apiRequestType,eo_api.apiStatus,eo_api.groupID,eo_api.projectID,eo_api.starred,eo_api.apiNoteType,eo_api.apiNoteRaw,eo_api.apiNote,eo_api.apiRequestParamType,eo_api.apiRequestRaw,eo_api.apiUpdateTime,eo_api.updateUserID) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);', array(
+                                        $api['baseInfo']['apiName'],
+                                        $api['baseInfo']['apiURI'],
+                                        $api['baseInfo']['apiProtocol'],
+                                        $api['baseInfo']['apiSuccessMock'],
+                                        $api['baseInfo']['apiFailureMock'],
+                                        $api['baseInfo']['apiRequestType'],
+                                        $api['baseInfo']['apiStatus'],
+                                        $childGroupID,
+                                        $projectID,
+                                        $api['baseInfo']['starred'],
+                                        $api['baseInfo']['apiNoteType'],
+                                        $api['baseInfo']['apiNoteRaw'],
+                                        $api['baseInfo']['apiNote'],
+                                        $api['baseInfo']['apiRequestParamType'],
+                                        $api['baseInfo']['apiRequestRaw'],
+                                        $api['baseInfo']['apiUpdateTime'],
+                                        $userID
+                                    ));
+
+                                    if ($db->getAffectRow() < 1)
+                                        throw new \PDOException("addChildGroupApi error");
+
+                                    $apiID = $db->getLastInsertID();
+
+                                    // 插入header信息
+                                    if (is_array($api['headerInfo'])) {
+                                        foreach ($api['headerInfo'] as $param) {
+                                            $db->prepareExecute('INSERT INTO eo_api_header (eo_api_header.headerName,eo_api_header.headerValue,eo_api_header.apiID) VALUES (?,?,?);', array(
+                                                $param['headerName'],
+                                                $param['headerValue'],
+                                                $apiID
+                                            ));
+
+                                            if ($db->getAffectRow() < 1)
+                                                throw new \PDOException("addChildGroupHeader error");
+                                        }
+                                    }
+
+                                    // 插入api请求值信息
+                                    if (is_array($api['requestInfo'])) {
+                                        foreach ($api['requestInfo'] as $param) {
+                                            $db->prepareExecute('INSERT INTO eo_api_request_param (eo_api_request_param.apiID,eo_api_request_param.paramName,eo_api_request_param.paramKey,eo_api_request_param.paramValue,eo_api_request_param.paramLimit,eo_api_request_param.paramNotNull,eo_api_request_param.paramType) VALUES (?,?,?,?,?,?,?);', array(
+                                                $apiID,
+                                                $param['paramName'],
+                                                $param['paramKey'],
+                                                ($param['paramValue']) ? $param['paramValue'] : "",
+                                                $param['paramLimit'],
+                                                $param['paramNotNull'],
+                                                $param['paramType']
+                                            ));
+
+                                            if ($db->getAffectRow() < 1)
+                                                throw new \PDOException("addChildGroupRequestParam error");
+
+                                            $paramID = $db->getLastInsertID();
+
+                                            if (is_array($param['paramValueList'])) {
+                                                foreach ($param['paramValueList'] as $value) {
+                                                    $db->prepareExecute('INSERT INTO eo_api_request_value (eo_api_request_value.paramID,eo_api_request_value.`value`,eo_api_request_value.valueDescription) VALUES (?,?,?);;', array(
+                                                        $paramID,
+                                                        $value['value'],
+                                                        $value['valueDescription']
+                                                    ));
+
+                                                    if ($db->getAffectRow() < 1)
+                                                        throw new \PDOException("addChildGroupRequestParamValue error");
+                                                };
+                                            }
+                                        };
+                                    }
+
+                                    // 插入api返回值信息
+                                    if (is_array($api['resultInfo'])) {
+                                        foreach ($api['resultInfo'] as $param) {
+                                            $db->prepareExecute('INSERT INTO eo_api_result_param (eo_api_result_param.apiID,eo_api_result_param.paramName,eo_api_result_param.paramKey,eo_api_result_param.paramNotNull) VALUES (?,?,?,?);', array(
+                                                $apiID,
+                                                $param['paramName'],
+                                                $param['paramKey'],
+                                                $param['paramNotNull']
+                                            ));
+
+                                            if ($db->getAffectRow() < 1)
+                                                throw new \PDOException("addChildGroupResultParam error");
+
+                                            $paramID = $db->getLastInsertID();
+
+                                            if (is_array($param['paramValueList'])) {
+                                                foreach ($param['paramValueList'] as $value) {
+                                                    $db->prepareExecute('INSERT INTO eo_api_result_value (eo_api_result_value.paramID,eo_api_result_value.`value`,eo_api_result_value.valueDescription) VALUES (?,?,?);;', array(
+                                                        $paramID,
+                                                        $value['value'],
+                                                        $value['valueDescription']
+                                                    ));
+
+                                                    if ($db->getAffectRow() < 1)
+                                                        throw new \PDOException("addChildGroupResultParamValue error");
+                                                };
+                                            }
+                                        };
+                                    }
+
+                                    // 插入api缓存数据用于导出
+                                    $db->prepareExecute("INSERT INTO eo_api_cache (eo_api_cache.projectID,eo_api_cache.groupID,eo_api_cache.apiID,eo_api_cache.apiJson,eo_api_cache.starred) VALUES (?,?,?,?,?);", array(
+                                        $projectID,
+                                        $childGroupID,
+                                        $apiID,
+                                        json_encode($api),
+                                        0
+                                    ));
+
+                                    if ($db->getAffectRow() < 1) {
+                                        throw new \PDOException("addChildGroupApiCache error");
+                                    }
+                                }
                             }
                         }
                     }

@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [参数显示过滤器] [Parameter display filter]
-     * @version  3.0.2
+     * @version  3.2.2
      * @service  $sce [注入$sce服务] [Inject $sce service]
      * @service  $filter [注入过滤器服务] [Inject filter service]
      */
@@ -87,6 +87,140 @@
         }
         return function(input) {
             return data.fun.main({ input: input });
+        }
+    }])
+
+    .filter('paramLevelToNestFilter', ['$sce', '$filter', function($sce, $filter) {
+        var data = {
+            fun: {
+                main: null, //主操作功能函数
+                loop: null, //自循环嵌入子级功能函数
+            }
+        }
+        data.fun.loop = function(arg) {
+            var template = {
+                item: [],
+                loop: {
+                    array: {
+                        item: arg.array.item.slice(1, arg.array.item.length),
+                    },
+                    parent: {
+                        name: arg.parent.name,
+                        object: arg.parent.object,
+                        array: arg.parent.array
+                    },
+                    key: arg.key
+                }
+            }
+            if (arg.array.item.length > 0) {
+                angular.copy(arg.array.item, template.item);
+                template.item.splice(0, 1);
+                if (arg.array.item[0] == arg.parent.name && template.item.indexOf(arg.parent.name) == -1) {
+                    template.loop.parent.object.childList.push({ paramKey: arg.key.name, childList: [],parent:arg.key.parent });
+                } else {
+                    template.loop.parent.$index = arg.parent.array.slice(arg.parent.$index, arg.parent.array.length).indexOf(arg.array.item[1]) + arg.parent.$index;
+                    try {
+                        if (template.loop.parent.$index - arg.parent.$index > template.loop.parent.object.childList.length) {
+                            template.loop.parent.object = template.loop.parent.object.childList[template.loop.parent.object.childList.length-1]||{ childList: [] };
+                        } else {
+                            template.loop.parent.object = template.loop.parent.object.childList[template.loop.parent.$index - arg.parent.$index - 1] || { childList: [] };
+                        }
+                    } catch (e) {
+                        template.loop.parent.object = { childList: [] };
+                    }
+                    data.fun.loop(template.loop);
+                }
+            } else {
+                template.loop.parent.object = { paramKey: arg.key.value, childList: [] };
+            }
+        }
+        data.fun.main = function(arg) {
+            var template = {
+                loopObject: null,
+                array: {
+                    templateParent:arg.templateParent||[],
+                    parent: arg.parent || [], //父存储位置数组（字符串）
+                    child: [], //子存储位置数组（json）
+                    item: [], //临时切割变量存放数组
+                },
+                loopVar: {
+                    $index: 0,
+                    length: 0,
+                },
+                icon: {
+                    child: false,
+                    parent: false
+                },
+                level: arg.level||{
+                    object: {},
+                    $index: 0
+                },
+                result: arg.result || []
+            }
+            angular.forEach(arg.input, function(val, key) {
+                template.array.item = (val.paramKey + '').replace(/(\s)*([:]{2}|[>]{2})(\s)*/g, '>>').split(/[:]{2}|[>]{2}/);
+                template.loopVar.length = template.array.item.length;
+                switch (template.loopVar.length) {
+                    case 1:
+                        {
+                            if (template.array.item[0]) {
+                                template.array.parent.push(template.array.item[0]);
+                                template.array.templateParent.push(template.array.item[0]);
+                                template.result.push({ paramKey: template.array.item[0], childList: [],parent:'.' });
+                                template.level.object[template.array.item[0]] = template.level.$index;
+                                template.level.$index++;
+                                template.icon.parent = true;
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            template.loopVar.$index = template.array.templateParent.indexOf(template.array.item.slice(0, template.loopVar.length - 1, 1).join('>>'));
+                            template.loopVar.firstParent = template.array.parent.indexOf(template.array.item[0]);
+                            if (template.loopVar.$index > -1) {
+                                template.array.templateParent.push(template.array.item.join('>>'));
+                                template.array.parent.push(template.array.item[template.loopVar.length - 1]);
+                                template.loopObject = {
+                                    array: {
+                                        item: template.array.item,
+                                    },
+                                    parent: {
+                                        name: template.array.item[template.loopVar.length - 2],
+                                        object: template.result[template.level.object[template.array.item[0]]],
+                                        $index: template.loopVar.firstParent,
+                                        array: template.array.parent
+                                    },
+                                    key: {
+                                        name: template.array.item[template.loopVar.length - 1],
+                                        value: val.paramInfo || '',
+                                        parent:'.'+template.array.item.slice(0,template.loopVar.length - 1).join('.')+'.'
+                                    }
+                                }
+                                data.fun.loop(template.loopObject);
+                                template.icon.parent = true;
+                            } else {
+                                template.array.child.push(val);
+                                template.icon.child = true;
+                            }
+                            break;
+                        }
+                }
+            })
+            if (template.icon.parent && template.icon.child) {
+                template.result = data.fun.main({ input: template.array.child, result: template.result, parent: template.array.parent,level:template.level, templateParent: template.array.templateParent })
+            } else if (template.icon.child) {
+                angular.forEach(template.array.child, function(val, key) {
+                    template.result.push({ paramKey: val.paramKey, childList: [] });
+                })
+            }
+            return template.result;
+        }
+        return function(input) {
+            var template = {
+                input: []
+            }
+            angular.copy(input, template.input);
+            return data.fun.main({ input: template.input });
         }
     }])
     

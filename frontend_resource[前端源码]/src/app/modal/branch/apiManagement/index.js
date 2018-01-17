@@ -209,6 +209,7 @@
             } catch (e) {}
             arg.item.isClick = true;
             data.output = arg.item;
+            console.log(arg.item)
         }
         $scope.data.fun.confirm = function() {
             if (!data.output.isClick) return;

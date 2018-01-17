@@ -97,15 +97,17 @@
             $rootScope.ApiManagement_AutomatedTest_QiuckAddSingalModal(template.modal, function(callback) {
                 if (callback) {
                     vm.data.service.cache.set(callback, 'apiInfo');
+                    console.log(callback)
                     $state.go('home.project.inside.test.edit', template.uri);
                 }
             })
         }
-        vm.data.fun.detail = function(arg) {
+        vm.data.fun.detail = function(status,arg) {
             var template = {
                 object: vm.data.interaction.batchTestObject.output[arg.$index]
             }
             vm.data.interaction.reportObject.object = {
+                status:status,
                 general: template.object.general,
                 requestHeaders: JSON.stringify(template.object.requestHeaders) == '{}' ? null : template.object.requestHeaders,
                 requestBody: {

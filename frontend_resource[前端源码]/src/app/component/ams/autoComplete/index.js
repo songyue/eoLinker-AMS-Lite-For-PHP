@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [自动匹配组件] [自动匹配组件]
-     * @version  3.1.9
+     * @version  3.2.2
      * @extends {string} placeholder 内置输入框placeholder内容[optional]
      * @extends {string} expressionBuilder 是否有构造器功能[optional](默认无)
      * @extends {string} addClass 输入框外置样式[optional]

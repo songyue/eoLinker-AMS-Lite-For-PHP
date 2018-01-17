@@ -55,7 +55,7 @@
             </li>
             <li class="item-li divide-li"><span class="tips-p">{{'7021'|translate}}</span><span>{{$ctrl.input.object.general.statusCode||'unkowwn'}}</span></li>
             <li class="item-li"><span class="tips-p">{{'7022'|translate}}</span></li>
-            <li class="response-article-li real-response-li" >{{($ctrl.input.object.response.length>10000?($ctrl.input.object.response.slice(0,10000)+'...'):$ctrl.input.object.response)||'target server no answer'}}</li>
+            <li class="response-article-li content-container" ng-class="{'success-response-li':$ctrl.input.object.status=='success','error-response-li':$ctrl.input.object.status=='error'}">{{($ctrl.input.object.response.length>10000?($ctrl.input.object.response.slice(0,10000)+'...'):$ctrl.input.object.response)||'target server no answer'}}</li>
         </ul>
     </div>
     <div class="report-ams-mask" ng-click="$ctrl.data.fun.cancel()"></div>
