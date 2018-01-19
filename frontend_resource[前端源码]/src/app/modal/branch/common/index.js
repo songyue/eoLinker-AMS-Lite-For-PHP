@@ -3,7 +3,7 @@
     /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [公用弹窗controller js] [Public bucket controller js]
-     * @version  3.2.0
+     * @version  3.2.3
      */
     angular.module('eolinker.modal')
 

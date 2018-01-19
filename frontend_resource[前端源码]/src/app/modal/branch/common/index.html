@@ -821,7 +821,7 @@
                         </li>
                         <li>
                             <ul class="project-name">
-                                <li>版本号：</li>
+                                <li>{{'481'|translate}}：</li>
                                 <li>
                                     <input type="text" name="version" data-ng-model="info.dbVersion" placeholder="{{'473'|translate}}" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editDatabaseForm.version.$invalid)}" ng-pattern="/^[0-9.]{1,6}$/" maxlength="6" required>
                                 </li>
@@ -853,7 +853,7 @@
                             <ul class="group-select group-ul pull-left">
                                 <li>{{'490'|translate}}：</li>
                                 <li>
-                                    <select class="eo-input " data-ng-model="data.output.groupID" data-ng-options="group.groupID as group.groupName for group in data.input.group.parent" data-ng-change="$ctrl.data.fun.change.group()">
+                                    <select class="eo-input " data-ng-model="data.output.groupID" data-ng-options="group.groupID as group.groupName for group in data.input.group.parent" data-ng-change="data.fun.change()">
                                     </select>
                                 </li>
                             </ul>
