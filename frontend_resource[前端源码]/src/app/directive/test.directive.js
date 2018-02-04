@@ -23,25 +23,25 @@
      */
     angular.module('eolinker.directive')
 
-        .directive('testDirective', ['$window', '$filter', '$timeout', '$rootScope', 'ApiManagementResource','CODE',  function($window, $filter, $timeout, $rootScope, ApiManagementResource, CODE) {
+        .directive('testDirective', ['$window', '$filter', '$timeout', '$rootScope', 'ApiManagementResource', 'CODE', function($window, $filter, $timeout, $rootScope, ApiManagementResource, CODE) {
             return {
                 restrict: 'A',
                 transclude: true,
                 replace: true,
                 template: '<div>' + '<button class="eo-button-info " data-ng-click="test()" >' + ' <span class="iconfont icon-fasong" ng-class="{\'hidden\':send.disable}"></span> {{send.disable?data.info.stop&nbsp;+(send.countdown>0?send.countdown:""):data.info.send}}' + '</button>' + '<div class="hidden" id="plug-in-result-js"></div>' + '<div class="hidden" id="plug-in-js">{"method":{{detail.baseInfo.type}},"requestInfo":{{message}},"env":{{envParam}},"formDataToJson":{"checkbox":{{json.checkbox}},"raw":{{message.params|paramLevelToJsonFilter}}},"auth":{{auth}}}</div>' + '</div>',
                 scope: {
-                    version: '@', 
-                    auth: '=', 
-                    json: '=', 
-                    message: '=', 
-                    result: '=', 
-                    detail: '=', 
-                    format: '=', 
-                    testForm: '=', 
-                    info: '=', 
-                    isPlug: '=', 
-                    envParam: '=' ,
-                    addHistory:'&'
+                    version: '@',
+                    auth: '=',
+                    json: '=',
+                    message: '=',
+                    result: '=',
+                    detail: '=',
+                    format: '=',
+                    testForm: '=',
+                    info: '=',
+                    isPlug: '=',
+                    envParam: '=',
+                    addHistory: '&'
                 },
                 link: function($scope, elem, attrs, ctrl) {
                     var countdown = null;
@@ -68,18 +68,19 @@
                      * @param    {[obj]}   origin [原始值 Original value]
                      * @return   {[obj]}          [重构后的值 Reconstructed value]
                      */
-                    var envSet = function(origin) { 
+                    var envSet = function(origin) {
                         if ($scope.envParam.length > 0) {
                             var templateResult = {};
                             angular.copy(origin, templateResult);
                             angular.forEach($scope.envParam, function(val, key) {
                                 templateResult.URL = templateResult.URL.replace(eval('/({{' + val.paramKey + '}})/g'), val.paramValue);
-                                angular.forEach(templateResult.headers, function(val1, key1) {
-
-                                    val1.headerName = val1.headerName.replace(eval('/({{' + val.paramKey + '}})/g'), val.paramValue);
+                                angular.forEach(templateResult.headers, function(childVal, childKey) {
+                                    childVal.headerValue = childVal.headerValue.replace(eval('/({{' + val.paramKey + '}})/g'), val.paramValue);
+                                    childVal.headerName = childVal.headerName.replace(eval('/({{' + val.paramKey + '}})/g'), val.paramValue);
                                 })
-                                angular.forEach(templateResult.params, function(val1, key1) {
-                                    val1.paramKey = val1.paramKey.replace(eval('/({{' + val.paramKey + '}})/g'), val.paramValue);
+                                angular.forEach(templateResult.params, function(childVal, childKey) {
+                                    childVal.paramKey = childVal.paramKey.replace(eval('/({{' + val.paramKey + '}})/g'), val.paramValue);
+                                    childVal.paramInfo = (childVal.paramInfo || '').replace(eval('/({{' + val.paramKey + '}})/g'), val.paramValue);
                                 })
                             })
                             return templateResult;
@@ -87,13 +88,13 @@
                             return origin;
                         }
                     }
-                    
+
                     /**
                      * @function [显示测试结果调用功能函数] [Show test result call]
                      * @param    {[obj]}   testHistory [测试历史] [Test history]
                      * @param    {[obj]}   data        [测试数据] [Test Data]
                      */
-                    var showTestResult = function(testHistory, data) { 
+                    var showTestResult = function(testHistory, data) {
                         if ($scope.send.disable) {
                             if (data.statusCode == CODE.COMMON.SUCCESS) {
                                 $scope.result = {
@@ -132,7 +133,7 @@
                      * @function [插件测试调用功能函数] [The plugin test calls the function function]
                      * @param    {[obj]}   testHistory [测试历史 Test history]
                      */
-                    var plugTest = function(testHistory) { 
+                    var plugTest = function(testHistory) {
                         var data = {};
                         var template = {
                             img: {
@@ -173,7 +174,11 @@
                             } else {
                                 $scope.format.message = template.img.html || result;
                             }
-                            $scope.addHistory({arg:{history:testHistory}});
+                            $scope.addHistory({
+                                arg: {
+                                    history: testHistory
+                                }
+                            });
                         } else {
                             $scope.result = {
                                 httpCodeType: 5
@@ -195,11 +200,11 @@
                     /**
                      * @function [服务器测试调用功能函数] [Server test call]
                      */
-                    var serverTest = function() { 
-                        var template={
-                            env:envSet($scope.message),
-                            restfulObject:{
-                                hadFilterParams:[]
+                    var serverTest = function() {
+                        var template = {
+                            env: envSet($scope.message),
+                            restfulObject: {
+                                hadFilterParams: []
                             }
                         }
                         if (!$scope.send.disable) {
@@ -223,7 +228,7 @@
                                     params: [],
                                     method: $scope.detail.baseInfo.type == '0' ? 'POST' : $scope.detail.baseInfo.type == '1' ? 'GET' : $scope.detail.baseInfo.type == '2' ? 'PUT' : $scope.detail.baseInfo.type == '3' ? 'DELETE' : $scope.detail.baseInfo.type == '4' ? 'HEAD' : $scope.detail.baseInfo.type == '5' ? 'OPTIONS' : 'PATCH',
                                     methodType: $scope.detail.baseInfo.type,
-                                    requestType: ($scope.json.checkbox && $scope.message.requestType != '1'&&/0|2|6/.test($scope.detail.baseInfo.type)) ? 1 : $scope.message.requestType
+                                    requestType: ($scope.json.checkbox && $scope.message.requestType != '1' && /0|2|6/.test($scope.detail.baseInfo.type)) ? 1 : $scope.message.requestType
                                 }
                             };
                             if ($scope.testForm.$valid) {
@@ -243,14 +248,17 @@
                                     case '1':
                                         {
                                             info.headers['Authorization'] = $filter('base64Filter')($scope.auth.basicAuth.username + ':' + $scope.auth.basicAuth.password);
-                                            testHistory.requestInfo.headers.push({ name: 'Authorization', value: $filter('base64Filter')($scope.auth.basicAuth.username + ':' + $scope.auth.basicAuth.password) });
+                                            testHistory.requestInfo.headers.push({
+                                                name: 'Authorization',
+                                                value: $filter('base64Filter')($scope.auth.basicAuth.username + ':' + $scope.auth.basicAuth.password)
+                                            });
                                             break;
                                         }
                                 }
                                 switch ($scope.message.requestType) {
                                     case '0':
                                         {
-                                            if ($scope.json.checkbox&&/0|2|6/.test($scope.detail.baseInfo.type)) {
+                                            if ($scope.json.checkbox && /0|2|6/.test($scope.detail.baseInfo.type)) {
                                                 info.params = testHistory.requestInfo.params = $filter('paramLevelToJsonFilter')(template.env.params);
                                             } else {
                                                 angular.forEach(template.env.params, function(val, key) {
@@ -293,7 +301,7 @@
                                                     }
                                                 }
                                             });
-                                            if ($scope.json.checkbox&&/0|2|6/.test($scope.detail.baseInfo.type)) {
+                                            if ($scope.json.checkbox && /0|2|6/.test($scope.detail.baseInfo.type)) {
                                                 info.params = testHistory.requestInfo.params = $filter('paramLevelToJsonFilter')(template.restfulObject.hadFilterParams);
                                             } else {
                                                 info.params = angular.toJson(info.params);
@@ -368,14 +376,14 @@
                     /**
                      * @function [绑定click，执行测试功能函数] [Bind the click, perform the test]
                      */
-                    $scope.test = function() { 
+                    $scope.test = function() {
                         var template = {
-                            env:envSet($scope.message),
+                            env: envSet($scope.message),
                             modal: {
                                 html: ''
                             },
-                            restfulObject:{
-                                hadFilterParams:[]
+                            restfulObject: {
+                                hadFilterParams: []
                             }
                         }
                         if (!$scope.send.disable) {
@@ -400,7 +408,7 @@
                                         params: [],
                                         method: $scope.detail.baseInfo.type == '0' ? 'POST' : $scope.detail.baseInfo.type == '1' ? 'GET' : $scope.detail.baseInfo.type == '2' ? 'PUT' : $scope.detail.baseInfo.type == '3' ? 'DELETE' : $scope.detail.baseInfo.type == '4' ? 'HEAD' : $scope.detail.baseInfo.type == '5' ? 'OPTIONS' : 'PATCH',
                                         methodType: $scope.detail.baseInfo.type,
-                                        requestType: ($scope.json.checkbox && $scope.message.requestType != '1'&&/0|2|6/.test($scope.detail.baseInfo.type)) ? 1 : $scope.message.requestType
+                                        requestType: ($scope.json.checkbox && $scope.message.requestType != '1' && /0|2|6/.test($scope.detail.baseInfo.type)) ? 1 : $scope.message.requestType
                                     }
                                 };
                                 if ($scope.testForm.$valid) {
@@ -419,14 +427,17 @@
                                     switch ($scope.auth.status) {
                                         case '1':
                                             {
-                                                testHistory.requestInfo.headers.push({ name: 'Authorization', value: $filter('base64Filter')($scope.auth.basicAuth.username + ':' + $scope.auth.basicAuth.password) });
+                                                testHistory.requestInfo.headers.push({
+                                                    name: 'Authorization',
+                                                    value: $filter('base64Filter')($scope.auth.basicAuth.username + ':' + $scope.auth.basicAuth.password)
+                                                });
                                                 break;
                                             }
                                     }
                                     switch ($scope.message.requestType) {
                                         case '0':
                                             {
-                                                if ($scope.json.checkbox&&/0|2|6/.test($scope.detail.baseInfo.type)) {
+                                                if ($scope.json.checkbox && /0|2|6/.test($scope.detail.baseInfo.type)) {
                                                     testHistory.requestInfo.params = $filter('paramLevelToJsonFilter')(template.env.params);
                                                 } else {
                                                     angular.forEach(template.env.params, function(val, key) {
@@ -466,7 +477,7 @@
                                                         }
                                                     }
                                                 });
-                                                if ($scope.json.checkbox&&/0|2|6/.test($scope.detail.baseInfo.type)) {
+                                                if ($scope.json.checkbox && /0|2|6/.test($scope.detail.baseInfo.type)) {
                                                     testHistory.requestInfo.params = $filter('paramLevelToJsonFilter')(template.restfulObject.hadFilterParams);
                                                 }
                                                 testHistory.requestInfo.URL = info.URL;
@@ -515,7 +526,7 @@
                     /**
                      * @function [销毁页面时销毁计时器] [Destroy the timer when the page is destroyed]
                      */
-                    $scope.$on('$destroy', function() { 
+                    $scope.$on('$destroy', function() {
                         if (timer) {
                             $timeout.cancel(timer);
                         }
@@ -524,7 +535,7 @@
                     /**
                      * @function [路由开始转换时清除计时器] [The timer clears the timer when the route starts to transition]
                      */
-                    $scope.$on('$stateChangeStart', function() { 
+                    $scope.$on('$stateChangeStart', function() {
                         if (!!templateCountdown) {
                             clearInterval(templateCountdown);
                         }

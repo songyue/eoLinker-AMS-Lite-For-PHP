@@ -82,6 +82,7 @@
                 edit: null 
             }
         }
+        console.log(vm.data.interaction.response.docInfo.documentID)
         /**
          * @function [辅助初始化功能函数] [Auxiliary initialization function]
          */

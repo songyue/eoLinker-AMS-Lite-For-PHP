@@ -82,14 +82,12 @@
          * 
          */
         data.overviewObject.fun.autoGeneration=function(arg){
-            console.log(arg)
             var template={
                 modal:{
                     projectID:arg.projectID,
                     importURL:arg.importURL
                 }
             }
-            console.log(template.modal)
             $rootScope.ApiManagement_AutoGenerationModal(template.modal);
         }
         return data;

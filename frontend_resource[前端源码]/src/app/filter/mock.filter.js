@@ -11,8 +11,8 @@
         .filter('mockFilter', ['$filter', function($filter) {
             var data = {
                 fun: {
-                    switchType: null, 
-                    value: null, 
+                    switchType: null,
+                    value: null,
                 }
             }
             /**
@@ -89,21 +89,38 @@
              */
             data.fun.value = function(arg) {
                 if ((arg.value || '').trim().substr(0, 6) == '@mock=') {
+
                     try {
                         if (arg.value.trim().substr(6, 8) == 'function') {
                             return (new Function("return " + arg.value.trim().slice(6, arg.value.length)))();
                         } else if (arg.value.trim().substring(6, 7) == '@') {
                             return arg.value.trim().slice(6, arg.value.length);
                         } else {
-                            return eval('(' + arg.value.trim().slice(6, arg.value.length) + ')');
+                            if (/Mock/.test(arg.value.substring(6))) {
+                                return arg.value.trim().slice(6, arg.value.length);
+                            } else {
+                                try {
+                                    return eval('(' + arg.value.trim().slice(6, arg.value.length) + ')');
+                                } catch (e) {
+                                    return arg.value.trim().slice(6, arg.value.length);
+                                }
+                            }
+
                         }
                     } catch (e) {
-                        return data.fun.switchType({ val: arg.value, type: arg.type });
+                        return data.fun.switchType({
+                            val: arg.value,
+                            type: arg.type
+                        });
                     }
                 } else {
-                    return data.fun.switchType({ val: arg.value, type: arg.type });
+                    return data.fun.switchType({
+                        val: arg.value,
+                        type: arg.type
+                    });
                 }
             }
+
             data.fun.typeof = function(object) {
                 var tf = typeof object,
                     ts = Object.prototype.toString.call(object);
@@ -203,7 +220,10 @@
                                     if (template.array.item[0]) {
                                         template.array.parent.push(template.array.item[0] + (val.rule ? ('|' + val.rule) : ''));
                                         template.array.templateParent.push(template.array.item[0]);
-                                        template.result[template.array.item[0] + (val.rule ? ('|' + val.rule) : '')] = data.fun.value({ value: val.value, type: val.paramType });
+                                        template.result[template.array.item[0] + (val.rule ? ('|' + val.rule) : '')] = data.fun.value({
+                                            value: val.value,
+                                            type: val.paramType
+                                        });
                                         template.icon.parent = true;
                                     }
                                     break;
@@ -230,7 +250,10 @@
                                             },
                                             key: {
                                                 name: template.array.item[template.loopVar.length - 1] + (val.rule ? ('|' + val.rule) : ''),
-                                                value: data.fun.value({ value: val.value, type: val.paramType }),
+                                                value: data.fun.value({
+                                                    value: val.value,
+                                                    type: val.paramType
+                                                }),
                                                 type: val.type,
                                                 rule: val.rule
                                             }
@@ -247,10 +270,18 @@
                     }
                 })
                 if (template.icon.parent && template.icon.child) {
-                    template.result = data.fun.main({ input: template.array.child, result: template.result, parent: template.array.parent, templateParent: template.array.templateParent })
+                    template.result = data.fun.main({
+                        input: template.array.child,
+                        result: template.result,
+                        parent: template.array.parent,
+                        templateParent: template.array.templateParent
+                    })
                 } else if (template.icon.child) {
                     angular.forEach(template.array.child, function(val, key) {
-                        template.result[val.paramKey + (val.rule ? ('|' + val.rule) : '')] = data.fun.value({ value: val.value, type: val.paramType });
+                        template.result[val.paramKey + (val.rule ? ('|' + val.rule) : '')] = data.fun.value({
+                            value: val.value,
+                            type: val.paramType
+                        });
                     })
                 }
                 return template.result;
@@ -259,23 +290,31 @@
                 try {
                     config = config || {};
                     var template = {
-                        origin: data.fun.main({ input: input }),
+                        origin: data.fun.main({
+                            input: input
+                        }),
                         output: {}
                     }
                     switch (config.type) {
                         case 'array':
                             {
-                                template.output['@type' + (config.rule ? ('|' + config.rule) : '')] = [function() { return Mock.mock(template.origin) }];
+                                template.output['@type' + (config.rule ? ('|' + config.rule) : '')] = [function() {
+                                    return Mock.mock(template.origin)
+                                }];
                                 break
                             }
                         default:
                             {
-                                template.output['@type' + (config.rule ? ('|' + config.rule) : '')] = function() { return Mock.mock(template.origin) };
+                                template.output['@type' + (config.rule ? ('|' + config.rule) : '')] = function() {
+                                    return Mock.mock(template.origin)
+                                };
                             }
                     }
                     return JSON.stringify(Mock.mock(template.output)['@type']);
                 } catch (error) {
-                    return JSON.stringify({ "tips": "mock生成数据出错" })
+                    return JSON.stringify({
+                        "tips": "mock生成数据出错"
+                    })
                 }
             }
         }])

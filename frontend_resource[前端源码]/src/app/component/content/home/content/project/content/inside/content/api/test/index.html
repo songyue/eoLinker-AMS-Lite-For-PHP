@@ -168,7 +168,7 @@
                         <li class="pull-left test-nav-li" ng-class="{'active':$ctrl.data.service.home.envObject.object.model.requestType=='2','failure-li':$ctrl.data.interaction.response.apiInfo.baseInfo.type != '0' &&$ctrl.data.interaction.response.apiInfo.baseInfo.type != '2'}" data-ng-click="$ctrl.data.service.home.envObject.object.model.requestType = '2'">RESTful</li>
                         <li style="border-left:none;" class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.service.home.envObject.object.model.requestType=='1'}" data-ng-click="$ctrl.data.service.home.envObject.object.model.requestType = '1'" ng-show="$ctrl.data.interaction.response.apiInfo.baseInfo.type == '0' || $ctrl.data.interaction.response.apiInfo.baseInfo.type == '2'">{{'012100123'|translate}}[raw]</li>
                         <li ng-show="$ctrl.data.service.home.envObject.object.model.requestType!='1'&&($ctrl.data.interaction.response.apiInfo.baseInfo.type == '0' || $ctrl.data.interaction.response.apiInfo.baseInfo.type == '2'|| $ctrl.data.interaction.response.apiInfo.baseInfo.type == '6')">
-                            <button class="form-to-json-btn" data-ng-click="$ctrl.data.fun.json()"><span class="eo-checkbox pull-left iconfont" data-ng-class="{'icon-check':$ctrl.data.info.toJson.checkbox}"></span>{{'012100130'|translate}}[Json]</button>
+                            <button class="form-to-json-btn" data-ng-click="$ctrl.data.fun.json()"><span class="eo-checkbox pull-left iconfont" data-ng-class="{'icon-check':$ctrl.data.info.toJson.checkbox}"></span>{{'012100330'|translate}}[Json]</button>
                             <tip-directive input="<p>{{'012100336'|translate}}</p>"></tip-directive>
                         </li>
                     </ul>
