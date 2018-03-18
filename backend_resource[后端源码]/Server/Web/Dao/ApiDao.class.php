@@ -4,7 +4,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -65,9 +65,13 @@ class ApiDao
      * @param $mockRule array mock规则
      * @param $mockResult string mock结果
      * @param $mockConfig array mock配置
+     * @param $success_status_code
+     * @param $failure_status_code
+     * @param $before_inject
+     * @param $after_inject
      * @return bool|array
      */
-    public function addApi(&$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock = '', &$apiFailureMock = '', &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$projectID, &$apiRequestParamType, &$apiRequestRaw, &$cacheJson, &$updateTime, &$updateUserID, &$mockRule, &$mockResult, &$mockConfig)
+    public function addApi(&$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock = '', &$apiFailureMock = '', &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$projectID, &$apiRequestParamType, &$apiRequestRaw, &$cacheJson, &$updateTime, &$updateUserID, &$mockRule, &$mockResult, &$mockConfig, &$success_status_code, &$failure_status_code, &$before_inject, &$after_inject)
     {
         $db = getDatabase();
         try {
@@ -76,7 +80,7 @@ class ApiDao
             $db->beginTransaction();
             // insert api base info
             // 插入api基本信息
-            $db->prepareExecute('INSERT INTO eo_api (eo_api.apiName,eo_api.apiURI,eo_api.apiProtocol,eo_api.apiSuccessMock,eo_api.apiFailureMock,eo_api.apiRequestType,eo_api.apiStatus,eo_api.groupID,eo_api.projectID,eo_api.starred,eo_api.apiNoteType,eo_api.apiNoteRaw,eo_api.apiNote,eo_api.apiRequestParamType,eo_api.apiRequestRaw,eo_api.apiUpdateTime,eo_api.updateUserID,eo_api.mockRule,eo_api.mockResult,eo_api.mockConfig) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);', array(
+            $db->prepareExecute('INSERT INTO eo_api (eo_api.apiName,eo_api.apiURI,eo_api.apiProtocol,eo_api.apiSuccessMock,eo_api.apiFailureMock,eo_api.apiRequestType,eo_api.apiStatus,eo_api.groupID,eo_api.projectID,eo_api.starred,eo_api.apiNoteType,eo_api.apiNoteRaw,eo_api.apiNote,eo_api.apiRequestParamType,eo_api.apiRequestRaw,eo_api.apiUpdateTime,eo_api.updateUserID,eo_api.mockRule,eo_api.mockResult,eo_api.mockConfig,apiSuccessStatusCode,apiFailureStatusCode,beforeInject,afterInject) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);', array(
                 $apiName,
                 $apiURI,
                 $apiProtocol,
@@ -96,7 +100,11 @@ class ApiDao
                 $updateUserID,
                 json_encode($mockRule),
                 $mockResult,
-                $mockConfig
+                $mockConfig,
+                $success_status_code,
+                $failure_status_code,
+                $before_inject,
+                $after_inject
             ));
 
             if ($db->getAffectRow() < 1)
@@ -194,6 +202,7 @@ class ApiDao
                 throw new \PDOException("addApi error");
             }
         } catch (\PDOException $e) {
+            var_dump($e -> getMessage());
             $db->rollBack();
             return FALSE;
         }
@@ -247,14 +256,18 @@ class ApiDao
      * @param $mockRule array mock规则
      * @param $mockResult string mock结果
      * @param $mockConfig array mock配置
+     * @param $success_status_code
+     * @param $failure_status_code
+     * @param $before_inject
+     * @param $after_inject
      * @return bool
      */
-    public function editApi(&$apiID, &$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiFailureMock, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw, &$cacheJson, &$updateTime, &$updateUserID, &$mockRule, &$mockResult, &$mockConfig)
+    public function editApi(&$apiID, &$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiFailureMock, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw, &$cacheJson, &$updateTime, &$updateUserID, &$mockRule, &$mockResult, &$mockConfig, &$success_status_code, &$failure_status_code, &$before_inject, &$after_inject)
     {
         $db = getDatabase();
         try {
             $db->beginTransaction();
-            $db->prepareExecute('UPDATE eo_api SET eo_api.apiName = ?,eo_api.apiURI = ?,eo_api.apiProtocol = ?,eo_api.apiSuccessMock = ?,eo_api.apiFailureMock = ?,eo_api.apiRequestType = ?,eo_api.apiStatus = ?,eo_api.starred = ?,eo_api.groupID = ?,eo_api.apiNoteType = ?,eo_api.apiNoteRaw = ?,eo_api.apiNote = ?,eo_api.apiUpdateTime = ?,eo_api.apiRequestParamType = ?,eo_api.apiRequestRaw = ?,eo_api.updateUserID = ?,eo_api.mockRule = ?,eo_api.mockResult = ?,eo_api.mockConfig = ? WHERE eo_api.apiID = ?;', array(
+            $db->prepareExecute('UPDATE eo_api SET eo_api.apiName = ?,eo_api.apiURI = ?,eo_api.apiProtocol = ?,eo_api.apiSuccessMock = ?,eo_api.apiFailureMock = ?,eo_api.apiRequestType = ?,eo_api.apiStatus = ?,eo_api.starred = ?,eo_api.groupID = ?,eo_api.apiNoteType = ?,eo_api.apiNoteRaw = ?,eo_api.apiNote = ?,eo_api.apiUpdateTime = ?,eo_api.apiRequestParamType = ?,eo_api.apiRequestRaw = ?,eo_api.updateUserID = ?,eo_api.mockRule = ?,eo_api.mockResult = ?,eo_api.mockConfig = ?,eo_api.apiSuccessStatusCode = ?,eo_api.apiFailureStatusCode = ?,eo_api.beforeInject = ?,eo_api.afterInject = ? WHERE eo_api.apiID = ?;', array(
                 $apiName,
                 $apiURI,
                 $apiProtocol,
@@ -274,6 +287,10 @@ class ApiDao
                 json_encode($mockRule),
                 $mockResult,
                 $mockConfig,
+                $success_status_code,
+                $failure_status_code,
+                $before_inject,
+                $after_inject,
                 $apiID
             ));
 
@@ -318,7 +335,7 @@ class ApiDao
                     throw new \PDOException("addApi error");
 
                 $paramID = $db->getLastInsertID();
-                if(is_array($param['paramValueList'])) {
+                if (is_array($param['paramValueList'])) {
                     foreach ($param['paramValueList'] as $value) {
                         $db->prepareExecute('INSERT INTO eo_api_request_value (eo_api_request_value.paramID,eo_api_request_value.`value`,eo_api_request_value.valueDescription) VALUES (?,?,?);', array(
                             $paramID,
@@ -345,7 +362,7 @@ class ApiDao
                     throw new \PDOException("addApi error");
 
                 $paramID = $db->getLastInsertID();
-                if(is_array($param['paramValueList'])) {
+                if (is_array($param['paramValueList'])) {
                     foreach ($param['paramValueList'] as $value) {
                         $db->prepareExecute('INSERT INTO eo_api_result_value (eo_api_result_value.paramID,eo_api_result_value.`value`,eo_api_result_value.valueDescription) VALUES (?,?,?);', array(
                             $paramID,

@@ -4,7 +4,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -211,6 +211,30 @@ class StatusCodeModule
             return FALSE;
     }
 
+    /**
+     * 通过Excel批量添加状态码
+     * @param $group_id
+     * @param $code_list
+     * @return bool
+     */
+    public function addStatusCodeByExcel(&$group_id, &$code_list)
+    {
+        $statusCodeGroupDao = new StatusCodeGroupDao;
+        $statusCodeDao = new StatusCodeDao;
+        if ($projectID = $statusCodeGroupDao->checkStatusCodeGroupPermission($group_id, $_SESSION['userID'])) {
+            $result = $statusCodeDao->addStatusCodeByExcel($group_id, $code_list);
+            if ($result) {
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_STATUS_CODE, $group_id, ProjectLogDao::$OP_TYPE_ADD, "通过导入Excel添加状态码", date("Y-m-d H:i:s", time()));
+                return $result;
+            } else {
+                return FALSE;
+            }
+        } else {
+            return FALSE;
+        }
+    }
 }
 
 ?>

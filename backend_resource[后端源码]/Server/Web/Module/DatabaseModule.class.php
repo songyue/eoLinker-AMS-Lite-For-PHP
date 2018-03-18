@@ -4,7 +4,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -123,6 +123,10 @@ class DatabaseModule
                         $fieldName = substr($field, 1, strpos(substr($field, 1), '`'));
                         //将字段类型和长度的混合提取出来
                         preg_match('/`\\s(.+?)\\s/', $field, $type);
+                        preg_match("/COMMENT.*'(.*?)'/", $field, $fieldDesc);
+                        if (empty($fieldDesc)) {
+                            preg_match("/comment.*'(.*?)'/", $field, $fieldDesc);
+                        }
                         if (!$type[1]) {
                             $type[1] = substr($field, strlen($fieldName) + 3, strpos(substr($field, strlen($fieldName) + 3), ','));
                         }
@@ -150,6 +154,7 @@ class DatabaseModule
 
                         $fieldList[] = array(
                             'fieldName' => $fieldName,
+                            'fieldDesc' => $fieldDesc[1],
                             'fieldType' => $fieldType,
                             'fieldLength' => $fieldLength,
                             'isNotNull' => $isNotNull
@@ -173,6 +178,7 @@ class DatabaseModule
                 }
                 $tableList[] = array(
                     'tableName' => $table['tableName'],
+                    'tableDesc' => $table['tableDesc'],
                     'fieldList' => $fieldList
                 );
                 unset($fieldList);

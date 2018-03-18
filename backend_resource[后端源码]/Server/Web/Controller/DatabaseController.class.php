@@ -4,7 +4,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -209,12 +209,22 @@ class DatabaseController
             //match all statement blocks which create tables using regex
             //正则匹配出所有创建表的语句块
             preg_match_all('/CREATE.*?TABLE[\\s\\S]+?;/', $dumpSql, $sql);
+            if (empty($sql)) {
+                preg_match_all('/create.*?table[\\s\\S]+?;/', $dumpSql, $sql);
+            }
             preg_match_all('/ALTER.*?TABLE[\\s\\S]+?PRIMARY.+?\\)/', $dumpSql, $primaryKeys);
+            if (empty($primaryKeys)) {
+                preg_match_all('/alter.*?table[\\s\\S]+?primary.+?\\)/', $dumpSql, $primaryKeys);
+            }
 
             foreach ($sql[0] as $tableSql) {
                 // get table name from the sql
                 //正则提取表名，结果为array，取索引为1
                 preg_match('/`(.*?)`/', $tableSql, $tableName);
+                preg_match("/COMMENT='(.*?)'/", $tableSql, $tableDesc);
+                if (empty($tableDesc)) {
+                    preg_match("/comment='(.*?)'/", $tableSql, $tableDesc);
+                }
                 // get table fields from the sql
                 //截取表的字段信息
                 $tableField = substr(substr($tableSql, strpos($tableSql, '(') + 1), 0, strlen($tableSql) - strpos($tableSql, '(') - 9);
@@ -231,6 +241,7 @@ class DatabaseController
 
                 $tables[] = array(
                     'tableName' => $tableName[1],
+                    'tableDesc' => $tableDesc[1],
                     'tableField' => $tableField,
                     'primaryKey' => $key
                 );

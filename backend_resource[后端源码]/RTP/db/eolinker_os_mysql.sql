@@ -25,6 +25,10 @@ CREATE TABLE `eo_api` (
   `mockRule` text COLLATE utf8_bin,
   `mockResult` text COLLATE utf8_bin,
   `mockConfig` text COLLATE utf8_bin,
+  `apiSuccessStatusCode` varchar(255) DEFAULT '200',
+  `apiFailureStatusCode` varchar(255) DEFAULT '200',
+  `beforeInject` text NULL,
+  `afterInject` text NULL,
   PRIMARY KEY (`apiID`,`groupID`,`apiURI`),
   KEY `groupID` (`groupID`),
   KEY `apiID` (`apiID`),
@@ -372,6 +376,7 @@ CREATE TABLE `eo_project_test_case_single` (
   `apiName` varchar(255) NOT NULL COMMENT '接口名称',
   `apiURI` varchar(255) NOT NULL COMMENT '接口路径',
   `apiRequestType` tinyint(4) DEFAULT '0' COMMENT '请求参数类型',
+  `orderNumber` int(11),
   PRIMARY KEY (`connID`,`caseID`)
 ) DEFAULT CHARSET=utf8;
 DROP TABLE IF EXISTS `eo_project_test_case`;

@@ -4,7 +4,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -29,7 +29,11 @@ class UpdateModule
         try {
             set_error_handler('err_handler');
             $ch = curl_init($updateURI);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            //跳过证书检查
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            //检查证书中是否设置域名
+            @curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            @curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
             file_put_contents('../release.zip', curl_exec($ch));
             curl_close($ch);
             $zip = new ZipArchive;

@@ -3,7 +3,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -17,6 +17,7 @@
  */
 
 namespace RTP;
+
 use RTP\Module;
 
 //是否初次部署，设定为TRUE将在所有用户自行创建的用户目录下新建空白的index.html文件防止部分服务器开启的目录查看功能，上线前设为false提高性能
@@ -41,6 +42,9 @@ defined('PATH_COMMON') or define('PATH_COMMON', '/Common/');
 
 //框架特性(Traits)目录名称
 defined('PATH_TRAITS') or define('PATH_TRAITS', '/Traits/');
+
+//框架拓展(extend)目录名称
+defined('PATH_EXTEND') or define('PATH_EXTEND', './RTP/extend/');
 
 //框架异常(Exception)目录名称
 defined('PATH_EXCEPTION') or define('PATH_EXCEPTION', '/Module/Exception/');
@@ -74,23 +78,18 @@ require PATH_FW . PATH_COMMON . 'EasyFunction.php';
 require PATH_FW . PATH_MODULE . 'AutomaticallyModule.class.php';
 
 //捕获全局信息
-try
-{
-	//启动自动化模块
-	Module\AutomaticallyModule::start();
+try {
+    //启动自动化模块
+    Module\AutomaticallyModule::start();
 
-	//如果是首次部署项目，则在所有的项目下面新建空白的安全文件
-	if (FIRST_DEPLOYMENT)
-		Module\FileModule::createSecurityIndex();
-}
-catch(Module\ExceptionModule $e)
-{
-	//传参为True时，遇到异常后即停止程序运行
-	$e -> printError(FALSE);
-}
-catch(\Exception $e)
-{
-	echo $e -> getMessage();
-	exit ;
+    //如果是首次部署项目，则在所有的项目下面新建空白的安全文件
+    if (FIRST_DEPLOYMENT)
+        Module\FileModule::createSecurityIndex();
+} catch (Module\ExceptionModule $e) {
+    //传参为True时，遇到异常后即停止程序运行
+    $e->printError(FALSE);
+} catch (\Exception $e) {
+    echo $e->getMessage();
+    exit;
 }
 ?>

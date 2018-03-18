@@ -4,7 +4,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -29,12 +29,13 @@ class AutomatedTestCaseSingleDao
      * @param $api_name
      * @param $api_uri
      * @param $api_request_type
+     * @param $order_number
      * @return bool
      */
-    public function addSingleTestCase(&$case_id, &$case_data, &$case_code, &$status_code, &$match_type, &$match_rule, &$api_name, &$api_uri, &$api_request_type)
+    public function addSingleTestCase(&$case_id, &$case_data, &$case_code, &$status_code, &$match_type, &$match_rule, &$api_name, &$api_uri, &$api_request_type, &$order_number)
     {
         $db = getDatabase();
-        $db->prepareExecute('INSERT INTO eo_project_test_case_single(eo_project_test_case_single.caseID,eo_project_test_case_single.caseData,eo_project_test_case_single.caseCode,eo_project_test_case_single.statusCode,eo_project_test_case_single.matchType,eo_project_test_case_single.matchRule, eo_project_test_case_single.apiName, eo_project_test_case_single.apiURI, eo_project_test_case_single.apiRequestType)VALUES(?,?,?,?,?,?,?,?,?);', array(
+        $db->prepareExecute('INSERT INTO eo_project_test_case_single(eo_project_test_case_single.caseID,eo_project_test_case_single.caseData,eo_project_test_case_single.caseCode,eo_project_test_case_single.statusCode,eo_project_test_case_single.matchType,eo_project_test_case_single.matchRule, eo_project_test_case_single.apiName, eo_project_test_case_single.apiURI, eo_project_test_case_single.apiRequestType,eo_project_test_case_single.orderNumber) VALUES (?,?,?,?,?,?,?,?,?,?);', array(
             $case_id,
             $case_data,
             $case_code,
@@ -43,7 +44,8 @@ class AutomatedTestCaseSingleDao
             $match_rule,
             $api_name,
             $api_uri,
-            $api_request_type
+            $api_request_type,
+            $order_number
         ));
         if ($db->getAffectRow() > 0)
             return $db->getLastInsertID();
@@ -94,16 +96,43 @@ class AutomatedTestCaseSingleDao
     public function getSingleTestCaseList(&$case_id)
     {
         $db = getDatabase();
-        $result = $db->prepareExecuteAll('SELECT * FROM eo_project_test_case_single WHERE eo_project_test_case_single.caseID = ?;', array($case_id));
-        foreach ($result as &$single_case) {
-            if ($single_case['matchType'] == 2) {
-                $single_case['matchRule'] = json_decode($single_case['matchRule'], TRUE);
+        $db->beginTransaction();
+        $result = $db->prepareExecuteAll('SELECT * FROM eo_project_test_case_single WHERE eo_project_test_case_single.caseID = ? ORDER BY eo_project_test_case_single.connID ASC;', array($case_id));
+        $i = 0;
+        $index = 1;
+        if (is_array($result)) {
+            foreach ($result as &$single_case) {
+                if (($single_case['orderNumber'] == NULL && $index == 1) || $index > 1) {
+                    if (preg_match_all('#<response\[(\d+)\]#', $single_case['caseData'], $match) > 0) {
+                        foreach ($match[1] as $response_id) {
+                            $single_case['caseData'] = str_replace("<response[" . $response_id, "<response[" . $result[$i]['connID'], $single_case['caseData']);
+                        }
+                    }
+                    $db->prepareExecute('UPDATE eo_project_test_case_single SET eo_project_test_case_single.orderNumber = ?,eo_project_test_case_single.caseData = ? WHERE eo_project_test_case_single.connID = ?;', array(
+                        $index,
+                        $single_case['caseData'],
+                        $single_case['connID']
+                    ));
+                    if ($db->getAffectRow() < 1) {
+                        $db->rollback();
+                        return FALSE;
+                    }
+                    $single_case['orderNumber'] = $index;
+                    $index++;
+                }
+                if ($single_case['matchType'] == 2 && !empty($single_case['matchRule'])) {
+                    $single_case['matchRule'] = json_decode($single_case['matchRule'], TRUE);
+                }
+
             }
         }
-        if ($result)
-            return $result;
-        else
+        if ($result) {
+            $db->commit();
+            return array_reverse($result);
+        } else {
+            $db->rollback();
             return FALSE;
+        }
     }
 
     /**
@@ -117,7 +146,7 @@ class AutomatedTestCaseSingleDao
         $db = getDatabase();
         $result = $db->prepareExecute('SELECT * FROM eo_project_test_case_single INNER JOIN eo_project_test_case ON eo_project_test_case.caseID = eo_project_test_case_single.caseID WHERE eo_project_test_case_single.connID = ? AND eo_project_test_case.projectID = ?;', array($conn_id, $project_id));
 
-        if ($result['matchType'] == 2) {
+        if ($result['matchType'] == 2 && !empty($result['matchRule'])) {
             $result['matchRule'] = json_decode($result['matchRule'], TRUE);
         }
         if ($result)
@@ -152,14 +181,14 @@ class AutomatedTestCaseSingleDao
     public function getAllSingleTestCaseList(&$project_id)
     {
         $db = getDatabase();
-        $result = $db->prepareExecuteAll('SELECT eo_project_test_case_single.* FROM eo_project_test_case INNER JOIN eo_project_test_case_single ON eo_project_test_case_single.caseID = eo_project_test_case.caseID WHERE eo_project_test_case.projectID = ?;', array($project_id));
+        $result = $db->prepareExecuteAll('SELECT eo_project_test_case_single.* FROM eo_project_test_case INNER JOIN eo_project_test_case_single ON eo_project_test_case_single.caseID = eo_project_test_case.caseID WHERE eo_project_test_case.projectID = ? ORDER BY eo_project_test_case_single.connID ASC;', array($project_id));
         foreach ($result as &$single_case) {
-            if ($single_case['matchType'] == 2) {
+            if ($single_case['matchType'] == 2 && !empty($single_case['matchRule'])) {
                 $single_case['matchRule'] = json_decode($single_case['matchRule'], TRUE);
             }
         }
         if ($result)
-            return $result;
+            return array_reverse($result);
         else
             return FALSE;
     }

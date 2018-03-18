@@ -4,7 +4,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -210,6 +210,63 @@ class AutomatedTestCaseGroupController
                 $service = new AutomatedTestCaseGroupModule();
                 $result = $service->sortGroup($project_id, $order_list, $this->user_id);
                 // 验证结果
+                if ($result) {
+                    $this->returnJson['statusCode'] = '000000';
+                } else {
+                    $this->returnJson['statusCode'] = '850000';
+                }
+            }
+        }
+        exitOutput($this->returnJson);
+    }
+
+    /**
+     * 导出测试用例分组数据
+     */
+    public function exportGroup()
+    {
+        // 分组ID
+        $group_id = securelyInput('groupID');
+        if (!preg_match('/^[1-9][0-9]{0,10}$/', $group_id)) {
+            // 分组ID格式不合法
+            $this->returnJson['statusCode'] = '850003';
+        } else {
+            $server = new AutomatedTestCaseGroupModule();
+            $user_type = $server->getUserType($group_id);
+            if ($user_type < 0 || $user_type > 2) {
+                $this->returnJson['statusCode'] = '120007';
+            } else {
+                $result = $server->exportTestCaseGroup($group_id, $this->user_id);
+                if ($result) {
+                    $this->returnJson['statusCode'] = '000000';
+                    $this->returnJson['fileName'] = $result;
+                } else {
+                    $this->returnJson['statusCode'] = '850000';
+                }
+            }
+        }
+        exitOutput($this->returnJson);
+    }
+
+    public function importGroup()
+    {
+        $json = quickInput('data');
+        $project_id = securelyInput('projectID');
+        $data = json_decode($json, TRUE);
+        if (!preg_match('/^[1-9][0-9]{0,10}$/', $project_id)) {
+            $this->returnJson['statusCode'] = '850005';
+        } //判断导入数据是否为空
+        elseif (empty($data)) {
+            $this->returnJson['statusCode'] = '850005';
+        } else {
+            // 检查权限
+            $project_module = new ProjectModule();
+            $user_type = $project_module->getUserType($project_id);
+            if ($user_type < 0 || $user_type > 2) {
+                $this->returnJson['statusCode'] = '120007';
+            } else {
+                $server = new AutomatedTestCaseGroupModule();
+                $result = $server->importTestCaseGroup($project_id, $this->user_id, $data);
                 if ($result) {
                     $this->returnJson['statusCode'] = '000000';
                 } else {

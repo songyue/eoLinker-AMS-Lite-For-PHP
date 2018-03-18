@@ -4,7 +4,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -89,9 +89,13 @@ class ApiModule
      * @param $mockRule array mock规则
      * @param $mockResult string mock结果
      * @param $mockConfig array mock配置
+     * @param $success_status_code
+     * @param $failure_status_code
+     * @param $before_inject
+     * @param $after_inject
      * @return int|bool
      */
-    public function addApi(&$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiFailureMock, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw, &$mockRule, &$mockResult, &$mockConfig)
+    public function addApi(&$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiFailureMock, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw, &$mockRule, &$mockResult, &$mockConfig, &$success_status_code, &$failure_status_code, &$before_inject, &$after_inject)
     {
         // if the request params were null, then assign an empty string to them
         // 判断部分请求参数是否为空，如果为空值则赋值成为空字符串
@@ -133,10 +137,15 @@ class ApiModule
             $cacheJson['baseInfo']['apiRequestRaw'] = $apiRequestRaw;
             $updateTime = date("Y-m-d H:i:s", time());
             $cacheJson['baseInfo']['apiUpdateTime'] = $updateTime;
+            $cacheJson['baseInfo']['apiFailureStatusCode'] = $failure_status_code;
+            $cacheJson['baseInfo']['apiSuccessStatusCode'] = $success_status_code;
+            $cacheJson['baseInfo']['beforeInject'] = $before_inject;
+            $cacheJson['baseInfo']['afterInject'] = $after_inject;
             $cacheJson['headerInfo'] = $apiHeader;
             $cacheJson['mockInfo']['mockRule'] = $mockRule;
             $cacheJson['mockInfo']['mockResult'] = $mockResult;
             $cacheJson['mockInfo']['mockConfig'] = json_decode($mockConfig, TRUE);
+
             // sort the request params
             // 将数组中的数字字符串转换为数字并且进行排序
             // if (is_array($apiRequestParam))
@@ -165,7 +174,7 @@ class ApiModule
             $cacheJson['resultInfo'] = $apiResultParam;
             $cacheJson = json_encode($cacheJson);
 
-            $result = $apiDao->addApi($apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $projectID, $apiRequestParamType, $apiRequestRaw, $cacheJson, $updateTime, $_SESSION['userID'], $mockRule, $mockResult, $mockConfig);
+            $result = $apiDao->addApi($apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $projectID, $apiRequestParamType, $apiRequestRaw, $cacheJson, $updateTime, $_SESSION['userID'], $mockRule, $mockResult, $mockConfig, $success_status_code, $failure_status_code, $before_inject, $after_inject);
 
             if ($result) {
                 //添加版本历史
@@ -224,10 +233,14 @@ class ApiModule
      * @param $update_desc string 更新描述
      * @param $mockRule array mock规则
      * @param $mockResult string mock结果
-     * @param $mockConfig array mock配置
+     * @param $mockConfig string mock配置
+     * @param $success_status_code
+     * @param $failure_status_code
+     * @param $before_inject
+     * @param $after_inject
      * @return bool
      */
-    public function editApi(&$apiID, &$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiFailureMock, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw, &$update_desc = NULL, &$mockRule, &$mockResult, &$mockConfig)
+    public function editApi(&$apiID, &$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiFailureMock, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw, &$update_desc = NULL, &$mockRule, &$mockResult, &$mockConfig, &$success_status_code, &$failure_status_code, &$before_inject, &$after_inject)
     {
         // if the request params were null, then assign an empty string to them
         // 判断部分请求参数是否为空，如果为空值则赋值成为空字符串
@@ -270,6 +283,10 @@ class ApiModule
                 $cacheJson['baseInfo']['apiRequestRaw'] = $apiRequestRaw;
                 $updateTime = date("Y-m-d H:i:s", time());
                 $cacheJson['baseInfo']['apiUpdateTime'] = $updateTime;
+                $cacheJson['baseInfo']['apiFailureStatusCode'] = $failure_status_code;
+                $cacheJson['baseInfo']['apiSuccessStatusCode'] = $success_status_code;
+                $cacheJson['baseInfo']['beforeInject'] = $before_inject;
+                $cacheJson['baseInfo']['afterInject'] = $after_inject;
                 $cacheJson['headerInfo'] = $apiHeader;
                 $cacheJson['mockInfo']['mockRule'] = $mockRule;
                 $cacheJson['mockInfo']['mockResult'] = $mockResult;
@@ -300,7 +317,7 @@ class ApiModule
                 $cacheJson['resultInfo'] = $apiResultParam;
                 $cacheJson = json_encode($cacheJson);
 
-                $result = $apiDao->editApi($apiID, $apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw, $cacheJson, $updateTime, $_SESSION['userID'], $mockRule, $mockResult, $mockConfig);
+                $result = $apiDao->editApi($apiID, $apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw, $cacheJson, $updateTime, $_SESSION['userID'], $mockRule, $mockResult, $mockConfig, $success_status_code, $failure_status_code, $before_inject, $after_inject);
 
                 if ($result) {
                     $desc = $update_desc ? $update_desc : '[快速保存]修改接口';

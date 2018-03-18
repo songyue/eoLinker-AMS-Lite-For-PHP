@@ -4,7 +4,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -170,6 +170,55 @@ class AutomatedTestCaseGroupModule
         $group_dao = new AutomatedTestCaseGroupDao();
         $result = $group_dao->updateGroupOrder($project_id, $order_list);
         if ($result) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /**
+     * 获取用例分组数据
+     * @param $group_id
+     * @param $user_id
+     * @return array|bool
+     */
+    public function exportTestCaseGroup(&$group_id, &$user_id)
+    {
+        $group_dao = new AutomatedTestCaseGroupDao();
+        if (!($projectID = $group_dao->checkAutomatedTestCaseGroupPermission($group_id, $user_id))) {
+            return FALSE;
+        } else {
+            $data = json_encode($group_dao->getTestCaseGroupData($group_id));
+            $fileName = 'eolinker_test_case_group_dump_' . $_SESSION['userName'] . '_' . time() . '.export';
+            if (file_put_contents(realpath('./dump') . DIRECTORY_SEPARATOR . $fileName, $data)) {
+                //将操作写入日志
+                $log_dao = new ProjectLogDao();
+                $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_AUTOMATED_TEST_CASE_GROUP, $group_id, ProjectLogDao::$OP_TYPE_OTHERS, "导出自动化测试用例分组", date("Y-m-d H:i:s", time()));
+                return $fileName;
+            } else {
+                return FALSE;
+            }
+        }
+    }
+
+    /**
+     * 导出用例分组数据
+     * @param $project_id
+     * @param $user_id
+     * @param $data
+     * @return bool
+     */
+    public function importTestCaseGroup(&$project_id, &$user_id, &$data)
+    {
+        $project_dao = new ProjectDao();
+        if (!($projectID = $project_dao->checkProjectPermission($project_id, $user_id))) {
+            return FALSE;
+        }
+        $group_dao = new AutomatedTestCaseGroupDao();
+        if ($group_dao->importTestCaseGroup($project_id, $user_id, $data)) {
+            //将操作写入日志
+            $log_dao = new ProjectLogDao();
+            $log_dao->addOperationLog($projectID, $_SESSION['userID'], ProjectLogDao::$OP_TARGET_AUTOMATED_TEST_CASE_GROUP, $project_id, ProjectLogDao::$OP_TYPE_ADD, "导入自动化测试用例分组:" . $data['groupName'], date("Y-m-d H:i:s", time()));
             return TRUE;
         } else {
             return FALSE;

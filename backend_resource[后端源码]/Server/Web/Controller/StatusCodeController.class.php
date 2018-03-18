@@ -4,7 +4,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -243,6 +243,62 @@ class StatusCodeController
         exitOutput($this->returnJson);
     }
 
+    /**
+     * 通过Excel批量添加状态码
+     */
+    public function addStatusCodeByExcel()
+    {
+        quickRequire(PATH_EXTEND . 'excel/PHPExcel.php');
+        quickRequire(PATH_EXTEND . 'excel/PHPExcel/IOFactory.php');
+        $filename = $_FILES['excel']['tmp_name'];
+        $group_id = securelyInput('groupID');
+        if (!preg_match('/^[0-9]{1,11}$/', $group_id)) {
+            //分组ID格式非法
+            $this->returnJson['statusCode'] = '190002';
+        } else {
+            //检查权限
+            $service = new StatusCodeGroupModule();
+            $user_type = $service->getUserType($group_id);
+            if ($user_type < 0 || $user_type > 2) {
+                $this->returnJson['statusCode'] = '120007';
+            } else {
+                $status_code_list = array();
+                try {
+                    $PHPExcel = \PHPExcel_IOFactory::load($filename);
+                    $currentSheet = $PHPExcel->getSheet(0); // 读取第一个工作簿
+                    $all_row = $currentSheet->getHighestRow(); // 所有行数
+                    for ($i = 3; $i <= $all_row; $i++) {
+                        $code = $currentSheet->getCell('A' . $i)->getValue();
+                        $code_desc = $currentSheet->getCell('B' . $i)->getValue();
+                        if (empty($code)) {
+                            continue;
+                        }
+                        $status_code_list[] = array(
+                            'code' => $code,
+                            'codeDesc' => $code_desc ? $code_desc : ''
+                        );
+                    }
+                    if ($status_code_list) {
+                        $service = new StatusCodeModule();
+                        $result = $service->addStatusCodeByExcel($group_id, $status_code_list);
+                        if ($result) {
+                            $this->returnJson['statusCode'] = '000000';
+                        } else {
+                            $this->returnJson['statusCode'] = '190000';
+                        }
+                    } else {
+                        //内容为空
+                        $this->returnJson['statusCode'] = '190006';
+                    }
+                } catch (\Exception $e) {
+                    //读取Excel文件失败
+                    $this->returnJson['statusCode'] = '190005';
+                }
+            }
+        }
+
+        exitOutput($this->returnJson);
+    }
 }
 
 ?>
