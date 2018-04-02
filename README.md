@@ -1,14 +1,14 @@
-# eoLinker API接口管理系统开源版
+# eoLinker AMS(API接口管理系统开源版)
 
 ![](http://data.eolinker.com/course/QPW3uZ9b6f87bfa7a61f53e3a9120a32027e55cbd642f27)
 
 ## 简介
 
-**eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。**
+**eoLinker是国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。**
 
-目前eoLinker为Google、IBM、中国联通、海尔、神州优车、国美等数千家企业提供快速、专业、稳定的API管理服务。
+目前eoLinker为来自全球的超过2万家企业提供快速、专业、稳定的API管理服务。eoLinker是Google谷歌开发者联盟的合作产品与企业，不定期举办线下交流分享活动促进国内API管理领域的发展。
 
-同时eoLinker还是Google谷歌开发者联盟的合作产品与企业，不定期举办线下交流分享活动促进国内API管理领域的发展。
+![](http://data.eolinker.com/course/XvkVdSWf53b2b7c37361531304ea5154e640ac40bd31ebb)
 
 ## 特性
 
