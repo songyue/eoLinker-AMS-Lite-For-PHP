@@ -8,6 +8,20 @@ home-project-inside-code-list {
                 @extend %SEARCH-UL;
                 margin-left:0;
             }
+            .first-tab-btn,.last-tab-btn{
+                border: 1px solid #ddd;
+                background-color: #fff;
+            }
+            .first-tab-btn{
+                margin-left: 5px;
+                border-radius:3px 0 0 3px;
+                border-right:none;
+                margin-right: 0px;
+            }
+            .last-tab-btn{
+                margin-left:0;
+                border-radius:0 3px 3px 0;
+            }
         }
         .first-level-article {
             @extend %COMMON-CONTAINER-STYLE;
@@ -59,23 +73,6 @@ home-project-inside-code-list {
                             overflow: hidden;
                             text-overflow: ellipsis;
                             cursor: default;
-                            a {
-                                color: #666;
-                                .iconfont {
-                                    font-size: 14px;
-                                    color: #666;
-                                    padding: 5px;
-                                }
-                                &:hover {
-                                    color: #999;
-                                    .iconfont {
-                                        color: #999;
-                                    }
-                                }
-                            }
-                            .home-project-pro-inside-function-delete {
-                                margin-left: 10px;
-                            }
                         }
                         td:nth-child(2) {
                             .icon-circle {

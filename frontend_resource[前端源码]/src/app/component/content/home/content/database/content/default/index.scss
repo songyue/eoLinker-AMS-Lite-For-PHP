@@ -54,23 +54,6 @@ home-database-list {
                         }
                         td {
                             color: #999;
-                            a {
-                                color: #999;
-                                .iconfont {
-                                    font-size: 14px;
-                                    color: #999;
-                                    padding: 5px;
-                                }
-                                &:hover {
-                                    color: #333;
-                                    .iconfont {
-                                        color: #333;
-                                    }
-                                }
-                            }
-                            .home-function-delete {
-                                margin-left: 10px;
-                            }
                         }
                         &:hover {
                             background-color: #efefef;

@@ -240,6 +240,46 @@
                 }
             });
         }
+        vm.data.fun.import = function() {
+            var template = {
+                modal: {
+                    title: $filter('translate')('01214027'),
+                    status: 1,
+                    request: {
+                        projectID: vm.data.interaction.request.projectID
+                    },
+                    resource:ApiManagementResource.AutomatedTestGroup
+                }
+            }
+
+            $rootScope.ImportModal(template.modal, function(callback) {
+                if (callback) {
+                    vm.data.fun.init();
+                    switch (vm.data.interaction.request.groupID) {
+                        case -1:
+                        case '-1':
+                            {
+                                $state.go('home.project.inside.test.default', { groupID: $state.params.groupID ? (null):-1  });
+                                break;
+                            }
+                    }
+                }
+            });
+        }
+        vm.data.fun.export = function(arg) {
+            var template = {
+                modal: {
+                    status: 'group',
+                    title: $filter('translate')('01214026'),
+                    request: {
+                        groupID: arg.status == 'parent' ? arg.item.groupID : arg.childItem.groupID
+                    },
+                    resource:ApiManagementResource.AutomatedTestGroup
+                }
+            }
+            $rootScope.ExportModal(template.modal, function(callback) {});
+        }
+
         /**
          * @function [父分组删除事件] [Parent group delete event]
          */
@@ -300,27 +340,31 @@
                             showable: false,
                             fun: vm.data.fun.edit.parent
                         },
+                        export: {
+                            key: $filter('translate')('01214027'),
+                            class: 'default-btn tab-first-btn',
+                            icon: 'shangchuan',
+                            showable: false,
+                            fun: vm.data.fun.import
+                        },
                         sortDefault: {
                             key: $filter('translate')('0121401'),
-                            class: 'default-btn',
+                            class: 'default-btn tab-last-btn',
                             icon: 'paixu',
-                            tips: true,
                             showable: false,
                             fun: vm.data.fun.sort.copy
                         },
                         sortConfirm: {
                             key: $filter('translate')('0121402'),
-                            class: 'default-btn',
+                            class: 'default-btn tab-first-btn un-margin-left-btn',
                             icon: 'check',
-                            tips: true,
                             showable: true,
                             fun: vm.data.fun.sort.confirm
                         },
                         sortCancel: {
                             key: $filter('translate')('0121403'),
-                            class: 'default-btn',
+                            class: 'default-btn tab-last-btn',
                             icon: 'close',
-                            tips: true,
                             showable: true,
                             fun: vm.data.fun.sort.cancle
                         }
@@ -343,6 +387,11 @@
                             params: { $outerIndex: null, isEdit: false },
                             class: 'add-child-btn'
                         },
+                        export: {
+                            fun: vm.data.fun.export,
+                            key: $filter('translate')('01214026'),
+                            params: { item: null, status: 'parent' }
+                        },
                         edit: {
                             fun: vm.data.fun.edit.parent,
                             key: $filter('translate')('0121406'),
@@ -355,6 +404,11 @@
                         }
                     },
                     childFun: {
+                        export: {
+                            fun: vm.data.fun.export,
+                            key: $filter('translate')('01214026'),
+                            params: { childItem: null, status: 'child' }
+                        },
                         edit: {
                             fun: vm.data.fun.edit.child,
                             key: $filter('translate')('0121406'),

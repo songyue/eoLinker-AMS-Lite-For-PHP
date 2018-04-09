@@ -13,7 +13,10 @@
             templateUrl: 'app/component/ams/report/index.html',
             controller: indexController,
             bindings: {
-                input: '<'
+                input: '<',
+                status:'@',
+                otherObject:'<',
+                fun:'&'
             }
         })
 

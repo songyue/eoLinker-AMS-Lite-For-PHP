@@ -7,6 +7,11 @@ home-project-inside-test-default {
                 .batch-test-btn{
                     margin-left: 5px;
                     @include eo-line(32px,30px);
+                    &:disabled{
+                        background-color:#fafafa;
+                        color:#999;
+                        cursor: not-allowed;
+                    }
                 }
             }
             .search-li {
@@ -82,23 +87,6 @@ home-project-inside-test-default {
                             overflow: hidden;
                             text-overflow: ellipsis;
                             cursor: pointer;
-                            a {
-                                color: #666;
-                                .iconfont {
-                                    font-size: 14px;
-                                    color: #666;
-                                    padding: 5px;
-                                }
-                                &:hover {
-                                    color: #999;
-                                    .iconfont {
-                                        color: #999;
-                                    }
-                                }
-                            }
-                            .home-project-inside-function-delete {
-                                margin-left: 10px;
-                            }
                         }
                         td:nth-child(2) {
                             .icon-circle {

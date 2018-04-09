@@ -9,7 +9,7 @@
         <ul class="group-ul env-sidebar-ul pull-left">
             <li class="title-li"><b>{{'012121'|translate}}</b></li>
             <li class="background-group-li" data-ng-repeat='item in $ctrl.data.interaction.response.query' ng-class="{'elem-active':item.envID==$ctrl.data.interaction.request.envID}" data-ng-click="$ctrl.data.fun.click({item:item})" ng-init="$ctrl.data.fun.initQuery({item:item,$index:$index})">
-                {{item.envName}}
+                <span>{{item.envName}}</span>
                 <div class="pull-right list-fun-div" ng-mouseleave="item.isClick=false" ng-if="$ctrl.powerObject.readWrite&&item.envID!=-1">
                     <a class="iconfont icon-caidan" ng-click="$event.stopPropagation();item.isClick=true"></a>
                     <ul class="btn-group-ul" ng-show="item.isClick">

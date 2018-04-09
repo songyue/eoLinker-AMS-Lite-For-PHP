@@ -82,14 +82,14 @@
         <p class="item-p" ng-if="$ctrl.data.interaction.response.projectInfo.userType<3">{{'0121428'|translate}}</p>
         <div class="item-div special-div" ng-if="$ctrl.data.interaction.response.projectInfo.userType<3">
             <ul>
-                <li class="pull-left first-li" ng-class="{'only-li':$ctrl.data.interaction.response.projectInfo.userType>1}" ng-click="$ctrl.data.service.common.overviewObject.fun.autoGeneration($ctrl.data.interaction.response.projectInfo)" ng-if="$ctrl.data.interaction.response.projectInfo.userType<3">
+                <!-- <li class="pull-left first-li" ng-class="{'only-li':$ctrl.data.interaction.response.projectInfo.userType>1}" ng-click="$ctrl.data.service.common.overviewObject.fun.autoGeneration($ctrl.data.interaction.response.projectInfo)" ng-if="$ctrl.data.interaction.response.projectInfo.userType<3">
                     <p class="title-p">
                         <label class="iconfont icon-jiqirendaan"></label>
                         {{'0121429'|translate}}
                     </p>
                     <p class="desc-p">{{'0121430'|translate}}</p>
-                </li>
-                <li class="pull-left center-li"  ng-click="$ctrl.data.fun.menu({switch:3})" >
+                </li> -->
+                <li class="pull-left only-li"  ng-click="$ctrl.data.fun.menu({switch:3})" >
                     <p class="title-p">
                         <label class="iconfont icon-shandian"></label>&nbsp;<span>{{'0121431'|translate}}</span>
                     </p>

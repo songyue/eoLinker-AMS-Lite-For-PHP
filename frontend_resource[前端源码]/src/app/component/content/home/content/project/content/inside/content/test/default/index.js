@@ -21,13 +21,14 @@
             }
         })
 
-    indexController.$inject = ['$scope', '$rootScope', '$state', 'ApiManagementResource', 'GroupService', 'CODE', '$filter'];
+    indexController.$inject = ['$scope', '$rootScope', '$state', 'ApiManagementResource', 'GroupService', 'CODE', '$filter','HomeProject_Common_Service'];
 
-    function indexController($scope, $rootScope, $state, ApiManagementResource, GroupService, CODE ,$filter) {
+    function indexController($scope, $rootScope, $state, ApiManagementResource, GroupService, CODE ,$filter,HomeProject_Common_Service) {
         var vm = this;
         vm.data = {
             service: {
-                group: GroupService
+                group: GroupService,
+                home:HomeProject_Common_Service
             },
             info: {
                 plugObject: {
@@ -63,10 +64,33 @@
                 init: null 
             }
         }
+        vm.component = {
+            batchTestObject: {
+                testing: false,
+                flag:0,
+                type:'all'
+            },
+            reportObject: {
+                show: false,
+                testing: false
+            }
+        };
         var data = {
             assistantFun: {
                 getQuery: null
             }
+        }
+        /**
+         * @function [测试功能] [Test function]
+         */
+        vm.data.fun.test = function () {
+            vm.component.reportObject.testing = vm.component.batchTestObject.testing = !vm.component.batchTestObject.testing;
+            if (vm.data.info.plugObject.useStatus) {
+                if(vm.component.batchTestObject.testing){
+                    vm.component.reportObject.object = {};
+                    vm.component.reportObject.show = true;
+                }
+            } 
         }
         vm.data.fun.enter = function(arg) {
             var template = {
@@ -130,6 +154,7 @@
                             switch (response.statusCode) {
                                 case CODE.COMMON.SUCCESS:
                                     {
+                                        vm.component.batchTestObject.flag--;
                                         switch (status) {
                                             case 'batch':
                                                 {
@@ -202,6 +227,7 @@
                                     switch (response.statusCode) {
                                         case CODE.COMMON.SUCCESS:
                                             {
+                                                vm.component.batchTestObject.flag--;
                                                 $rootScope.InfoModal($filter('translate')('01216117'), 'success');
                                                 $scope.$broadcast('$LoadingInit');
                                                 break;
@@ -222,6 +248,7 @@
                                     switch (response.statusCode) {
                                         case CODE.COMMON.SUCCESS:
                                             {
+                                                vm.component.batchTestObject.flag--;
                                                 $rootScope.InfoModal($filter('translate')('01216119'), 'success');
                                                 $scope.$broadcast('$LoadingInit');
                                                 break;

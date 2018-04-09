@@ -19,25 +19,26 @@
                 .state('home.project.inside.api.edit', {
                     url: '/edit?groupID?childGroupID?apiID?type',
                     template: '<home-project-inside-api-edit></home-project-inside-api-edit>',
-                    resolve: helper.resolveFor('JQUERY', 'WANG_EDITOR', 'MARKDOWN', 'MOCK', 'ACE_EDITOR')
+                    resolve: helper.resolveFor('JQUERY', 'WANG_EDITOR', 'MARKDOWN', 'MOCK')
                 });
         }])
         .component('homeProjectInsideApiEdit', {
             templateUrl: 'app/component/content/home/content/project/content/inside/content/api/edit/index.html',
-            controller: homeProjectInsideApiEditController
+            controller: indexController
         })
 
-    homeProjectInsideApiEditController.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'GroupService', '$filter', 'CODE', 'HTTP_CONSTANT', 'HTML_LAZYLOAD'];
+    indexController.$inject = ['$scope', '$rootScope', 'ApiManagementResource', '$state', 'GroupService', '$filter', 'CODE', 'HTTP_CONSTANT', 'HTML_LAZYLOAD'];
 
-    function homeProjectInsideApiEditController($scope, $rootScope, ApiManagementResource, $state, GroupService, $filter, CODE, HTTP_CONSTANT, HTML_LAZYLOAD) {
+    function indexController($scope, $rootScope, ApiManagementResource, $state, GroupService, $filter, CODE, HTTP_CONSTANT, HTML_LAZYLOAD) {
         var vm = this;
         vm.data = {
             constant: {
                 requestHeader: HTTP_CONSTANT.REQUEST_HEADER,
                 requestParamLimit: HTTP_CONSTANT.REQUEST_PARAM,
-                lazyload: HTML_LAZYLOAD[2]
+                lazyload: HTML_LAZYLOAD[1]
             },
             info: {
+                menuType:'body',
                 input: {
                     submited: false
                 },
@@ -101,6 +102,7 @@
                         "valueDescription": ""
                     }
                 },
+                script:{},
                 group: {
                     parent: [],
                     child: []
@@ -564,7 +566,9 @@
                 apiRequestRaw: vm.data.interaction.response.apiInfo.apiRequestRaw,
                 mockRule: vm.data.interaction.response.apiInfo.mockRule,
                 mockResult: vm.data.interaction.response.apiInfo.mockResult,
-                mockConfig: JSON.stringify(vm.data.interaction.response.apiInfo.mockConfig)
+                mockConfig: JSON.stringify(vm.data.interaction.response.apiInfo.mockConfig),
+                beforeInject: vm.data.interaction.response.apiInfo.beforeInject,
+                afterInject: vm.data.interaction.response.apiInfo.afterInject
             }
             var template = {
                 apiRequestParam: [],
@@ -757,6 +761,8 @@
                             vm.data.interaction.response.apiInfo.apiMarkdownNote = '';
                             $scope.$broadcast('$resetMarkdown');
                             vm.data.info.input.submited = false;
+                            vm.data.interaction.response.apiInfo.beforeInject = '';
+                            vm.data.interaction.response.apiInfo.afterInject = '';
                             window.scrollTo(0, 0);
                             vm.data.info.menu = 0;
                             if(vm.data.info.mock.isFailure===false){
@@ -764,6 +770,8 @@
                             }else{
                                 vm.data.info.mock.isFailure=false;
                             }
+                            vm.data.info.script.type='0';
+                            $scope.$broadcast('$ResetAceEditor_AmsEditor_Code_Ace_Editor_Js');
                             vm.data.fun.headerList.add();
                             vm.data.fun.requestList.add();
                             vm.data.fun.resultList.add();
@@ -895,6 +903,7 @@
             var apiGroup = GroupService.get();
             vm.data.info.group.parent = apiGroup;
             vm.data.info.mock.isFailure=false;
+            vm.data.info.script.type='0';
             if (vm.data.interaction.response.apiInfo.groupID > 0) {
                 for (var i = 0; i < vm.data.info.group.parent.length; i++) {
                     var val = vm.data.info.group.parent[i];

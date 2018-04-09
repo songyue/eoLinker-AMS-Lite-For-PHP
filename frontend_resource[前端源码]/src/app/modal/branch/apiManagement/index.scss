@@ -190,18 +190,12 @@
                                     white-space: nowrap;
                                     overflow: hidden;
                                     text-overflow: ellipsis;
-                                    padding-left: 20px;
-                                    .get-label {
-                                        border-radius: 3px;
-                                        margin-right: 8px;
-                                        font-size: 12px;
-                                        display: inline-block;
-                                        width: 55px;
-                                        @include eo-line(20px);
-                                        text-align: center;
-                                        text-indent: 0;
-                                        cursor: pointer;
-                                    }
+                                }
+                                .second-th{
+                                    width:40%;
+                                }
+                                .third-th{
+                                    width:60%;
                                 }
                                 &:hover {
                                     background: #f0f0f0;

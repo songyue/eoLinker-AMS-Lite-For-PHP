@@ -146,7 +146,7 @@ gulp.task('plug:timestamp', function() {
         .pipe($.replace(/.css\?timestamp=.*?\'/g, '.css?timestamp='+(new Date()).getTime()+'\''))
         .pipe(gulp.dest(path.join(config.paths.src, '/app/constant')));
 });
-gulp.task('other:vendor', function() {
+gulp.task('other:vendor',['other:vendor:js'], function() {
     return gulp.src([
             path.join(config.paths.src, '/vendor/**/*')
         ])
@@ -179,7 +179,7 @@ gulp.task('plug:compass', function() {
         .pipe(sass().on("error", sass.logError))
         .pipe(gulp.dest(path.join(config.paths.src, '/plug')));
 });
-gulp.task('other:libs', function() {
+gulp.task('other:libs',['other:libs:js'], function() {
     return gulp.src([
             path.join(config.paths.src, '/libs/**/*')
         ])
@@ -197,7 +197,28 @@ gulp.task('other:assets', function() {
         }))
         .pipe(gulp.dest(path.join(config.paths.dist, '/assets')));
 });
-
+gulp.task('other:libs:js', function() {
+    return gulp.src([
+            path.join(config.paths.src, '/libs/**/*.js')
+        ])
+        .pipe($.filter(function(file) {
+            return file.stat.isFile();
+        }))
+        .pipe($.stripDebug())
+        .pipe($.uglify())
+        .pipe(gulp.dest(path.join(config.paths.dist, '/libs')));
+});
+gulp.task('other:vendor:js', function() {
+    return gulp.src([
+            path.join(config.paths.src, '/vendor/**/*.js')
+        ])
+        .pipe($.filter(function(file) {
+            return file.stat.isFile();
+        }))
+        .pipe($.stripDebug())
+        .pipe($.uglify())
+        .pipe(gulp.dest(path.join(config.paths.dist, '/vendor')));
+});
 
 gulp.task('build', $.sequence('prod-config', ['clean:dist', 'html'], ['images', 'fonts'], 'other:vendor', 'other:plug', 'other:libs', 'other:assets'));
 gulp.task('build:e2e', $.sequence('test-config', ['clean:dist', 'html'], ['images', 'fonts'], 'other:vendor', 'other:assets'));

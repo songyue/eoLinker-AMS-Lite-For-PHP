@@ -30,7 +30,7 @@
                 menu: [
                     { href: '/overview',name: $filter('translate')('012134'), sref: 'home.project.inside.overview', icon: 'icon-tongjibaobiao'},
                     { href: '/api/',name: $filter('translate')('012130'), sref: 'home.project.inside.api', icon: 'icon-api', childSref: 'home.project.inside.api.list'},
-                    { base: '/test', name: $filter('translate')('012136'), sref: 'home.project.inside.test', childSref: 'home.project.inside.test.default', icon: 'icon-shandian'},
+                    { base: '/test', name: $filter('translate')('012136'), sref: 'home.project.inside.test', childSref: 'home.project.inside.test.default', icon: 'icon-jiqirendaan'},
                     { href: '/code',name: $filter('translate')('012131'), sref: 'home.project.inside.code', childSref: 'home.project.inside.code.list', icon: 'icon-icocode'},
                     { href: '/doc', name: $filter('translate')('0121427'), sref: 'home.project.inside.doc', childSref: 'home.project.inside.doc.list', icon: 'icon-renwuguanli'},
                     { href: '/env', name: $filter('translate')('012132'), sref: 'home.project.inside.env', icon: 'icon-waibuhuanjing',params:{envID:null}},

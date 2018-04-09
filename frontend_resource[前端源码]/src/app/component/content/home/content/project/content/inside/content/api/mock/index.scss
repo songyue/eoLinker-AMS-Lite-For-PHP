@@ -132,7 +132,7 @@ home-project-inside-api-mock {
                         font-size: 14px;
                         @include eo-line(30px);
                         border: 1px solid #bcdffb;
-                        width: 100px;
+                        padding:0 10px;
                         background-color: #e3f7ff;
                         &:hover {
                             background-color: $buttonInfoFocusBgColor;

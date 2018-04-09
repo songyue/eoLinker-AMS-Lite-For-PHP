@@ -140,6 +140,38 @@
                                     $uibModalInstance.close(false);
                                     break;
                                 }
+                            case '310001':{
+                                $rootScope.InfoModal($filter('translate')('654'), 'error');
+                                break;
+                            }
+                            case '310002':{
+                                $rootScope.InfoModal($filter('translate')('655'), 'error');
+                                break;
+                            }
+                            case '310003':{
+                                $rootScope.InfoModal($filter('translate')('656'), 'error');
+                                break;
+                            }
+                            case '310005':{
+                                $rootScope.InfoModal($filter('translate')('657'), 'error');
+                                break;
+                            }
+                            case '310006':{
+                                $rootScope.InfoModal($filter('translate')('658'), 'error');
+                                break;
+                            }
+                            case '310007':{
+                                $rootScope.InfoModal($filter('translate')('659'), 'error');
+                                break;
+                            }
+                            case '310008':{
+                                $rootScope.InfoModal($filter('translate')('660'), 'error');
+                                break;
+                            }
+                            case '310009':{
+                                $rootScope.InfoModal($filter('translate')('661'), 'error');
+                                break;
+                            }
                             default:
                                 {
                                     $rootScope.InfoModal($filter('translate')('621'), 'error');
@@ -392,12 +424,13 @@
             info: {
                 current: {
                     matchRule: []
-                }
+                },
+                isCurrent: false
             },
             input: {},
             fun: {
-                cancel: null, 
-                confirm: null, 
+                cancel: null, //关闭功能函数
+                confirm: null, //确认功能函数
                 last: null
             }
         }
@@ -409,40 +442,62 @@
                 init: null
             }
         }
-        $scope.data.fun.filter = function(arg) {
+        $scope.data.fun.filter = function (arg) {
             if (!arg || arg.paramKey == '') {
                 return false;
             } else {
                 return true;
             }
         }
-        $scope.data.fun.filterNext = function(arg) {
+        $scope.data.fun.click = function () {
+            var template = {
+                bind: '',
+                activeArray: []
+            }
             try {
-                return arg.connID < input.current.connID;
+                for (var key in arguments) {
+                    var val = arguments[key];
+                    switch (key) {
+                        case 0:
+                            {
+                                $scope.data.info.current.connID = val.connID;
+                                break;
+                            }
+                    }
+                    template.bind += '.' + val.paramKey;
+                    template.activeArray.push(val.parent + val.paramKey);
+                }
+
+                $scope.data.info.current.bind = template.bind;
+                $scope.data.info.current.activeArray = template.activeArray;
             } catch (e) {
-                return true;
+                console.log(e);
             }
         }
-        $scope.data.fun.changeSingal = function(arg) {
+        $scope.data.fun.changeSingal = function (arg) {
             var template = {
                 json: {}
             }
             if (arg.item.connID == $scope.data.info.current.connID) return;
             angular.copy(arg.item, template.json);
             $scope.data.info.current = template.json;
+
         }
-        $scope.data.fun.confirm = function() {
+        $scope.data.fun.confirm = function () {
             if ($scope.data.info.current.bind) {
-                $uibModalInstance.close({ bind: $scope.data.info.current.bind, $index: $scope.data.info.current.$index });
+                $uibModalInstance.close({
+                    bind: $scope.data.info.current.bind,
+                    connID: $scope.data.info.current.connID
+                });
             } else {
                 $rootScope.InfoModal($filter('translate')('653'), 'error');
             }
 
         };
-        $scope.data.fun.cancel = function() {
+        $scope.data.fun.cancel = function () {
             $uibModalInstance.close(false);
         };
-        data.fun.init = (function() {
+        data.fun.init = (function () {
             angular.copy(input, $scope.data.input);
             $scope.data.info.current = $scope.data.input.query[0];
         })()

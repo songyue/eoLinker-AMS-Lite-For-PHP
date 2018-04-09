@@ -413,33 +413,29 @@
                         },
                         export: {
                             key: $filter('translate')('01214027'),
-                            class: 'default-btn',
+                            class: 'default-btn tab-first-btn',
                             icon: 'shangchuan',
-                            tips: true,
                             showable: false,
                             fun: vm.data.fun.import
                         },
                         sortDefault: {
                             key: $filter('translate')('0121401'),
-                            class: 'default-btn',
+                            class: 'default-btn tab-last-btn',
                             icon: 'paixu',
-                            tips: true,
                             showable: false,
                             fun: vm.data.fun.sort.copy
                         },
                         sortConfirm: {
                             key: $filter('translate')('0121402'),
-                            class: 'default-btn',
+                            class: 'default-btn tab-first-btn un-margin-left-btn',
                             icon: 'check',
-                            tips: true,
                             showable: true,
                             fun: vm.data.fun.sort.confirm
                         },
                         sortCancel: {
                             key: $filter('translate')('0121403'),
-                            class: 'default-btn',
+                            class: 'default-btn tab-last-btn',
                             icon: 'close',
-                            tips: true,
                             showable: true,
                             fun: vm.data.fun.sort.cancle
                         }

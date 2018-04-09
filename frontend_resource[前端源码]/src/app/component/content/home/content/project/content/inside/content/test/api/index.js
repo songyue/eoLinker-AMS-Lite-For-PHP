@@ -77,7 +77,7 @@
                 getQuery: null
             }
         }
-        vm.data.fun.bind = function(arg) {
+        vm.data.fun.bind = function(status,arg) {
             var template = {
                 modal: {
                     query: vm.data.interaction.response.singalQuery,
@@ -88,16 +88,23 @@
                     }
                 },
                 uri: {
-                    status: 'add',
+                    status: status || 'add',
                     groupID: vm.data.interaction.request.groupID,
                     childGroupID: vm.data.interaction.request.childGroupID,
-                    caseID: vm.data.interaction.request.caseID
+                    caseID: vm.data.interaction.request.caseID,
+                    connID: arg ? arg.item.connID : null
                 }
             }
-            $rootScope.ApiManagement_AutomatedTest_QiuckAddSingalModal(template.modal, function(callback) {
+            $rootScope.ApiManagement_AutomatedTest_QiuckAddSingalModal(template.modal, function (callback) {
                 if (callback) {
                     vm.data.service.cache.set(callback, 'apiInfo');
-                    console.log(callback)
+                    switch (status) {
+                        case 'insert':
+                            {
+                                template.uri.orderNumber = arg.$index;
+                                break;
+                            }
+                    }
                     $state.go('home.project.inside.test.edit', template.uri);
                 }
             })
@@ -174,7 +181,9 @@
          * @param  {object} arg    参数{item:单项列表项 Single item list}
          */
         vm.data.fun.edit = function(status, arg) {
-            arg = arg || { item: {} };
+            arg = arg || {
+                item: {}
+            };
             var template = {
                 uri: {
                     groupID: vm.data.interaction.request.groupID,
@@ -185,6 +194,13 @@
                 }
             }
             vm.data.service.cache.clear('apiInfo');
+            switch (status) {
+                case 'insert':
+                    {
+                        template.uri.orderNumber = arg.$index;
+                        break;
+                    }
+            }
             $state.go('home.project.inside.test.edit', template.uri);
         }
 

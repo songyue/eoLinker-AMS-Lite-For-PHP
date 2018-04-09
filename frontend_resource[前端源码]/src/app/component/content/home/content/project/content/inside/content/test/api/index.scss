@@ -80,7 +80,7 @@ home-project-inside-test-api {
                         min-width: 170px
                     }
                     .forth-th {
-                        width: 220px
+                        width: 280px
                     }
                     .response-td {
                         width: 200px;
@@ -93,15 +93,34 @@ home-project-inside-test-api {
                             white-space: nowrap;
                             overflow: hidden;
                             text-overflow: ellipsis;
-                            .get-label {
-                                border-radius: 3px;
-                                margin-right: 8px;
-                                font-size: 12px;
-                                display: inline-block;
-                                width: 55px;
-                                @include eo-line(20px);
-                                text-align: center;
-                                text-indent: 0;
+                            .list-function-wrap {
+                                position: absolute;
+                                cursor: default;
+                                margin-top: -15px;
+                                margin-bottom: 10px;
+                                .iconfont {
+                                    margin: 0;
+                                    cursor: pointer;
+                                }
+                                .list-function-ul {
+                                    background-color: #fff;
+                                    border: 1px solid #e7e7e7;
+                                    border-radius: 3px;
+                                    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+                                    color: #333;
+                                    .list-function-detail {
+                                        li {
+                                            padding: 0 10px;
+                                            @include eo-line(35px);
+                                            padding: 0 10px;
+                                            font-size: 13px;
+                                            cursor: pointer;
+                                            &:hover {
+                                                background-color: #f0f0f0;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                         .un-test-td {
@@ -111,33 +130,6 @@ home-project-inside-test-api {
                             @include eo-animation(load 1.7s infinite ease);
                             display: inline-block;
                             text-indent: 0;
-                        }
-                        .operate-td {
-                            button {
-                                color: #666;
-                                background: none;
-                                border: none;
-                                margin-right: 5px;
-                                .iconfont {
-                                    font-size: 14px;
-                                    color: #666;
-                                    padding: 5px;
-                                }
-                                &:hover {
-                                    color: #999;
-                                    .iconfont {
-                                        color: #999;
-                                    }
-                                }
-                                &:disabled {
-                                    color: #999;
-                                    cursor: not-allowed;
-                                    .iconfont {
-                                        color: #999;
-                                        cursor: not-allowed;
-                                    }
-                                }
-                            }
                         }
                         &:first-child {
                             td,

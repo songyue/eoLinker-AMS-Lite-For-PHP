@@ -43,12 +43,11 @@ $buttonPrimaryFocusBgColor:#009dd8;
 $buttonPrimaryFocusColor:#fff;
 $buttonPrimaryFocusBorderColor:#008dc5;
 * {
-    font-family: inherit;
     margin: 0;
     padding: 0;
     outline: none;
-    color: #333;
-    word-break: normal; //font-size: $defaultFontSize;
+    color: inherit;
+    font-family: inherit;
 }
 
 span,
@@ -77,6 +76,7 @@ body {
     min-width: $bodyWidth;
     width: 100%;
     height: 100%;
+    color:#333;
 }
 
 a,
@@ -120,7 +120,80 @@ select {
 .eo-blod {
     font-weight: bold;
 }
-
+.eo-static-hidden {
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+}
+.eo-method-label{
+    border-radius: 3px;
+    margin-right: 8px;
+    font-size: 12px;
+    display: inline-block;
+    width: 45px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    text-indent: 0;
+}
+.eo-operate-btn{
+    color: #03a9f4;
+    margin-right: 5px;
+    border:none;
+    background: none;
+    .iconfont {
+        font-size: 14px;
+        padding-right: 5px;
+    }
+    &:hover {
+        color: #1E88E5;
+    }
+    &:disabled {
+        color: #ccc;
+        cursor: not-allowed;
+        .iconfont {
+            cursor: not-allowed;
+        }
+    }
+}
+.eo-tab-container {
+    background-color: #efefef;
+    display: table;
+    border-radius: 3px 3px 0 0;
+    margin-top: 10px;
+    border: 1px solid #e5e5e5;
+    border-bottom:0;
+    margin-bottom: -1px;
+    .item-tab {
+        width: 100px;
+        text-indent: 10px;
+        display: inline-block;
+        height: 33px;
+        line-height: 33px;
+        font-size: 14px;
+        border-bottom:1px solid #e5e5e5;
+        cursor:pointer;
+        .icon-circle {
+            font-size: 12px;
+            margin-left:5px;
+            color: #2196F3;
+        }
+        &:first-child {
+            border-radius: 0 3px 0 0;
+        }
+        &:nth-last-child(n+2) {
+            border-radius: 0 3px 0 0;
+            border-right:1px solid #e5e5e5;
+        }
+        &:last-child{
+            border-radius: 3px 0 0 0;
+        }
+    }
+    .active-item {
+        background-color: #fff;
+        border-bottom:1px solid #fff;
+    }
+}
 .inline-block {
     display: inline-block;
 }
@@ -322,7 +395,7 @@ select {
     cursor: pointer;
     border-radius: 3px;
     .iconfont,span {
-        color: $color;
+        color: inherit;
     }
 }
 

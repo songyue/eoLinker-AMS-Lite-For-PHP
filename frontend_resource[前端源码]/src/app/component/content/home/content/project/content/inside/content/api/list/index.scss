@@ -10,55 +10,35 @@ home-project-inside-api-list {
                 margin-left:0;
             }
             .view-btn-li {
+                margin-left:5px;
                 >p {
-                    border: 1px solid #e5e5e5;
-                    border-radius: 3px;
-                    margin-left: 9px;
                     @include eo-line(30px);
-                    margin-top: 10px;
-                    width: 64px;
-                    overflow: hidden;
+                    margin-top: 9px;
                     a {
                         background-color: #fff;
                         @include eo-line(30px);
-                        width: 50%;
                         display: inline-block;
-                        float: left;
                         text-align: center;
+                        padding: 0 10px;
+                        font-size: 12px;
+                        border: 1px solid #e5e5e5;
+                        .iconfont{
+                            font-size: 12px;
+                            margin-right:5px;
+                        }
+                        &:nth-child(n+2){
+                            border-left:none;
+                        }
                     }
                     .view-common-btn {
-                        .tips-span {
-                            position: absolute;
-                            z-index: 3;
-                            box-shadow: 0 5px 10px #ddd;
-                            padding: 0 10px;
-                            white-space: nowrap;
-                            border-radius: 3px;
-                            text-indent: 0;
-                            background-color: #000;
-                            color: #fff;
-                            margin-left: 34px;
-                            @include eo-line(25px);
-                            font-size: 12px;
-                            display: none;
+                        float: left;
+                        &:first-child {
+                            border-radius: 3px 0 0 3px;
                         }
-                        .triangle-bottom {
-                            width: 0;
-                            height: 0;
-                            border-top: 4px solid transparent;
-                            border-right: 5px solid #000;
-                            border-bottom: 4px solid transparent;
-                            position: absolute;
-                            z-index: 3;
-                            display: none;
-                            margin-left: 30px;
-                            margin-top: 8px;
-                        }
-                        &:hover {
-                            .tips-span,
-                            .triangle-bottom {
-                                display: inline-block;
-                            }
+                        &:last-child {
+                            margin-left: 0;
+                            border-left: none;
+                            border-radius: 0 3px 3px 0;
                         }
                     }
                     .elem-active {
@@ -89,7 +69,7 @@ home-project-inside-api-list {
                         width: 36px;
                     }
                     .second-th {
-                        min-width: 200px;
+                        width: 30%;
                         .count-span {
                             color: #999;
                             font-weight: initial;
@@ -97,8 +77,7 @@ home-project-inside-api-list {
                         }
                     }
                     .third-th {
-                        min-width: 220px;
-                        //width: 35%;
+                        width: 50%;
                     }
                     .forth-th {
                         min-width: 100px;
@@ -115,6 +94,12 @@ home-project-inside-api-list {
                     .trash-sixth-th {
                         width: 175px;
                     }
+                }
+                td,th {
+                    color: #666;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
                 tbody {
                     .iconfont {
@@ -134,40 +119,7 @@ home-project-inside-api-list {
                             text-align: center;
                             text-indent: 0;
                         }
-                        td {
-                            color: #666;
-                            white-space: nowrap;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            a {
-                                color: #666;
-                                .iconfont {
-                                    font-size: 14px;
-                                    color: #666;
-                                    padding: 5px;
-                                }
-                                &:hover {
-                                    color: #999;
-                                    .iconfont {
-                                        color: #999;
-                                    }
-                                }
-                            }
-                            .home-project-pro-inside-function-delete {
-                                margin-left: 10px;
-                            }
-                            .get-label {
-                                border-radius: 3px;
-                                margin-right: 8px;
-                                font-size: 12px;
-                                display: inline-block;
-                                width: 55px;
-                                @include eo-line(20px);
-                                text-align: center;
-                                text-indent: 0;
-                                cursor: pointer;
-                            }
-                        }
+                        
                         td:nth-child(2) {
                             .icon-circle {
                                 font-size: 12px;

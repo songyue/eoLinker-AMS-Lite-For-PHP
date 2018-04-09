@@ -28,7 +28,7 @@
                 restrict: 'A',
                 transclude: true,
                 replace: true,
-                template: '<div>' + '<button class="eo-button-info " data-ng-click="test()" >' + ' <span class="iconfont icon-fasong" ng-class="{\'hidden\':send.disable}"></span> {{send.disable?data.info.stop&nbsp;+(send.countdown>0?send.countdown:""):data.info.send}}' + '</button>' + '<div class="hidden" id="plug-in-result-js"></div>' + '<div class="hidden" id="plug-in-js">{"method":{{detail.baseInfo.type}},"requestInfo":{{message}},"env":{{envParam}},"formDataToJson":{"checkbox":{{json.checkbox}},"raw":{{message.params|paramLevelToJsonFilter}}},"auth":{{auth}}}</div>' + '</div>',
+                template: '<div>' + '<button class="eo-button-info " data-ng-click="test()" >' + ' <span class="iconfont icon-fasong" ng-class="{\'hidden\':send.disable}"></span> {{send.disable?data.info.stop&nbsp;+(send.countdown>0?send.countdown:""):data.info.send}}' + '</button>' + '<div class="hidden" id="plug-in-result-js"></div>' + '<div class="hidden" id="plug-in-js">{"method":{{detail.baseInfo.type}},"requestInfo":{{message}},"env":{{envParam}},"formDataToJson":{"checkbox":{{json.checkbox}},"raw":{{message.params|paramLevelToJsonFilter}}},"auth":{{auth}},"script":{{script}}}</div>' + '</div>',
                 scope: {
                     version: '@',
                     auth: '=',
@@ -41,7 +41,8 @@
                     info: '=',
                     isPlug: '=',
                     envParam: '=',
-                    addHistory: '&'
+                    addHistory: '&',
+                    script:'<'
                 },
                 link: function($scope, elem, attrs, ctrl) {
                     var countdown = null;

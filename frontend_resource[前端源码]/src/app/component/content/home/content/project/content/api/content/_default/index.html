@@ -38,8 +38,8 @@
                     <td>{{item.projectUpdateTime}}</td>
                     <td>
                         <div ng-if="item.userType<=1">
-                            <a class="home-function-delete" data-ng-click="$ctrl.data.fun.edit({item:item,$index:$index,$event:$event})"><span class="iconfont icon-bianji"></span>{{'01209'|translate}}</a>
-                            <a class="home-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,$event:$event})" ng-if="item.userType==0"><span class="iconfont icon-shanchu"></span>{{'012011'|translate}}</a>
+                            <a class="eo-operate-btn" data-ng-click="$ctrl.data.fun.edit({item:item,$index:$index,$event:$event})"><span class="iconfont icon-bianji"></span>{{'01209'|translate}}</a>
+                            <a class="eo-operate-btn" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,$event:$event})" ng-if="item.userType==0"><span class="iconfont icon-shanchu"></span>{{'012011'|translate}}</a>
                         </div>
                     </td>
                 </tr>

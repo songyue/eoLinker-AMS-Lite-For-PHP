@@ -13,7 +13,8 @@
             $stateProvider
                 .state('home.project.inside.api', {
                     url: '/api',
-                    template: '<home-project-inside-api power-object="$ctrl.data.info.powerObject"></home-project-inside-api>'
+                    template: '<home-project-inside-api power-object="$ctrl.data.info.powerObject"></home-project-inside-api>',
+                    resolve: helper.resolveFor( 'ACE_EDITOR')
                 });
         }])
         .component('homeProjectInsideApi', {

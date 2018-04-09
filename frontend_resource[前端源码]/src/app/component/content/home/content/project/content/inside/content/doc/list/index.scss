@@ -59,23 +59,6 @@ home-project-inside-doc-list {
                             white-space: nowrap;
                             overflow: hidden;
                             text-overflow: ellipsis;
-                            a {
-                                color: #666;
-                                .iconfont {
-                                    font-size: 14px;
-                                    color: #666;
-                                    padding: 5px;
-                                }
-                                &:hover {
-                                    color: #999;
-                                    .iconfont {
-                                        color: #999;
-                                    }
-                                }
-                            }
-                            .home-project-pro-inside-function-delete {
-                                margin-left: 10px;
-                            }
                         }
                         &:hover {
                             background: #f0f0f0;

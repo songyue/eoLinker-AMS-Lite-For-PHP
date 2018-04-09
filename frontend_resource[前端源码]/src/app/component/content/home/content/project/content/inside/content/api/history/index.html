@@ -56,8 +56,7 @@
                     </th>
                     <th class="third-th">{{'012100061'|translate}}</th>
                     <th class="forth-th">{{'012100062'|translate}}</th>
-                    <th class="fifth-th" ng-if="$ctrl.powerObject.edit">
-                        <!--edit权限-->{{'012100063'|translate}}</th>
+                    <th class="fifth-th" ng-if="$ctrl.powerObject.readWrite"> {{'012100063'|translate}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -76,8 +75,8 @@
                     </td>
                     <td class="fifth-th" ng-if="$ctrl.powerObject.readWrite">
                         <!--edit权限-->
-                        <a class="home-project-inside-function-edit" data-ng-click="$ctrl.data.fun.toggleHistory({item:item})" ng-class="{'hidden':item.isNow==1}"><span class="iconfont icon-shuaxin"></span>{{'012100064'|translate}}</a>
-                        <a class="home-project-inside-function-delete" data-ng-click="$ctrl.data.fun.deleteHistory({item:item,$index:$index})" ng-class="{'hidden':item.isNow==1}"><span class="iconfont icon-shanchu"></span>{{'012100065'|translate}}</a>
+                        <a class="eo-operate-btn" data-ng-click="$ctrl.data.fun.toggleHistory({item:item})" ng-class="{'hidden':item.isNow==1}"><span class="iconfont icon-shuaxin"></span>{{'012100064'|translate}}</a>
+                        <a class="eo-operate-btn" data-ng-click="$ctrl.data.fun.deleteHistory({item:item,$index:$index})" ng-class="{'hidden':item.isNow==1}"><span class="iconfont icon-shanchu"></span>{{'012100065'|translate}}</a>
                     </td>
                 </tr>
             </tbody>

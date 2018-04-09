@@ -1,6 +1,6 @@
-(function() {
+(function () {
     'use strict';
-     /**
+    /**
      * @Author   广州银云信息科技有限公司 eolinker
      * @function [json层级预处理指令] [json level preprocessing directive]
      * @version  3.1.9
@@ -8,7 +8,7 @@
      */
     angular.module('eolinker')
 
-        .directive('levelInitDirective', ['$compile', function($compile) {
+        .directive('levelInitDirective', ['$compile', function ($compile) {
             return {
                 restrict: 'A',
                 replace: true,
@@ -17,7 +17,7 @@
                     limitLevel: '<',
                     status: '@'
                 },
-                link: function($scope, elem, attrs, ctrl) {
+                link: function ($scope, elem, attrs, ctrl) {
                     var data = {
                         fun: {
                             init: null,
@@ -29,16 +29,18 @@
                     /**
                      * @function [自启动初始化功能函数] [Self-start initialization function]
                      */
-                    data.fun.init = (function() {
+                    data.fun.init = (function () {
                         var template = {
                             level: {
                                 parent: $scope.level || '',
                                 default: ($scope.level || 0) + 1,
-                                limit:$scope.limitLevel||5
+                                limit: $scope.limitLevel || 5
                             },
                             html: ''
                         }
-                        if(template.level.default>template.level.limit){return;}
+                        if (template.level.default > template.level.limit) {
+                            return;
+                        }
                         switch (attrs.status) {
                             case 'automatedTest_jsonMatch':
                                 {
@@ -73,9 +75,14 @@
                                 }
                             case 'automatedTest_bindRule':
                                 {
+                                    template.level.argumentString = 'item '
+                                    for (var key = 1; key <= template.level.default; key++) {
+                                        template.level.argumentString += ', item' + key + ' ';
+                                    }
+
                                     template.html = '<ul>' +
-                                    '<li ng-repeat="item' + template.level.default+' in item' + template.level.parent + '.childList |filter:data.fun.filter" level-init-directive level=' + template.level.default+' limit-level=' + $scope.limitLevel + ' status=' + attrs.status + ' ng-class="{\'elem-active\':data.info.current.bind==(item' + template.level.default+'.parent+item' + template.level.default+'.paramKey)}" >' +
-                                    '<p ng-click="data.info.current.bind=(item' + template.level.default+'.parent+item' + template.level.default+'.paramKey)"><span class="iconfont icon-xiangyou" style="font-size: 12px;color:#' + template.level.default+'0d' + template.level.default+'d4;margin-left:' + (template.level.default * 10) + 'px; " ></span>' +
+                                    '<li ng-repeat="item' + template.level.default+' in item' + template.level.parent + '.childList |filter:data.fun.filter" level-init-directive level=' + template.level.default+' limit-level=' + $scope.limitLevel + ' status=' + attrs.status + ' ng-class="{\'elem-active\':data.info.current.activeArray[' + template.level.default+']==(item' + template.level.default+'.parent+item' + template.level.default+'.paramKey)}" >' +
+                                    '<p ng-click="data.fun.click(' + template.level.argumentString + ')"><span class="iconfont icon-xiangyou" style="font-size: 12px;color:#' + template.level.default+'0d' + template.level.default+'d4;margin-left:' + (template.level.default * 10) + 'px; " ></span>' +
                                     '{{item' + template.level.default+'.paramKey}}</p>' +
                                     '</li>' +
                                     '</ul>'

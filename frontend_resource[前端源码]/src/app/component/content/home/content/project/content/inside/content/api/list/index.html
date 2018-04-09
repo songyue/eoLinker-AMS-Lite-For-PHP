@@ -51,11 +51,11 @@
             <li class="view-btn-li pull-right ">
                 <p>
                     <a class="view-common-btn" ng-class="{'elem-active':$ctrl.data.info.more==1}" ng-click="$ctrl.data.fun.setMore({switch:1})">
-                        <span class="tips-span">{{'01210027'|translate}}</span><span class="pull-left triangle-bottom"></span>
-                        <span class="iconfont icon-sort"></span></a>
+                        <span class="iconfont icon-sort"></span>{{'01210027'|translate}}
+                        </a>
                     <a class="view-common-btn" ng-class="{'elem-active':$ctrl.data.info.more==2}" ng-click="$ctrl.data.fun.setMore({switch:2})">
-                        <span class="tips-span">{{'01210028'|translate}}</span><span class="pull-left triangle-bottom"></span>
-                        <span class="iconfont icon-more"></span>
+                        <span class="iconfont icon-more"></span>{{'01210028'|translate}}
+                        
                     </a>
                 </p>
             </li>
@@ -105,7 +105,7 @@
                         {{item.apiName}}
                     </td>
                     <td class="third-th">
-                        <span class="get-label" ng-class="{'eo-color-success':item.apiRequestType==0,'eo-color-default':item.apiRequestType==1,'eo-color-others':item.apiRequestType==2,'eo-color-warning':item.apiRequestType==6,'eo-color-danger':item.apiRequestType==3,'eo-color-info':item.apiRequestType==4,'eo-color-options':item.apiRequestType==5}">
+                        <span class="eo-method-label" ng-class="{'eo-color-success':item.apiRequestType==0,'eo-color-default':item.apiRequestType==1,'eo-color-others':item.apiRequestType==2,'eo-color-warning':item.apiRequestType==6,'eo-color-danger':item.apiRequestType==3,'eo-color-info':item.apiRequestType==4,'eo-color-options':item.apiRequestType==5}">
                         {{item.apiRequestType==0?'POST':item.apiRequestType==1?'GET':item.apiRequestType==2?'PUT':item.apiRequestType==3?'DELETE':item.apiRequestType==4?'HEAD':item.apiRequestType==5?'OPTS':'PATCH'}}
                         </span> {{$ctrl.data.service.home.envObject.object.fun(item.apiURI)}}
                     </td>
@@ -115,13 +115,13 @@
                     <td class="fifth-th" ng-show="$ctrl.data.info.more==1">{{$ctrl.data.interaction.request.groupID>-2?item.apiUpdateTime:item.removeTime}}</td>
                     <td class="sixth-th" ng-class="{'hidden':$ctrl.data.interaction.request.groupID==-2}" ng-if="$ctrl.powerObject.readWrite">
                         <!--readWrite权限-->
-                        <a class="home-project-inside-function-edit" data-ng-click="$ctrl.data.fun.edit({item:item,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-bianji" ></span>{{'012100219'|translate}}</a>
-                        <a class="home-project-inside-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,switch:0,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-shanchu"></span>{{'012100220'|translate}}</a>
+                        <a class="eo-operate-btn" data-ng-click="$ctrl.data.fun.edit({item:item,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-bianji" ></span>{{'012100219'|translate}}</a>
+                        <a class="eo-operate-btn" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,switch:0,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-shanchu"></span>{{'012100220'|translate}}</a>
                     </td>
                     <td ng-class="{'hidden':$ctrl.data.interaction.request.groupID>-2}" ng-if="$ctrl.powerObject.readWrite">
                         <!--readWrite权限-->
-                        <a class="home-project-inside-function-edit" data-ng-click="$ctrl.data.fun.recover({item:item,$index:$index,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-shuaxin" ></span>{{'012100221'|translate}}</a>
-                        <a class="home-project-inside-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,switch:1,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-close"></span>{{'012100222'|translate}}</a>
+                        <a class="eo-operate-btn" data-ng-click="$ctrl.data.fun.recover({item:item,$index:$index,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-shuaxin" ></span>{{'012100221'|translate}}</a>
+                        <a class="eo-operate-btn" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,switch:1,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-close"></span>{{'012100222'|translate}}</a>
                     </td>
                 </tr>
             </tbody>

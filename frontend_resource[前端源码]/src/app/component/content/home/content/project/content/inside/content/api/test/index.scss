@@ -1,151 +1,4 @@
 home-project-inside-api-test {
-    %API-TEST-NUMBER-STYLE {
-        width: 25px;
-        @include eo-line(25px);
-        border-radius: 3px;
-        background-color: #f2f2f2;
-        color: #9e9e9e;
-        display: inline-block;
-        text-align: center;
-        border: 1px solid #e5e5e5;
-    }
-    %API-TEST-TIPS-STYLE {
-        position: absolute;
-        display: none;
-        @include eo-line(30px);
-        padding: 0 10px;
-        margin-top: -40px;
-        font-weight: initial;
-        box-shadow: 0 6px 15px rgba(67, 160, 71, 0.18);
-        font-size: 12px;
-        .triangle-li {
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-top: 10px solid #4CAF50;
-            border-right: 8px solid transparent;
-            position: absolute;
-        }
-    }
-    %API-TEST-TABLE-STYLE {
-        width: 100%;
-        border-spacing: 0;
-        table-layout: fixed;
-        td,
-        th {
-            font-size: 14px;
-            height: 40px;
-            line-height: 20px;
-            padding-left: 10px;
-            cursor: default;
-        }
-        .num-td {
-            width: 30px;
-        }
-        thead {
-            background-color: #fafafa;
-        }
-        tbody {
-            .number-label {
-                @extend %API-TEST-NUMBER-STYLE;
-            }
-            .icon-shanchu {
-                &:hover {
-                    background-color: #D32F2F;
-                    color: #fff;
-                    border: 1px solid #C62828;
-                }
-            }
-            .radio-input {
-                border: 1px solid #e5e5e5;
-                @include eo-line(23px);
-                width: 23px;
-                font-size: 13px;
-                margin-right: 4px;
-                cursor: pointer;
-                display: inline-block;
-                text-align: center;
-                border-radius: 3px;
-            }
-            tr {
-                td {
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    height: 50px;
-                }
-                &:nth-last-child(n+2) {
-                    td,
-                    th {
-                        border-bottom: 1px dashed #e5e5e5;
-                    }
-                }
-                &:first-child {
-                    td,
-                    th {
-                        border-top: 1px solid #e5e5e5;
-                    }
-                }
-            }
-        }
-    }
-    %API-TEST-HEADER-NAV-STYLE {
-        padding: 10px 10px 12px 10px;
-        @include eo-line(30px, 29px);
-        border-top: 1px solid #e5e5e5; 
-        .icon-magic {
-            color: $buttonInfoFocusBgColor;
-            padding: 0;
-            padding-right: 5px;
-            font-size: 13px;
-        }
-        .send-format {
-            color: $buttonInfoFocusBgColor;
-            text-align: center;
-            font-size: 14px;
-            @include eo-line(30px);
-            border: 1px solid #bcdffb;
-            width: 100px;
-            background-color: #e3f7ff;
-            &:hover {
-                background-color: $buttonInfoFocusBgColor;
-                color: #fff;
-                * {
-                    color: #fff;
-                }
-            }
-        }
-        .test-nav-li {
-            text-align: center;
-            min-width: 80px;
-            padding: 0 10px;
-            font-weight: initial;
-            font-size: 14px;
-            @include eo-line(28px);
-            background-color: #edf7ee;
-            cursor: pointer;
-            color: $buttonSuccessBorderColor;
-            border: 1px solid #b2d8b6;
-            &:hover {
-                background-color: $buttonSuccessBgColor;
-                border-color: $buttonSuccessFocusBgColor;
-                color: #fff;
-            }
-        }
-        .success-li {
-            border-radius: 3px 0 0 3px;
-            border-right: none;
-        }
-        .failure-li {
-            border-radius: 0 3px 3px 0;
-            margin-right: 5px;
-        }
-        .active {
-            background-color: $buttonSuccessFocusBgColor;
-            border-color: $buttonSuccessFocusBgColor;
-            color: #fff;
-        }
-    }
     .home-project-inside-test {
         z-index: 0;
         header {
@@ -162,18 +15,14 @@ home-project-inside-api-test {
         .first-level-article {
             padding: 0 10px 0;
             margin-top: 10px;
-            .spreed-btn{
-                font-size:12px;
-                .iconfont{
-                    font-size:12px;
-                    margin-right:5px;
-                }
-                &:hover{
-                    color: #25aae2;
-                    .iconfont{
-                        color: #25aae2;
-                    }
-                }
+            .tips-span{
+                color:red;
+                font-size: 12px;
+            }
+            .first-part {
+                background-color: #fff;
+                border: 1px solid #e5e5e5;
+                border-radius: 3px;
             }
             .tips-ul {
                 padding: 0 10px;
@@ -206,78 +55,227 @@ home-project-inside-api-test {
                     color: #4caf50;
                 }
             }
-            .transparent-a {
-                opacity: 0;
-                cursor: text;
-                z-index: -1px;
-                left: 100px;
-            }
-            .first-part,
-            .part {
-                background-color: #fff;
-                margin-top: 10px;
-                border: 1px solid #e5e5e5;
-                border-radius: 3px;
-            }
             .item-part {
                 border: 1px solid #e5e5e5;
-                margin-top: 10px;
                 border-radius: 3px;
                 background-color: #fff;
                 .eo-input {
-                    @include eo-line(28px);
+                    @include eo-line(30px);
                 }
                 .title-p {
                     @include eo-line(40px);
-                    padding:0 10px;
+                    padding: 0 10px;
+                    cursor: pointer;
                     b {
                         font-size: 14px;
-                        color: $buttonSuccessBgColor;
+                        color: #555;
+                    }
+                    .spreed-btn {
+                        font-size: 12px;
+                        .iconfont {
+                            font-size: 12px;
+                            margin-right: 5px;
+                        }
+                    }
+                    &:hover {
+                        .spreed-btn {
+                            color: #25aae2;
+                            .iconfont {
+                                color: #25aae2;
+                            }
+                        }
                     }
                 }
-                .icon-index-magicwand {
-                    position: absolute;
-                    border-radius: 0 3px 3px 0;
-                    background-color: $buttonDefaultBgColor;
-                    border-right: 1px solid #ddd;
-                    margin-left: -35px;
-                    @include eo-line(28px, 30px);
-                    margin-top: 1px;
-                    padding: 0 9px;
+                header {
+                    padding: 10px 10px 12px 10px;
+                    @include eo-line(30px, 29px);
+                    .send-format {
+                        color: $buttonInfoFocusBgColor;
+                        text-align: center;
+                        font-size: 14px;
+                        @include eo-line(30px);
+                        border: 1px solid #bcdffb;
+                        padding:0 10px;
+                        background-color: #e3f7ff;
+                        margin-right: 5px;
+                        .iconfont {
+                            padding: 0;
+                            padding-right: 5px;
+                            font-size: 13px;
+                        }
+                        &:hover {
+                            background-color: $buttonInfoFocusBgColor;
+                            color: #fff;
+                        }
+                    }
+                    .test-nav-li {
+                        text-align: center;
+                        min-width: 80px;
+                        padding: 0 10px;
+                        font-weight: initial;
+                        font-size: 14px;
+                        @include eo-line(28px);
+                        background-color: #edf7ee;
+                        cursor: pointer;
+                        color: $buttonSuccessBorderColor;
+                        border: 1px solid #b2d8b6;
+                        &:hover {
+                            background-color: $buttonSuccessBgColor;
+                            border-color: $buttonSuccessFocusBgColor;
+                            color: #fff;
+                        }
+                        &:first-child{
+                            border-radius: 3px 0 0 3px;
+                        }
+                        &:nth-child(n+2){
+                            border-left:none;
+                        }
+                    }
+                    .failure-li{
+                        border-radius: 0 3px 3px 0;
+                        margin-right: 5px;
+                    }
+                    .active {
+                        background-color: $buttonSuccessFocusBgColor;
+                        border-color: $buttonSuccessFocusBgColor;
+                        color: #fff;
+                    }
                 }
+                .common-table {
+                    width: 100%;
+                    border-spacing: 0;
+                    table-layout: fixed;
+                    td {
+                        font-size: 14px;
+                        height: 40px;
+                        line-height: 20px;
+                        cursor: default;
+                        .eo-input {
+                            border: none;
+                            width: 100%;
+                            border-radius: 0;
+                            @include eo-line(40px);
+                        }
+                        &:nth-child(n+2) {
+                            border-left: 1px dashed #e5e5e5;
+                        }
+                        .auto-complete-message {
+                            line-height: 20px;
+                            text-indent: 10px;
+                            font-size: 12px;
+                            margin-left: -1px;
+                        }
+                    }
+                    .required-td {
+                        width: 40px;
+                        text-align: center;
+                        text-indent: 0;
+                        label {
+                            margin-right: 0;
+                        }
+                    }
+                    .operation-td {
+                        text-indent: 0;
+                        padding-left: 10px;
+                    }
+                    thead {
+                        background-color: #fafafa;
+                        td {
+                            text-indent: 10px;
+                        }
+                    }
+                    tbody {
+                        .number-label {
+                            height: 25px;
+                            line-height: 25px;
+                            border-radius: 3px;
+                            background-color: #f2f2f2;
+                            color: #9e9e9e;
+                            display: inline-block;
+                            text-align: center;
+                            border: 1px solid #e5e5e5;
+                            padding: 0 5px;
+                            font-size: 12px;
+                        }
+                        .icon-shanchu {
+                            &:hover {
+                                background-color: #D32F2F;
+                                color: #fff;
+                                border: 1px solid #C62828;
+                            }
+                        }
+                        .icon-index-magicwand {
+                            &:hover {
+                                background-color: #e5e5e5;
+                            }
+                        }
+                        .radio-input {
+                            border: 1px solid #e5e5e5;
+                            @include eo-line(23px);
+                            width: 23px;
+                            font-size: 13px;
+                            margin-right: 4px;
+                            cursor: pointer;
+                            display: inline-block;
+                            text-align: center;
+                            border-radius: 3px;
+                        }
+                        tr {
+                            td {
+                                overflow: hidden;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                                height: 40px;
+                            }
+                            &:nth-last-child(n+2) {
+                                td {
+                                    border-bottom: 1px dashed #e5e5e5;
+                                }
+                            }
+                            &:first-child {
+                                td {
+                                    border-top: 1px solid #e5e5e5;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .eo-static-hidden {
+                border:none;
             }
             .first-part {
                 height: 32px;
                 padding: 10px;
-                li {
-                    @include eo-line(30px);
+                margin-top: 10px;
+                .api-message-send>li {
+                    @include eo-line(30px,28px);
                 }
                 .http-header-li {
-                    width: 116px;
+                    width: 100px;
                     line-height: 28px;
+                    select {
+                        border-right: none;
+                        border-radius: 3px 0 0 3px;
+                    }
                 }
                 .method-li {
                     line-height: 28px;
+                    select {
+                        border-right: none;
+                        border-radius: 3px 0 0 3px;
+                    }
                 }
                 .uri-input-li {
                     display: inline;
                     input {
                         @include eo-line(28px);
-                        @include eo-width(100%, 368px);
+                        @include eo-width(100%, 250px);
                         padding-right: 40px;
-                    }
-                    .icon-index-magicwand {
-                        position: absolute;
-                        border-radius: 0 3px 3px 0;
-                        background-color: $buttonDefaultBgColor;
-                        border-right: 1px solid #ddd;
-                        margin-left: -35px;
-                        @include eo-line(28px, 30px);
                         margin-top: 1px;
-                        padding: 0 9px;
+                        border-radius: 0 3px 3px 0;
                     }
                 }
-
                 select,
                 button {
                     width: 100px;
@@ -285,20 +283,8 @@ home-project-inside-api-test {
                     @include eo-line(30px);
                     padding: 0 5px;
                 }
-                .send-btn {
-                    width: 100px;
-                    margin-left: 5px;
-                }
             }
             .part {
-                .title-p {
-                    @include eo-line(40px);
-                    padding:0 10px;
-                    b {
-                        font-size: 14px;
-                        color: $buttonSuccessBgColor;
-                    }
-                }
                 article {
                     font-size: 14px;
                     padding: 0 10px;
@@ -306,37 +292,31 @@ home-project-inside-api-test {
                         border-bottom: 1px dotted #e5e5e5;
                         padding-bottom: 10px;
                         margin-top: 10px;
+                        &:last-child {
+                            margin-bottom: 10px;
+                        }
                     }
                     .nessarity {
-                        label,
-                        .iconfont {
+                        span {
                             width: 25px;
-                            @include eo-line(25px);
+                            @include eo-line(25px,27px);
                             display: inline-block;
                             text-align: center;
                             border-radius: 0;
                             border-radius: 3px;
                         }
-                        .iconfont {
-                            @include eo-line(23px);
-                        }
                         .icon-shanchu {
                             width: 23px;
-                        }
-                        .checkbox {
-                            border: 1px solid #e5e5e5;
                             @include eo-line(23px);
-                            width: 23px;
-                            font-size: 13px;
-                            margin-right: 4px;
-                            cursor: pointer;
+                            display: inline-block;
+                            text-align: center;
+                            border-radius: 3px;
+                            margin-right:5px;
                         }
                         .number {
                             background-color: #f2f2f2;
                             color: #a3a3a3;
-                        }
-                        select {
-                            margin-left: 6px;
+                            margin-right:5px;
                         }
                     }
                     .param-info {
@@ -348,87 +328,54 @@ home-project-inside-api-test {
                         }
                     }
                 }
-                footer,
-                .footer {
-                    margin-top: 5px;
-                    .add-param-btn {
-                        width: 60px;
-                        @include eo-line(30px);
-                        display: inline-block;
-                        text-align: center;
-                        .iconfont {
-                            color: #fff;
-                            font-size: 14px;
-                            margin-left: 2px;
-                        }
-                    }
-                }
             }
             .request-header-part {
                 header {
-                    @extend %API-TEST-HEADER-NAV-STYLE;
                     border-bottom: 1px solid #e5e5e5;
-                    .icon-circle{
-                        font-size:12px;
-                        color:#a2e602;
-                    }
-                }
-                .basic-auth-article {
-                    padding-bottom:10px;
-                    label {
-                        font-size: 14px;
-                        width: 80px;
-                        display: inline-block;
-                        text-indent:10px;
-                        font-weight:bold;
-                    }
-                    .select-p {
-                        line-height: 65px;
-                        border-bottom: 1px solid #e5e5e5;
-                        margin-bottom: 20px;
-                        select{
-                            text-indent:0;
-                        }
-                    }
-                    .common-p{
-                        padding-bottom:10px;
-                    }
                 }
                 table {
-                    @extend %API-TEST-TABLE-STYLE;
                     .request-header-label {
                         width: 300px;
                     }
                     .operation-td {
-                        width: 50px;
+                        width: 100px;
                     }
                     tbody {
-                        .eo-input {
-                            @include eo-width(100%, 12px);
-                            padding-right: 10px;
-                        }
                         .label-td {
                             .icon-xiangxia {
                                 position: absolute;
                                 margin-left: -26px;
                                 display: inline-block;
-                                height: 35px;
-                                line-height: 35px;
-                            }
-                            .auto-complete-message {
-                                line-height: 20px;
-                                width: 298px;
-                                border-top: none;
-                                text-indent: 10px;
-                                font-size: 12px;
+                                height: 40px;
+                                line-height: 45px;
                             }
                         }
+                    }
+                }
+                .basic-auth-article {
+                    padding-bottom: 10px;
+                    label {
+                        font-size: 14px;
+                        width: 80px;
+                        display: inline-block;
+                        text-indent: 10px;
+                        font-weight: bold;
+                    }
+                    .select-p {
+                        line-height: 65px;
+                        border-bottom: 1px solid #e5e5e5;
+                        margin-bottom: 20px;
+                        select {
+                            text-indent: 0;
+                        }
+                    }
+                    .common-p {
+                        padding-bottom: 10px;
                     }
                 }
             }
             .request-param-part {
                 header {
-                    @extend %API-TEST-HEADER-NAV-STYLE;
                     border-bottom: 1px solid #e5e5e5;
                     .form-to-json-btn {
                         text-align: center;
@@ -446,60 +393,8 @@ home-project-inside-api-test {
                         }
                     }
                 }
-                table {
-                    @extend %API-TEST-TABLE-STYLE;
-                    .request-param-label {
-                        width: 30px;
-                    }
-                    .type-td {
-                        width: 130px;
-                        select {
-                            text-indent: 0;
-                        }
-                    }
-                    .name-td {
-                        width: 300px;
-                    }
-                    .operation-td {
-                        width: 50px;
-                    }
-                    tbody {
-                        .eo-input {
-                            @include eo-width(100%, 12px);
-                            padding-right: 10px;
-                        }
-                        .request-type-select {
-                            @include eo-width(100%, 2px);
-                        }
-                        .file-btn {
-                            display: none;
-                        }
-                        .file-btn-label {
-                            @include eo-line(28px, 30px);
-                            display: inline-block;
-                            padding: 0 10px;
-                            margin-left: -78px;
-                        }
-                        .label-td {
-                            .icon-xiangxia {
-                                position: absolute;
-                                margin-left: -26px;
-                                display: inline-block;
-                                height: 35px;
-                                line-height: 35px;
-                            }
-                            .auto-complete-message {
-                                line-height: 20px;
-                                @include eo-width(100%, 944px);
-                                border-top: none;
-                                text-indent: 10px;
-                                font-size: 12px;
-                            }
-                        }
-                    }
-                }
                 .back-result-content {
-                    min-height: 230px;
+                    min-height: 130px;
                     max-height: 500px;
                     overflow: auto;
                     border: 1px solid #e5e5e5;
@@ -513,78 +408,66 @@ home-project-inside-api-test {
                     word-break: break-all;
                     white-space: pre-wrap;
                 }
+                table {
+                    .type-td {
+                        width: 130px;
+                        select {
+                            text-indent: 0;
+                        }
+                    }
+                    .name-td {
+                        width: 300px;
+                    }
+                    .operation-td {
+                        width: 100px;
+                    }
+                    tbody {
+                        .request-type-select {
+                            @include eo-width(100%, 2px);
+                        }
+                        .file-btn {
+                            display: none;
+                        }
+                        .file-btn-label {
+                            height: 38px;
+                            line-height: 40px;
+                            display: inline-block;
+                            padding: 0 10px;
+                            margin-left: -78px;
+                            border-radius: 0;
+                        }
+                        .label-td {
+                            .icon-xiangxia {
+                                position: absolute;
+                                margin-left: -26px;
+                                display: inline-block;
+                                height: 35px;
+                                line-height: 35px;
+                            }
+                        }
+                    }
+                }
+                .ace-div {
+                    margin-top: 10px;
+                }
+                .eo-static-hidden {
+                    margin-top:0;
+                }
             }
             .response-example-part {
                 margin-bottom: 10px;
                 header {
-                    padding: 10px;
-                    @include eo-line(30px);
-                    border-top:1px solid #e5e5e5;
-                    .iconfont {
-                        color: $buttonInfoFocusBgColor;
-                        padding: 0;
-                        padding-right: 5px;
-                        font-size: 13px;
-                    }
                     .copy-opacity-btn {
                         overflow: hidden;
                         position: absolute;
                         margin-top: 6px;
                         opacity: 0;
                     }
-                    .send-format {
-                        color: $buttonInfoFocusBgColor;
-                        text-align: center;
-                        font-size: 14px;
-                        margin-left: 5px;
-                        @include eo-line(30px);
-                        border: 1px solid #bcdffb;
-                        width: 100px;
-                        background-color: #e3f7ff;
-                        &:hover {
-                            background-color: $buttonInfoFocusBgColor;
-                            color: #fff;
-                            * {
-                                color: #fff;
-                            }
-                        }
-                    }
-                    .test-nav-li {
-                        text-align: center;
-                        width: 80px;
-                        font-weight: initial;
-                        font-size: 14px;
-                        @include eo-line(28px);
-                        background-color: #edf7ee;
-                        cursor: pointer;
-                        color: $buttonSuccessBorderColor;
-                        border: 1px solid #b2d8b6;
-                        &:hover {
-                            background-color: $buttonSuccessBgColor;
-                            border-color: $buttonSuccessFocusBgColor;
-                            color: #fff;
-                        }
-                    }
-                    .success-li {
-                        border-radius: 3px 0 0 3px;
-                        border-right: none;
-                    }
-                    .failure-li {
-                        border-radius: 0 3px 3px 0;
-                        border-left: none;
-                    }
-                    .active {
-                        background-color: $buttonSuccessFocusBgColor;
-                        color: #fff;
-                        border-color: $buttonSuccessFocusBgColor;
-                    }
                 }
                 article {
                     min-height: 137px;
-                    line-height: 0;
                     .test-header-ul {
                         padding: 15px;
-                        border-top: 1px solid #e5e5e5;
                         li {
                             font-size: 14px;
                             line-height: 30px;
@@ -650,20 +533,21 @@ home-project-inside-api-test {
                         word-break: break-all;
                         white-space: pre-wrap;
                     }
-                    .null-tip-span {
-                        font-size: 26px;
-                        width: 100%;
-                        display: block;
-                        text-align: center;
-                        line-height: 140px;
-                        color: #ccc;
+                    
+                }
+                .request-body-div{
+                    font-size: 14px;
+                    padding:10px;
+                }
+                .result-item-li{
+                    span{
+                        display: table-cell;
                     }
                 }
             }
             .test-history-part {
                 margin-bottom: 10px;
                 header {
-                    @extend %API-TEST-HEADER-NAV-STYLE;
                     border-bottom: 1px solid #e5e5e5;
                     .clear-btn {
                         color: $buttonDangerBgColor;
@@ -756,25 +640,13 @@ home-project-inside-api-test {
                     }
                 }
             }
-        }
-    }
-}
-
-home-project-inside {
-    .shrink-inside-div {
-        home-project-inside-api-test {
-            .home-project-inside-test {
-                .first-level-article {
-                    table {
-                        tbody {
-                            .label-td {
-                                .auto-complete-message {
-                                    @include eo-width(100%, 819px);
-                                }
-                            }
-                        }
-                    }
-                }
+            .null-tip-span {
+                font-size: 26px;
+                width: 100%;
+                display: block;
+                text-align: center;
+                line-height: 140px;
+                color: #ccc;
             }
         }
     }

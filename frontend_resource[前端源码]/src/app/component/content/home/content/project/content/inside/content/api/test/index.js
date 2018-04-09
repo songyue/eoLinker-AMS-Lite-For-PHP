@@ -43,6 +43,7 @@
                 requestHeader: HTTP_CONSTANT.REQUEST_HEADER
             },
             info: {
+                menuType:'body',
                 template: {
                     envModel: []
                 },
@@ -72,16 +73,11 @@
                         password: ''
                     }
                 },
-                spreed: {
-                    header: true,
-                    request: true,
-                    response: true,
-                    history: true
-                },
                 filter: {
                     shrink: $filter('translate')('012100010'),
                     open: $filter('translate')('012100011'),
-                }
+                },
+                script:{},
             },
             interaction: {
                 request: {
@@ -135,7 +131,9 @@
                     requestInfo: JSON.stringify(arg.history.requestInfo),
                     resultInfo: JSON.stringify(arg.history.resultInfo),
                     // testTime: arg.history.testTime,
-                    apiID:vm.data.interaction.request.apiID
+                    apiID:vm.data.interaction.request.apiID,
+                    beforeInject: vm.data.info.script.before,
+                    afterInject: vm.data.info.script.after
                 }
             }
             ApiManagementResource.Test.AddHistory(template.request).$promise.then(function(response) {
@@ -318,6 +316,11 @@
                 httpCodeType: arg.item.httpCodeType,
                 hadTest: true
             };
+            vm.data.info.script={
+                type:'0',
+                before:arg.item.beforeInject,
+                after:arg.item.afterInject
+            }
             angular.forEach(arg.item.requestInfo.headers, function(val, key) {
                 info = {
                     headerName: val.name,
@@ -354,17 +357,6 @@
                 basicAuth: {
                     username: '',
                     password: ''
-                }
-            }
-        }
-
-        /**
-         * @function [测试请求方式更改功能函数] [Test request changes]
-         */
-        vm.data.fun.changeType = function() {
-            vm.data.fun.changeType = function() {
-                if (!/0|2/.test(vm.data.interaction.response.apiInfo.baseInfo.type)) {
-                    vm.data.service.home.envObject.object.model.requestType = vm.data.service.home.envObject.object.model.requestType == '1' ? '0' : vm.data.service.home.envObject.object.model.requestType;
                 }
             }
         }
@@ -476,6 +468,11 @@
         vm.data.assistantFun.init = function() {
             $scope.$emit('$WindowTitleSet', { list: [$filter('translate')('012100055') + vm.data.interaction.response.apiInfo.baseInfo.apiName, $filter('translate')('012100164'), $state.params.projectName, $filter('translate')('012100165')] });
             vm.data.interaction.response.apiInfo.testHistory = vm.data.interaction.response.apiInfo.testHistory || [];
+            vm.data.info.script = {
+                type: '0',
+                before: vm.data.interaction.response.apiInfo.baseInfo.beforeInject,
+                after: vm.data.interaction.response.apiInfo.baseInfo.afterInject
+            }
             angular.forEach(vm.data.interaction.response.apiInfo.testHistory, function(val, key) {
                 try {
                     if (val.requestInfo.constructor != Object) {

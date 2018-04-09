@@ -250,10 +250,9 @@ home-project-inside-api-detail {
                 }
             }
             .response-example-part {
-                margin-bottom: 10px;
+                margin:0 0 10px 0;
                 header {
                     padding: 10px;
-                    border-top: 1px solid #e5e5e5;
                     @include eo-line(30px);
                     .icon-magic {
                         color: $buttonInfoFocusBgColor;

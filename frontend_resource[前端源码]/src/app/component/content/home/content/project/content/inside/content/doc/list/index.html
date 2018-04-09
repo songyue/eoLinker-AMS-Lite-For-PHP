@@ -52,8 +52,8 @@
                     <td class="fifth-th">{{item.updateTime}}</td>
                     <td class="sixth-th" ng-if="$ctrl.powerObject.readWrite">
                         <!--edit权限-->
-                        <a class="home-project-inside-function-edit" data-ng-click="$ctrl.data.fun.edit({item:item,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-bianji" ></span>{{'012100098'|translate}}</a>
-                        <a class="home-project-inside-function-delete" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-shanchu"></span>{{'012100099'|translate}}</a>
+                        <a class="eo-operate-btn" data-ng-click="$ctrl.data.fun.edit({item:item,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-bianji" ></span>{{'012100098'|translate}}</a>
+                        <a class="eo-operate-btn" data-ng-click="$ctrl.data.fun.delete({item:item,$index:$index,$event:$event})" ng-if="!$ctrl.data.info.batch.disable"><span class="iconfont icon-shanchu"></span>{{'012100099'|translate}}</a>
                     </td>
                 </tr>
             </tbody>

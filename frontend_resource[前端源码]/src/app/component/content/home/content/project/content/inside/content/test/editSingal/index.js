@@ -32,6 +32,7 @@
                     caseID: $state.params.caseID,
                     connID: $state.params.connID,
                     matchTextarea: '',
+                    orderNumber:$state.params.orderNumber,
                     responseJson: []
                 },
                 response: {
@@ -66,14 +67,7 @@
                 init: null, 
             }
         }
-        /**
-         * @function [改变类型功能函数] [Change the type of function]
-         */
-        vm.data.fun.changeType = function() {
-            if (!/0|2/.test(vm.data.interaction.response.caseInfo.caseData.apiRequestType)) {
-                vm.data.interaction.response.caseInfo.caseData.requestType = vm.data.interaction.response.caseInfo.caseData.requestType == '1' ? '0' : vm.data.interaction.response.caseInfo.caseData.requestType;
-            }
-        }
+
         /**
          * @function [编辑功能函数] [edit]
          */
@@ -125,37 +119,37 @@
         vm.data.fun.bind = function(status, arg) {
             var template = {
                 modal: {
-                    query: vm.data.interaction.response.singalQuery
+                    query: []
                 }
             }
             if (vm.data.interaction.response.singalQuery.length <= 0) {
                 $rootScope.InfoModal($filter('translate')('01216236'), 'error');
                 return;
             }
-            switch (vm.data.info.status) {
-                case 'edit':
-                    {
-                        if (vm.data.interaction.response.singalQuery[0].connID >= parseInt(vm.data.interaction.request.connID)) {
-                            $rootScope.InfoModal($filter('translate')('01216236'), 'error');
-                            return;
-                        } else {
-                            template.modal.current = { connID: parseInt(vm.data.interaction.request.connID) };
-                        }
-                        break;
-                    }
+            if (vm.data.interaction.response.singalQuery[0].connID == parseInt(vm.data.interaction.request.connID)) {
+                $rootScope.InfoModal($filter('translate')('01216236'), 'error');
+                return;
+            }
+            for(var key in vm.data.interaction.response.singalQuery){
+                var val=vm.data.interaction.response.singalQuery[key];
+                if(val.connID == parseInt(vm.data.interaction.request.connID)){
+                    break;
+                }else{
+                   template.modal.query.push(val); 
+                }
             }
             $rootScope.ApiManagement_AutomatedTest_BindModal(template.modal, function(callback) {
                 if (callback) {
-                    if(/^./.test(callback.bind))callback.bind=callback.bind.slice(1,callback.bind.length);
+                    if(/^\./.test(callback.bind))callback.bind=callback.bind.slice(1,callback.bind.length);
                     switch (status) {
                         case 'header':
                             {
-                                arg.item.headerValue = arg.item.headerValue + '<' + 'response[' + callback.$index + '].' + callback.bind + '>.';
+                                arg.item.headerValue = (arg.item.headerValue||'') + '<' + 'response[' + callback.connID + '].' + callback.bind + '>.';
                                 break;
                             }
                         case 'param':
                             {
-                                arg.item.paramInfo = arg.item.paramInfo + '<' + 'response[' + callback.$index + '].' + callback.bind + '>.';
+                                arg.item.paramInfo = (arg.item.paramInfo||'') + '<' + 'response[' + callback.connID + '].' + callback.bind + '>.';
                                 break;
                             }
                     }
@@ -251,6 +245,7 @@
                         return val;
                     }),
                     statusCode: '',
+                    orderNumber:vm.data.interaction.request.orderNumber,
                     matchType: vm.data.interaction.response.caseInfo.matchType,
                     matchRule: vm.data.interaction.response.caseInfo.matchType == 2 ? JSON.stringify(vm.data.interaction.request.responseJson, function(key, val) {
                         if (/(\$\$hashKey)/.test(key)) {
@@ -264,6 +259,7 @@
                 }
             }
             switch (vm.data.info.status) {
+                case 'insert':
                 case 'add':
                     {
                         template.request.statusCode = vm.data.interaction.response.caseInfo.statusCode != '0' ? vm.data.interaction.response.caseInfo.statusCode : vm.data.interaction.response.caseInfo.code;
@@ -345,6 +341,7 @@
                 })
             }
             switch (vm.data.info.status) {
+                case 'insert':
                 case 'add':
                     {
                         vm.data.interaction.response.caseInfo = {

@@ -26,12 +26,15 @@
             controller: homeProjectInsideDocEditController
         })
 
-    homeProjectInsideDocEditController.$inject = ['$scope', 'ApiManagementResource', '$state', 'CODE', '$rootScope', 'GroupService', '$filter'];
+    homeProjectInsideDocEditController.$inject = ['$scope', 'ApiManagementResource', '$state', 'CODE', '$rootScope', 'GroupService', '$filter','HTML_LAZYLOAD'];
 
-    function homeProjectInsideDocEditController($scope, ApiManagementResource, $state, CODE, $rootScope, GroupService, $filter) {
+    function homeProjectInsideDocEditController($scope, ApiManagementResource, $state, CODE, $rootScope, GroupService, $filter,HTML_LAZYLOAD) {
         var vm = this;
         var code = CODE.COMMON.SUCCESS;
         vm.data = {
+            constant: {
+                lazyload: HTML_LAZYLOAD[1]
+            },
             info: {
                 input: {
                     disable: false,

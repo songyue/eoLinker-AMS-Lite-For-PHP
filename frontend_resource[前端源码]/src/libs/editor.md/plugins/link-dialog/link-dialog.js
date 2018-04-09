@@ -110,21 +110,21 @@
     { 
         module.exports = factory;
     }
-	else if (typeof define === "function")  // AMD/CMD/Sea.js
-    {
-		if (define.amd) { // for Require.js
+    // else if (typeof define === "function")  // AMD/CMD/Sea.js
+    // {
+	// 	if (define.amd) { // for Require.js
 
-			define(["editormd"], function(editormd) {
-                factory(editormd);
-            });
+	// 		define(["editormd"], function(editormd) {
+    //             factory(editormd);
+    //         });
 
-		} else { // for Sea.js
-			define(function(require) {
-                var editormd = require("./../../editormd");
-                factory(editormd);
-            });
-		}
-	} 
+	// 	} else { // for Sea.js
+	// 		define(function(require) {
+    //             var editormd = require("./../../editormd");
+    //             factory(editormd);
+    //         });
+	// 	}
+	// } 
 	else
 	{
         factory(window.editormd);

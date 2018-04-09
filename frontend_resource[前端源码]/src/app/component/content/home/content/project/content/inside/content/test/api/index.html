@@ -42,7 +42,7 @@
                         {{$index+1}}
                     </td>
                     <td>{{item.apiName}}</td>
-                    <td title="{{item.apiURI}}"><span class="get-label" ng-class="{'eo-color-success':item.apiRequestType==0,'eo-color-default':item.apiRequestType==1,'eo-color-others':item.apiRequestType==2,'eo-color-warning':item.apiRequestType==6,'eo-color-danger':item.apiRequestType==3,'eo-color-info':item.apiRequestType==4,'eo-color-options':item.apiRequestType==5}">
+                    <td title="{{item.apiURI}}"><span class="eo-method-label" ng-class="{'eo-color-success':item.apiRequestType==0,'eo-color-default':item.apiRequestType==1,'eo-color-others':item.apiRequestType==2,'eo-color-warning':item.apiRequestType==6,'eo-color-danger':item.apiRequestType==3,'eo-color-info':item.apiRequestType==4,'eo-color-options':item.apiRequestType==5}">
                         {{item.apiRequestType==0?'POST':item.apiRequestType==1?'GET':item.apiRequestType==2?'PUT':item.apiRequestType==3?'DELETE':item.apiRequestType==4?'HEAD':item.apiRequestType==5?'OPTS':'PATCH'}}
                         </span> {{$ctrl.data.service.home.envObject.object.fun(item.apiURI)}}</td>
                     <td ng-switch="$ctrl.data.interaction.batchTestObject.output[$index].responseType">
@@ -55,9 +55,22 @@
                         </p>
                     </td>
                     <td class="operate-td" >
-                        <button class="home-project-inside-function-edit batch-test-btn" ng-disabled="(!item.statusCode)||$ctrl.data.info.statusObject.testing||($ctrl.data.info.plugObject.version<190)||!$ctrl.data.info.plugObject.version" ng-click="$ctrl.data.fun.test('singal',{item:item,$index:$index})" testing="{{item.testing||false}}"><span class="iconfont icon-shandian"></span>{{item.testing?$ctrl.data.info.filter.stop:$ctrl.data.info.filter.test}}</button>
-                        <button class="home-function-delete" ng-click="$ctrl.data.fun.edit('edit',{item:item,$index:$index,$event:$event})" ng-disabled="$ctrl.data.info.statusObject.testing||item.testing" ng-if="$ctrl.powerObject.readWrite"><span class="iconfont icon-bianji"></span>{{'01216021'|translate}}</button>
-                        <button class="home-function-delete" ng-click="$ctrl.data.fun.delete({item:item,$index:$index,$event:$event})" ng-disabled="$ctrl.data.info.statusObject.testing||item.testing" ng-if="$ctrl.powerObject.readWrite"><span class="iconfont icon-shanchu"></span>{{'01216022'|translate}}</button>
+                        <button class="eo-operate-btn batch-test-btn" ng-disabled="(!item.statusCode)||$ctrl.data.info.statusObject.testing||($ctrl.data.info.plugObject.version<190)||!$ctrl.data.info.plugObject.version" ng-click="$ctrl.data.fun.test('singal',{item:item,$index:$index})" testing="{{item.testing||false}}"><span class="iconfont icon-shandian"></span>{{item.testing?$ctrl.data.info.filter.stop:$ctrl.data.info.filter.test}}</button>
+                        <button class="eo-operate-btn" ng-disabled="$ctrl.data.info.statusObject.testing||item.testing" ng-click="item.listIsClick=!item.listIsClick" ng-mouseleave="item.listIsClick=false">
+                                <span class="iconfont icon-zaiqianmiancharuxinmuluxiang"></span>{{'01216031'|translate}}
+                                <div class="list-function-wrap" ng-show="item.listIsClick">
+                                    <ul class="list-function-ul">
+                                        <li class="list-function-detail">
+                                            <ul>
+                                                <li ng-click="$ctrl.data.fun.bind('insert',{item:item,$index:$index+1,$event:$event})">{{'0121601'|translate}} </li>
+                                                <li ng-click="$ctrl.data.fun.edit('insert',{item:item,$index:$index+1,$event:$event})">{{'0121602'|translate}} </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </button>
+                        <button class="eo-operate-btn" ng-click="$ctrl.data.fun.edit('edit',{item:item,$index:$index,$event:$event})" ng-disabled="$ctrl.data.info.statusObject.testing||item.testing" ng-if="$ctrl.powerObject.readWrite"><span class="iconfont icon-bianji"></span>{{'01216021'|translate}}</button>
+                        <button class="eo-operate-btn" ng-click="$ctrl.data.fun.delete({item:item,$index:$index,$event:$event})" ng-disabled="$ctrl.data.info.statusObject.testing||item.testing" ng-if="$ctrl.powerObject.readWrite"><span class="iconfont icon-shanchu"></span>{{'01216022'|translate}}</button>
                     </td>
                 </tr>
                 <tr class="eo-none-tr" ng-if="$ctrl.data.interaction.response.query.length==0">

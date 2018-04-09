@@ -361,6 +361,13 @@
                 Search: {
                     params: { operate: 'searchStatusCode' },
                     method: data.info.method
+                },
+                Import: {
+                    params: { operate: 'addStatusCodeByExcel' },
+                    method: data.info.method,
+                    cancellable: true,
+                    transformRequest: angular.identity,
+                    headers: { "Content-Type": undefined }
                 }
             }
 
@@ -551,7 +558,7 @@
                 cancellable: true
             },
             Search: {
-                params: { operate: 'searchCase' },
+                params: { operate: 'searchTestCase' },
                 method: data.info.method,
                 cancellable: true
             }
@@ -581,6 +588,16 @@
             },
             Sort: {
                 params: { operate: 'sortGroup' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Import: {
+                params: { operate: 'importGroup' },
+                method: data.info.method,
+                cancellable: true
+            },
+            Export: {
+                params: { operate: 'exportGroup' },
                 method: data.info.method,
                 cancellable: true
             }

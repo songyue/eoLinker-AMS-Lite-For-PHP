@@ -4,7 +4,7 @@
  * @name eolinker ams open source，eolinker开源版本
  * @link https://www.eolinker.com/
  * @package eolinker
- * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2018
+ * @author www.eolinker.com 广州银云信息科技有限公司 2015-2017
  * eoLinker是目前全球领先、国内最大的在线API接口管理平台，提供自动生成API文档、API自动化测试、Mock测试、团队协作等功能，旨在解决由于前后端分离导致的开发效率低下问题。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
  *
@@ -85,7 +85,7 @@ class AutomatedTestCaseDao
     public function getTestCaseList(&$group_id)
     {
         $db = getDatabase();
-        $result = $db->prepareExecuteAll("SELECT eo_conn_project.partnerNickName,eo_user.userNickName,eo_project_test_case.caseID,eo_project_test_case.caseName,eo_project_test_case.caseDesc,eo_project_test_case.updateTime,eo_project_test_case.caseType,eo_project_test_case_group.groupID,eo_project_test_case_group.parentGroupID,eo_project_test_case_group.groupName FROM eo_project_test_case LEFT JOIN eo_project_test_case_group ON eo_project_test_case_group.groupID = eo_project_test_case.groupID LEFT JOIN eo_conn_project ON eo_conn_project.userID = eo_project_test_case.userID AND eo_conn_project.projectID = eo_project_test_case.projectID LEFT JOIN eo_user ON eo_project_test_case.userID = eo_user.userID WHERE eo_project_test_case_group.groupID = ? OR (eo_project_test_case_group.parentGroupID = ? AND eo_project_test_case_group.isChild = 1) ORDER BY eo_project_test_case.updateTime DESC;", array(
+        $result = $db->prepareExecuteAll("SELECT eo_conn_project.partnerNickName,eo_user.userNickName,eo_project_test_case.caseID,eo_project_test_case.caseName,eo_project_test_case.caseDesc,eo_project_test_case.updateTime,eo_project_test_case.caseType,eo_project_test_case_group.groupID,eo_project_test_case_group.parentGroupID,eo_project_test_case_group.groupName FROM eo_project_test_case LEFT JOIN eo_project_test_case_group ON eo_project_test_case_group.groupID = eo_project_test_case.groupID LEFT JOIN eo_conn_project ON eo_conn_project.userID = eo_project_test_case.userID AND eo_conn_project.projectID = eo_project_test_case.projectID LEFT JOIN eo_user ON eo_project_test_case.userID = eo_user.userID WHERE eo_project_test_case_group.groupID = ? OR (eo_project_test_case_group.parentGroupID = ? AND eo_project_test_case_group.isChild = 1) ORDER BY CONCAT(eo_project_test_case.caseName,eo_project_test_case.updateTime) DESC;", array(
             $group_id,
             $group_id
         ));
@@ -103,7 +103,7 @@ class AutomatedTestCaseDao
     public function getAllTestCaseList(&$project_id)
     {
         $db = getDatabase();
-        $result = $db->prepareExecuteAll("SELECT eo_conn_project.partnerNickName,eo_user.userNickName,eo_project_test_case.caseID,eo_project_test_case.caseName,eo_project_test_case.caseDesc,eo_project_test_case.updateTime,eo_project_test_case.caseType,eo_project_test_case_group.groupID,eo_project_test_case_group.parentGroupID,eo_project_test_case_group.groupName FROM eo_project_test_case LEFT JOIN eo_project_test_case_group ON eo_project_test_case_group.groupID = eo_project_test_case.groupID LEFT JOIN eo_conn_project ON eo_project_test_case.userID = eo_conn_project.userID AND eo_conn_project.projectID = eo_project_test_case.projectID LEFT JOIN eo_user ON eo_project_test_case.userID = eo_user.userID WHERE eo_project_test_case.projectID = ? ORDER BY eo_project_test_case.updateTime DESC;", array(
+        $result = $db->prepareExecuteAll("SELECT eo_conn_project.partnerNickName,eo_user.userNickName,eo_project_test_case.caseID,eo_project_test_case.caseName,eo_project_test_case.caseDesc,eo_project_test_case.updateTime,eo_project_test_case.caseType,eo_project_test_case_group.groupID,eo_project_test_case_group.parentGroupID,eo_project_test_case_group.groupName FROM eo_project_test_case LEFT JOIN eo_project_test_case_group ON eo_project_test_case_group.groupID = eo_project_test_case.groupID LEFT JOIN eo_conn_project ON eo_project_test_case.userID = eo_conn_project.userID AND eo_conn_project.projectID = eo_project_test_case.projectID LEFT JOIN eo_user ON eo_project_test_case.userID = eo_user.userID WHERE eo_project_test_case.projectID = ? ORDER BY CONCAT(eo_project_test_case.caseName,eo_project_test_case.updateTime) DESC;", array(
             $project_id
         ));
         if ($result)
@@ -213,7 +213,7 @@ class AutomatedTestCaseDao
     public function getTestCaseDataList(&$project_id, &$group_id)
     {
         $db = getDatabase();
-        $case_list = $db->prepareExecuteAll('SELECT eo_project_test_case.caseID,eo_project_test_case.caseName,eo_project_test_case.caseType FROM eo_project_test_case LEFT JOIN eo_project_test_case_group ON eo_project_test_case.groupID = eo_project_test_case_group.groupID WHERE eo_project_test_case.projectID = ? AND (eo_project_test_case.groupID = ? OR eo_project_test_case_group.parentGroupID = ?);', array(
+        $case_list = $db->prepareExecuteAll('SELECT eo_project_test_case.caseID,eo_project_test_case.caseName,eo_project_test_case.caseType FROM eo_project_test_case LEFT JOIN eo_project_test_case_group ON eo_project_test_case.groupID = eo_project_test_case_group.groupID WHERE eo_project_test_case.projectID = ? AND (eo_project_test_case.groupID = ? OR eo_project_test_case_group.parentGroupID = ?) ORDER BY CONCAT(eo_project_test_case.caseName,eo_project_test_case.updateTime) ASC;', array(
             $project_id,
             $group_id,
             $group_id
@@ -224,7 +224,7 @@ class AutomatedTestCaseDao
                     $case['caseID']
                 ));
                 if (!empty($case['singleCaseList'])) {
-                    foreach ($case['singleCaseList'] as $single_case) {
+                    foreach ($case['singleCaseList'] as &$single_case) {
                         if ($single_case['matchType'] == 2 && !empty($single_case['matchRule'])) {
                             $single_case['matchRule'] = json_decode($single_case['matchRule'], TRUE);
                         }
@@ -246,7 +246,7 @@ class AutomatedTestCaseDao
     public function getAllTestCaseDataList(&$project_id)
     {
         $db = getDatabase();
-        $case_list = $db->prepareExecuteAll('SELECT eo_project_test_case.caseID,eo_project_test_case.caseName,eo_project_test_case.caseType FROM eo_project_test_case WHERE eo_project_test_case.projectID = ?;', array(
+        $case_list = $db->prepareExecuteAll('SELECT eo_project_test_case.caseID,eo_project_test_case.caseName,eo_project_test_case.caseType FROM eo_project_test_case WHERE eo_project_test_case.projectID = ? ORDER BY CONCAT(eo_project_test_case.caseName,eo_project_test_case.updateTime) DESC;', array(
             $project_id
         ));
         if (!empty($case_list)) {
@@ -255,7 +255,7 @@ class AutomatedTestCaseDao
                     $case['caseID']
                 ));
                 if (!empty($case['singleCaseList'])) {
-                    foreach ($case['singleCaseList'] as $single_case) {
+                    foreach ($case['singleCaseList'] as &$single_case) {
                         if ($single_case['matchType'] == 2 && !empty($single_case['matchRule'])) {
                             $single_case['matchRule'] = json_decode($single_case['matchRule'], TRUE);
                         }

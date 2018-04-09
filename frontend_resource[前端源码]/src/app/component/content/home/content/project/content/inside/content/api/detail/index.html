@@ -192,15 +192,13 @@
                 </tbody>
             </table>
         </div>
+        <div class="eo-tab-container">
+                <div class="pull-left  item-tab" ng-class="{'active-item':!$ctrl.data.info.mock.isFailure}" ng-click="$ctrl.data.info.mock.isFailure = false;">{{'012100027'|translate}}</div>
+                <div class="pull-left item-tab" ng-class="{'active-item':$ctrl.data.info.mock.isFailure}" ng-click="$ctrl.data.info.mock.isFailure = true;">{{'012100028'|translate}}</div>
+        </div>
         <div class="item-part response-example-part" ng-if="$ctrl.data.service.home.envObject.object.model.baseInfo" ng-switch="$ctrl.data.info.mock.isFailure">
-            <p class="title-p"><b>{{'012100026'|translate}}</b>
-                <tip-directive input="<p>{{'012100032'|translate}}</p><p>{{'012100034'|translate}}</p>"></tip-directive>
-                <a class="pull-right spreed-btn" ng-click="$ctrl.data.info.spreed.example=!$ctrl.data.info.spreed.example"><span class="iconfont " ng-class="{'icon-xiangxia':!$ctrl.data.info.spreed.example,'icon-xiangshang':$ctrl.data.info.spreed.example}"></span>{{$ctrl.data.info.spreed.example?$ctrl.data.info.filter.shrink:$ctrl.data.info.filter.open}}</a>
-            </p>
             <header ng-show="$ctrl.data.info.spreed.example">
                 <ul>
-                    <li class="pull-left test-nav-li success-li" ng-class="{'active':!$ctrl.data.info.mock.isFailure}" data-ng-click="$ctrl.data.info.mock.isFailure = false">{{'012100027'|translate}}</li>
-                    <li class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.info.mock.isFailure}" data-ng-click="$ctrl.data.info.mock.isFailure = true">{{'012100028'|translate}}</li>
                     <li ng-hide="$ctrl.data.info.mock.isFailure">
                         <button class="eo-button-info change-type-btn send-format" arrange-format="apiResult_js" ng-model="$ctrl.data.service.home.envObject.object.model.baseInfo.apiSuccessMock"><span class="iconfont icon-magic"></span>{{'012100029'|translate}}</button>
                     </li>

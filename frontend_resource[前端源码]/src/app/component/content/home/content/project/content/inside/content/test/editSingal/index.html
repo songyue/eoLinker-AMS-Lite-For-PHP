@@ -21,7 +21,7 @@
                 <p class="title-p"><b>{{'0121623'|translate}}</b></p>
                 <ul class="form-ul">
                     <li class="pull-left">
-                        <select class="eo-input pull-right method-select" ng-model="$ctrl.data.interaction.response.caseInfo.caseData.apiRequestType" ng-change="$ctrl.data.fun.changeType()">
+                        <select class="eo-input pull-right method-select" ng-model="$ctrl.data.interaction.response.caseInfo.caseData.apiRequestType" >
                             <option value="0">POST</option>
                             <option value="1">GET</option>
                             <option value="2">PUT</option>
@@ -123,8 +123,8 @@
                     <header>
                         <ul>
                             <li class="pull-left test-nav-li success-li" ng-class="{'active':$ctrl.data.interaction.response.caseInfo.caseData.requestType=='0'}" ng-click="$ctrl.data.interaction.response.caseInfo.caseData.requestType = '0'">{{'01216217'|translate}}[form-data]</li>
-                            <li class="pull-left test-nav-li" ng-class="{'active':$ctrl.data.interaction.response.caseInfo.caseData.requestType=='2','failure-li':$ctrl.data.interaction.response.caseInfo.caseData.apiRequestType != '0' &&$ctrl.data.interaction.response.caseInfo.caseData.apiRequestType != '2'}" ng-click="$ctrl.data.interaction.response.caseInfo.caseData.requestType = '2'">RESTful</li>
-                            <li style="border-left:none;" class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.interaction.response.caseInfo.caseData.requestType=='1'}" ng-click="$ctrl.data.interaction.response.caseInfo.caseData.requestType = '1'" ng-show="$ctrl.data.interaction.response.caseInfo.caseData.apiRequestType == '0' || $ctrl.data.interaction.response.caseInfo.caseData.apiRequestType == '2'">{{'01216218'|translate}}[raw]</li>
+                            <li class="pull-left test-nav-li" ng-class="{'active':$ctrl.data.interaction.response.caseInfo.caseData.requestType=='2'}" ng-click="$ctrl.data.interaction.response.caseInfo.caseData.requestType = '2'">RESTful</li>
+                            <li style="border-left:none;" class="pull-left test-nav-li failure-li" ng-class="{'active':$ctrl.data.interaction.response.caseInfo.caseData.requestType=='1'}" ng-click="$ctrl.data.interaction.response.caseInfo.caseData.requestType = '1'" >{{'01216218'|translate}}[raw]</li>
                         </ul>
                     </header>
                     <article>

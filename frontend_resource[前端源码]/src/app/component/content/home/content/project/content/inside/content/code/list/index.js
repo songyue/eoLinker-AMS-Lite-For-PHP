@@ -287,5 +287,54 @@
                 }
             });
         }
+
+        /**
+         * 导入状态码excel [import excel]
+         */
+        vm.data.fun.import = function () {
+            var template = {
+                request: new FormData(),
+                modal: {
+                    title: $filter('translate')('012115'),
+                    fileType: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    group: {
+                        parent: GroupService.get(),
+                        groupID: parseInt(vm.data.interaction.request.groupID),
+                        childGroupID: parseInt(vm.data.interaction.request.childGroupID)
+                    },
+                    inputObject: {
+                        type: 'file'
+                    },
+                    secondTitle: $filter('translate')('012100260')
+                }
+            }
+            if ((!template.modal.group.parent) || (template.modal.group.parent == 0)) {
+                $rootScope.InfoModal($filter('translate')('0121115'), 'error');
+                return;
+            }
+            template.request.append('projectHashKey', vm.data.interaction.request.projectHashKey);
+            $rootScope.Common_UploadFile(template.modal, function (callback) {
+                if (callback) {
+                    template.request.append('groupID', callback.groupID);
+                    template.request.append('excel', callback.file);
+                    ApiManagementResource.Code.Import(template.request).$promise.then(function (response) {
+                        switch (response.statusCode) {
+                            case CODE.COMMON.SUCCESS:
+                            case '510000':
+                                {
+                                    vm.data.fun.init();
+                                    $rootScope.InfoModal($filter('translate')('012100261'), 'success');
+                                    break;
+                                }
+                            default:
+                                {
+                                    $rootScope.InfoModal($filter('translate')('012100256'), 'error');
+                                    break;
+                                }
+                        }
+                    })
+                }
+            });
+        }
     }
 })();

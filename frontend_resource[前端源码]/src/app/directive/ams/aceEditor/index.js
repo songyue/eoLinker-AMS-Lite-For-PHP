@@ -46,8 +46,8 @@
                     element[0].style.fontSize = '14px';
                     element[0].style.lineHeight = '25px';
                     data.editor.setOptions({
-                        minLines: 20,
-                        maxLines: 100,
+                        minLines: 5,
+                        maxLines: 15,
                         enableBasicAutocompletion: true,
                         enableLiveAutocompletion: false,
                         enableSnippets: true

@@ -21,7 +21,7 @@
                     template: '<home-project-inside-test-api power-object="$ctrl.powerObject"></home-project-inside-test-api>'
                 })
                 .state('home.project.inside.test.edit', {
-                    url: '/operateApi/:status?groupID?childGroupID?caseID?connID',
+                    url: '/operateApi/:status?groupID?childGroupID?caseID?connID?orderNumber',
                     template: '<home-project-inside-test-edit-singal></home-project-inside-test-edit-singal>'
                 });
         }])
