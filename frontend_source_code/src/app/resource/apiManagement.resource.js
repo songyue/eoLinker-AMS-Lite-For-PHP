@@ -3,7 +3,18 @@
 
     angular.module('eolinker.resource')
     /**
-     * @Author   广州银云信息科技有限公司 eolinker
+     * @name eolinker open source，eolinker开源版本
+     * @link https://www.eolinker.com
+     * @package eolinker
+     * @author www.eolinker.com 广州银云信息科技有限公司 2015-2018
+
+     * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
+     * 如在使用的过程中有任何问题，可通过[图片]http://help.eolinker.com寻求帮助
+     *
+     * 注意！eolinker开源版本遵循GPL V3开源协议，仅供用户下载试用，禁止“一切公开使用于商业用途”或者“以eoLinker开源版本为基础而开发的二次版本”在互联网上流通。
+     * 注意！一经发现，我们将立刻启用法律程序进行维权。
+     * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
+     *
      * @function [接口管理接口服务定义js] [API management interface service definition js]
      * @version  3.1.5
      * @service  $resource [注入$resource服务] [Inject the $resource service]
@@ -53,7 +64,7 @@
                     params: { operate: 'getProjectList' },
                     method: data.info.method
                 },
-                Update: {
+                Edit: {
                     params: { operate: 'editProject' },
                     method: data.info.method
                 },
@@ -100,7 +111,7 @@
                     params: { operate: 'removeApi' },
                     method: data.info.method
                 },
-                Update: {
+                Edit: {
                     params: { operate: 'editApi' },
                     method: data.info.method
                 },
@@ -184,7 +195,7 @@
                     method: data.info.method,
                     cancellable:true
                 },
-                Update: {
+                Edit: {
                     params: { operate: 'editDocument' },
                     method: data.info.method,
                     cancellable:true
@@ -220,7 +231,7 @@
                     method: data.info.method,
                     cancellable:true
                 },
-                Update: {
+                Edit: {
                     params: { operate: 'editGroup' },
                     method: data.info.method,
                     cancellable:true
@@ -354,7 +365,7 @@
                     params: { operate: 'deleteCode' },
                     method: data.info.method
                 },
-                Update: {
+                Edit: {
                     params: { operate: 'editCode' },
                     method: data.info.method
                 },
@@ -445,7 +456,7 @@
                     params: { operate: 'deleteGroup' },
                     method: data.info.method
                 },
-                Update: {
+                Edit: {
                     params: { operate: 'editGroup' },
                     method: data.info.method
                 },
@@ -482,7 +493,7 @@
                     params: { operate: 'deleteGroup' },
                     method: data.info.method
                 },
-                Update: {
+                Edit: {
                     params: { operate: 'editGroup' },
                     method: data.info.method
                 },
